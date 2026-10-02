@@ -1,0 +1,35 @@
+{
+    "name": "Bua Family",
+    "short_name": "Bua Family",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#F5FAF5",
+    "theme_color": "#1F6F43",
+    "description": "Bua Family: our family tree, members and memories.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
