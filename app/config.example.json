@@ -1,6 +1,5 @@
 {
   "SUPABASE_URL": "https://YOUR-PROJECT-REF.supabase.co",
   "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_...",
-  "FIREBASE_ANDROID_API_KEY": "",
-  "FIREBASE_IOS_API_KEY": ""
+  "FIREBASE_ANDROID_API_KEY": ""
 }
