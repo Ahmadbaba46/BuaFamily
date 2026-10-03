@@ -14,6 +14,8 @@ import 'ui/screens/more_screen.dart';
 import 'ui/screens/my_requests_screen.dart';
 import 'ui/screens/new_event_screen.dart';
 import 'ui/screens/new_moment_screen.dart';
+import 'ui/screens/notification_settings_screen.dart';
+import 'ui/screens/notifications_screen.dart';
 import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
@@ -78,6 +80,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => NewEventScreen(announcement: s.uri.queryParameters['type'] == 'announcement'),
       ),
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
+      GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
+      GoRoute(path: '/settings/notifications', builder: (_, _) => const NotificationSettingsScreen()),
       GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),
       GoRoute(path: '/albums/of/:person', builder: (_, s) => AlbumScreen(personId: s.pathParameters['person'])),
       GoRoute(path: '/albums/:id', builder: (_, s) => AlbumScreen(albumId: s.pathParameters['id'])),
@@ -91,7 +95,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       // Opened from More; admins only (see redirect).
-      GoRoute(path: '/admin', builder: (_, _) => const AdminScreen()),
+      GoRoute(
+        path: '/admin',
+        builder: (_, s) => AdminScreen(initialTab: s.uri.queryParameters['tab'] == 'settings' ? 2 : 0),
+      ),
       GoRoute(path: '/my-requests', builder: (_, _) => const MyRequestsScreen()),
       GoRoute(
         path: '/person/:id',

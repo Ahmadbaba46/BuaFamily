@@ -1419,4 +1419,169 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photos => 'Photos';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get markAllRead => 'Mark all as read';
+
+  @override
+  String get noNotifications => 'You\'re all caught up.';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get earlier => 'Earlier';
+
+  @override
+  String notifEvent(String title) {
+    return 'New event: $title';
+  }
+
+  @override
+  String notifBirthday(String name, int age) {
+    return '$name\'s birthday today ($age)';
+  }
+
+  @override
+  String notifEventReminder(String title) {
+    return 'Tomorrow: $title';
+  }
+
+  @override
+  String get notifTaggedPost => 'You were tagged in a moment';
+
+  @override
+  String get notifTaggedPhoto => 'You were tagged in a photo';
+
+  @override
+  String notifComment(String body) {
+    return 'New comment: “$body”';
+  }
+
+  @override
+  String get notificationsSms => 'Notifications & SMS';
+
+  @override
+  String get phoneNumber => 'Phone number';
+
+  @override
+  String get phoneHint => 'e.g. 0803 123 4567';
+
+  @override
+  String get phoneInvalid => 'Enter a valid phone number.';
+
+  @override
+  String get smsOptIn => 'Get SMS on this phone';
+
+  @override
+  String get smsOptInSub =>
+      'Important family news by text message, even without data.';
+
+  @override
+  String get smsBirthdays => 'Birthday reminders';
+
+  @override
+  String get smsBirthdaysSub =>
+      'A text in the morning when it\'s a relative\'s birthday.';
+
+  @override
+  String get smsEvents => 'Events and announcements';
+
+  @override
+  String get smsEventsSub =>
+      'Events and announcements sent by admins, and a reminder the day before events you\'re going to.';
+
+  @override
+  String get inAppNote =>
+      'You always see notifications in the app, under the bell on Home.';
+
+  @override
+  String get smsOffNote =>
+      'SMS is not switched on for the family yet. An admin can turn it on in Admin › Settings.';
+
+  @override
+  String get smsTitle => 'SMS (Termii)';
+
+  @override
+  String get smsEnable => 'Send SMS to the family';
+
+  @override
+  String get smsEnableSub =>
+      'Uses your Termii balance. Members choose what they receive.';
+
+  @override
+  String get senderId => 'Sender ID';
+
+  @override
+  String get senderIdHint => 'Registered with Termii, 3–11 letters or digits.';
+
+  @override
+  String get smsRoute => 'Route';
+
+  @override
+  String get routeGeneric => 'Generic';
+
+  @override
+  String get routeDnd =>
+      'DND (also reaches DND numbers; Termii must activate it)';
+
+  @override
+  String get apiKey => 'Termii API key';
+
+  @override
+  String get apiKeySaved => 'Saved';
+
+  @override
+  String get apiKeyMissing => 'Not set';
+
+  @override
+  String get apiKeyNote =>
+      'Find it in your Termii dashboard. It is stored encrypted and never shown again.';
+
+  @override
+  String get baseUrl => 'API base URL (optional)';
+
+  @override
+  String get baseUrlHint =>
+      'Shown in your Termii dashboard. Leave empty for https://api.ng.termii.com';
+
+  @override
+  String get sendTestSms => 'Send a test SMS to me';
+
+  @override
+  String get testSmsSent => 'Test SMS sent. It should arrive within a minute.';
+
+  @override
+  String smsStats(int subscribers, int sent, int failed) {
+    return '$subscribers subscribed · $sent sent this week · $failed failed';
+  }
+
+  @override
+  String smsQueued(int count) {
+    return '$count waiting to send';
+  }
+
+  @override
+  String lastError(String error) {
+    return 'Last error: $error';
+  }
+
+  @override
+  String get smsSetupSteps =>
+      '1. Get an API key and a sender ID from Termii. 2. Save them here. 3. Switch SMS on and send yourself a test.';
+
+  @override
+  String get notifyFamily => 'Notify the whole family';
+
+  @override
+  String get notifyFamilySub => 'In the app';
+
+  @override
+  String get alsoSms => 'Also send SMS';
+
+  @override
+  String get alsoSmsSub => 'Admins only · uses SMS credit';
 }

@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/notification.dart';
 import '../models/person.dart';
 import '../models/social.dart';
 
@@ -243,6 +244,8 @@ class FamilyRepository {
     String body = '',
     String? albumId,
     bool pinned = false,
+    bool notify = false,
+    bool sendSms = false,
     List<String> people = const [],
     List<PickedImage> images = const [],
   }) async {
@@ -253,6 +256,8 @@ class FamilyRepository {
           'body': body.trim(),
           'album_id': albumId,
           if (pinned) 'pinned': true,
+          if (notify) 'notify': true,
+          if (sendSms) 'send_sms': true,
         })
         .select('id')
         .single();
@@ -370,4 +375,42 @@ class FamilyRepository {
   Future<void> setPinned({String? postId, String? eventId, required bool pinned}) => postId != null
       ? _db.from('posts').update({'pinned': pinned}).eq('id', postId)
       : _db.from('events').update({'pinned': pinned}).eq('id', eventId!);
+
+  // ---------------------------------------------------------------- notifications
+
+  /// The newest notifications, kept up to date as new ones arrive.
+  Stream<List<AppNotification>> notifications() => _db
+      .from('notifications')
+      .stream(primaryKey: ['id'])
+      .eq('user_id', userId!)
+      .order('created_at')
+      .limit(100)
+      .map((rows) => rows.map(AppNotification.fromJson).whereType<AppNotification>().toList());
+
+  Future<void> markRead(String id) =>
+      _db.from('notifications').update({'read_at': DateTime.now().toUtc().toIso8601String()}).eq('id', id);
+
+  Future<void> markAllRead() => _db
+      .from('notifications')
+      .update({'read_at': DateTime.now().toUtc().toIso8601String()})
+      .eq('user_id', userId!)
+      .isFilter('read_at', null);
+
+  Future<void> updateSmsPreferences({String? phone, bool? optIn, bool? birthdays, bool? events}) =>
+      _db.from('profiles').update({
+        'phone': ?phone,
+        'sms_opt_in': ?optIn,
+        'sms_birthdays': ?birthdays,
+        'sms_events': ?events,
+      }).eq('id', userId!);
+
+  Future<void> clearPhone() => _db.from('profiles').update({'phone': null, 'sms_opt_in': false}).eq('id', userId!);
+
+  Future<SmsStatus> smsStatus() async =>
+      SmsStatus.fromJson(((await _db.rpc('sms_status')) as Map).cast<String, dynamic>());
+
+  Future<void> setSmsSecret({String? apiKey, String? baseUrl}) =>
+      _db.rpc('admin_set_sms_secret', params: {'p_api_key': apiKey, 'p_base_url': baseUrl});
+
+  Future<void> sendTestSms() => _db.rpc('send_test_sms');
 }

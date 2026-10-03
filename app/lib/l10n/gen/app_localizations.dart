@@ -2287,6 +2287,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photos'**
   String get photos;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @markAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllRead;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get noNotifications;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @earlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get earlier;
+
+  /// No description provided for @notifEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'New event: {title}'**
+  String notifEvent(String title);
+
+  /// No description provided for @notifBirthday.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s birthday today ({age})'**
+  String notifBirthday(String name, int age);
+
+  /// No description provided for @notifEventReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {title}'**
+  String notifEventReminder(String title);
+
+  /// No description provided for @notifTaggedPost.
+  ///
+  /// In en, this message translates to:
+  /// **'You were tagged in a moment'**
+  String get notifTaggedPost;
+
+  /// No description provided for @notifTaggedPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'You were tagged in a photo'**
+  String get notifTaggedPhoto;
+
+  /// No description provided for @notifComment.
+  ///
+  /// In en, this message translates to:
+  /// **'New comment: “{body}”'**
+  String notifComment(String body);
+
+  /// No description provided for @notificationsSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & SMS'**
+  String get notificationsSms;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumber;
+
+  /// No description provided for @phoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 0803 123 4567'**
+  String get phoneHint;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number.'**
+  String get phoneInvalid;
+
+  /// No description provided for @smsOptIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Get SMS on this phone'**
+  String get smsOptIn;
+
+  /// No description provided for @smsOptInSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Important family news by text message, even without data.'**
+  String get smsOptInSub;
+
+  /// No description provided for @smsBirthdays.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday reminders'**
+  String get smsBirthdays;
+
+  /// No description provided for @smsBirthdaysSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A text in the morning when it\'s a relative\'s birthday.'**
+  String get smsBirthdaysSub;
+
+  /// No description provided for @smsEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events and announcements'**
+  String get smsEvents;
+
+  /// No description provided for @smsEventsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Events and announcements sent by admins, and a reminder the day before events you\'re going to.'**
+  String get smsEventsSub;
+
+  /// No description provided for @inAppNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You always see notifications in the app, under the bell on Home.'**
+  String get inAppNote;
+
+  /// No description provided for @smsOffNote.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS is not switched on for the family yet. An admin can turn it on in Admin › Settings.'**
+  String get smsOffNote;
+
+  /// No description provided for @smsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS (Termii)'**
+  String get smsTitle;
+
+  /// No description provided for @smsEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Send SMS to the family'**
+  String get smsEnable;
+
+  /// No description provided for @smsEnableSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses your Termii balance. Members choose what they receive.'**
+  String get smsEnableSub;
+
+  /// No description provided for @senderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Sender ID'**
+  String get senderId;
+
+  /// No description provided for @senderIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered with Termii, 3–11 letters or digits.'**
+  String get senderIdHint;
+
+  /// No description provided for @smsRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get smsRoute;
+
+  /// No description provided for @routeGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Generic'**
+  String get routeGeneric;
+
+  /// No description provided for @routeDnd.
+  ///
+  /// In en, this message translates to:
+  /// **'DND (also reaches DND numbers; Termii must activate it)'**
+  String get routeDnd;
+
+  /// No description provided for @apiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Termii API key'**
+  String get apiKey;
+
+  /// No description provided for @apiKeySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get apiKeySaved;
+
+  /// No description provided for @apiKeyMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get apiKeyMissing;
+
+  /// No description provided for @apiKeyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Find it in your Termii dashboard. It is stored encrypted and never shown again.'**
+  String get apiKeyNote;
+
+  /// No description provided for @baseUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'API base URL (optional)'**
+  String get baseUrl;
+
+  /// No description provided for @baseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown in your Termii dashboard. Leave empty for https://api.ng.termii.com'**
+  String get baseUrlHint;
+
+  /// No description provided for @sendTestSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a test SMS to me'**
+  String get sendTestSms;
+
+  /// No description provided for @testSmsSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Test SMS sent. It should arrive within a minute.'**
+  String get testSmsSent;
+
+  /// No description provided for @smsStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{subscribers} subscribed · {sent} sent this week · {failed} failed'**
+  String smsStats(int subscribers, int sent, int failed);
+
+  /// No description provided for @smsQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} waiting to send'**
+  String smsQueued(int count);
+
+  /// No description provided for @lastError.
+  ///
+  /// In en, this message translates to:
+  /// **'Last error: {error}'**
+  String lastError(String error);
+
+  /// No description provided for @smsSetupSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Get an API key and a sender ID from Termii. 2. Save them here. 3. Switch SMS on and send yourself a test.'**
+  String get smsSetupSteps;
+
+  /// No description provided for @notifyFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify the whole family'**
+  String get notifyFamily;
+
+  /// No description provided for @notifyFamilySub.
+  ///
+  /// In en, this message translates to:
+  /// **'In the app'**
+  String get notifyFamilySub;
+
+  /// No description provided for @alsoSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Also send SMS'**
+  String get alsoSms;
+
+  /// No description provided for @alsoSmsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins only · uses SMS credit'**
+  String get alsoSmsSub;
 }
 
 class _AppLocalizationsDelegate

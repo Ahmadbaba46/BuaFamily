@@ -37,6 +37,13 @@ share moments and photos, plan family events, and keep everyone's details
 - **Events and announcements:** naming ceremonies, weddings, meetings and more,
   with Going / Maybe / Can't go replies (and how many people you're bringing),
   wishes, add-to-calendar and directions. Only admins can pin to Home.
+- **Notifications:** a bell on Home for new events and announcements, being
+  tagged, comments on your posts, birthdays and event reminders (live, no refresh).
+- **SMS through [Termii](https://termii.com):** members add their phone number
+  and choose birthday reminders and/or events. Every morning at 07:30 (Nigeria
+  time) the family gets birthday texts, and people who said Going or Maybe get a
+  reminder the day before an event. Admins can also text an event or
+  announcement to the family. Texts go out in each member's language.
 - **English and Hausa,** switchable at any time.
 
 ## How the data is organised
@@ -55,6 +62,8 @@ share moments and photos, plan family events, and keep everyone's details
 | `albums`, `photos`, `photo_people` | Shared albums, photos and who is in each photo |
 | `events`, `event_rsvps` | Family events and each member's reply |
 | `likes`, `comments` | "Ma sha Allah" and comments on posts, photos and events |
+| `notifications` | Each member's in-app inbox |
+| `private.sms_outbox` | Text messages waiting to be sent, sent or failed (not reachable from the app) |
 
 Permissions are enforced in the database with row-level security, so they hold
 no matter which app or tool connects:
@@ -95,7 +104,26 @@ their own ancestor or have two biological fathers.
 4. **Sign up in the app right away.** The very first account becomes the admin
    automatically; every later account waits for approval.
 
-### 2. Run the app
+### 2. Turn on SMS (optional)
+
+SMS is sent from the database itself: `pg_cron` runs every minute and `pg_net`
+posts queued messages to Termii, so there is no extra server.
+
+1. In [Termii](https://termii.com), fund your account, copy your **API key**,
+   and register a **Sender ID** (e.g. `BuaFamily`). Note the API base URL shown
+   in your dashboard if it isn't `https://api.ng.termii.com`.
+2. In the app, open **More → Admin → Settings → SMS**, save the API key (it is
+   stored encrypted in Supabase Vault and never shown again), the Sender ID and
+   the route. Choose **DND** only after Termii has activated it on your account;
+   the generic route cannot reach numbers on Do-Not-Disturb.
+3. Add your own number under **More → Notifications & SMS**, switch SMS on in
+   the admin settings, and tap **Send a test SMS to me**.
+
+Each member decides whether they want texts. Admin texts for events and
+announcements are opt-in per post ("Also send SMS"). Hausa texts avoid the
+hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
+
+### 3. Run the app
 
 You need the [Flutter SDK](https://docs.flutter.dev/get-started/install).
 
@@ -137,8 +165,9 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 ## Roadmap
 
-- **Next for sharing and events:** phone notifications and birthday reminders.
+- **Next for notifications:** app push notifications once the app is in the
+  Play Store / App Store.
 - **Phase 3, family knowledge:** "who can help?" skills directory, blood donor
-  matching, memorial pages, birthday and anniversary reminders.
+  matching, memorial pages, anniversary reminders.
 - **Phase 4:** welfare fund tracker, mentorship, oral-history voice notes,
   polls, GEDCOM import and export.

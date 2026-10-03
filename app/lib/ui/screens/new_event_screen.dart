@@ -31,6 +31,8 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
   TimeOfDay _time = const TimeOfDay(hour: 10, minute: 0);
   bool _askReply = true;
   bool _pin = false;
+  bool _notify = true;
+  bool _sms = false;
   bool _saving = false;
 
   @override
@@ -70,7 +72,13 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
     String? eventId;
     final ok = await guarded(context, () async {
       if (_announcement) {
-        await repo.createPost(kind: PostKind.announcement, body: _body.text, pinned: _pin);
+        await repo.createPost(
+          kind: PostKind.announcement,
+          body: _body.text,
+          pinned: _pin,
+          notify: _notify,
+          sendSms: _notify && _sms,
+        );
       } else {
         final d = _date!;
         final starts = DateTime(d.year, d.month, d.day, _time.hour, _time.minute);
@@ -84,6 +92,8 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
           'details': opt(_details),
           'rsvp_enabled': _askReply,
           if (_pin) 'pinned': true,
+          'notify': _notify,
+          if (_notify && _sms) 'send_sms': true,
         });
       }
     });
@@ -103,6 +113,7 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final isAdmin = ref.watch(isAdminProvider);
+    final smsOn = ref.watch(settingsProvider).value?.smsEnabled ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -203,6 +214,22 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
             ),
             const Divider(height: 1),
           ],
+          ToggleRow(
+            title: l.notifyFamily,
+            subtitle: l.notifyFamilySub,
+            value: _notify,
+            onChanged: (v) => setState(() => _notify = v),
+          ),
+          if (isAdmin && smsOn) ...[
+            const Divider(height: 1),
+            ToggleRow(
+              title: l.alsoSms,
+              subtitle: l.alsoSmsSub,
+              value: _notify && _sms,
+              onChanged: _notify ? (v) => setState(() => _sms = v) : null,
+            ),
+          ],
+          const Divider(height: 1),
           ToggleRow(
             title: l.pinToHome,
             subtitle: l.adminsOnly,

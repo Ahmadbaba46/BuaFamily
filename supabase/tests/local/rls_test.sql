@@ -272,7 +272,108 @@ select test.expect_error($$insert into public.posts (body) values ('hi')$$, 'pen
 reset role;
 
 -- ---------------------------------------------------------------------------
--- 8. Anonymous users see nothing.
+-- 8. Notifications and SMS.
+-- ---------------------------------------------------------------------------
+-- Members manage their own SMS preferences; numbers are normalised.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.profiles set phone = '0803 123 4567', sms_opt_in = true where id = auth.uid();
+select test.expect_error($$select public.admin_set_sms_secret('stolen')$$, 'member cannot set the SMS key');
+select test.expect_error($$select public.sms_status()$$, 'member cannot see SMS status');
+select test.expect_error($$insert into public.events (title, starts_at, send_sms) values ('Spam', now() + interval '1 day', true)$$,
+  'member cannot send SMS to the family');
+select test.expect_error($$insert into public.notifications (user_id, kind) values (auth.uid(), 'event')$$, 'cannot forge notifications');
+select test.expect_error($$select private.flush_sms()$$, 'private functions are not callable');
+reset role;
+select test.assert((select phone = '2348031234567' from public.profiles where id = :member_id), 'phone normalised');
+
+-- Admin configures SMS and posts an event with SMS.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.app_settings set sms_enabled = true, sms_sender_id = 'BuaFamily';
+select public.admin_set_sms_secret('key-123', 'https://example.termii.test');
+select public.admin_set_sms_secret('key-456');
+select test.assert((public.sms_status() ->> 'key_saved')::boolean, 'key saved');
+insert into public.events (title, starts_at, place, send_sms) values ('Family meeting', now() + interval '3 days', 'Kano', true);
+insert into public.posts (kind, body, notify) values ('announcement', 'Meeting moved to Sunday', true);
+insert into public.posts (kind, body) values ('announcement', 'Quiet note');
+reset role;
+select test.assert((select count(*) = 2 from public.notifications where kind = 'event' and data ->> 'title' = 'Family meeting'),
+  'both other members notified of the event');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'event' and user_id = :admin_id
+  and data ->> 'title' = 'Family meeting'), 'creator not notified');
+select test.assert((select count(*) = 2 from public.notifications where kind = 'announcement'), 'only announcements with notify are sent');
+select test.assert((select count(*) = 1 from private.sms_outbox), 'one SMS queued: only the opted-in member');
+-- Aisha's account is in Hausa.
+select test.assert((select message like 'Iyalin Bua: Sabon taro - Family meeting, %Kano. Ka amsa a manhaja.' from private.sms_outbox),
+  'SMS in the member''s language');
+
+-- Members see only their own notifications and can mark them read.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = (select count(*) from public.notifications where user_id = auth.uid())
+  and count(*) > 0 from public.notifications), 'member sees only own notifications');
+update public.notifications set read_at = now();
+select test.expect_error($$update public.notifications set kind = 'birthday'$$, 'only read_at can change');
+reset role;
+select test.assert((select bool_and(read_at is not null) from public.notifications where user_id = :member_id), 'marked read');
+
+-- Sending: queued → sending → sent.
+select private.flush_sms();
+select test.assert((select status = 'sending' and attempts = 1 from private.sms_outbox), 'SMS handed to pg_net');
+select test.assert((select url = 'https://example.termii.test/api/sms/send' and body ->> 'api_key' = 'key-456'
+  and body ->> 'to' = '2348031234567' and body ->> 'from' = 'BuaFamily' and body ->> 'channel' = 'generic'
+  from net.sent_requests), 'Termii request is correct');
+insert into net._http_response (id, status_code, content) select request_id, 200, '{"message":"Successfully Sent"}' from private.sms_outbox;
+select private.flush_sms();
+select test.assert((select status = 'sent' and sent_at is not null from private.sms_outbox), 'SMS marked sent');
+
+-- A failed send is retried.
+insert into private.sms_outbox (user_id, phone, message) values (:member_id, '2348031234567', 'retry me');
+select private.flush_sms();
+insert into net._http_response (id, status_code, content) select request_id, 400, 'Insufficient balance' from private.sms_outbox where message = 'retry me';
+select private.flush_sms();
+select test.assert((select status = 'sending' and attempts = 2 and error like '400%' from private.sms_outbox where message = 'retry me'),
+  'failed SMS retried with the error kept');
+
+-- Tags and comments notify the person concerned.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Eid photos');
+insert into public.post_people (post_id, person_id) values ((select id from public.posts where body = 'Eid photos'), (select id from test.ids where name='aisha'));
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.comments (post_id, body) values ((select id from public.posts where body = 'Eid photos'), 'Lovely');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'tagged' and user_id = :member_id), 'tagged person notified');
+select test.assert((select count(*) = 1 from public.notifications where kind = 'comment' and user_id = :admin_id and data ->> 'body' = 'Lovely'),
+  'post author notified of a comment');
+
+-- Daily reminders: birthdays and events tomorrow, never twice.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+update public.persons set birth_date = '1990-06-15', birth_date_approx = false, is_living = true
+  where id = (select id from test.ids where name='ibrahim');
+insert into public.events (title, starts_at, created_by) values ('Walima', timestamptz '2026-06-16 14:00 Africa/Lagos', :admin_id);
+insert into public.event_rsvps (event_id, user_id, response) values ((select id from public.events where title = 'Walima'), :member_id, 'going');
+select private.daily_reminders('2026-06-15');
+select private.daily_reminders('2026-06-15');
+select test.assert((select count(*) = 2 from public.notifications where kind = 'birthday'), 'birthday notice to the two other members, once');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'birthday' and user_id = :member2_id),
+  'no birthday notice to the person themselves');
+select test.assert((select (data ->> 'age')::int = 36 from public.notifications where kind = 'birthday' limit 1), 'age computed');
+select test.assert((select count(*) = 1 from private.sms_outbox where message like 'Iyalin Bua: Yau ce ranar haihuwar Ibrahim Bua.%'), 'one birthday SMS');
+select test.assert((select count(*) = 1 from public.notifications where kind = 'event_reminder' and user_id = :member_id), 'event reminder');
+select test.assert((select count(*) = 1 from private.sms_outbox where message like 'Iyalin Bua: Tunatarwa: Walima gobe ne, 16/06, 14:00%'), 'event reminder SMS');
+
+-- Opting out stops SMS.
+update public.profiles set sms_opt_in = false where id = :member_id;
+select private.daily_reminders('2027-06-15');
+select test.assert((select count(*) = 1 from private.sms_outbox where message like '%haihuwar%'), 'no SMS after opting out');
+select private.cleanup_old();
+
+-- ---------------------------------------------------------------------------
+-- 9. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

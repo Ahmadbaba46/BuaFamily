@@ -15,6 +15,10 @@ class Profile {
     this.claimNote,
     this.locale = 'en',
     this.createdAt,
+    this.phone,
+    this.smsOptIn = false,
+    this.smsBirthdays = true,
+    this.smsEvents = true,
   });
 
   final String id;
@@ -27,6 +31,12 @@ class Profile {
   final String? claimNote;
   final String locale;
   final DateTime? createdAt;
+
+  /// International format without "+", e.g. 2348031234567.
+  final String? phone;
+  final bool smsOptIn;
+  final bool smsBirthdays;
+  final bool smsEvents;
 
   bool get isAdmin => role == AppRole.admin && status == AccountStatus.active;
   bool get isActive => status == AccountStatus.active;
@@ -42,6 +52,10 @@ class Profile {
         claimNote: j['claim_note'] as String?,
         locale: j['locale'] as String? ?? 'en',
         createdAt: j['created_at'] == null ? null : DateTime.tryParse(j['created_at'] as String),
+        phone: j['phone'] as String?,
+        smsOptIn: j['sms_opt_in'] as bool? ?? false,
+        smsBirthdays: j['sms_birthdays'] as bool? ?? true,
+        smsEvents: j['sms_events'] as bool? ?? true,
       );
 }
 
@@ -50,16 +64,27 @@ class AppSettings {
     this.familyName = 'Bua',
     this.memberContributionsEnabled = false,
     this.rootPersonId,
+    this.smsEnabled = false,
+    this.smsSenderId,
+    this.smsChannel = 'generic',
   });
 
   final String familyName;
   final bool memberContributionsEnabled;
   final String? rootPersonId;
+  final bool smsEnabled;
+  final String? smsSenderId;
+
+  /// 'generic' or 'dnd' (Termii routes).
+  final String smsChannel;
 
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
         rootPersonId: j['root_person_id'] as String?,
+        smsEnabled: j['sms_enabled'] as bool? ?? false,
+        smsSenderId: j['sms_sender_id'] as String?,
+        smsChannel: j['sms_channel'] as String? ?? 'generic',
       );
 }
 

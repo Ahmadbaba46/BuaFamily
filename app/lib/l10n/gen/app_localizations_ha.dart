@@ -1384,4 +1384,166 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get photos => 'Hotuna';
+
+  @override
+  String get notifications => 'Saƙonni';
+
+  @override
+  String get markAllRead => 'Karanta duka';
+
+  @override
+  String get noNotifications => 'Babu sabon saƙo.';
+
+  @override
+  String get today => 'Yau';
+
+  @override
+  String get earlier => 'A baya';
+
+  @override
+  String notifEvent(String title) {
+    return 'Sabon taro: $title';
+  }
+
+  @override
+  String notifBirthday(String name, int age) {
+    return 'Ranar haihuwar $name yau ($age)';
+  }
+
+  @override
+  String notifEventReminder(String title) {
+    return 'Gobe: $title';
+  }
+
+  @override
+  String get notifTaggedPost => 'An saka ka a wani rubutu';
+
+  @override
+  String get notifTaggedPhoto => 'An saka ka a hoto';
+
+  @override
+  String notifComment(String body) {
+    return 'Sabon sharhi: “$body”';
+  }
+
+  @override
+  String get notificationsSms => 'Saƙonni da SMS';
+
+  @override
+  String get phoneNumber => 'Lambar waya';
+
+  @override
+  String get phoneHint => 'misali 0803 123 4567';
+
+  @override
+  String get phoneInvalid => 'Saka lambar waya daidai.';
+
+  @override
+  String get smsOptIn => 'Karɓi SMS a wannan waya';
+
+  @override
+  String get smsOptInSub => 'Muhimman labaran iyali ta SMS, ko babu data.';
+
+  @override
+  String get smsBirthdays => 'Tunatarwar ranar haihuwa';
+
+  @override
+  String get smsBirthdaysSub => 'SMS da safe idan ranar haihuwar ɗan uwa ce.';
+
+  @override
+  String get smsEvents => 'Taruka da sanarwa';
+
+  @override
+  String get smsEventsSub =>
+      'Taruka da sanarwar da masu gudanarwa suka aika, da tunatarwa kwana ɗaya kafin taron da za ka je.';
+
+  @override
+  String get inAppNote =>
+      'Kullum za ka ga saƙonni a cikin manhaja, ƙarƙashin ƙararrawa a Gida.';
+
+  @override
+  String get smsOffNote =>
+      'Ba a kunna SMS ga iyali ba tukuna. Mai gudanarwa zai iya kunna shi a Gudanarwa › Saituna.';
+
+  @override
+  String get smsTitle => 'SMS (Termii)';
+
+  @override
+  String get smsEnable => 'Aika SMS ga iyali';
+
+  @override
+  String get smsEnableSub =>
+      'Yana amfani da kuɗin Termii. Kowa yana zaɓar abin da yake so.';
+
+  @override
+  String get senderId => 'Sunan mai aikawa';
+
+  @override
+  String get senderIdHint => 'Wanda aka yi rajista da Termii, haruffa 3–11.';
+
+  @override
+  String get smsRoute => 'Hanya';
+
+  @override
+  String get routeGeneric => 'Generic';
+
+  @override
+  String get routeDnd => 'DND (har da lambobin DND; sai Termii ya kunna)';
+
+  @override
+  String get apiKey => 'Makullin API na Termii';
+
+  @override
+  String get apiKeySaved => 'An adana';
+
+  @override
+  String get apiKeyMissing => 'Ba a saka ba';
+
+  @override
+  String get apiKeyNote =>
+      'Za ka same shi a dashboard na Termii. Ana adana shi a ɓoye kuma ba za a sake nuna shi ba.';
+
+  @override
+  String get baseUrl => 'Adireshin API (ba dole ba)';
+
+  @override
+  String get baseUrlHint =>
+      'Yana cikin dashboard na Termii. Bar shi babu komai don https://api.ng.termii.com';
+
+  @override
+  String get sendTestSms => 'Aiko min da gwajin SMS';
+
+  @override
+  String get testSmsSent => 'An aika gwajin SMS. Zai iso cikin minti ɗaya.';
+
+  @override
+  String smsStats(int subscribers, int sent, int failed) {
+    return '$subscribers sun yi rajista · $sent an aika a wannan mako · $failed sun kasa';
+  }
+
+  @override
+  String smsQueued(int count) {
+    return '$count suna jiran aikawa';
+  }
+
+  @override
+  String lastError(String error) {
+    return 'Kuskure na ƙarshe: $error';
+  }
+
+  @override
+  String get smsSetupSteps =>
+      '1. Samo makullin API da sunan mai aikawa daga Termii. 2. Adana su a nan. 3. Kunna SMS ka aika wa kanka gwaji.';
+
+  @override
+  String get notifyFamily => 'Sanar da dukan iyali';
+
+  @override
+  String get notifyFamilySub => 'A cikin manhaja';
+
+  @override
+  String get alsoSms => 'Kuma aika SMS';
+
+  @override
+  String get alsoSmsSub => 'Masu gudanarwa kaɗai · yana amfani da kuɗin SMS';
 }

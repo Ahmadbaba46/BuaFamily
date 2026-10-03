@@ -10,6 +10,7 @@ import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
+import 'notifications_screen.dart';
 
 /// Family feed: today's birthdays and remembrances, pinned notices, moments.
 class HomeScreen extends ConsumerWidget {
@@ -61,10 +62,15 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 24),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 14, 20, 12),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(l.weekdayDate(today), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
-                      Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
+                    padding: const EdgeInsets.fromLTRB(20, 14, 12, 12),
+                    child: Row(children: [
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(l.weekdayDate(today), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                          Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
+                        ]),
+                      ),
+                      const NotificationBell(),
                     ]),
                   ),
                   if (birthdays.isNotEmpty || remembrances.isNotEmpty) ...[

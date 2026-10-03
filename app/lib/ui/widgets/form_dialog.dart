@@ -11,8 +11,12 @@ sealed class FieldSpec {
 
 class TextSpec extends FieldSpec {
   const TextSpec(super.key, super.label,
-      {this.initial, this.number = false, this.multiline = false, this.required = false});
+      {this.initial, this.number = false, this.multiline = false, this.required = false, this.secret = false, this.hint});
   final Object? initial;
+
+  /// Hidden while typing (API keys).
+  final bool secret;
+  final String? hint;
   final bool number;
   final bool multiline;
   final bool required;
@@ -108,8 +112,10 @@ class _FormDialogState extends State<_FormDialog> {
                         keyboardType: f.number ? TextInputType.number : null,
                         inputFormatters: f.number ? [FilteringTextInputFormatter.digitsOnly] : null,
                         maxLines: f.multiline ? 4 : 1,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(labelText: f.label),
+                        obscureText: f.secret,
+                        autocorrect: !f.secret,
+                        textCapitalization: f.secret ? TextCapitalization.none : TextCapitalization.sentences,
+                        decoration: InputDecoration(labelText: f.label, helperText: f.hint, helperMaxLines: 3),
                         validator: (v) => f.required && (v ?? '').trim().isEmpty ? l.required : null,
                       ),
                     ChoiceSpec() => DropdownButtonFormField<Object?>(

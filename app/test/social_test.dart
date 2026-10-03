@@ -1,10 +1,13 @@
 import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
+import 'package:bua_family/models/notification.dart';
 import 'package:bua_family/models/social.dart';
 import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/screens/event_screen.dart';
 import 'package:bua_family/ui/screens/events_screen.dart';
 import 'package:bua_family/ui/screens/home_screen.dart';
+import 'package:bua_family/ui/screens/notification_settings_screen.dart';
+import 'package:bua_family/ui/screens/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,6 +64,31 @@ void main() {
     FamilyEvent(id: 'e0', title: 'Last reunion', startsAt: DateTime(2025, 12, 1), createdBy: 'u3'),
   ];
 
+  final notifications = [
+    AppNotification(
+      id: 'n1',
+      kind: NotificationKind.birthday,
+      createdAt: now.subtract(const Duration(hours: 4)),
+      data: const {'person_id': 'kabir', 'name': 'Kabir Bua', 'age': 18},
+      link: '/person/kabir',
+    ),
+    AppNotification(
+      id: 'n2',
+      kind: NotificationKind.event,
+      createdAt: now.subtract(const Duration(days: 2)),
+      data: const {'title': 'Naming ceremony'},
+      actorId: 'u2',
+      readAt: now,
+    ),
+    AppNotification(
+      id: 'n3',
+      kind: NotificationKind.comment,
+      createdAt: now.subtract(const Duration(days: 3)),
+      data: const {'body': 'Lovely'},
+      actorId: 'u3',
+    ),
+  ];
+
   Widget app(Widget home, {String locale = 'en'}) {
     const profile = Profile(
       id: 'u1',
@@ -80,6 +108,7 @@ void main() {
         myLikesProvider.overrideWith((ref) async => {'p2'}),
         albumsProvider.overrideWith((ref) async => const <Album>[]),
         commentsProvider.overrideWith((ref, target) async => const <Comment>[]),
+        notificationsProvider.overrideWith((ref) => Stream.value(notifications)),
       ],
       child: MaterialApp(
         locale: Locale(locale),
@@ -201,5 +230,43 @@ void main() {
     expect(p.photos.single.taggedBy['musa'], 'u');
     expect(p.photos.single.likeCount, 3);
     expect(p.people, ['musa']);
+  });
+
+  testWidgets('home bell shows unread notifications', (tester) async {
+    await tester.pumpWidget(app(HomeScreen(now: now)));
+    await tester.pumpAndSettle();
+    expect(find.byWidgetPredicate((w) => w is Semantics && w.properties.label == 'Notifications, 2'), findsOneWidget);
+  });
+
+  testWidgets('notifications list today and earlier, in the reader\'s language', (tester) async {
+    await tester.pumpWidget(app(NotificationsScreen(now: now)));
+    await tester.pumpAndSettle();
+    expect(find.text('Today'), findsOneWidget);
+    expect(find.text('Earlier'), findsOneWidget);
+    expect(find.text("Kabir Bua's birthday today (18)"), findsOneWidget);
+    expect(find.text('New event: Naming ceremony'), findsOneWidget);
+    expect(find.text('New comment: “Lovely”'), findsOneWidget);
+    expect(find.text('Mark all as read'), findsOneWidget);
+
+    await tester.pumpWidget(app(NotificationsScreen(now: now), locale: 'ha'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ranar haihuwar Kabir Bua yau (18)'), findsOneWidget);
+    expect(find.text('Sabon taro: Naming ceremony'), findsOneWidget);
+  });
+
+  testWidgets('notification settings explain that SMS is off', (tester) async {
+    await tester.pumpWidget(app(const NotificationSettingsScreen()));
+    await tester.pumpAndSettle();
+    expect(find.text('Get SMS on this phone'), findsOneWidget);
+    expect(find.textContaining('SMS is not switched on'), findsOneWidget);
+  });
+
+  test('phone numbers are normalised like the database does', () {
+    expect(normalizePhone('0803 123 4567'), '2348031234567');
+    expect(normalizePhone('+234 803 123 4567'), '2348031234567');
+    expect(normalizePhone('803-123-4567'), '2348031234567');
+    expect(normalizePhone('+44 7700 900123'), '447700900123');
+    expect(normalizePhone('12345'), isNull);
+    expect(formatPhone('2348031234567'), '+234 803 123 4567');
   });
 }

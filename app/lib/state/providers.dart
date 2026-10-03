@@ -9,6 +9,7 @@ import '../data/repository.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/notification.dart';
 import '../models/social.dart';
 
 final repositoryProvider = Provider<FamilyRepository>(
@@ -147,3 +148,18 @@ final eventsProvider = FutureProvider<List<FamilyEvent>>((ref) => ref.watch(repo
 final commentsProvider = FutureProvider.family<List<Comment>, Target>(
   (ref, target) => ref.watch(repositoryProvider).comments(target),
 );
+
+// ---------------------------------------------------------------- notifications
+
+/// Newest first, updated live.
+final notificationsProvider = StreamProvider<List<AppNotification>>((ref) {
+  final id = ref.watch(profileProvider.select((p) => p?.isActive ?? false ? p!.id : null));
+  if (id == null) return Stream.value(const []);
+  return ref.watch(repositoryProvider).notifications().map((list) => list.reversed.toList());
+});
+
+final unreadCountProvider = Provider<int>(
+  (ref) => ref.watch(notificationsProvider).value?.where((n) => !n.isRead).length ?? 0,
+);
+
+final smsStatusProvider = FutureProvider<SmsStatus>((ref) => ref.watch(repositoryProvider).smsStatus());

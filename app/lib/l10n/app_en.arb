@@ -801,5 +801,110 @@
   "announcementHint": "Write the announcement…",
   "titleRequired": "Add a title.",
   "family": "Family",
-  "photos": "Photos"
+  "photos": "Photos",
+  "notifications": "Notifications",
+  "markAllRead": "Mark all as read",
+  "noNotifications": "You're all caught up.",
+  "today": "Today",
+  "earlier": "Earlier",
+  "notifEvent": "New event: {title}",
+  "@notifEvent": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifBirthday": "{name}'s birthday today ({age})",
+  "@notifBirthday": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "notifEventReminder": "Tomorrow: {title}",
+  "@notifEventReminder": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifTaggedPost": "You were tagged in a moment",
+  "notifTaggedPhoto": "You were tagged in a photo",
+  "notifComment": "New comment: “{body}”",
+  "@notifComment": {
+    "placeholders": {
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsSms": "Notifications & SMS",
+  "phoneNumber": "Phone number",
+  "phoneHint": "e.g. 0803 123 4567",
+  "phoneInvalid": "Enter a valid phone number.",
+  "smsOptIn": "Get SMS on this phone",
+  "smsOptInSub": "Important family news by text message, even without data.",
+  "smsBirthdays": "Birthday reminders",
+  "smsBirthdaysSub": "A text in the morning when it's a relative's birthday.",
+  "smsEvents": "Events and announcements",
+  "smsEventsSub": "Events and announcements sent by admins, and a reminder the day before events you're going to.",
+  "inAppNote": "You always see notifications in the app, under the bell on Home.",
+  "smsOffNote": "SMS is not switched on for the family yet. An admin can turn it on in Admin › Settings.",
+  "smsTitle": "SMS (Termii)",
+  "smsEnable": "Send SMS to the family",
+  "smsEnableSub": "Uses your Termii balance. Members choose what they receive.",
+  "senderId": "Sender ID",
+  "senderIdHint": "Registered with Termii, 3–11 letters or digits.",
+  "smsRoute": "Route",
+  "routeGeneric": "Generic",
+  "routeDnd": "DND (also reaches DND numbers; Termii must activate it)",
+  "apiKey": "Termii API key",
+  "apiKeySaved": "Saved",
+  "apiKeyMissing": "Not set",
+  "apiKeyNote": "Find it in your Termii dashboard. It is stored encrypted and never shown again.",
+  "baseUrl": "API base URL (optional)",
+  "baseUrlHint": "Shown in your Termii dashboard. Leave empty for https://api.ng.termii.com",
+  "sendTestSms": "Send a test SMS to me",
+  "testSmsSent": "Test SMS sent. It should arrive within a minute.",
+  "smsStats": "{subscribers} subscribed · {sent} sent this week · {failed} failed",
+  "@smsStats": {
+    "placeholders": {
+      "subscribers": {
+        "type": "int"
+      },
+      "sent": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "smsQueued": "{count} waiting to send",
+  "@smsQueued": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastError": "Last error: {error}",
+  "@lastError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "smsSetupSteps": "1. Get an API key and a sender ID from Termii. 2. Save them here. 3. Switch SMS on and send yourself a test.",
+  "notifyFamily": "Notify the whole family",
+  "notifyFamilySub": "In the app",
+  "alsoSms": "Also send SMS",
+  "alsoSmsSub": "Admins only · uses SMS credit"
 }

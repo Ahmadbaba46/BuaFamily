@@ -138,6 +138,13 @@ class MoreScreen extends ConsumerWidget {
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
             child: Column(children: [
               NavRow(
+                icon: Icons.notifications_none,
+                title: l.notificationsSms,
+                value: profile?.smsOptIn ?? false ? 'SMS ✓' : null,
+                onTap: () => context.push('/settings/notifications'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.fact_check_outlined,
                 title: l.myRequests,
                 value: myPending > 0 ? l.pendingCount(myPending) : null,

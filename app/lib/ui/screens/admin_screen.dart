@@ -12,7 +12,10 @@ import '../widgets/form_dialog.dart';
 import '../widgets/request_card.dart';
 
 class AdminScreen extends ConsumerWidget {
-  const AdminScreen({super.key});
+  const AdminScreen({super.key, this.initialTab = 0});
+
+  /// 0 requests, 1 accounts, 2 settings.
+  final int initialTab;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,6 +48,7 @@ class AdminScreen extends ConsumerWidget {
 
     return DefaultTabController(
       length: 3,
+      initialIndex: initialTab.clamp(0, 2),
       child: Scaffold(
         appBar: AppBar(
           leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/more')),
@@ -407,6 +411,8 @@ class _SettingsTab extends ConsumerWidget {
             ]),
           ),
           const SizedBox(height: 12),
+          _SmsCard(settings: s, save: save),
+          const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
@@ -457,6 +463,125 @@ class _SettingRow extends StatelessWidget {
           trailing ?? const Icon(Icons.chevron_right, color: Bua.inkSubtle),
         ]),
       ),
+    );
+  }
+}
+
+/// Termii setup: key, sender ID, route, on/off, status and a test message.
+class _SmsCard extends ConsumerWidget {
+  const _SmsCard({required this.settings, required this.save});
+
+  final AppSettings settings;
+  final Future<void> Function(Map<String, dynamic>) save;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final status = ref.watch(smsStatusProvider).value;
+    final keySaved = status?.keySaved ?? false;
+    final ready = keySaved && settings.smsSenderId != null;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: Row(children: [
+            const IconTile(Icons.sms_outlined, background: Bua.greenTint),
+            const SizedBox(width: 14),
+            Expanded(
+              child: ToggleRow(
+                title: l.smsEnable,
+                subtitle: l.smsEnableSub,
+                value: settings.smsEnabled,
+                onChanged: ready || settings.smsEnabled ? (v) => save({'sms_enabled': v}) : null,
+              ),
+            ),
+          ]),
+        ),
+        if (!ready)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: InfoBanner(icon: Icons.info_outline, text: l.smsSetupSteps),
+          ),
+        if (status != null && (status.subscribers > 0 || status.sent7d > 0 || status.failed7d > 0))
+          Padding(
+            padding: const EdgeInsets.fromLTRB(70, 0, 16, 4),
+            child: Text(
+              [
+                l.smsStats(status.subscribers, status.sent7d, status.failed7d),
+                if (status.queued > 0) l.smsQueued(status.queued),
+              ].join(' · '),
+              style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+            ),
+          ),
+        if (status?.lastError != null && (status!.failed7d > 0 || status.queued > 0))
+          Padding(
+            padding: const EdgeInsets.fromLTRB(70, 0, 16, 8),
+            child: Text(l.lastError(status.lastError!),
+                maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Bua.danger)),
+          ),
+        const InsetDivider(indent: 70),
+        _SettingRow(
+          icon: Icons.key_outlined,
+          title: l.apiKey,
+          value: keySaved ? l.apiKeySaved : l.apiKeyMissing,
+          onTap: () async {
+            final v = await showFormDialog(context, title: l.apiKey, note: l.apiKeyNote, fields: [
+              TextSpec('key', l.apiKey, required: true, secret: true),
+              TextSpec('url', l.baseUrl, initial: status?.baseUrl, hint: l.baseUrlHint),
+            ]);
+            if (v == null || !context.mounted) return;
+            final ok = await guarded(
+              context,
+              () => ref.read(repositoryProvider).setSmsSecret(apiKey: v['key'] as String?, baseUrl: v['url'] as String?),
+            );
+            if (ok) ref.invalidate(smsStatusProvider);
+          },
+        ),
+        const InsetDivider(indent: 70),
+        _SettingRow(
+          icon: Icons.badge_outlined,
+          title: l.senderId,
+          value: settings.smsSenderId ?? l.apiKeyMissing,
+          onTap: () async {
+            final v = await showFormDialog(context, title: l.senderId, note: l.senderIdHint, fields: [
+              TextSpec('id', l.senderId, initial: settings.smsSenderId, required: true),
+            ]);
+            if (v != null) await save({'sms_sender_id': v['id']});
+          },
+        ),
+        const InsetDivider(indent: 70),
+        _SettingRow(
+          icon: Icons.alt_route,
+          title: l.smsRoute,
+          value: settings.smsChannel == 'dnd' ? l.routeDnd : l.routeGeneric,
+          onTap: () async {
+            final v = await showFormDialog(context, title: l.smsRoute, fields: [
+              ChoiceSpec<String>('route', l.smsRoute,
+                  options: {'generic': l.routeGeneric, 'dnd': l.routeDnd}, initial: settings.smsChannel),
+            ]);
+            if (v != null && v['route'] != null) await save({'sms_channel': v['route']});
+          },
+        ),
+        if (ready && settings.smsEnabled) ...[
+          const InsetDivider(indent: 70),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+            child: OutlinedButton.icon(
+              onPressed: () async {
+                final ok = await guarded(context, () => ref.read(repositoryProvider).sendTestSms());
+                if (!context.mounted) return;
+                ref.invalidate(smsStatusProvider);
+                if (ok) showSnack(context, l.testSmsSent);
+              },
+              icon: const Icon(Icons.send_to_mobile_outlined),
+              label: Text(l.sendTestSms),
+            ),
+          ),
+        ],
+      ]),
     );
   }
 }
