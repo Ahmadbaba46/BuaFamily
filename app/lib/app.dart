@@ -15,6 +15,7 @@ import 'ui/screens/fund_cause_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/memorial_screen.dart';
+import 'ui/screens/mentorship_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/more_screen.dart';
 import 'ui/screens/my_requests_screen.dart';
@@ -26,6 +27,7 @@ import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
 import 'ui/screens/photo_screen.dart';
+import 'ui/screens/polls_screen.dart';
 import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
@@ -105,6 +107,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),
       GoRoute(path: '/blood', builder: (_, _) => const BloodDonorsScreen()),
       GoRoute(path: '/blood/request', builder: (_, _) => const NewBloodRequestScreen()),
+      GoRoute(path: '/mentors', builder: (_, s) => MentorshipScreen(initialTab: s.uri.queryParameters['tab'])),
+      GoRoute(path: '/polls', builder: (_, _) => const PollsScreen()),
+      GoRoute(path: '/polls/new', builder: (_, _) => const NewPollScreen()),
       GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),
       GoRoute(path: '/albums/of/:person', builder: (_, s) => AlbumScreen(personId: s.pathParameters['person'])),
       GoRoute(path: '/albums/:id', builder: (_, s) => AlbumScreen(albumId: s.pathParameters['id'])),

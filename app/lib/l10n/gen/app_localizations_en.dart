@@ -2265,4 +2265,198 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifFundRequest(String title) {
     return 'Support requested: $title';
   }
+
+  @override
+  String get mentorsTitle => 'Mentors & scholarships';
+
+  @override
+  String get tabMentors => 'Mentors';
+
+  @override
+  String get tabStudents => 'Students';
+
+  @override
+  String get tabOpportunities => 'Opportunities';
+
+  @override
+  String get newOpportunity => 'New opportunity';
+
+  @override
+  String sharedBy(String name) {
+    return 'Shared by $name';
+  }
+
+  @override
+  String deadlineOn(String date) {
+    return 'deadline $date';
+  }
+
+  @override
+  String get offeringGuidance => 'Relatives offering guidance';
+
+  @override
+  String get lookingForHelp => 'Students looking for help';
+
+  @override
+  String get ask => 'Ask';
+
+  @override
+  String askMentorTitle(String name) {
+    return 'Ask $name';
+  }
+
+  @override
+  String get askMentorHint => 'What would you like help with?';
+
+  @override
+  String askSent(String name) {
+    return 'Sent. $name will see your note.';
+  }
+
+  @override
+  String get asksToYou => 'Asks to you';
+
+  @override
+  String get offerToMentor => 'Offer to mentor';
+
+  @override
+  String get editMentoring => 'Edit my mentoring';
+
+  @override
+  String get stopMentoring => 'Stop mentoring';
+
+  @override
+  String get mentorAreas => 'Areas you can help with';
+
+  @override
+  String get mentorAreasHint => 'e.g. Medicine · residency applications';
+
+  @override
+  String get imLookingForHelp => 'I\'m looking for help';
+
+  @override
+  String get editMyRequest => 'Edit my request';
+
+  @override
+  String get removeMyRequest => 'Remove my request';
+
+  @override
+  String get studyField => 'What are you studying?';
+
+  @override
+  String get whatHelp => 'What help are you looking for?';
+
+  @override
+  String get shareOpportunity => 'Share an opportunity';
+
+  @override
+  String get opportunityTitle => 'Title';
+
+  @override
+  String get link => 'Link (optional)';
+
+  @override
+  String get deadlineOptional => 'Deadline (optional)';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get noMentorsYet => 'No one has offered to mentor yet.';
+
+  @override
+  String get noStudentsYet => 'No students are looking for help right now.';
+
+  @override
+  String get noOpportunitiesYet => 'No opportunities shared yet.';
+
+  @override
+  String get pollsTitle => 'Polls';
+
+  @override
+  String get newPoll => 'New poll';
+
+  @override
+  String closesDate(String date) {
+    return 'closes $date';
+  }
+
+  @override
+  String get youVoted => 'you voted';
+
+  @override
+  String get notVotedYet => 'not voted yet';
+
+  @override
+  String get vote => 'Vote';
+
+  @override
+  String get changeVote => 'Change my vote';
+
+  @override
+  String votedOf(int count, int eligible) {
+    return '$count of $eligible members voted';
+  }
+
+  @override
+  String get decided => 'Decided';
+
+  @override
+  String decidedLine(int percent, String date) {
+    return '$percent% chose this · decided $date';
+  }
+
+  @override
+  String get closePoll => 'Close poll';
+
+  @override
+  String get deletePoll => 'Delete poll';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String get pollContext => 'What is it for? (optional)';
+
+  @override
+  String get pollContextHint => 'e.g. For the family meeting';
+
+  @override
+  String get choices => 'Choices';
+
+  @override
+  String choiceN(int n) {
+    return 'Choice $n';
+  }
+
+  @override
+  String get addChoice => 'Add a choice';
+
+  @override
+  String get closesOnPoll => 'Voting closes';
+
+  @override
+  String get needTwoChoices => 'Add a question and at least two choices.';
+
+  @override
+  String get noPollsYet => 'No polls yet. Ask the family a question.';
+
+  @override
+  String get secretBallot =>
+      'Votes are secret. You see the results after you vote or when the poll closes.';
+
+  @override
+  String notifMentorRequest(String body) {
+    return 'Someone asked for your guidance: “$body”';
+  }
+
+  @override
+  String notifOpportunity(String title) {
+    return 'New opportunity: $title';
+  }
+
+  @override
+  String notifPoll(String question) {
+    return 'New poll: $question';
+  }
 }

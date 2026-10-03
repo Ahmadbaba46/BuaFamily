@@ -2199,4 +2199,198 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifFundRequest(String title) {
     return 'An nemi taimako: $title';
   }
+
+  @override
+  String get mentorsTitle => 'Masu jagora da tallafin karatu';
+
+  @override
+  String get tabMentors => 'Masu jagora';
+
+  @override
+  String get tabStudents => 'Ɗalibai';
+
+  @override
+  String get tabOpportunities => 'Damarmaki';
+
+  @override
+  String get newOpportunity => 'Sabuwar dama';
+
+  @override
+  String sharedBy(String name) {
+    return '$name ne ya raba';
+  }
+
+  @override
+  String deadlineOn(String date) {
+    return 'wa\'adi $date';
+  }
+
+  @override
+  String get offeringGuidance => 'Dangin da ke ba da jagora';
+
+  @override
+  String get lookingForHelp => 'Ɗaliban da ke neman taimako';
+
+  @override
+  String get ask => 'Tambaya';
+
+  @override
+  String askMentorTitle(String name) {
+    return 'Tambayi $name';
+  }
+
+  @override
+  String get askMentorHint => 'Me kake son taimako a kai?';
+
+  @override
+  String askSent(String name) {
+    return 'An aika. $name zai ga saƙonka.';
+  }
+
+  @override
+  String get asksToYou => 'Tambayoyi gare ka';
+
+  @override
+  String get offerToMentor => 'Ba da jagora';
+
+  @override
+  String get editMentoring => 'Gyara jagorana';
+
+  @override
+  String get stopMentoring => 'Daina ba da jagora';
+
+  @override
+  String get mentorAreas => 'Fannonin da za ka iya taimakawa';
+
+  @override
+  String get mentorAreasHint => 'misali Likitanci · neman aiki a asibiti';
+
+  @override
+  String get imLookingForHelp => 'Ina neman taimako';
+
+  @override
+  String get editMyRequest => 'Gyara buƙatata';
+
+  @override
+  String get removeMyRequest => 'Cire buƙatata';
+
+  @override
+  String get studyField => 'Me kake karanta?';
+
+  @override
+  String get whatHelp => 'Wane taimako kake nema?';
+
+  @override
+  String get shareOpportunity => 'Raba wata dama';
+
+  @override
+  String get opportunityTitle => 'Suna';
+
+  @override
+  String get link => 'Hanyar yanar gizo (ba dole ba)';
+
+  @override
+  String get deadlineOptional => 'Wa\'adi (ba dole ba)';
+
+  @override
+  String get open => 'Buɗe';
+
+  @override
+  String get noMentorsYet => 'Babu wanda ya ba da jagora tukuna.';
+
+  @override
+  String get noStudentsYet => 'Babu ɗalibin da ke neman taimako yanzu.';
+
+  @override
+  String get noOpportunitiesYet => 'Ba a raba wata dama ba tukuna.';
+
+  @override
+  String get pollsTitle => 'Ƙuri\'u';
+
+  @override
+  String get newPoll => 'Sabuwar ƙuri\'a';
+
+  @override
+  String closesDate(String date) {
+    return 'za a rufe $date';
+  }
+
+  @override
+  String get youVoted => 'ka jefa ƙuri\'a';
+
+  @override
+  String get notVotedYet => 'ba ka jefa ba tukuna';
+
+  @override
+  String get vote => 'Jefa ƙuri\'a';
+
+  @override
+  String get changeVote => 'Canza ƙuri\'ata';
+
+  @override
+  String votedOf(int count, int eligible) {
+    return '$count cikin $eligible sun jefa ƙuri\'a';
+  }
+
+  @override
+  String get decided => 'An yanke';
+
+  @override
+  String decidedLine(int percent, String date) {
+    return 'Kashi $percent sun zaɓa · an yanke $date';
+  }
+
+  @override
+  String get closePoll => 'Rufe ƙuri\'a';
+
+  @override
+  String get deletePoll => 'Goge ƙuri\'a';
+
+  @override
+  String get question => 'Tambaya';
+
+  @override
+  String get pollContext => 'Don me ne? (ba dole ba)';
+
+  @override
+  String get pollContextHint => 'misali Don taron iyali';
+
+  @override
+  String get choices => 'Zaɓuɓɓuka';
+
+  @override
+  String choiceN(int n) {
+    return 'Zaɓi na $n';
+  }
+
+  @override
+  String get addChoice => 'Ƙara zaɓi';
+
+  @override
+  String get closesOnPoll => 'Ranar rufe ƙuri\'a';
+
+  @override
+  String get needTwoChoices => 'Saka tambaya da zaɓuɓɓuka biyu aƙalla.';
+
+  @override
+  String get noPollsYet => 'Babu ƙuri\'a tukuna. Yi wa iyali tambaya.';
+
+  @override
+  String get secretBallot =>
+      'Ƙuri\'u a ɓoye suke. Za ka ga sakamako bayan ka jefa ko idan an rufe.';
+
+  @override
+  String notifMentorRequest(String body) {
+    return 'Wani ya nemi jagorarka: “$body”';
+  }
+
+  @override
+  String notifOpportunity(String title) {
+    return 'Sabuwar dama: $title';
+  }
+
+  @override
+  String notifPoll(String question) {
+    return 'Sabuwar ƙuri\'a: $question';
+  }
 }

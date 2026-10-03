@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/account.dart';
+import '../models/community.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
@@ -577,4 +578,105 @@ class FamilyRepository {
 
   Future<void> setTreasurer(String userId, bool on) =>
       _db.rpc('admin_set_treasurer', params: {'p_user_id': userId, 'p_on': on});
+
+  // ---------------------------------------------------------------- mentorship
+
+  Future<Mentorship> mentorship() async {
+    final r = await Future.wait([
+      _db.from('mentors').select().order('created_at'),
+      _db.from('mentee_requests').select().order('created_at', ascending: false),
+      _db.from('mentor_asks').select().order('created_at', ascending: false).limit(100),
+      _db.from('opportunities').select().order('created_at', ascending: false).limit(100),
+    ]);
+    return Mentorship(
+      mentors: r[0].map(Mentor.fromJson).toList(),
+      students: r[1].map(MenteeRequest.fromJson).toList(),
+      asks: r[2].map(MentorAsk.fromJson).toList(),
+      opportunities: r[3].map(Opportunity.fromJson).toList(),
+    );
+  }
+
+  Future<void> setMentor({required String areas, String? note}) =>
+      _db.from('mentors').upsert({'user_id': userId, 'areas': areas.trim(), 'note': note});
+
+  Future<void> stopMentoring() => _db.from('mentors').delete().eq('user_id', userId!);
+
+  Future<void> setMenteeRequest({required String field, required String message}) =>
+      _db.from('mentee_requests').upsert({'user_id': userId, 'field': field.trim(), 'message': message.trim()});
+
+  Future<void> removeMenteeRequest() => _db.from('mentee_requests').delete().eq('user_id', userId!);
+
+  Future<void> askMentor(String mentorUserId, String message) =>
+      _db.from('mentor_asks').insert({'mentor_user_id': mentorUserId, 'message': message.trim()});
+
+  Future<void> deleteAsk(String id) => _db.from('mentor_asks').delete().eq('id', id);
+
+  Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
+      _db.from('opportunities').insert({
+        'title': title.trim(),
+        'details': details,
+        'url': url,
+        'deadline': deadline == null
+            ? null
+            : '${deadline.year}-${deadline.month.toString().padLeft(2, '0')}-${deadline.day.toString().padLeft(2, '0')}',
+      });
+
+  Future<void> deleteOpportunity(String id) => _db.from('opportunities').delete().eq('id', id);
+
+  // ---------------------------------------------------------------- polls
+
+  Future<List<Poll>> polls() async {
+    final r = await Future.wait<dynamic>([
+      _db.from('polls').select('*, poll_options(id, label, sort_order)').order('created_at', ascending: false).limit(100),
+      _db.from('poll_votes').select('poll_id, option_id'),
+      _db.rpc('poll_results'),
+    ]);
+    final mine = {for (final v in (r[1] as List)) (v as Map)['poll_id'] as String: v['option_id'] as String};
+    final counts = <String, int>{};
+    final totals = <String, (int, int)>{};
+    for (final row in (r[2] as List)) {
+      final m = row as Map;
+      counts[m['option_id'] as String] = m['votes'] as int;
+      totals[m['poll_id'] as String] = (m['total'] as int, m['eligible'] as int);
+    }
+    return [
+      for (final p in (r[0] as List).cast<Map<String, dynamic>>())
+        Poll(
+          id: p['id'] as String,
+          question: p['question'] as String,
+          createdBy: p['created_by'] as String,
+          createdAt: DateTime.parse(p['created_at'] as String).toLocal(),
+          context: p['context'] as String?,
+          closesAt: p['closes_at'] == null ? null : DateTime.parse(p['closes_at'] as String).toLocal(),
+          closed: p['closed'] as bool? ?? false,
+          options: [
+            for (final o in ((p['poll_options'] as List).cast<Map<String, dynamic>>()
+              ..sort((a, b) => (a['sort_order'] as int).compareTo(b['sort_order'] as int))))
+              PollOption(id: o['id'] as String, label: o['label'] as String, votes: counts[o['id']] ?? 0),
+          ],
+          myOptionId: mine[p['id']],
+          resultsVisible: totals.containsKey(p['id']),
+          total: totals[p['id']]?.$1 ?? 0,
+          eligible: totals[p['id']]?.$2 ?? 0,
+        ),
+    ];
+  }
+
+  Future<void> createPoll({required String question, String? context, DateTime? closesAt, required List<String> options}) async {
+    final row = await _db
+        .from('polls')
+        .insert({'question': question.trim(), 'context': context, 'closes_at': closesAt?.toUtc().toIso8601String()})
+        .select('id')
+        .single();
+    await _db.from('poll_options').insert([
+      for (final (i, o) in options.indexed) {'poll_id': row['id'], 'label': o.trim(), 'sort_order': i},
+    ]);
+  }
+
+  Future<void> vote(String pollId, String optionId) =>
+      _db.from('poll_votes').upsert({'poll_id': pollId, 'user_id': userId, 'option_id': optionId});
+
+  Future<void> closePoll(String id) => _db.from('polls').update({'closed': true}).eq('id', id);
+
+  Future<void> deletePoll(String id) => _db.from('polls').delete().eq('id', id);
 }
