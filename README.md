@@ -278,35 +278,36 @@ hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
 
 Notifications go from the database to the `push` Edge Function
 ([`supabase/functions/push`](supabase/functions/push)), which sends them through
-Firebase Cloud Messaging (free). Members who don't turn them on still see
-everything under the bell.
+Firebase Cloud Messaging (free) using the family's Firebase project
+**buafamily**. Members who don't turn them on still see everything under the bell.
 
-1. Create a project at [console.firebase.google.com](https://console.firebase.google.com)
-   (the free plan is enough).
-2. In **Project settings → General**, add the apps you build and copy their
-   settings into `app/config.json` (see `config.example.json`):
-   - **Android**, package name `com.buafamily.bua_family` → `FIREBASE_ANDROID_APP_ID`;
-   - **iOS**, bundle ID `com.buafamily.buaFamily` → `FIREBASE_IOS_APP_ID`;
-   - **Web** → `FIREBASE_WEB_APP_ID`;
-   - and, shared by all, `FIREBASE_API_KEY`, `FIREBASE_PROJECT_ID` and
-     `FIREBASE_SENDER_ID` (the "messaging sender ID").
-3. For browsers: **Project settings → Cloud Messaging → Web Push certificates →
-   Generate key pair**, and copy the key into `FIREBASE_VAPID_KEY`. For the
-   website on Vercel, add the five web values (`FIREBASE_API_KEY`,
-   `FIREBASE_PROJECT_ID`, `FIREBASE_SENDER_ID`, `FIREBASE_WEB_APP_ID`,
-   `FIREBASE_VAPID_KEY`) as environment variables and redeploy.
-4. For iPhones: upload an APNs key under **Cloud Messaging → Apple app
-   configuration**, and in Xcode turn on the **Push Notifications** capability
-   for the Runner target.
-5. Deploy the function (already done for the family's project):
-   `supabase functions deploy push --no-verify-jwt`. It checks a shared secret
-   that only the database knows instead.
-6. In **Project settings → Service accounts**, choose **Generate new private
-   key**. In the app, open **More → Admin → Settings → Phone notifications**,
-   tap **Firebase key** and choose that file. It is stored encrypted in
-   Supabase Vault.
-7. Turn notifications on for your own phone (**More → Notifications & SMS**)
+Already done: the Firebase project with Android, iOS and web apps
+(`com.fuyoudhat.buafamily`), the web settings built into the app
+(`app/lib/services/push.dart`), the database side and the deployed function.
+
+Still to do:
+
+1. **Firebase key for the sender:** in the
+   [Firebase console](https://console.firebase.google.com/project/buafamily/settings/serviceaccounts/adminsdk)
+   (Project settings → Service accounts), choose **Generate new private key**.
+   In the app, open **More → Admin → Settings → Phone notifications**, tap
+   **Firebase key** and choose that file. It is stored encrypted in Supabase
+   Vault; delete the downloaded file afterwards.
+2. **Android and iPhone builds:** in
+   [Project settings → General](https://console.firebase.google.com/project/buafamily/settings/general),
+   download the Android app's `google-services.json` and copy its
+   `current_key` into `app/config.json` as `FIREBASE_ANDROID_API_KEY`; download
+   the iOS app's `GoogleService-Info.plist` and copy its `API_KEY` into
+   `FIREBASE_IOS_API_KEY`. (Don't commit those files.) The website needs nothing.
+3. **iPhones only:** upload an APNs key from your Apple Developer account under
+   **Project settings → Cloud Messaging → Apple app configuration**, and turn
+   on the **Push Notifications** capability for the Runner target in Xcode.
+4. Turn notifications on for your own phone (**More → Notifications & SMS**)
    and tap **Send me a test notification**.
+
+For a different Firebase project, change the IDs at the top of
+`app/lib/services/push.dart` and redeploy the function with
+`supabase functions deploy push --no-verify-jwt`.
 
 ### 4. Run the app
 
@@ -330,6 +331,18 @@ flutter build apk --dart-define-from-file=config.json   # Android
 flutter build web --dart-define-from-file=config.json   # website (upload build/web to any static host)
 flutter build ipa --dart-define-from-file=config.json   # iOS (needs a Mac)
 ```
+
+**iPhone:** Apple only builds iPhone apps on a Mac with Xcode, and installing
+on other people's phones needs an [Apple Developer Program](https://developer.apple.com/programs/)
+membership ($99 a year), which is also what allows iPhone notifications.
+On a Mac: open `app/ios/Runner.xcworkspace` in Xcode, choose your team under
+**Signing & Capabilities** (bundle ID `com.fuyoudhat.buafamily`), add
+**Push Notifications**, then run `flutter build ipa` and upload the result with
+Apple's Transporter app to TestFlight; family members install it from the
+TestFlight app. Without a Mac, a hosted build service such as
+[Codemagic](https://codemagic.io) can build and upload it from this repository.
+Until then, iPhone users can use the website: added to the Home Screen
+(Share → Add to Home Screen, iOS 16.4 or later) it can also receive notifications.
 
 ### 5. Moving to a new Supabase project (from a backup)
 

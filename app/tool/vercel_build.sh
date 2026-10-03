@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Builds the Flutter web app on Vercel, which has no Flutter preinstalled.
 # Expects SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY as project environment variables.
-# Optional, for notifications in the browser: FIREBASE_API_KEY, FIREBASE_PROJECT_ID,
-# FIREBASE_SENDER_ID, FIREBASE_WEB_APP_ID and FIREBASE_VAPID_KEY.
+# Browser notifications need nothing extra (the web Firebase settings are built in);
+# FIREBASE_VAPID_KEY is optional.
 set -euo pipefail
 
 FLUTTER_VERSION="${FLUTTER_VERSION:-3.47.6}"
@@ -24,7 +24,7 @@ flutter --version
 : "${SUPABASE_PUBLISHABLE_KEY:?Set SUPABASE_PUBLISHABLE_KEY in the Vercel project settings}"
 
 defines=(--dart-define=SUPABASE_URL="$SUPABASE_URL" --dart-define=SUPABASE_PUBLISHABLE_KEY="$SUPABASE_PUBLISHABLE_KEY")
-for name in FIREBASE_API_KEY FIREBASE_PROJECT_ID FIREBASE_SENDER_ID FIREBASE_WEB_APP_ID FIREBASE_VAPID_KEY; do
+for name in FIREBASE_VAPID_KEY; do
   if [ -n "${!name:-}" ]; then defines+=(--dart-define="$name=${!name}"); fi
 done
 

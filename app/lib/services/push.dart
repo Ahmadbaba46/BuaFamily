@@ -8,14 +8,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../state/providers.dart';
 
-// Firebase settings, supplied at build time like the Supabase ones (see
-// config.example.json). Without them the app works, just without push.
-const _apiKey = String.fromEnvironment('FIREBASE_API_KEY');
-const _projectId = String.fromEnvironment('FIREBASE_PROJECT_ID');
-const _senderId = String.fromEnvironment('FIREBASE_SENDER_ID');
-const _androidAppId = String.fromEnvironment('FIREBASE_ANDROID_APP_ID');
-const _iosAppId = String.fromEnvironment('FIREBASE_IOS_APP_ID');
-const _webAppId = String.fromEnvironment('FIREBASE_WEB_APP_ID');
+// The family's Firebase project ("buafamily"). These are public app
+// identifiers, not secrets. The Android and iOS API keys are supplied at build
+// time (config.json); without them push is simply off on that platform.
+const _projectId = 'buafamily';
+const _senderId = '974364501102';
+const _webApiKey = String.fromEnvironment('FIREBASE_WEB_API_KEY', defaultValue: 'AIzaSyAmZ5PxnlZA17w9Gd-TxcnCQqa0PS7cma8');
+const _androidApiKey = String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
+const _iosApiKey = String.fromEnvironment('FIREBASE_IOS_API_KEY');
+
+/// Optional: the project's own Web Push key. Without it Firebase uses its default one.
 const _vapidKey = String.fromEnvironment('FIREBASE_VAPID_KEY');
 
 /// 'android', 'ios' or 'web' when push can work here; null otherwise.
@@ -29,15 +31,22 @@ String? get pushPlatformName {
 }
 
 FirebaseOptions? get firebaseOptions {
-  final appId = switch (pushPlatformName) {
-    'web' => _webAppId,
-    'android' => _androidAppId,
-    'ios' => _iosAppId,
-    _ => '',
+  final (apiKey, appId) = switch (pushPlatformName) {
+    'web' => (_webApiKey, '1:974364501102:web:01aa414fffd213efbbb27f'),
+    'android' => (_androidApiKey, '1:974364501102:android:73facee05ff31edcbbb27f'),
+    'ios' => (_iosApiKey, '1:974364501102:ios:6be78a1aeef1d60bbbb27f'),
+    _ => ('', ''),
   };
-  if (_apiKey.isEmpty || _projectId.isEmpty || _senderId.isEmpty || appId.isEmpty) return null;
-  if (kIsWeb && _vapidKey.isEmpty) return null;
-  return FirebaseOptions(apiKey: _apiKey, appId: appId, messagingSenderId: _senderId, projectId: _projectId);
+  if (apiKey.isEmpty) return null;
+  return FirebaseOptions(
+    apiKey: apiKey,
+    appId: appId,
+    messagingSenderId: _senderId,
+    projectId: _projectId,
+    authDomain: kIsWeb ? 'buafamily.firebaseapp.com' : null,
+    storageBucket: 'buafamily.firebasestorage.app',
+    iosBundleId: pushPlatformName == 'ios' ? 'com.fuyoudhat.buafamily' : null,
+  );
 }
 
 /// Starts Firebase. Never throws, and gives up after a while, so a network
@@ -127,7 +136,7 @@ class FirebasePushPlatform implements PushPlatform {
   @override
   Future<PushPermission> requestPermission() async => _map((await _fcm.requestPermission()).authorizationStatus);
   @override
-  Future<String?> token() => _fcm.getToken(vapidKey: kIsWeb ? _vapidKey : null);
+  Future<String?> token() => _fcm.getToken(vapidKey: kIsWeb && _vapidKey.isNotEmpty ? _vapidKey : null);
   @override
   Future<void> deleteToken() => _fcm.deleteToken();
   @override
