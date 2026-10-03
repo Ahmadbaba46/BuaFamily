@@ -1,0 +1,2606 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_en.dart';
+import 'app_localizations_ha.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'gen/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('ha'),
+  ];
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bua Family'**
+  String get appTitle;
+
+  /// No description provided for @navTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Tree'**
+  String get navTree;
+
+  /// No description provided for @navMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get navMembers;
+
+  /// No description provided for @navAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get navAdmin;
+
+  /// No description provided for @navMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get navMore;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signIn;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get signUp;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @displayName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get displayName;
+
+  /// No description provided for @haveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get haveAccount;
+
+  /// No description provided for @noAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'New here? Create an account'**
+  String get noAccount;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @resetPasswordSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent.'**
+  String get resetPasswordSent;
+
+  /// No description provided for @checkEmailToConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email to confirm your account, then sign in.'**
+  String get checkEmailToConfirm;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get invalidEmail;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @welcomeTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Our tree, our moments, our family.'**
+  String get welcomeTagline;
+
+  /// No description provided for @pendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for approval'**
+  String get pendingTitle;
+
+  /// No description provided for @pendingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A family admin needs to approve your account. Tell them who you are so they can link you to your place in the tree.'**
+  String get pendingBody;
+
+  /// No description provided for @claimNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Who are you in the family?'**
+  String get claimNoteLabel;
+
+  /// No description provided for @claimNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Aisha, daughter of Musa Bua of Kano'**
+  String get claimNoteHint;
+
+  /// No description provided for @suspendedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account suspended'**
+  String get suspendedTitle;
+
+  /// No description provided for @suspendedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been suspended. Please contact a family admin.'**
+  String get suspendedBody;
+
+  /// No description provided for @checkAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get checkAgain;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong: {error}'**
+  String errorGeneric(String error);
+
+  /// No description provided for @notConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'The app is not connected to a server yet. Build it with SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.'**
+  String get notConfigured;
+
+  /// No description provided for @treeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No one is in the family tree yet.'**
+  String get treeEmpty;
+
+  /// No description provided for @addFirstPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the first person'**
+  String get addFirstPerson;
+
+  /// No description provided for @chooseRoot.
+  ///
+  /// In en, this message translates to:
+  /// **'Start tree from…'**
+  String get chooseRoot;
+
+  /// No description provided for @fitToScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Fit to screen'**
+  String get fitToScreen;
+
+  /// No description provided for @expandAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand all'**
+  String get expandAll;
+
+  /// No description provided for @collapseDeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse lower generations'**
+  String get collapseDeep;
+
+  /// No description provided for @hiddenCount.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String hiddenCount(int count);
+
+  /// No description provided for @shownElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown elsewhere in the tree'**
+  String get shownElsewhere;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, place or branch'**
+  String get searchHint;
+
+  /// No description provided for @peopleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} people}}'**
+  String peopleCount(int count);
+
+  /// No description provided for @noResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No one found'**
+  String get noResults;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterLiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Living'**
+  String get filterLiving;
+
+  /// No description provided for @filterDeceased.
+  ///
+  /// In en, this message translates to:
+  /// **'Deceased'**
+  String get filterDeceased;
+
+  /// No description provided for @lateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, female{Late} other{Late}}'**
+  String lateLabel(String sex);
+
+  /// No description provided for @born.
+  ///
+  /// In en, this message translates to:
+  /// **'Born'**
+  String get born;
+
+  /// No description provided for @died.
+  ///
+  /// In en, this message translates to:
+  /// **'Died'**
+  String get died;
+
+  /// No description provided for @buried.
+  ///
+  /// In en, this message translates to:
+  /// **'Buried at'**
+  String get buried;
+
+  /// No description provided for @branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get branch;
+
+  /// No description provided for @thisIsYou.
+  ///
+  /// In en, this message translates to:
+  /// **'This is you'**
+  String get thisIsYou;
+
+  /// No description provided for @relationshipToYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship to you'**
+  String get relationshipToYou;
+
+  /// No description provided for @sectionFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get sectionFamily;
+
+  /// No description provided for @parents.
+  ///
+  /// In en, this message translates to:
+  /// **'Parents'**
+  String get parents;
+
+  /// No description provided for @spouses.
+  ///
+  /// In en, this message translates to:
+  /// **'Spouses'**
+  String get spouses;
+
+  /// No description provided for @children.
+  ///
+  /// In en, this message translates to:
+  /// **'Children'**
+  String get children;
+
+  /// No description provided for @siblings.
+  ///
+  /// In en, this message translates to:
+  /// **'Siblings'**
+  String get siblings;
+
+  /// No description provided for @sectionAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get sectionAbout;
+
+  /// No description provided for @education.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get education;
+
+  /// No description provided for @work.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get work;
+
+  /// No description provided for @skills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get skills;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @health.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get health;
+
+  /// No description provided for @nothingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing added yet'**
+  String get nothingYet;
+
+  /// No description provided for @addRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Add relative'**
+  String get addRelative;
+
+  /// No description provided for @linkExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Link someone already in the tree'**
+  String get linkExisting;
+
+  /// No description provided for @editPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit details'**
+  String get editPerson;
+
+  /// No description provided for @suggestEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest an edit'**
+  String get suggestEdit;
+
+  /// No description provided for @deletePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from tree'**
+  String get deletePerson;
+
+  /// No description provided for @confirmDeletePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} and all their links from the tree? This cannot be undone.'**
+  String confirmDeletePerson(String name);
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get changePhoto;
+
+  /// No description provided for @viewInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'View in tree'**
+  String get viewInTree;
+
+  /// No description provided for @thisIsMe.
+  ///
+  /// In en, this message translates to:
+  /// **'This is me'**
+  String get thisIsMe;
+
+  /// No description provided for @thisIsMeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. An admin will confirm and link your account.'**
+  String get thisIsMeSent;
+
+  /// No description provided for @addFather.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get addFather;
+
+  /// No description provided for @addMother.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get addMother;
+
+  /// No description provided for @addSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Spouse'**
+  String get addSpouse;
+
+  /// No description provided for @addSon.
+  ///
+  /// In en, this message translates to:
+  /// **'Son'**
+  String get addSon;
+
+  /// No description provided for @addDaughter.
+  ///
+  /// In en, this message translates to:
+  /// **'Daughter'**
+  String get addDaughter;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (e.g. Alhaji, Hajiya, Dr)'**
+  String get title;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get firstName;
+
+  /// No description provided for @middleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle name'**
+  String get middleName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Surname / family name'**
+  String get lastName;
+
+  /// No description provided for @nickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname (lakabi)'**
+  String get nickname;
+
+  /// No description provided for @sex.
+  ///
+  /// In en, this message translates to:
+  /// **'Sex'**
+  String get sex;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @birthDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get birthDate;
+
+  /// No description provided for @dateApprox.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate (year only)'**
+  String get dateApprox;
+
+  /// No description provided for @birthPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place of birth'**
+  String get birthPlace;
+
+  /// No description provided for @isLiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Living'**
+  String get isLiving;
+
+  /// No description provided for @deathDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of death'**
+  String get deathDate;
+
+  /// No description provided for @deathPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place of death'**
+  String get deathPlace;
+
+  /// No description provided for @burialPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place of burial'**
+  String get burialPlace;
+
+  /// No description provided for @biography.
+  ///
+  /// In en, this message translates to:
+  /// **'Life story / biography'**
+  String get biography;
+
+  /// No description provided for @otherParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Other parent'**
+  String get otherParent;
+
+  /// No description provided for @otherParentUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not recorded'**
+  String get otherParentUnknown;
+
+  /// No description provided for @relationKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get relationKind;
+
+  /// No description provided for @kindBiological.
+  ///
+  /// In en, this message translates to:
+  /// **'Biological'**
+  String get kindBiological;
+
+  /// No description provided for @kindAdopted.
+  ///
+  /// In en, this message translates to:
+  /// **'Adopted'**
+  String get kindAdopted;
+
+  /// No description provided for @kindFoster.
+  ///
+  /// In en, this message translates to:
+  /// **'Foster'**
+  String get kindFoster;
+
+  /// No description provided for @kindStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get kindStep;
+
+  /// No description provided for @unionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Marriage status'**
+  String get unionStatus;
+
+  /// No description provided for @statusMarried.
+  ///
+  /// In en, this message translates to:
+  /// **'Married'**
+  String get statusMarried;
+
+  /// No description provided for @statusDivorced.
+  ///
+  /// In en, this message translates to:
+  /// **'Divorced'**
+  String get statusDivorced;
+
+  /// No description provided for @statusWidowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Widowed'**
+  String get statusWidowed;
+
+  /// No description provided for @statusSeparated.
+  ///
+  /// In en, this message translates to:
+  /// **'Separated'**
+  String get statusSeparated;
+
+  /// No description provided for @pickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get pickDate;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @newPersonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {relation}'**
+  String newPersonTitle(String relation);
+
+  /// No description provided for @newPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add person'**
+  String get newPerson;
+
+  /// No description provided for @ofPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'of {name}'**
+  String ofPerson(String name);
+
+  /// No description provided for @selectPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a person'**
+  String get selectPerson;
+
+  /// No description provided for @relationIs.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is the…'**
+  String relationIs(String name);
+
+  /// No description provided for @relationParentOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent of this person'**
+  String get relationParentOf;
+
+  /// No description provided for @relationChildOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Child of this person'**
+  String get relationChildOf;
+
+  /// No description provided for @relationSpouseOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Spouse of this person'**
+  String get relationSpouseOf;
+
+  /// No description provided for @sentForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to the admins for approval'**
+  String get sentForApproval;
+
+  /// No description provided for @coreChangesSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, date and life-status changes were sent to the admins for approval.'**
+  String get coreChangesSent;
+
+  /// No description provided for @contributionsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding relatives is currently turned off by the admins.'**
+  String get contributionsOff;
+
+  /// No description provided for @requestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get requestsTitle;
+
+  /// No description provided for @pendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending requests'**
+  String get pendingRequests;
+
+  /// No description provided for @myRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get myRequests;
+
+  /// No description provided for @noRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests'**
+  String get noRequests;
+
+  /// No description provided for @approve.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get approve;
+
+  /// No description provided for @reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get reject;
+
+  /// No description provided for @rejectReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get rejectReason;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get statusApproved;
+
+  /// No description provided for @statusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get statusRejected;
+
+  /// No description provided for @requestedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested by {name}'**
+  String requestedBy(String name);
+
+  /// No description provided for @reqCreatePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name}'**
+  String reqCreatePerson(String name);
+
+  /// No description provided for @reqRelation.
+  ///
+  /// In en, this message translates to:
+  /// **'as {relation} of {other}'**
+  String reqRelation(String relation, String other);
+
+  /// No description provided for @reqUpdatePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Update details of {name}'**
+  String reqUpdatePerson(String name);
+
+  /// No description provided for @reqAddParentChild.
+  ///
+  /// In en, this message translates to:
+  /// **'{parent} is a parent of {child}'**
+  String reqAddParentChild(String parent, String child);
+
+  /// No description provided for @reqAddUnion.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b} are married'**
+  String reqAddUnion(String a, String b);
+
+  /// No description provided for @withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get withdraw;
+
+  /// No description provided for @accountsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accountsTitle;
+
+  /// No description provided for @pendingAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for approval'**
+  String get pendingAccounts;
+
+  /// No description provided for @activeAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeAccounts;
+
+  /// No description provided for @suspendedAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get suspendedAccounts;
+
+  /// No description provided for @activate.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve'**
+  String get activate;
+
+  /// No description provided for @suspend.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend'**
+  String get suspend;
+
+  /// No description provided for @makeAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Make admin'**
+  String get makeAdmin;
+
+  /// No description provided for @makeMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove admin'**
+  String get makeMember;
+
+  /// No description provided for @linkToPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Link to person'**
+  String get linkToPerson;
+
+  /// No description provided for @linkedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked to {name}'**
+  String linkedTo(String name);
+
+  /// No description provided for @notLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not linked to anyone in the tree'**
+  String get notLinked;
+
+  /// No description provided for @wantsToBe.
+  ///
+  /// In en, this message translates to:
+  /// **'Says they are: {name}'**
+  String wantsToBe(String name);
+
+  /// No description provided for @roleAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get roleAdmin;
+
+  /// No description provided for @roleMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get roleMember;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @familyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Family name'**
+  String get familyName;
+
+  /// No description provided for @memberContributions.
+  ///
+  /// In en, this message translates to:
+  /// **'Members can add relatives'**
+  String get memberContributions;
+
+  /// No description provided for @memberContributionsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'When on, members can propose new people and relationships. Admins approve each one before it appears in the tree.'**
+  String get memberContributionsHelp;
+
+  /// No description provided for @treeRoot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tree starts from'**
+  String get treeRoot;
+
+  /// No description provided for @treeRootAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic (eldest ancestor)'**
+  String get treeRootAuto;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @hausa.
+  ///
+  /// In en, this message translates to:
+  /// **'Hausa'**
+  String get hausa;
+
+  /// No description provided for @myProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get myProfile;
+
+  /// No description provided for @institution.
+  ///
+  /// In en, this message translates to:
+  /// **'School / institution'**
+  String get institution;
+
+  /// No description provided for @qualification.
+  ///
+  /// In en, this message translates to:
+  /// **'Qualification'**
+  String get qualification;
+
+  /// No description provided for @field.
+  ///
+  /// In en, this message translates to:
+  /// **'Field of study'**
+  String get field;
+
+  /// No description provided for @startYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Start year'**
+  String get startYear;
+
+  /// No description provided for @endYear.
+  ///
+  /// In en, this message translates to:
+  /// **'End year'**
+  String get endYear;
+
+  /// No description provided for @jobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation / job title'**
+  String get jobTitle;
+
+  /// No description provided for @organization.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation / business'**
+  String get organization;
+
+  /// No description provided for @industry.
+  ///
+  /// In en, this message translates to:
+  /// **'Industry'**
+  String get industry;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @currentJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get currentJob;
+
+  /// No description provided for @skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Skill'**
+  String get skill;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City / town'**
+  String get city;
+
+  /// No description provided for @country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get country;
+
+  /// No description provided for @visibleTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can see this'**
+  String get visibleTo;
+
+  /// No description provided for @visibleFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole family'**
+  String get visibleFamily;
+
+  /// No description provided for @visiblePrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only this person and admins'**
+  String get visiblePrivate;
+
+  /// No description provided for @bloodGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood group'**
+  String get bloodGroup;
+
+  /// No description provided for @genotype.
+  ///
+  /// In en, this message translates to:
+  /// **'Genotype'**
+  String get genotype;
+
+  /// No description provided for @conditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Known hereditary or chronic conditions'**
+  String get conditions;
+
+  /// No description provided for @healthPrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Health details are private unless you choose to share them with the family.'**
+  String get healthPrivacyNote;
+
+  /// No description provided for @relSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get relSelf;
+
+  /// No description provided for @relSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Husband} female{Wife} other{Spouse}}'**
+  String relSpouse(String sex);
+
+  /// No description provided for @relParent.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Father} female{Mother} other{Parent}}'**
+  String relParent(String sex);
+
+  /// No description provided for @relChild.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Son} female{Daughter} other{Child}}'**
+  String relChild(String sex);
+
+  /// No description provided for @relSibling.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Brother} female{Sister} other{Sibling}}'**
+  String relSibling(String sex);
+
+  /// No description provided for @relHalfSibling.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Half-brother} female{Half-sister} other{Half-sibling}} ({via, select, male{same father} female{same mother} other{one shared parent}})'**
+  String relHalfSibling(String sex, String via);
+
+  /// No description provided for @relGrandparent.
+  ///
+  /// In en, this message translates to:
+  /// **'{greats, plural, =0{Grand} =1{Great-grand} =2{Great-great-grand} other{{greats}× great-grand}}{sex, select, male{father} female{mother} other{parent}}'**
+  String relGrandparent(int greats, String sex);
+
+  /// No description provided for @relGrandchild.
+  ///
+  /// In en, this message translates to:
+  /// **'{greats, plural, =0{Grand} =1{Great-grand} =2{Great-great-grand} other{{greats}× great-grand}}{sex, select, male{son} female{daughter} other{child}}'**
+  String relGrandchild(int greats, String sex);
+
+  /// No description provided for @relUncleAunt.
+  ///
+  /// In en, this message translates to:
+  /// **'{greats, plural, =0{} =1{Great-} other{{greats}× great-}}{sex, select, male{uncle} female{aunt} other{uncle/aunt}}'**
+  String relUncleAunt(int greats, String sex, String side);
+
+  /// No description provided for @relNephewNiece.
+  ///
+  /// In en, this message translates to:
+  /// **'{greats, plural, =0{} =1{Grand-} other{{greats}× great-grand-}}{sex, select, male{nephew} female{niece} other{nephew/niece}}'**
+  String relNephewNiece(int greats, String sex);
+
+  /// No description provided for @relCousin.
+  ///
+  /// In en, this message translates to:
+  /// **'{degree, plural, =1{First} =2{Second} other{Distant}} cousin{removed, plural, =0{} =1{ once removed} =2{ twice removed} other{ {removed} times removed}}'**
+  String relCousin(int degree, int removed, String sex);
+
+  /// No description provided for @relStepParent.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Stepfather} female{Stepmother} other{Step-parent}}'**
+  String relStepParent(String sex);
+
+  /// No description provided for @relStepChild.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Stepson} female{Stepdaughter} other{Stepchild}}'**
+  String relStepChild(String sex);
+
+  /// No description provided for @relCoSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, female{Co-wife} other{Co-spouse}}'**
+  String relCoSpouse(String sex);
+
+  /// No description provided for @relParentInLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Father-in-law} female{Mother-in-law} other{Parent-in-law}}'**
+  String relParentInLaw(String sex);
+
+  /// No description provided for @relChildInLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Son-in-law} female{Daughter-in-law} other{Child-in-law}}'**
+  String relChildInLaw(String sex);
+
+  /// No description provided for @relSiblingInLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{Brother-in-law} female{Sister-in-law} other{Sibling-in-law}}'**
+  String relSiblingInLaw(String sex);
+
+  /// No description provided for @relByMarriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Related by marriage'**
+  String get relByMarriage;
+
+  /// No description provided for @relNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No recorded relation'**
+  String get relNone;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
+  /// No description provided for @createYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get createYourAccount;
+
+  /// No description provided for @privateSpaceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A private space for the Bua family. New accounts are approved by a family admin.'**
+  String get privateSpaceNote;
+
+  /// No description provided for @pendingGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Salamu alaikum, {name}. A family admin will approve your account and link you to your place in the tree.'**
+  String pendingGreeting(String name);
+
+  /// No description provided for @claimHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Mention your parents or grandparents so the admin can find you quickly.'**
+  String get claimHelp;
+
+  /// No description provided for @stepCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get stepCreated;
+
+  /// No description provided for @stepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'An admin reviews and links you'**
+  String get stepReview;
+
+  /// No description provided for @stepExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the family tree'**
+  String get stepExplore;
+
+  /// No description provided for @startingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get startingFrom;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @findRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a relative'**
+  String get findRelative;
+
+  /// No description provided for @zoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get zoomIn;
+
+  /// No description provided for @zoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get zoomOut;
+
+  /// No description provided for @centreOnMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Centre on me'**
+  String get centreOnMe;
+
+  /// No description provided for @yourRelation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {relation}'**
+  String yourRelation(String relation);
+
+  /// No description provided for @sideFather.
+  ///
+  /// In en, this message translates to:
+  /// **'father’s side'**
+  String get sideFather;
+
+  /// No description provided for @sideMother.
+  ///
+  /// In en, this message translates to:
+  /// **'mother’s side'**
+  String get sideMother;
+
+  /// No description provided for @educationWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Education & work'**
+  String get educationWork;
+
+  /// No description provided for @addEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add education'**
+  String get addEducation;
+
+  /// No description provided for @addWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Add work'**
+  String get addWork;
+
+  /// No description provided for @addSkill.
+  ///
+  /// In en, this message translates to:
+  /// **'Add skill'**
+  String get addSkill;
+
+  /// No description provided for @sharedWithFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with family'**
+  String get sharedWithFamily;
+
+  /// No description provided for @privateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get privateLabel;
+
+  /// No description provided for @addingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding to'**
+  String get addingTo;
+
+  /// No description provided for @newPersonIs.
+  ///
+  /// In en, this message translates to:
+  /// **'New person is {name}’s…'**
+  String newPersonIs(String name);
+
+  /// No description provided for @approvalBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'An admin will review this before it appears in the tree. You’ll see it under More › My requests.'**
+  String get approvalBanner;
+
+  /// No description provided for @sendForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Send for approval'**
+  String get sendForApproval;
+
+  /// No description provided for @approveAndLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve & link'**
+  String get approveAndLink;
+
+  /// No description provided for @linkSomeoneElse.
+  ///
+  /// In en, this message translates to:
+  /// **'Link someone else'**
+  String get linkSomeoneElse;
+
+  /// No description provided for @adminAlwaysOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Members can always edit their own photo, work and skills'**
+  String get adminAlwaysOwn;
+
+  /// No description provided for @adminAlwaysDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins always add and edit directly'**
+  String get adminAlwaysDirect;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy.'**
+  String get privacyTitle;
+
+  /// No description provided for @privacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only approved family members can open the app. Health details stay private unless the person shares them; admins can always see them.'**
+  String get privacyNote;
+
+  /// No description provided for @adminRequestsAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin: requests & accounts'**
+  String get adminRequestsAccounts;
+
+  /// No description provided for @viewMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View my profile'**
+  String get viewMyProfile;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @pendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pending'**
+  String pendingCount(int count);
+
+  /// No description provided for @myRequestsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes you suggest appear in the tree once a family admin approves them.'**
+  String get myRequestsHelp;
+
+  /// No description provided for @seeInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'See in the tree'**
+  String get seeInTree;
+
+  /// No description provided for @married.
+  ///
+  /// In en, this message translates to:
+  /// **'Married'**
+  String get married;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get navEvents;
+
+  /// No description provided for @greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Salamu alaikum, {name}'**
+  String greeting(String name);
+
+  /// No description provided for @birthdayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday today'**
+  String get birthdayToday;
+
+  /// No description provided for @turnsAge.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} turns {age}'**
+  String turnsAge(String name, int age);
+
+  /// No description provided for @sendGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a greeting'**
+  String get sendGreeting;
+
+  /// No description provided for @remembrance.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembrance'**
+  String get remembrance;
+
+  /// No description provided for @yearsSincePassed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 year since {name} passed} other{{count} years since {name} passed}}'**
+  String yearsSincePassed(int count, String name);
+
+  /// No description provided for @addPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a prayer'**
+  String get addPrayer;
+
+  /// No description provided for @announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement'**
+  String get announcement;
+
+  /// No description provided for @pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get pinned;
+
+  /// No description provided for @fromAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'From {name} · {time}'**
+  String fromAuthor(String name, String time);
+
+  /// No description provided for @shareMomentPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a moment with the family…'**
+  String get shareMomentPrompt;
+
+  /// No description provided for @maShaAllah.
+  ///
+  /// In en, this message translates to:
+  /// **'Ma sha Allah'**
+  String get maShaAllah;
+
+  /// No description provided for @commentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Comment} =1{1 comment} other{{count} comments}}'**
+  String commentsCount(int count);
+
+  /// No description provided for @addedPhotosTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {count, plural, =1{a photo} other{{count} photos}} to'**
+  String addedPhotosTo(int count);
+
+  /// No description provided for @feedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No moments yet. Be the first to share one.'**
+  String get feedEmpty;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}m'**
+  String timeMinutes(int n);
+
+  /// No description provided for @timeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}h'**
+  String timeHours(int n);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} days ago'**
+  String timeDaysAgo(int n);
+
+  /// No description provided for @postOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Post options'**
+  String get postOptions;
+
+  /// No description provided for @deletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete post'**
+  String get deletePost;
+
+  /// No description provided for @confirmDeletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this post for everyone?'**
+  String get confirmDeletePost;
+
+  /// No description provided for @pinToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin to Home'**
+  String get pinToHome;
+
+  /// No description provided for @unpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get unpin;
+
+  /// No description provided for @adminsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins only'**
+  String get adminsOnly;
+
+  /// No description provided for @shareAMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a moment'**
+  String get shareAMoment;
+
+  /// No description provided for @post.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get post;
+
+  /// No description provided for @onlyFamilyCanSee.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the {family} family can see this'**
+  String onlyFamilyCanSee(String family);
+
+  /// No description provided for @whatsHappening.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s happening?'**
+  String get whatsHappening;
+
+  /// No description provided for @addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get addPhotos;
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get removePhoto;
+
+  /// No description provided for @whosInIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Who\'s in it?'**
+  String get whosInIt;
+
+  /// No description provided for @tagFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag family'**
+  String get tagFamily;
+
+  /// No description provided for @untag.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove tag'**
+  String get untag;
+
+  /// No description provided for @alsoAddToAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Also add to album'**
+  String get alsoAddToAlbum;
+
+  /// No description provided for @dontAddToAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t add to an album'**
+  String get dontAddToAlbum;
+
+  /// No description provided for @dataSaverNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos are resized before upload to save data.'**
+  String get dataSaverNote;
+
+  /// No description provided for @postEmptyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Write something or add a photo.'**
+  String get postEmptyError;
+
+  /// No description provided for @albums.
+  ///
+  /// In en, this message translates to:
+  /// **'Albums'**
+  String get albums;
+
+  /// No description provided for @newAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'New album'**
+  String get newAlbum;
+
+  /// No description provided for @albumName.
+  ///
+  /// In en, this message translates to:
+  /// **'Album name'**
+  String get albumName;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @photosOfYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos of you'**
+  String get photosOfYou;
+
+  /// No description provided for @photosTaggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Photos you\'re tagged in appear here} =1{1 photo you\'re tagged in} other{{count} photos you\'re tagged in}}'**
+  String photosTaggedIn(int count);
+
+  /// No description provided for @photoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No photos yet} =1{1 photo} other{{count} photos}}'**
+  String photoCount(int count);
+
+  /// No description provided for @albumsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No albums yet. Start one for a wedding, Sallah or old family photos.'**
+  String get albumsEmpty;
+
+  /// No description provided for @everyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get everyone;
+
+  /// No description provided for @addedByRelatives.
+  ///
+  /// In en, this message translates to:
+  /// **'added by {count, plural, =1{1 relative} other{{count} relatives}}'**
+  String addedByRelatives(int count);
+
+  /// No description provided for @noPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos here yet.'**
+  String get noPhotos;
+
+  /// No description provided for @photoXofY.
+  ///
+  /// In en, this message translates to:
+  /// **'{x} of {y}'**
+  String photoXofY(int x, int y);
+
+  /// No description provided for @inThisPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'In this photo'**
+  String get inThisPhoto;
+
+  /// No description provided for @tagSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag someone'**
+  String get tagSomeone;
+
+  /// No description provided for @addedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by {name}'**
+  String addedBy(String name);
+
+  /// No description provided for @memoriesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Share a memory} =1{1 memory} other{{count} memories}}'**
+  String memoriesCount(int count);
+
+  /// No description provided for @editDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit details'**
+  String get editDetails;
+
+  /// No description provided for @caption.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption'**
+  String get caption;
+
+  /// No description provided for @yearTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Year taken'**
+  String get yearTaken;
+
+  /// No description provided for @deletePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete photo'**
+  String get deletePhoto;
+
+  /// No description provided for @confirmDeletePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this photo?'**
+  String get confirmDeletePhoto;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @writeComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment…'**
+  String get writeComment;
+
+  /// No description provided for @noCommentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet.'**
+  String get noCommentsYet;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @newLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newLabel;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @announcements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get announcements;
+
+  /// No description provided for @past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get past;
+
+  /// No description provided for @latestAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest announcements'**
+  String get latestAnnouncements;
+
+  /// No description provided for @noUpcomingEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming events.'**
+  String get noUpcomingEvents;
+
+  /// No description provided for @noPastEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No past events.'**
+  String get noPastEvents;
+
+  /// No description provided for @noAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'No announcements yet.'**
+  String get noAnnouncements;
+
+  /// No description provided for @youreGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re going'**
+  String get youreGoing;
+
+  /// No description provided for @youSaidMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'You said maybe'**
+  String get youSaidMaybe;
+
+  /// No description provided for @youCantGo.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t go'**
+  String get youCantGo;
+
+  /// No description provided for @replyNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply needed'**
+  String get replyNeeded;
+
+  /// No description provided for @goingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} going'**
+  String goingCount(int count);
+
+  /// No description provided for @maybeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} maybe'**
+  String maybeCount(int count);
+
+  /// No description provided for @eventCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'{category, select, naming{Naming ceremony} wedding{Wedding} meeting{Family meeting} condolence{Condolence} graduation{Graduation} other{Event}}'**
+  String eventCategory(String category);
+
+  /// No description provided for @hostedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by {name}'**
+  String hostedBy(String name);
+
+  /// No description provided for @addToCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to calendar'**
+  String get addToCalendar;
+
+  /// No description provided for @directions.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get directions;
+
+  /// No description provided for @areYouComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you coming?'**
+  String get areYouComing;
+
+  /// No description provided for @rsvpGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Going'**
+  String get rsvpGoing;
+
+  /// No description provided for @rsvpMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe'**
+  String get rsvpMaybe;
+
+  /// No description provided for @rsvpNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t go'**
+  String get rsvpNo;
+
+  /// No description provided for @bringingOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Bringing others with you'**
+  String get bringingOthers;
+
+  /// No description provided for @oneFewer.
+  ///
+  /// In en, this message translates to:
+  /// **'One fewer'**
+  String get oneFewer;
+
+  /// No description provided for @oneMore.
+  ///
+  /// In en, this message translates to:
+  /// **'One more'**
+  String get oneMore;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @wishes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wishes'**
+  String get wishes;
+
+  /// No description provided for @writeWish.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a wish…'**
+  String get writeWish;
+
+  /// No description provided for @deleteEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete event'**
+  String get deleteEvent;
+
+  /// No description provided for @confirmDeleteEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this event for everyone?'**
+  String get confirmDeleteEvent;
+
+  /// No description provided for @newPost.
+  ///
+  /// In en, this message translates to:
+  /// **'New post'**
+  String get newPost;
+
+  /// No description provided for @event.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get event;
+
+  /// No description provided for @eventType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get eventType;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @place.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get place;
+
+  /// No description provided for @addressOrArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Address or area'**
+  String get addressOrArea;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @askReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask people to reply'**
+  String get askReply;
+
+  /// No description provided for @askReplySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Going · Maybe · Can\'t go'**
+  String get askReplySub;
+
+  /// No description provided for @postEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Post event'**
+  String get postEvent;
+
+  /// No description provided for @postAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Post announcement'**
+  String get postAnnouncement;
+
+  /// No description provided for @announcementHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the announcement…'**
+  String get announcementHint;
+
+  /// No description provided for @titleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a title.'**
+  String get titleRequired;
+
+  /// No description provided for @family.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get family;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @markAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllRead;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get noNotifications;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @earlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get earlier;
+
+  /// No description provided for @notifEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'New event: {title}'**
+  String notifEvent(String title);
+
+  /// No description provided for @notifBirthday.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s birthday today ({age})'**
+  String notifBirthday(String name, int age);
+
+  /// No description provided for @notifEventReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {title}'**
+  String notifEventReminder(String title);
+
+  /// No description provided for @notifTaggedPost.
+  ///
+  /// In en, this message translates to:
+  /// **'You were tagged in a moment'**
+  String get notifTaggedPost;
+
+  /// No description provided for @notifTaggedPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'You were tagged in a photo'**
+  String get notifTaggedPhoto;
+
+  /// No description provided for @notifComment.
+  ///
+  /// In en, this message translates to:
+  /// **'New comment: “{body}”'**
+  String notifComment(String body);
+
+  /// No description provided for @notificationsSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & SMS'**
+  String get notificationsSms;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumber;
+
+  /// No description provided for @phoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 0803 123 4567'**
+  String get phoneHint;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number.'**
+  String get phoneInvalid;
+
+  /// No description provided for @smsOptIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Get SMS on this phone'**
+  String get smsOptIn;
+
+  /// No description provided for @smsOptInSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Important family news by text message, even without data.'**
+  String get smsOptInSub;
+
+  /// No description provided for @smsBirthdays.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday reminders'**
+  String get smsBirthdays;
+
+  /// No description provided for @smsBirthdaysSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A text in the morning when it\'s a relative\'s birthday.'**
+  String get smsBirthdaysSub;
+
+  /// No description provided for @smsEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events and announcements'**
+  String get smsEvents;
+
+  /// No description provided for @smsEventsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Events and announcements sent by admins, and a reminder the day before events you\'re going to.'**
+  String get smsEventsSub;
+
+  /// No description provided for @inAppNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You always see notifications in the app, under the bell on Home.'**
+  String get inAppNote;
+
+  /// No description provided for @smsOffNote.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS is not switched on for the family yet. An admin can turn it on in Admin › Settings.'**
+  String get smsOffNote;
+
+  /// No description provided for @smsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS (Termii)'**
+  String get smsTitle;
+
+  /// No description provided for @smsEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Send SMS to the family'**
+  String get smsEnable;
+
+  /// No description provided for @smsEnableSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses your Termii balance. Members choose what they receive.'**
+  String get smsEnableSub;
+
+  /// No description provided for @senderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Sender ID'**
+  String get senderId;
+
+  /// No description provided for @senderIdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered with Termii, 3–11 letters or digits.'**
+  String get senderIdHint;
+
+  /// No description provided for @smsRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get smsRoute;
+
+  /// No description provided for @routeGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Generic'**
+  String get routeGeneric;
+
+  /// No description provided for @routeDnd.
+  ///
+  /// In en, this message translates to:
+  /// **'DND (also reaches DND numbers; Termii must activate it)'**
+  String get routeDnd;
+
+  /// No description provided for @apiKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Termii API key'**
+  String get apiKey;
+
+  /// No description provided for @apiKeySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get apiKeySaved;
+
+  /// No description provided for @apiKeyMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get apiKeyMissing;
+
+  /// No description provided for @apiKeyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Find it in your Termii dashboard. It is stored encrypted and never shown again.'**
+  String get apiKeyNote;
+
+  /// No description provided for @baseUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'API base URL (optional)'**
+  String get baseUrl;
+
+  /// No description provided for @baseUrlHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown in your Termii dashboard. Leave empty for https://api.ng.termii.com'**
+  String get baseUrlHint;
+
+  /// No description provided for @sendTestSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a test SMS to me'**
+  String get sendTestSms;
+
+  /// No description provided for @testSmsSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Test SMS sent. It should arrive within a minute.'**
+  String get testSmsSent;
+
+  /// No description provided for @smsStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{subscribers} subscribed · {sent} sent this week · {failed} failed'**
+  String smsStats(int subscribers, int sent, int failed);
+
+  /// No description provided for @smsQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} waiting to send'**
+  String smsQueued(int count);
+
+  /// No description provided for @lastError.
+  ///
+  /// In en, this message translates to:
+  /// **'Last error: {error}'**
+  String lastError(String error);
+
+  /// No description provided for @smsSetupSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Get an API key and a sender ID from Termii. 2. Save them here. 3. Switch SMS on and send yourself a test.'**
+  String get smsSetupSteps;
+
+  /// No description provided for @notifyFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify the whole family'**
+  String get notifyFamily;
+
+  /// No description provided for @notifyFamilySub.
+  ///
+  /// In en, this message translates to:
+  /// **'In the app'**
+  String get notifyFamilySub;
+
+  /// No description provided for @alsoSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Also send SMS'**
+  String get alsoSms;
+
+  /// No description provided for @alsoSmsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins only · uses SMS credit'**
+  String get alsoSmsSub;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['en', 'ha'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+    case 'ha':
+      return AppLocalizationsHa();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}
