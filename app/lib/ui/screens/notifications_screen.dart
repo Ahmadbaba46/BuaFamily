@@ -19,7 +19,11 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.birthday => l.notifBirthday(n.str('name') ?? '', (n.data['age'] as num?)?.toInt() ?? 0),
       NotificationKind.eventReminder => l.notifEventReminder(n.str('title') ?? ''),
       NotificationKind.tagged => n.data.containsKey('photo_id') ? l.notifTaggedPhoto : l.notifTaggedPost,
-      NotificationKind.comment => l.notifComment(n.str('body') ?? ''),
+      NotificationKind.comment => n.str('name') == null
+          ? l.notifComment(n.str('body') ?? '')
+          : n.data['also'] == true
+              ? l.notifCommentAlso(n.str('name')!, n.str('body') ?? '')
+              : l.notifCommentBy(n.str('name')!, n.str('body') ?? ''),
       NotificationKind.bloodRequest =>
         l.notifBloodRequest(n.str('blood_group') ?? '', n.str('patient') ?? '', n.str('hospital') ?? ''),
       NotificationKind.bloodOffer => l.notifBloodOffer(n.str('blood_group') ?? ''),
@@ -34,9 +38,11 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
       NotificationKind.test => l.notifTest,
-      NotificationKind.accountRequest => n.str('note') != null
-          ? l.notifAccountNote(n.str('name') ?? '', n.str('note')!)
-          : l.notifAccountRequest(n.str('name') ?? ''),
+      NotificationKind.accountRequest => n.str('person') != null
+          ? l.notifAccountClaim(n.str('name') ?? '', n.str('person')!)
+          : n.str('note') != null
+              ? l.notifAccountNote(n.str('name') ?? '', n.str('note')!)
+              : l.notifAccountRequest(n.str('name') ?? ''),
       NotificationKind.changeRequest => n.str('request_kind') == 'create_person'
           ? l.notifChangeAdd(n.str('name') ?? '', n.str('person') ?? l.notifSomeone)
           : l.notifChangeEdit(n.str('name') ?? '', n.str('person') ?? l.notifTheTree),

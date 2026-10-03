@@ -758,5 +758,13 @@
   "notifRequestDeclined": "Ba a karɓi shawararka game da {person} ba",
   "notifSomeone": "wani",
   "notifTheTree": "bishiyar iyali",
-  "pendingPushHint": "Sami sanarwa da zarar admin ya amince da kai."
+  "pendingPushHint": "Sami sanarwa da zarar admin ya amince da kai.",
+  "notifCommentBy": "Sharhi daga {name}: “{body}”",
+  "notifCommentAlso": "Sabon sharhi daga {name} a inda ka yi sharhi: “{body}”",
+  "notifAccountClaim": "{name}: “Ni ne {person}” a bishiyar iyali",
+  "postGone": "An cire wannan rubutu.",
+  "findMeInTree": "Nemo kanka a bishiyar iyali",
+  "findMeHint": "Haɗa asusunka da wurinka a bishiyar iyali don samun bayananka, hotonka da cikakkun bayanai.",
+  "linkWaiting": "Ana jiran admin ya haɗa ka da {name}",
+  "linkedNow": "An haɗa. Wannan ne bayananka yanzu."
 }

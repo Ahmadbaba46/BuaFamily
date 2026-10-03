@@ -42,6 +42,10 @@ Deno.test("texts follow the reader's language", () => {
     "Your contribution of ₦20,000 was confirmed. Thank you!");
   assertEquals(render("something_new", {}, "en", "Bua").body, "New notification");
   assertEquals(render("account_request", { name: "Musa" }, "en", "Bua").body, "New sign-up waiting for approval: Musa");
+  assertEquals(render("comment", { name: "Aisha", body: "Lovely" }, "en", "Bua").body, "Aisha commented: “Lovely”");
+  assertEquals(render("comment", { name: "Aisha", body: "Lovely", also: true }, "en", "Bua").body,
+    "Aisha also commented: “Lovely”");
+  assertEquals(render("comment", { body: "Lovely" }, "en", "Bua").body, "New comment: “Lovely”");
   assertEquals(render("change_request", { name: "Aisha", request_kind: "create_person", person: "Fatima" }, "en", "Bua").body,
     "Aisha suggested adding Fatima to the tree");
   assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,

@@ -2928,4 +2928,37 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pendingPushHint =>
       'Get a notification the moment an admin approves you.';
+
+  @override
+  String notifCommentBy(String name, String body) {
+    return '$name commented: “$body”';
+  }
+
+  @override
+  String notifCommentAlso(String name, String body) {
+    return '$name also commented: “$body”';
+  }
+
+  @override
+  String notifAccountClaim(String name, String person) {
+    return '$name says they are $person in the tree';
+  }
+
+  @override
+  String get postGone => 'This post was removed.';
+
+  @override
+  String get findMeInTree => 'Find yourself in the tree';
+
+  @override
+  String get findMeHint =>
+      'Link your account to your place in the tree to get your own profile, photo and details.';
+
+  @override
+  String linkWaiting(String name) {
+    return 'Waiting for an admin to link you to $name';
+  }
+
+  @override
+  String get linkedNow => 'Linked. This is now your profile.';
 }

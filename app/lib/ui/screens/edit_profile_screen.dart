@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/details.dart';
@@ -60,6 +61,24 @@ class _EditFormState extends ConsumerState<_EditForm> {
   late Audience _healthVis = widget.details.health?.visibility ?? Audience.private;
   late bool _donor = widget.details.health?.bloodDonor ?? false;
   bool _saving = false;
+  bool _uploadingPhoto = false;
+
+  Future<void> _changePhoto() async {
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 1024, maxHeight: 1024, imageQuality: 80);
+    if (file == null || !mounted) return;
+    setState(() => _uploadingPhoto = true);
+    final ext = file.name.contains('.') ? file.name.split('.').last : 'jpg';
+    final ok = await guarded(
+      context,
+      () async => ref.read(repositoryProvider).uploadPhoto(widget.person.id, await file.readAsBytes(), ext),
+    );
+    if (!mounted) return;
+    setState(() => _uploadingPhoto = false);
+    if (ok) {
+      ref.invalidate(graphProvider);
+      showSnack(context, context.l10n.saved);
+    }
+  }
 
   @override
   void dispose() {
@@ -176,8 +195,37 @@ class _EditFormState extends ConsumerState<_EditForm> {
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 32), children: [
         Row(children: [
-          PersonAvatar(person: p, radius: 26),
-          const SizedBox(width: 12),
+          Semantics(
+            button: true,
+            label: l.changePhoto,
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: _uploadingPhoto ? null : _changePhoto,
+              child: Stack(clipBehavior: Clip.none, children: [
+                PersonAvatar(person: p, radius: 32),
+                Positioned(
+                  right: -2,
+                  bottom: -2,
+                  child: Container(
+                    width: 26,
+                    height: 26,
+                    decoration: BoxDecoration(
+                      color: Bua.green,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Bua.ground, width: 2),
+                    ),
+                    child: _uploadingPhoto
+                        ? const Padding(
+                            padding: EdgeInsets.all(5),
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          )
+                        : const Icon(Icons.photo_camera, size: 14, color: Colors.white),
+                  ),
+                ),
+              ]),
+            ),
+          ),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(p.displayName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),

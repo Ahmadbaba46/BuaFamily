@@ -33,6 +33,7 @@ import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
 import 'ui/screens/photo_screen.dart';
 import 'ui/screens/polls_screen.dart';
+import 'ui/screens/post_screen.dart';
 import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/restore_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
@@ -99,6 +100,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => NewEventScreen(announcement: s.uri.queryParameters['type'] == 'announcement'),
       ),
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
+      GoRoute(path: '/posts/:id', builder: (_, s) => PostScreen(postId: s.pathParameters['id']!)),
       GoRoute(path: '/reminders', builder: (_, _) => const RemindersScreen()),
       GoRoute(path: '/settings', builder: (_, _) => const AppSettingsScreen()),
       GoRoute(path: '/me/edit', builder: (_, _) => const EditProfileScreen()),
@@ -203,14 +205,39 @@ class _PushBinding extends ConsumerStatefulWidget {
   ConsumerState<_PushBinding> createState() => _PushBindingState();
 }
 
-class _PushBindingState extends ConsumerState<_PushBinding> {
+class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingObserver {
   StreamSubscription<String>? _opens;
   ProviderSubscription<String?>? _signedIn;
   ProviderSubscription<PushPlatform>? _platform;
+  ProviderSubscription<String?>? _newest;
+  DateTime? _leftAt;
+
+  // Back in the app after a while: the live inbox connection may have been
+  // dropped while in the background, and relatives may have posted meanwhile.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
+      _leftAt ??= DateTime.now();
+    } else if (state == AppLifecycleState.resumed) {
+      final away = _leftAt == null ? Duration.zero : DateTime.now().difference(_leftAt!);
+      _leftAt = null;
+      if (away > const Duration(seconds: 10) && ref.read(profileProvider)?.isActive == true) {
+        refreshSharedContent(ref, inbox: true);
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // A new notification usually means new content (a comment, a post...).
+    _newest = ref.listenManual(
+      notificationsProvider.select((n) => n.value?.firstOrNull?.id),
+      (before, now) {
+        if (before != null && now != null && before != now) refreshSharedContent(ref);
+      },
+    );
     ref.read(authProvider).beforeSignOut = () => ref.read(pushControllerProvider.notifier).forgetDevice();
     String? activeId() {
       final p = ref.read(profileProvider);
@@ -234,6 +261,8 @@ class _PushBindingState extends ConsumerState<_PushBinding> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _newest?.close();
     _opens?.cancel();
     _signedIn?.close();
     _platform?.close();

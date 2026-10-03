@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
+import '../../models/social.dart' show Member;
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
@@ -20,6 +21,7 @@ class MoreScreen extends ConsumerWidget {
     final profile = ref.watch(profileProvider);
     final graph = ref.watch(graphProvider).value;
     final me = profile?.personId == null ? null : graph?[profile!.personId!];
+    final wanted = profile?.requestedPersonId == null ? null : graph?[profile!.requestedPersonId!];
     final isAdmin = ref.watch(isAdminProvider);
     final attention = ref.watch(adminAttentionProvider);
     final openBlood = ref.watch(bloodRequestsProvider).value?.where((r) => r.open).length ?? 0;
@@ -44,7 +46,7 @@ class MoreScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(20),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
-              onTap: me == null ? null : () => context.push('/person/${me.id}'),
+              onTap: me == null ? () => findMeInTree(context, ref) : () => context.push('/person/${me.id}'),
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Row(children: [
@@ -64,13 +66,21 @@ class MoreScreen extends ConsumerWidget {
                       Text(
                         [
                           isAdmin ? l.roleAdmin : l.roleMember,
-                          me == null ? l.notLinked : l.viewMyProfile,
+                          me != null
+                              ? l.viewMyProfile
+                              : wanted != null
+                                  ? l.linkWaiting(wanted.displayName)
+                                  : l.findMeInTree,
                         ].join(' · '),
-                        style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: me == null && wanted == null ? Bua.green : Bua.inkSubtle,
+                          fontWeight: me == null && wanted == null ? FontWeight.w600 : null,
+                        ),
                       ),
                     ]),
                   ),
-                  if (me != null) const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+                  const Icon(Icons.chevron_right, color: Bua.inkSubtle),
                 ]),
               ),
             ),
@@ -249,4 +259,26 @@ class MoreScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Links the signed-in account to a person in the tree: admins link
+/// themselves at once; members send it to the admins to confirm.
+Future<void> findMeInTree(BuildContext context, WidgetRef ref) async {
+  final l = context.l10n;
+  final graph = ref.read(graphProvider).value;
+  final profile = ref.read(profileProvider);
+  if (graph == null || profile == null) return;
+  final taken = {for (final m in ref.read(membersProvider).value?.values ?? const <Member>[]) ?m.personId};
+  final person = await pickPerson(context, graph, exclude: taken);
+  if (person == null || !context.mounted) return;
+  final repo = ref.read(repositoryProvider);
+  final ok = await guarded(
+    context,
+    () => profile.isAdmin
+        ? repo.adminUpdateAccount(profile.id, personId: person.id)
+        : repo.updateMyProfile(requestedPersonId: person.id),
+  );
+  if (!ok || !context.mounted) return;
+  await ref.read(authProvider).refresh();
+  if (context.mounted) showSnack(context, profile.isAdmin ? l.linkedNow : l.thisIsMeSent);
 }
