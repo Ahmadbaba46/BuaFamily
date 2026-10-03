@@ -15,15 +15,35 @@ self.addEventListener('push', (event) => {
   const n = payload.notification || {};
   const data = payload.data || {};
   event.waitUntil(
-    self.registration.showNotification(n.title || 'Bua Family', {
-      body: n.body || '',
-      icon: '/icons/Icon-192.png',
-      badge: '/icons/Icon-192.png',
-      tag: data.id || undefined,
-      data: { link: data.link || '/notifications' },
-    }),
+    Promise.all([
+      self.registration.showNotification(n.title || 'Bua Family', {
+        body: n.body || '',
+        icon: '/icons/Icon-192.png',
+        badge: '/icons/Icon-192.png',
+        tag: data.id || undefined,
+        data: { link: data.link || '/notifications' },
+      }),
+      receipt(data.id),
+    ]),
   );
 });
+
+// Tells the family's database this browser received the notification, so an
+// admin can see deliveries (push-config.json is written by the web build).
+async function receipt(id) {
+  if (!id) return;
+  try {
+    const cfg = await (await fetch('/push-config.json', { cache: 'no-cache' })).json();
+    if (!cfg.url || !cfg.key) return;
+    await fetch(cfg.url.replace(/\/$/, '') + '/rest/v1/rpc/push_ack', {
+      method: 'POST',
+      headers: { apikey: cfg.key, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_id: id }),
+    });
+  } catch (_) {
+    // Receipts are only for the admin's status; never block the notification.
+  }
+}
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();

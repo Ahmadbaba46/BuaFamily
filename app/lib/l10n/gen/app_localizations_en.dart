@@ -2865,8 +2865,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseKeyFile => 'Choose the key file (.json)';
 
   @override
-  String pushStats(int members, int devices, int sent) {
-    return '$members members on $devices devices · $sent sent this week';
+  String pushStats(int members, int devices, int sent, int received) {
+    return '$members members on $devices devices · $sent sent, $received received in browsers this week';
   }
 
   @override

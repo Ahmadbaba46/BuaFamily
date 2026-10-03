@@ -743,7 +743,7 @@
   "firebaseKey": "Makullin Firebase",
   "firebaseKeySaved": "An adana · {project}",
   "chooseKeyFile": "Zaɓi fayil ɗin makulli (.json)",
-  "pushStats": "Membobi {members} a na'urori {devices} · an aika {sent} a wannan mako",
+  "pushStats": "Membobi {members} a na'urori {devices} · an aika {sent}, burauza sun karɓi {received} a wannan mako",
   "sendTestPush": "Aiko mini gwajin sanarwa",
   "testPushSent": "An aika. Za ta zo a duk na'urar da ka kunna sanarwa.",
   "notifTest": "Gwajin sanarwa: sanarwa na aiki a wannan na'ura."

@@ -1763,7 +1763,7 @@
     }
   },
   "chooseKeyFile": "Choose the key file (.json)",
-  "pushStats": "{members} members on {devices} devices · {sent} sent this week",
+  "pushStats": "{members} members on {devices} devices · {sent} sent, {received} received in browsers this week",
   "@pushStats": {
     "placeholders": {
       "members": {
@@ -1773,6 +1773,9 @@
         "type": "int"
       },
       "sent": {
+        "type": "int"
+      },
+      "received": {
         "type": "int"
       }
     }

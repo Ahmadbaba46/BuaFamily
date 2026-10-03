@@ -128,7 +128,7 @@ void main() {
           notificationsProvider.overrideWith((ref) => Stream.value(const <AppNotification>[])),
           smsStatusProvider.overrideWith((ref) async => const SmsStatus()),
           pushStatusProvider.overrideWith((ref) async => pushEnabled
-              ? {'project_id': 'bua-family', 'devices': 12, 'members': 9, 'sent_7d': 40}
+              ? {'project_id': 'bua-family', 'devices': 12, 'members': 9, 'sent_7d': 40, 'received_7d': 31}
               : <String, dynamic>{}),
           requestsProvider.overrideWith((ref, s) async => const <ChangeRequest>[]),
           profilesProvider.overrideWith((ref) async => const <Profile>[]),
@@ -186,7 +186,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Phone notifications'), findsOneWidget);
     expect(find.text('Saved · bua-family'), findsOneWidget);
-    expect(find.text('9 members on 12 devices · 40 sent this week'), findsOneWidget);
+    expect(find.text('9 members on 12 devices · 40 sent, 31 received in browsers this week'), findsOneWidget);
     expect(find.text('Send me a test notification'), findsOneWidget);
   });
 

@@ -2775,8 +2775,8 @@ class AppLocalizationsHa extends AppLocalizations {
   String get chooseKeyFile => 'Zaɓi fayil ɗin makulli (.json)';
 
   @override
-  String pushStats(int members, int devices, int sent) {
-    return 'Membobi $members a na\'urori $devices · an aika $sent a wannan mako';
+  String pushStats(int members, int devices, int sent, int received) {
+    return 'Membobi $members a na\'urori $devices · an aika $sent, burauza sun karɓi $received a wannan mako';
   }
 
   @override
