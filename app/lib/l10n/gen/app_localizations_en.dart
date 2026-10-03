@@ -1792,4 +1792,147 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifBloodOffer(String group) {
     return 'A relative can donate blood ($group)';
   }
+
+  @override
+  String get memorialPage => 'Memorial page';
+
+  @override
+  String get inLovingMemory => 'In loving memory';
+
+  @override
+  String memorialPrayer(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'female': 'Allah ya jikanta da rahama',
+      'other': 'Allah ya jikansa da rahama',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String lifeOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'male': 'His life',
+      'female': 'Her life',
+      'other': 'Their life',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get noLifeStory =>
+      'No life story yet. Family can add it on the profile.';
+
+  @override
+  String get seeFullProfile => 'See full profile and family';
+
+  @override
+  String allPhotos(int count) {
+    return 'All $count';
+  }
+
+  @override
+  String prayersMemories(int count) {
+    return 'Prayers & memories · $count';
+  }
+
+  @override
+  String get addPrayerMemory => 'Add a prayer or memory…';
+
+  @override
+  String get noMemoriesYet => 'Be the first to share a prayer or memory.';
+
+  @override
+  String remindMeEvery(String date) {
+    return 'Remind me every $date';
+  }
+
+  @override
+  String get remindMeEverySub => 'A gentle remembrance notification';
+
+  @override
+  String notifRemembrance(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count years since $name passed',
+      one: '1 year since $name passed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifMemory(String name, String body) {
+    return 'New memory of $name: “$body”';
+  }
+
+  @override
+  String get howRelated => 'How are we related?';
+
+  @override
+  String get you => 'You';
+
+  @override
+  String get swap => 'Swap';
+
+  @override
+  String get pickSomeone => 'Pick someone';
+
+  @override
+  String relatedIsYour(String name) {
+    return '$name is your';
+  }
+
+  @override
+  String relatedIsOf(String name, String other) {
+    return '$name is $other\'s';
+  }
+
+  @override
+  String pathChildOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'male': 'son of',
+      'female': 'daughter of',
+      'other': 'child of',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathParentOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'male': 'father of',
+      'female': 'mother of',
+      'other': 'parent of',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathSpouseOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'male': 'husband of',
+      'female': 'wife of',
+      'other': 'spouse of',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathShared(String relation) {
+    return 'Shared $relation';
+  }
+
+  @override
+  String youSuffix(String name) {
+    return '$name (you)';
+  }
+
+  @override
+  String get showBothInTree => 'Show in the tree';
+
+  @override
+  String get notConnected => 'No connection is recorded in the tree yet.';
+
+  @override
+  String get sameDistantRelative => 'Relative';
 }

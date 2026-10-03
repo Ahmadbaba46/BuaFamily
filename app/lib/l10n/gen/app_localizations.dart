@@ -2833,6 +2833,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A relative can donate blood ({group})'**
   String notifBloodOffer(String group);
+
+  /// No description provided for @memorialPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Memorial page'**
+  String get memorialPage;
+
+  /// No description provided for @inLovingMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'In loving memory'**
+  String get inLovingMemory;
+
+  /// No description provided for @memorialPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, female{Allah ya jikanta da rahama} other{Allah ya jikansa da rahama}}'**
+  String memorialPrayer(String sex);
+
+  /// No description provided for @lifeOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{His life} female{Her life} other{Their life}}'**
+  String lifeOf(String sex);
+
+  /// No description provided for @noLifeStory.
+  ///
+  /// In en, this message translates to:
+  /// **'No life story yet. Family can add it on the profile.'**
+  String get noLifeStory;
+
+  /// No description provided for @seeFullProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'See full profile and family'**
+  String get seeFullProfile;
+
+  /// No description provided for @allPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'All {count}'**
+  String allPhotos(int count);
+
+  /// No description provided for @prayersMemories.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayers & memories · {count}'**
+  String prayersMemories(int count);
+
+  /// No description provided for @addPrayerMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a prayer or memory…'**
+  String get addPrayerMemory;
+
+  /// No description provided for @noMemoriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to share a prayer or memory.'**
+  String get noMemoriesYet;
+
+  /// No description provided for @remindMeEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me every {date}'**
+  String remindMeEvery(String date);
+
+  /// No description provided for @remindMeEverySub.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle remembrance notification'**
+  String get remindMeEverySub;
+
+  /// No description provided for @notifRemembrance.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 year since {name} passed} other{{count} years since {name} passed}}'**
+  String notifRemembrance(int count, String name);
+
+  /// No description provided for @notifMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'New memory of {name}: “{body}”'**
+  String notifMemory(String name, String body);
+
+  /// No description provided for @howRelated.
+  ///
+  /// In en, this message translates to:
+  /// **'How are we related?'**
+  String get howRelated;
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @swap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap'**
+  String get swap;
+
+  /// No description provided for @pickSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick someone'**
+  String get pickSomeone;
+
+  /// No description provided for @relatedIsYour.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is your'**
+  String relatedIsYour(String name);
+
+  /// No description provided for @relatedIsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is {other}\'s'**
+  String relatedIsOf(String name, String other);
+
+  /// No description provided for @pathChildOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{son of} female{daughter of} other{child of}}'**
+  String pathChildOf(String sex);
+
+  /// No description provided for @pathParentOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{father of} female{mother of} other{parent of}}'**
+  String pathParentOf(String sex);
+
+  /// No description provided for @pathSpouseOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{sex, select, male{husband of} female{wife of} other{spouse of}}'**
+  String pathSpouseOf(String sex);
+
+  /// No description provided for @pathShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared {relation}'**
+  String pathShared(String relation);
+
+  /// No description provided for @youSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (you)'**
+  String youSuffix(String name);
+
+  /// No description provided for @showBothInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Show in the tree'**
+  String get showBothInTree;
+
+  /// No description provided for @notConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection is recorded in the tree yet.'**
+  String get notConnected;
+
+  /// No description provided for @sameDistantRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Relative'**
+  String get sameDistantRelative;
 }
 
 class _AppLocalizationsDelegate

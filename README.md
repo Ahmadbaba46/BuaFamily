@@ -18,7 +18,12 @@ share moments and photos, plan family events, and keep everyone's details
   (exact or approximate), places, burial place, branch, life story and photo.
 - **"How are we related?"** Every profile shows how that person is related to
   you: uncle (baffa or kawu), cousin, half-brother through the father,
-  co-wife (kishiya), in-laws, step-relations and more.
+  co-wife (kishiya), in-laws, step-relations and more. Tap it (or More → How
+  are we related?) to pick any two people and see the chain step by step,
+  including the ancestor they share.
+- **Memorial pages** for relatives who have died: dates, a prayer, their life
+  story, photos they're tagged in, and prayers and memories from the family.
+  Members can ask for a gentle reminder on the anniversary.
 - **Education, work, skills, contact and health details.** Health (blood group,
   genotype, hereditary conditions) is private unless the person chooses to share it.
 - **Admin approval:**
@@ -94,12 +99,14 @@ Design mockups for the app (sample data). The app follows these designs; the scr
   </tr>
 </table>
 
-### Helping each other
+### Knowing and helping each other
 
 <table>
   <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/who-can-help.png" alt="Who can help?" width="180"><br><sub>Who can help?</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/blood-donors.png" alt="Blood donors" width="180"><br><sub>Blood donors</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/how-related.png" alt="How are we related?" width="180"><br><sub>How are we related?</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/memorial.png" alt="Memorial page" width="180"><br><sub>Memorial page</sub></td>
   </tr>
 </table>
 
@@ -115,24 +122,22 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 </table>
 
 <details>
-<summary><b>Designed for later</b> (11 screens)</summary>
+<summary><b>Designed for later</b> (9 screens)</summary>
 
 <table>
   <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/reminders.png" alt="Birthdays & remembrance" width="180"><br><sub>Birthdays & remembrance</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/how-related.png" alt="How are we related?" width="180"><br><sub>How are we related?</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/memorial.png" alt="Memorial page" width="180"><br><sub>Memorial page</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/edit-profile.png" alt="Edit my details & privacy" width="180"><br><sub>Edit my details & privacy</sub></td>
-  </tr>
-  <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause" width="180"><br><sub>Fund cause</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
   </tr>
   <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/app-settings.png" alt="Language, data & notifications" width="180"><br><sub>Language, data & notifications</sub></td>
+  </tr>
+  <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
   </tr>
 </table>
@@ -157,6 +162,7 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 | `likes`, `comments` | "Ma sha Allah" and comments on posts, photos and events |
 | `notifications` | Each member's in-app inbox |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
+| `memories`, `remembrance_reminders` | Prayers and memories on memorial pages; who wants an anniversary reminder |
 | `private.sms_outbox` | Text messages waiting to be sent, sent or failed (not reachable from the app) |
 
 Permissions are enforced in the database with row-level security, so they hold

@@ -21,6 +21,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.bloodRequest =>
         l.notifBloodRequest(n.str('blood_group') ?? '', n.str('patient') ?? '', n.str('hospital') ?? ''),
       NotificationKind.bloodOffer => l.notifBloodOffer(n.str('blood_group') ?? ''),
+      NotificationKind.remembrance =>
+        l.notifRemembrance((n.data['years'] as num?)?.toInt() ?? 0, n.str('name') ?? ''),
+      NotificationKind.memory => l.notifMemory(n.str('name') ?? '', n.str('body') ?? ''),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -31,6 +34,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.tagged => Icons.person_pin_outlined,
       NotificationKind.comment => Icons.chat_bubble_outline,
       NotificationKind.bloodRequest || NotificationKind.bloodOffer => Icons.bloodtype_outlined,
+      NotificationKind.remembrance || NotificationKind.memory => Icons.dark_mode_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {
@@ -133,7 +137,10 @@ class _NotificationRow extends ConsumerWidget {
         color: n.isRead ? null : const Color(0xFFF2F8F4),
         padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          if (actor?.person != null && n.kind != NotificationKind.birthday && !blood)
+          if (actor?.person != null &&
+              n.kind != NotificationKind.birthday &&
+              n.kind != NotificationKind.remembrance &&
+              !blood)
             AuthorAvatar(actor!)
           else
             IconTile(

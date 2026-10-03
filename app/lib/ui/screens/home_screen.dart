@@ -95,7 +95,7 @@ class HomeScreen extends ConsumerWidget {
                               label: l.remembrance,
                               title: l.yearsSincePassed(today.year - p.deathDate!.year, p.displayName),
                               action: l.addPrayer,
-                              onTap: () => context.push('/person/${p.id}'),
+                              onTap: () => context.push('/person/${p.id}/memorial'),
                             ),
                         ],
                       ),

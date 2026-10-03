@@ -176,3 +176,13 @@ final bloodDonorsProvider = FutureProvider<List<BloodDonor>>((ref) => ref.watch(
 
 final bloodRequestsProvider =
     FutureProvider<List<BloodRequest>>((ref) => ref.watch(repositoryProvider).bloodRequests());
+
+// ---------------------------------------------------------------- memorial pages
+
+final memoriesProvider = FutureProvider.family<List<Memory>, String>(
+  (ref, personId) => ref.watch(repositoryProvider).memories(personId),
+);
+
+final remembranceReminderProvider = FutureProvider.family<bool, String>(
+  (ref, personId) => ref.watch(repositoryProvider).remembranceReminder(personId),
+);

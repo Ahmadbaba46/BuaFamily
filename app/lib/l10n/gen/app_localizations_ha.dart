@@ -1742,4 +1742,138 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifBloodOffer(String group) {
     return 'Wani ɗan uwa zai iya ba da jini ($group)';
   }
+
+  @override
+  String get memorialPage => 'Shafin tunawa';
+
+  @override
+  String get inLovingMemory => 'Cikin ƙauna da tunawa';
+
+  @override
+  String memorialPrayer(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'female': 'Allah ya jikanta da rahama',
+      'other': 'Allah ya jikansa da rahama',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String lifeOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'female': 'Rayuwarta',
+      'other': 'Rayuwarsa',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get noLifeStory =>
+      'Babu labarin rayuwa tukuna. Iyali za su iya saka shi a shafin.';
+
+  @override
+  String get seeFullProfile => 'Duba cikakken shafi da iyali';
+
+  @override
+  String allPhotos(int count) {
+    return 'Duka $count';
+  }
+
+  @override
+  String prayersMemories(int count) {
+    return 'Addu\'o\'i da tunawa · $count';
+  }
+
+  @override
+  String get addPrayerMemory => 'Ƙara addu\'a ko tunawa…';
+
+  @override
+  String get noMemoriesYet => 'Ka zama na farko da zai raba addu\'a ko tunawa.';
+
+  @override
+  String remindMeEvery(String date) {
+    return 'Tunatar da ni kowace $date';
+  }
+
+  @override
+  String get remindMeEverySub => 'Saƙon tunawa mai sauƙi';
+
+  @override
+  String notifRemembrance(int count, String name) {
+    return 'Shekara $count da rasuwar $name';
+  }
+
+  @override
+  String notifMemory(String name, String body) {
+    return 'Sabon tunawa da $name: “$body”';
+  }
+
+  @override
+  String get howRelated => 'Yaya muke dangantaka?';
+
+  @override
+  String get you => 'Kai';
+
+  @override
+  String get swap => 'Musanya';
+
+  @override
+  String get pickSomeone => 'Zaɓi wani';
+
+  @override
+  String relatedIsYour(String name) {
+    return '$name a gare ka:';
+  }
+
+  @override
+  String relatedIsOf(String name, String other) {
+    return '$name a gare $other:';
+  }
+
+  @override
+  String pathChildOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'female': '\'yar',
+      'other': 'ɗan',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathParentOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'female': 'mahaifiyar',
+      'other': 'mahaifin',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathSpouseOf(String sex) {
+    String _temp0 = intl.Intl.selectLogic(sex, {
+      'male': 'mijin',
+      'female': 'matar',
+      'other': 'abokin auren',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String pathShared(String relation) {
+    return '$relation da kuke tarayya';
+  }
+
+  @override
+  String youSuffix(String name) {
+    return '$name (kai)';
+  }
+
+  @override
+  String get showBothInTree => 'Nuna a bishiya';
+
+  @override
+  String get notConnected => 'Ba a rubuta wata alaƙa a bishiyar ba tukuna.';
+
+  @override
+  String get sameDistantRelative => 'Dangi';
 }

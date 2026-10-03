@@ -299,3 +299,22 @@ class PickedImage {
   final List<int> bytes;
   final String extension;
 }
+
+/// A prayer or memory on someone's memorial page.
+class Memory {
+  const Memory({required this.id, required this.personId, required this.authorId, required this.body, required this.createdAt});
+
+  final String id;
+  final String personId;
+  final String authorId;
+  final String body;
+  final DateTime createdAt;
+
+  factory Memory.fromJson(Map<String, dynamic> j) => Memory(
+        id: j['id'] as String,
+        personId: j['person_id'] as String,
+        authorId: j['author_id'] as String,
+        body: j['body'] as String,
+        createdAt: _ts(j['created_at']),
+      );
+}
