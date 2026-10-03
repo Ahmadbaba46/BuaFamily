@@ -121,6 +121,12 @@ extension TimeLabels on AppLocalizations {
   String clock(DateTime d) =>
       localeName == 'ha' ? DateFormat.Hm('en').format(d) : DateFormat('h:mma', 'en').format(d).toLowerCase();
 
+  /// "TUE" for date badges.
+  String weekdayShort(DateTime d) => (localeName == 'ha'
+          ? _haWeekdays[d.weekday % 7].replaceAll("'", '').substring(0, 3)
+          : DateFormat.E('en').format(d))
+      .toUpperCase();
+
   /// "Sat 8:00am".
   String dayClock(DateTime d) => localeName == 'ha'
       ? '${_haWeekdays[d.weekday % 7]} ${clock(d)}'

@@ -84,7 +84,8 @@ class _PersonView extends ConsumerWidget {
               IconButton(
                 tooltip: canEditDetails ? l.editPerson : l.suggestEdit,
                 icon: Icon(canEditDetails ? Icons.edit_outlined : Icons.edit_note, color: Colors.white),
-                onPressed: () => context.push('/person/${person.id}/edit'),
+                // Your own record opens the self-service editor (privacy, health, skills).
+                onPressed: () => context.push(isMe ? '/me/edit' : '/person/${person.id}/edit'),
               ),
             PopupMenuButton<String>(
               iconColor: Colors.white,

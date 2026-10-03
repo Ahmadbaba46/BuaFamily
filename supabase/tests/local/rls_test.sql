@@ -489,7 +489,25 @@ reset role;
 select test.assert((select count(*) = 0 from public.memories), 'author deleted own memory');
 
 -- ---------------------------------------------------------------------------
--- 11. Anonymous users see nothing.
+-- 11. Notification preferences.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.profiles set muted_notifications = array['tagged', 'blood_request'] where id = auth.uid();
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Muted tag test');
+insert into public.post_people (post_id, person_id) values ((select id from public.posts where body = 'Muted tag test'), (select id from test.ids where name='aisha'));
+insert into public.blood_requests (blood_group, patient_name, hospital) values ('AB+', 'Muted test', 'H');
+reset role;
+select test.assert((select count(*) = 0 from public.notifications where user_id = :member_id and kind = 'tagged'
+  and data ->> 'post_id' = (select id::text from public.posts where body = 'Muted tag test')), 'muted kind is not created');
+select test.assert((select count(*) = 1 from public.notifications where user_id = :member_id and kind = 'blood_request'
+  and data ->> 'patient' = 'Muted test'), 'blood requests cannot be muted');
+
+-- ---------------------------------------------------------------------------
+-- 12. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

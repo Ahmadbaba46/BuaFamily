@@ -6,7 +6,9 @@ import 'l10n/l10n.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
+import 'ui/screens/app_settings_screen.dart';
 import 'ui/screens/blood_donors_screen.dart';
+import 'ui/screens/edit_profile_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
 import 'ui/screens/home_screen.dart';
@@ -23,6 +25,7 @@ import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
 import 'ui/screens/photo_screen.dart';
+import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
 import 'ui/screens/who_can_help_screen.dart';
@@ -84,6 +87,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => NewEventScreen(announcement: s.uri.queryParameters['type'] == 'announcement'),
       ),
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
+      GoRoute(path: '/reminders', builder: (_, _) => const RemindersScreen()),
+      GoRoute(path: '/settings', builder: (_, _) => const AppSettingsScreen()),
+      GoRoute(path: '/me/edit', builder: (_, _) => const EditProfileScreen()),
       GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: '/settings/notifications', builder: (_, _) => const NotificationSettingsScreen()),
       GoRoute(

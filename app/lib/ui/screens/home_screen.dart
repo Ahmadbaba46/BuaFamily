@@ -74,6 +74,13 @@ class HomeScreen extends ConsumerWidget {
                     ]),
                   ),
                   if (birthdays.isNotEmpty || remembrances.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
+                      child: Row(children: [
+                        Expanded(child: GroupHeading(l.today)),
+                        TextButton(onPressed: () => context.push('/reminders'), child: Text(l.seeAll)),
+                      ]),
+                    ),
                     SizedBox(
                       height: 132,
                       child: ListView(
