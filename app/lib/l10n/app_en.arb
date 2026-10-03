@@ -1992,5 +1992,7 @@
   "sortName": "Name (A–Z)",
   "sortOldest": "Oldest first",
   "sortYoungest": "Youngest first",
-  "sortFamily": "Family order"
+  "sortFamily": "Family order",
+  "helpEachOther": "Help each other",
+  "openMenu": "Open menu"
 }

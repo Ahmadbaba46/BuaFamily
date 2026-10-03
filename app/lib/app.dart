@@ -44,6 +44,7 @@ import 'ui/screens/welfare_fund_screen.dart';
 import 'ui/screens/who_can_help_screen.dart';
 import 'domain/family_files.dart' show ImportPlan;
 import 'ui/theme.dart';
+import 'ui/widgets/app_sidebar.dart';
 import 'ui/widgets/home_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -191,8 +192,27 @@ class BuaFamilyApp extends ConsumerWidget {
       localizationsDelegates: localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
-      builder: (context, child) => _PushBinding(child: child ?? const SizedBox.shrink()),
+      builder: (context, child) => _PushBinding(child: _AppFrame(child: child ?? const SizedBox.shrink())),
     );
+  }
+}
+
+/// On wide screens, the sidebar stays open next to every page (deep ones
+/// too), for members who are signed in and approved.
+class _AppFrame extends ConsumerWidget {
+  const _AppFrame({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final active = ref.watch(profileProvider.select((p) => p?.isActive ?? false));
+    if (!active || !sidebarAlwaysOpen(context)) return child;
+    return Row(children: [
+      SizedBox(width: 272, child: AppSidebar(router: ref.watch(routerProvider))),
+      const VerticalDivider(width: 1, thickness: 1, color: Bua.line),
+      Expanded(child: child),
+    ]);
   }
 }
 

@@ -15,6 +15,7 @@ import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
+import '../widgets/hero_page.dart';
 
 class PersonScreen extends ConsumerWidget {
   const PersonScreen({super.key, required this.personId});
@@ -69,6 +70,27 @@ class _PersonView extends ConsumerWidget {
       if (!person.isLiving && (person.branch?.isNotEmpty ?? false)) person.branch!,
     ];
 
+    void back() => context.canPop() ? context.pop() : context.go('/tree');
+    final actions = <Widget>[
+      if (canEditDetails || canContribute)
+        IconButton(
+          tooltip: canEditDetails ? l.editPerson : l.suggestEdit,
+          icon: Icon(canEditDetails ? Icons.edit_outlined : Icons.edit_note, color: Colors.white),
+          // Your own record opens the self-service editor (privacy, health, skills).
+          onPressed: () => context.push(isMe ? '/me/edit' : '/person/${person.id}/edit'),
+        ),
+      PopupMenuButton<String>(
+        iconColor: Colors.white,
+        onSelected: (v) => _onMenu(context, ref, v),
+        itemBuilder: (_) => [
+          PopupMenuItem(value: 'tree', child: Text(l.viewInTree)),
+          if (profile?.personId == null && profile?.requestedPersonId != person.id)
+            PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
+          if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
+        ],
+      ),
+    ];
+
     // Band, top bar and the avatar overlapping the band's lower edge, all in
     // one Stack so the avatar paints above the band.
     final header = Stack(clipBehavior: Clip.none, children: [
@@ -78,25 +100,9 @@ class _PersonView extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: Row(children: [
-            BackButton(color: Colors.white, onPressed: () => context.canPop() ? context.pop() : context.go('/tree')),
+            BackButton(color: Colors.white, onPressed: back),
             const Spacer(),
-            if (canEditDetails || canContribute)
-              IconButton(
-                tooltip: canEditDetails ? l.editPerson : l.suggestEdit,
-                icon: Icon(canEditDetails ? Icons.edit_outlined : Icons.edit_note, color: Colors.white),
-                // Your own record opens the self-service editor (privacy, health, skills).
-                onPressed: () => context.push(isMe ? '/me/edit' : '/person/${person.id}/edit'),
-              ),
-            PopupMenuButton<String>(
-              iconColor: Colors.white,
-              onSelected: (v) => _onMenu(context, ref, v),
-              itemBuilder: (_) => [
-                PopupMenuItem(value: 'tree', child: Text(l.viewInTree)),
-                if (profile?.personId == null && profile?.requestedPersonId != person.id)
-                  PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
-                if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
-              ],
-            ),
+            ...actions,
           ]),
         ),
       ),
@@ -138,7 +144,13 @@ class _PersonView extends ConsumerWidget {
       ),
     ]);
 
-    return CustomScrollView(slivers: [
+    return HeroPage(
+      title: person.displayName,
+      color: band,
+      bandHeight: 150,
+      onBack: back,
+      actions: actions,
+      child: CustomScrollView(slivers: [
       SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             header,
@@ -231,7 +243,8 @@ class _PersonView extends ConsumerWidget {
             ),
         ]),
       ),
-    ]);
+    ]),
+    );
   }
 
   Future<void> _onMenu(BuildContext context, WidgetRef ref, String action) async {

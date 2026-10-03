@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
@@ -38,8 +39,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
         bottom: false,
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 14, 12, 8),
+            padding: EdgeInsets.fromLTRB(sidebarAlwaysOpen(context) ? 20 : 8, 10, 12, 8),
             child: Row(children: [
+              const SidebarButton(),
               Expanded(child: Text(l.navEvents, style: Theme.of(context).textTheme.titleLarge)),
               FilledButton.icon(
                 onPressed: () => context.push(_tab == _Tab.announcements ? '/events/new?type=announcement' : '/events/new'),

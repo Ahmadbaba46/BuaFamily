@@ -3044,4 +3044,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sortFamily => 'Family order';
+
+  @override
+  String get helpEachOther => 'Help each other';
+
+  @override
+  String get openMenu => 'Open menu';
 }

@@ -10,6 +10,7 @@ import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/app_sidebar.dart';
 import '../widgets/common.dart';
 
 const _metrics = TreeMetrics(nodeWidth: 136, nodeHeight: 58, siblingGap: 16, spouseGap: 14, levelGap: 64);
@@ -196,8 +197,9 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
         bottom: false,
         child: Column(children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+            padding: EdgeInsets.fromLTRB(sidebarAlwaysOpen(context) ? 20 : 8, 8, 8, 0),
             child: Row(children: [
+              const SidebarButton(),
               Expanded(child: Text(l.navTree, style: Theme.of(context).textTheme.titleLarge)),
               if (graph != null && graph.persons.isNotEmpty)
                 IconButton(

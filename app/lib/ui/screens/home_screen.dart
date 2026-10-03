@@ -7,6 +7,7 @@ import '../../models/person.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
@@ -50,7 +51,24 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: RefreshIndicator(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Stays at the top while the feed scrolls.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 10, 12, 8),
+            child: Row(children: [
+              const SidebarButton(),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(l.weekdayDate(today), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                  Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
+                ]),
+              ),
+              const NotificationBell(),
+            ]),
+          ),
+          Expanded(
+            child: RefreshIndicator(
           onRefresh: refresh,
           child: AsyncBody(
             value: feed,
@@ -61,18 +79,7 @@ class HomeScreen extends ConsumerWidget {
               return ListView(
                 padding: const EdgeInsets.only(bottom: 24),
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 14, 12, 12),
-                    child: Row(children: [
-                      Expanded(
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text(l.weekdayDate(today), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
-                          Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
-                        ]),
-                      ),
-                      const NotificationBell(),
-                    ]),
-                  ),
+                  const SizedBox(height: 4),
                   if (birthdays.isNotEmpty || remembrances.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
@@ -151,6 +158,8 @@ class HomeScreen extends ConsumerWidget {
             },
           ),
         ),
+          ),
+        ]),
       ),
     );
   }
