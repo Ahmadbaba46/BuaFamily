@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,12 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../state/providers.dart';
 
 // The family's Firebase project ("buafamily"). These are public app
-// identifiers, not secrets. The Android and iOS API keys are supplied at build
-// time (config.json); without them push is simply off on that platform.
+// identifiers, not secrets. The iOS API key would be supplied at build time
+// (config.json); without it push is simply off there.
 const _projectId = 'buafamily';
 const _senderId = '974364501102';
 const _webApiKey = String.fromEnvironment('FIREBASE_WEB_API_KEY', defaultValue: 'AIzaSyAmZ5PxnlZA17w9Gd-TxcnCQqa0PS7cma8');
-const _androidApiKey = String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
+const _androidApiKey =
+    String.fromEnvironment('FIREBASE_ANDROID_API_KEY', defaultValue: 'AIzaSyA-q9JQoH51Z8rDGHXSlsMAscLtoHElwmU');
 const _iosApiKey = String.fromEnvironment('FIREBASE_IOS_API_KEY');
 
 /// Optional: the project's own Web Push key. Without it Firebase uses its default one.
@@ -54,6 +56,8 @@ FirebaseOptions? get firebaseOptions {
 Future<bool> initFirebase() async {
   final options = firebaseOptions;
   if (options == null) return false;
+  // Widget tests run as "Android" but have no Firebase to talk to.
+  if (!kIsWeb && Platform.environment.containsKey('FLUTTER_TEST')) return false;
   try {
     await Firebase.initializeApp(options: options).timeout(const Duration(seconds: 20));
     return true;

@@ -292,13 +292,9 @@ Still to do:
    (Project settings → Service accounts), choose **Generate new private key**.
    In the app, open **More → Admin → Settings → Phone notifications**, tap
    **Firebase key** and choose that file. It is stored encrypted in Supabase
-   Vault; delete the downloaded file afterwards.
-2. **Android app:** in
-   [Project settings → General](https://console.firebase.google.com/project/buafamily/settings/general),
-   download the Android app's `google-services.json` and copy its
-   `current_key` into `app/config.json` as `FIREBASE_ANDROID_API_KEY` (don't
-   commit that file). The website needs nothing.
-3. Turn notifications on for your own phone (**More → Notifications & SMS**)
+   Vault; delete the downloaded file afterwards. (The Android app's settings
+   are already built in.)
+2. Turn notifications on for your own phone (**More → Notifications & SMS**)
    and tap **Send me a test notification**.
 
 For a different Firebase project, change the IDs at the top of

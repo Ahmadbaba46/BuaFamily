@@ -4559,8 +4559,8 @@ abstract class AppLocalizations {
   /// No description provided for @pushStats.
   ///
   /// In en, this message translates to:
-  /// **'{members} members on {devices} devices · {sent} sent this week'**
-  String pushStats(int members, int devices, int sent);
+  /// **'{members} members on {devices} devices · {sent} sent, {received} received in browsers this week'**
+  String pushStats(int members, int devices, int sent, int received);
 
   /// No description provided for @sendTestPush.
   ///

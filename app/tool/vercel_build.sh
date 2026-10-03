@@ -30,3 +30,6 @@ done
 
 flutter pub get
 flutter build web --release "${defines[@]}"
+
+# Lets the notification service worker confirm deliveries (both values are public).
+printf '{"url":"%s","key":"%s"}\n' "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" > build/web/push-config.json

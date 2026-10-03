@@ -625,6 +625,7 @@ class _PushCard extends ConsumerWidget {
     final devices = (status?['devices'] as num?)?.toInt() ?? 0;
     final members = (status?['members'] as num?)?.toInt() ?? 0;
     final sent = (status?['sent_7d'] as num?)?.toInt() ?? 0;
+    final received = (status?['received_7d'] as num?)?.toInt() ?? 0;
     final lastError = status?['last_error'] as String?;
     final lastErrorAt = DateTime.tryParse(status?['last_error_at'] as String? ?? '');
     final recentError = lastError != null && lastErrorAt != null &&
@@ -657,7 +658,7 @@ class _PushCard extends ConsumerWidget {
         if (project != null)
           Padding(
             padding: const EdgeInsets.fromLTRB(70, 0, 16, 4),
-            child: Text(l.pushStats(members, devices, sent), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+            child: Text(l.pushStats(members, devices, sent, received), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
           ),
         if (recentError)
           Padding(

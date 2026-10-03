@@ -839,6 +839,13 @@ select test.assert((select (public.push_config() -> 'service_account' ->> 'proje
 select public.push_report(2);
 select public.push_report(0, 'UNREGISTERED');
 reset role;
+select test.assert((select sent_7d = 2 and last_sent_at is not null from private.push_stats), 'push_report updates its row');
+
+-- The browser's service worker confirms delivery without signing in.
+set role anon;
+select public.push_ack((:push_ids::uuid[])[1]);
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where pushed_at is not null), 'delivery receipt recorded');
 
 -- Muted kinds are not pushed.
 update public.profiles set muted_notifications = '{poll}' where id in (:member_id, :member2_id);
@@ -847,8 +854,8 @@ insert into push_check select coalesce(max(id), 0) from net.sent_requests;
 select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
 set role authenticated;
 insert into public.polls (question) values ('Muted poll?');
-select test.assert((select (public.push_status() ->> 'sent_7d')::int = 2 and public.push_status() ->> 'last_error' = 'UNREGISTERED'),
-  'status shows what was sent');
+select test.assert((select (public.push_status() ->> 'sent_7d')::int = 2 and public.push_status() ->> 'last_error' = 'UNREGISTERED'
+  and (public.push_status() ->> 'received_7d')::int = 1), 'status shows what was sent and received');
 reset role;
 select test.assert((select count(*) = 0 from net.sent_requests where id > (select before from push_check)), 'muted kinds are not pushed');
 update public.profiles set muted_notifications = '{}';
