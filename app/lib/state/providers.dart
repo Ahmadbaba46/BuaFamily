@@ -53,7 +53,15 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signOut() => _repo.auth.signOut();
+  /// Runs first on sign-out, e.g. to stop this device getting the account's notifications.
+  Future<void> Function()? beforeSignOut;
+
+  Future<void> signOut() async {
+    try {
+      await beforeSignOut?.call();
+    } catch (_) {}
+    await _repo.auth.signOut();
+  }
 
   @override
   void dispose() {
@@ -167,6 +175,8 @@ final unreadCountProvider = Provider<int>(
 );
 
 final smsStatusProvider = FutureProvider<SmsStatus>((ref) => ref.watch(repositoryProvider).smsStatus());
+
+final pushStatusProvider = FutureProvider<Map<String, dynamic>>((ref) => ref.watch(repositoryProvider).pushStatus());
 
 // ---------------------------------------------------------------- who can help & blood
 

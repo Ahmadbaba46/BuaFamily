@@ -81,6 +81,7 @@ class AppSettings {
     this.smsSenderId,
     this.smsChannel = 'generic',
     this.weeklyBackup = true,
+    this.pushEnabled = false,
   });
 
   final String familyName;
@@ -95,6 +96,9 @@ class AppSettings {
   /// Whether the database keeps a weekly backup.
   final bool weeklyBackup;
 
+  /// An admin has set up push notifications.
+  final bool pushEnabled;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -103,6 +107,7 @@ class AppSettings {
         smsSenderId: j['sms_sender_id'] as String?,
         smsChannel: j['sms_channel'] as String? ?? 'generic',
         weeklyBackup: j['weekly_backup'] as bool? ?? true,
+        pushEnabled: j['push_enabled'] as bool? ?? false,
       );
 }
 

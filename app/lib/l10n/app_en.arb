@@ -1736,5 +1736,48 @@
         "type": "int"
       }
     }
-  }
+  },
+  "pushOnThisPhone": "Notifications on this phone",
+  "pushInThisBrowser": "Notifications in this browser",
+  "pushOnSub": "New notifications appear here even when the app is closed.",
+  "pushOffSub": "Get told about events, blood requests, polls and more, even when the app is closed.",
+  "pushBlocked": "Notifications are blocked. Allow them for Bua Family in your phone or browser settings, then try again.",
+  "pushUnavailable": "This version of the app can't receive notifications yet.",
+  "pushNotSetUp": "An admin hasn't set up phone notifications yet.",
+  "pushTurnedOn": "Notifications are on for this device.",
+  "pushFailed": "Couldn't turn on notifications. Check your connection and try again.",
+  "pushPromptTitle": "Get notified on this phone",
+  "pushPromptBody": "Know straight away about blood requests, events and family news.",
+  "turnOn": "Turn on",
+  "notNow": "Not now",
+  "pushAdminTitle": "Phone notifications",
+  "pushAdminSub": "Send every notification to members' phones and browsers (free, through Firebase).",
+  "pushSetupSteps": "1. Create a free project at console.firebase.google.com. 2. In Project settings › Service accounts, choose “Generate new private key”. 3. Choose that file below. The app also needs your Firebase app settings (see the README).",
+  "firebaseKey": "Firebase key",
+  "firebaseKeySaved": "Saved · {project}",
+  "@firebaseKeySaved": {
+    "placeholders": {
+      "project": {
+        "type": "String"
+      }
+    }
+  },
+  "chooseKeyFile": "Choose the key file (.json)",
+  "pushStats": "{members} members on {devices} devices · {sent} sent this week",
+  "@pushStats": {
+    "placeholders": {
+      "members": {
+        "type": "int"
+      },
+      "devices": {
+        "type": "int"
+      },
+      "sent": {
+        "type": "int"
+      }
+    }
+  },
+  "sendTestPush": "Send me a test notification",
+  "testPushSent": "Sent. It should arrive on every device where you turned notifications on.",
+  "notifTest": "Test notification: notifications are working on this device."
 }

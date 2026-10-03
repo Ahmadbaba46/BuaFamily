@@ -2796,4 +2796,87 @@ class AppLocalizationsEn extends AppLocalizations {
   String restoreDone(int added, int updated) {
     return 'Restored: $added brought back, $updated changed back.';
   }
+
+  @override
+  String get pushOnThisPhone => 'Notifications on this phone';
+
+  @override
+  String get pushInThisBrowser => 'Notifications in this browser';
+
+  @override
+  String get pushOnSub =>
+      'New notifications appear here even when the app is closed.';
+
+  @override
+  String get pushOffSub =>
+      'Get told about events, blood requests, polls and more, even when the app is closed.';
+
+  @override
+  String get pushBlocked =>
+      'Notifications are blocked. Allow them for Bua Family in your phone or browser settings, then try again.';
+
+  @override
+  String get pushUnavailable =>
+      'This version of the app can\'t receive notifications yet.';
+
+  @override
+  String get pushNotSetUp => 'An admin hasn\'t set up phone notifications yet.';
+
+  @override
+  String get pushTurnedOn => 'Notifications are on for this device.';
+
+  @override
+  String get pushFailed =>
+      'Couldn\'t turn on notifications. Check your connection and try again.';
+
+  @override
+  String get pushPromptTitle => 'Get notified on this phone';
+
+  @override
+  String get pushPromptBody =>
+      'Know straight away about blood requests, events and family news.';
+
+  @override
+  String get turnOn => 'Turn on';
+
+  @override
+  String get notNow => 'Not now';
+
+  @override
+  String get pushAdminTitle => 'Phone notifications';
+
+  @override
+  String get pushAdminSub =>
+      'Send every notification to members\' phones and browsers (free, through Firebase).';
+
+  @override
+  String get pushSetupSteps =>
+      '1. Create a free project at console.firebase.google.com. 2. In Project settings › Service accounts, choose “Generate new private key”. 3. Choose that file below. The app also needs your Firebase app settings (see the README).';
+
+  @override
+  String get firebaseKey => 'Firebase key';
+
+  @override
+  String firebaseKeySaved(String project) {
+    return 'Saved · $project';
+  }
+
+  @override
+  String get chooseKeyFile => 'Choose the key file (.json)';
+
+  @override
+  String pushStats(int members, int devices, int sent) {
+    return '$members members on $devices devices · $sent sent this week';
+  }
+
+  @override
+  String get sendTestPush => 'Send me a test notification';
+
+  @override
+  String get testPushSent =>
+      'Sent. It should arrive on every device where you turned notifications on.';
+
+  @override
+  String get notifTest =>
+      'Test notification: notifications are working on this device.';
 }
