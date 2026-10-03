@@ -40,7 +40,7 @@ alter default privileges in schema public grant all on sequences to anon, authen
 -- pg_net: records requests instead of sending them.
 create schema net;
 create sequence net.request_seq;
-create table net.sent_requests (id bigint primary key, url text, body jsonb);
+create table net.sent_requests (id bigint primary key, url text, body jsonb, headers jsonb);
 create table net._http_response (
   id bigint, status_code int, content_type text, headers jsonb, content text,
   timed_out boolean, error_msg text, created timestamptz not null default now()
@@ -50,7 +50,7 @@ create function net.http_post(url text, body jsonb default '{}', params jsonb de
 returns bigint language plpgsql as $$
 declare id bigint := nextval('net.request_seq');
 begin
-  insert into net.sent_requests values (id, url, body);
+  insert into net.sent_requests values (id, url, body, headers);
   return id;
 end $$;
 

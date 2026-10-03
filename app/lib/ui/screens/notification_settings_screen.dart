@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../state/providers.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/push_widgets.dart';
 
 /// "0803 123 4567" → "2348031234567"; null when it can't be a phone number.
 /// Mirrors private.normalize_phone in the database.
@@ -92,6 +93,10 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
         InfoBanner(icon: Icons.notifications_none, text: l.inAppNote, tone: BannerTone.green),
+        const SizedBox(height: 12),
+        SectionCard(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4), children: const [
+          PushDeviceToggle(),
+        ]),
         const SizedBox(height: 12),
         if (!smsOn) ...[
           InfoBanner(icon: Icons.sms_outlined, text: l.smsOffNote),

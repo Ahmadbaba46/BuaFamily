@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -420,6 +423,8 @@ class _SettingsTab extends ConsumerWidget {
           const SizedBox(height: 12),
           _SmsCard(settings: s, save: save),
           const SizedBox(height: 12),
+          _PushCard(settings: s, save: save),
+          const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
@@ -585,6 +590,101 @@ class _SmsCard extends ConsumerWidget {
               },
               icon: const Icon(Icons.send_to_mobile_outlined),
               label: Text(l.sendTestSms),
+            ),
+          ),
+        ],
+      ]),
+    );
+  }
+}
+
+class _PushCard extends ConsumerWidget {
+  const _PushCard({required this.settings, required this.save});
+
+  final AppSettings settings;
+  final Future<void> Function(Map<String, dynamic>) save;
+
+  Future<void> _chooseKey(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
+    final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['json']);
+    if (f == null || !context.mounted) return;
+    final text = utf8.decode(await f.readAsBytes(), allowMalformed: true);
+    if (!context.mounted) return;
+    final ok = await guarded(context, () => ref.read(repositoryProvider).setPush(serviceAccount: text));
+    if (!ok) return;
+    ref.invalidate(pushStatusProvider);
+    ref.invalidate(settingsProvider);
+    if (context.mounted) showSnack(context, l.saved);
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final status = ref.watch(pushStatusProvider).value;
+    final project = status?['project_id'] as String?;
+    final devices = (status?['devices'] as num?)?.toInt() ?? 0;
+    final members = (status?['members'] as num?)?.toInt() ?? 0;
+    final sent = (status?['sent_7d'] as num?)?.toInt() ?? 0;
+    final lastError = status?['last_error'] as String?;
+    final lastErrorAt = DateTime.tryParse(status?['last_error_at'] as String? ?? '');
+    final recentError = lastError != null && lastErrorAt != null &&
+        DateTime.now().difference(lastErrorAt) < const Duration(days: 2);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: Row(children: [
+            const IconTile(Icons.notifications_active_outlined, background: Bua.greenTint),
+            const SizedBox(width: 14),
+            Expanded(
+              child: ToggleRow(
+                title: l.pushAdminTitle,
+                subtitle: l.pushAdminSub,
+                value: settings.pushEnabled,
+                onChanged: project != null || settings.pushEnabled ? (v) => save({'push_enabled': v}) : null,
+              ),
+            ),
+          ]),
+        ),
+        if (project == null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: InfoBanner(icon: Icons.info_outline, text: l.pushSetupSteps),
+          ),
+        if (project != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(70, 0, 16, 4),
+            child: Text(l.pushStats(members, devices, sent), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+          ),
+        if (recentError)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(70, 0, 16, 8),
+            child: Text(l.lastError(lastError),
+                maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Bua.danger)),
+          ),
+        const InsetDivider(indent: 70),
+        _SettingRow(
+          icon: Icons.key_outlined,
+          title: l.firebaseKey,
+          value: project == null ? l.chooseKeyFile : l.firebaseKeySaved(project),
+          onTap: () => _chooseKey(context, ref),
+        ),
+        if (project != null && settings.pushEnabled) ...[
+          const InsetDivider(indent: 70),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+            child: OutlinedButton.icon(
+              onPressed: () async {
+                final ok = await guarded(context, () => ref.read(repositoryProvider).sendTestPush());
+                if (!context.mounted) return;
+                ref.invalidate(pushStatusProvider);
+                if (ok) showSnack(context, l.testPushSent);
+              },
+              icon: const Icon(Icons.notifications_active_outlined),
+              label: Text(l.sendTestPush),
             ),
           ),
         ],

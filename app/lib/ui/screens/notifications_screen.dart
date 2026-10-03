@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/push_widgets.dart';
 import '../widgets/social.dart';
 
 /// The main line of a notification, in the reader's language.
@@ -32,6 +33,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
+      NotificationKind.test => l.notifTest,
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -48,6 +50,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.mentorRequest || NotificationKind.opportunity => Icons.school_outlined,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,
+      NotificationKind.test => Icons.notifications_active_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {
@@ -86,13 +89,13 @@ class NotificationsScreen extends ConsumerWidget {
         onRetry: () => ref.invalidate(notificationsProvider),
         builder: (list) {
           if (list.isEmpty) {
-            return Center(
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.notifications_none, size: 48, color: Bua.inkSubtle),
-                const SizedBox(height: 12),
-                Text(l.noNotifications, style: const TextStyle(color: Bua.inkSubtle)),
-              ]),
-            );
+            return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
+              const PushPrompt(),
+              const SizedBox(height: 80),
+              const Icon(Icons.notifications_none, size: 48, color: Bua.inkSubtle),
+              const SizedBox(height: 12),
+              Text(l.noNotifications, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+            ]);
           }
           final todays = list.where((n) => isToday(n.createdAt)).toList();
           final older = list.where((n) => !isToday(n.createdAt)).toList();
@@ -115,6 +118,7 @@ class NotificationsScreen extends ConsumerWidget {
                 ],
               );
           return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
+            const PushPrompt(),
             if (todays.isNotEmpty) group(l.today, todays),
             if (older.isNotEmpty) group(l.earlier, older),
           ]);

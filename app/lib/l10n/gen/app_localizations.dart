@@ -4441,6 +4441,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restored: {added} brought back, {updated} changed back.'**
   String restoreDone(int added, int updated);
+
+  /// No description provided for @pushOnThisPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications on this phone'**
+  String get pushOnThisPhone;
+
+  /// No description provided for @pushInThisBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications in this browser'**
+  String get pushInThisBrowser;
+
+  /// No description provided for @pushOnSub.
+  ///
+  /// In en, this message translates to:
+  /// **'New notifications appear here even when the app is closed.'**
+  String get pushOnSub;
+
+  /// No description provided for @pushOffSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Get told about events, blood requests, polls and more, even when the app is closed.'**
+  String get pushOffSub;
+
+  /// No description provided for @pushBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked. Allow them for Bua Family in your phone or browser settings, then try again.'**
+  String get pushBlocked;
+
+  /// No description provided for @pushUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of the app can\'t receive notifications yet.'**
+  String get pushUnavailable;
+
+  /// No description provided for @pushNotSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'An admin hasn\'t set up phone notifications yet.'**
+  String get pushNotSetUp;
+
+  /// No description provided for @pushTurnedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are on for this device.'**
+  String get pushTurnedOn;
+
+  /// No description provided for @pushFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t turn on notifications. Check your connection and try again.'**
+  String get pushFailed;
+
+  /// No description provided for @pushPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified on this phone'**
+  String get pushPromptTitle;
+
+  /// No description provided for @pushPromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Know straight away about blood requests, events and family news.'**
+  String get pushPromptBody;
+
+  /// No description provided for @turnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get turnOn;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get notNow;
+
+  /// No description provided for @pushAdminTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone notifications'**
+  String get pushAdminTitle;
+
+  /// No description provided for @pushAdminSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Send every notification to members\' phones and browsers (free, through Firebase).'**
+  String get pushAdminSub;
+
+  /// No description provided for @pushSetupSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Create a free project at console.firebase.google.com. 2. In Project settings › Service accounts, choose “Generate new private key”. 3. Choose that file below. The app also needs your Firebase app settings (see the README).'**
+  String get pushSetupSteps;
+
+  /// No description provided for @firebaseKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Firebase key'**
+  String get firebaseKey;
+
+  /// No description provided for @firebaseKeySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved · {project}'**
+  String firebaseKeySaved(String project);
+
+  /// No description provided for @chooseKeyFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the key file (.json)'**
+  String get chooseKeyFile;
+
+  /// No description provided for @pushStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{members} members on {devices} devices · {sent} sent this week'**
+  String pushStats(int members, int devices, int sent);
+
+  /// No description provided for @sendTestPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Send me a test notification'**
+  String get sendTestPush;
+
+  /// No description provided for @testPushSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. It should arrive on every device where you turned notifications on.'**
+  String get testPushSent;
+
+  /// No description provided for @notifTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification: notifications are working on this device.'**
+  String get notifTest;
 }
 
 class _AppLocalizationsDelegate

@@ -24,8 +24,8 @@ exception
     if sqlerrm like 'ASSERTION FAILED%' then raise; end if;
   when others then null;
 end $$;
-grant usage on schema test to authenticated, anon;
-grant execute on all functions in schema test to authenticated, anon;
+grant usage on schema test to authenticated, anon, service_role;
+grant execute on all functions in schema test to authenticated, anon, service_role;
 create table test.ids (name text primary key, id uuid);
 grant all on test.ids to authenticated;
 
@@ -769,7 +769,92 @@ select test.expect_error($$select public.admin_backup((-1)::smallint)$$, 'member
 reset role;
 
 -- ---------------------------------------------------------------------------
--- 16. Anonymous users see nothing.
+-- 16. Push notifications.
+-- ---------------------------------------------------------------------------
+\set aisha_token '''aisha-phone-token-0123456789abcdef'''
+\set shared_token '''shared-tablet-token-0123456789abcdef'''
+-- Devices: a tablet moves to whoever signs in last; members see only their own.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.register_push_token(:shared_token, 'android');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select public.register_push_token(:shared_token, 'android');
+select test.assert((select count(*) = 1 from public.push_tokens), 'Ibrahim sees his tablet');
+select test.expect_error($$select public.admin_set_push('{}', 'https://x')$$, 'members cannot set up push');
+select test.expect_error($$select public.push_config()$$, 'the Firebase key is not readable by members');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.push_tokens), 'the tablet moved to Ibrahim');
+select public.register_push_token(:aisha_token, 'web');
+delete from public.push_tokens where token = :shared_token;
+reset role;
+select test.assert((select count(*) = 2 from public.push_tokens), 'cannot remove someone else''s device');
+select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.register_push_token('pending-token-0123456789abcdef', 'ios')$$,
+  'pending accounts get no notifications');
+reset role;
+
+-- Until an admin sets it up, nothing is sent.
+create temp table push_check as select coalesce(max(id), 0) as before from net.sent_requests;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.send_test_push();
+select test.expect_error($$select public.admin_set_push('not json', null)$$, 'rejects a file that is not JSON');
+select test.expect_error($$select public.admin_set_push('{"type": "user"}', null)$$, 'rejects other JSON');
+select test.expect_error($$select public.admin_set_push(null, 'http://insecure')$$, 'function address must be https');
+select public.admin_set_push(
+  '{"type": "service_account", "project_id": "bua-family", "client_email": "push@bua-family.iam.gserviceaccount.com", "private_key": "-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----\n"}',
+  'https://example.supabase.co/functions/v1/push');
+select test.assert((select (public.push_status() ->> 'enabled')::boolean and public.push_status() ->> 'project_id' = 'bua-family'
+  and (public.push_status() ->> 'devices')::int = 2), 'push set up');
+reset role;
+select test.assert((select count(*) = 0 from net.sent_requests where id > (select before from push_check)),
+  'nothing pushed before setup');
+
+-- A new poll: one request, only for members with a device (not the asker).
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.polls (question) values ('Push test poll?');
+reset role;
+select test.assert((select count(*) = 1 from net.sent_requests where id > (select before from push_check)), 'one request per statement');
+select test.assert((
+  select r.url = 'https://example.supabase.co/functions/v1/push'
+     and jsonb_array_length(r.body -> 'ids') = 2
+     and r.headers ->> 'x-push-secret' = (select decrypted_secret from vault.decrypted_secrets where name = 'push_webhook_secret')
+  from net.sent_requests r where r.id > (select before from push_check)), 'request names the notifications and carries the secret');
+
+-- The Edge Function gets the text's language and the devices.
+select format('%L', array(select jsonb_array_elements_text(r.body -> 'ids')
+                          from net.sent_requests r where r.id > (select before from push_check))) as push_ids \gset
+set role service_role;
+select test.assert((
+  select count(*) = 2 and bool_and(kind = 'poll') and bool_and(jsonb_array_length(tokens) = 1)
+  from public.push_payloads(:push_ids::uuid[])
+), 'payloads for the Edge Function');
+select test.assert((select (public.push_config() -> 'service_account' ->> 'project_id') = 'bua-family'), 'service role reads the config');
+select public.push_report(2);
+select public.push_report(0, 'UNREGISTERED');
+reset role;
+
+-- Muted kinds are not pushed.
+update public.profiles set muted_notifications = '{poll}' where id in (:member_id, :member2_id);
+truncate push_check;
+insert into push_check select coalesce(max(id), 0) from net.sent_requests;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.polls (question) values ('Muted poll?');
+select test.assert((select (public.push_status() ->> 'sent_7d')::int = 2 and public.push_status() ->> 'last_error' = 'UNREGISTERED'),
+  'status shows what was sent');
+reset role;
+select test.assert((select count(*) = 0 from net.sent_requests where id > (select before from push_check)), 'muted kinds are not pushed');
+update public.profiles set muted_notifications = '{}';
+
+-- ---------------------------------------------------------------------------
+-- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

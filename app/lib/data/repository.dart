@@ -775,4 +775,23 @@ class FamilyRepository {
   Future<Map<String, dynamic>> restoreData(Object data, {bool undoChanges = false, bool dryRun = true}) async =>
       Map<String, dynamic>.from(await _db.rpc('admin_restore',
           params: {'p_data': data, 'p_overwrite': undoChanges, 'p_dry_run': dryRun}) as Map);
+
+  // ---------------------------------------------------------------- push notifications
+
+  Future<void> registerPushToken(String token, String platform) =>
+      _db.rpc('register_push_token', params: {'p_token': token, 'p_platform': platform});
+
+  Future<void> unregisterPushToken(String token) => _db.from('push_tokens').delete().eq('token', token);
+
+  Future<Map<String, dynamic>> pushStatus() async =>
+      Map<String, dynamic>.from(await _db.rpc('push_status') as Map);
+
+  /// Admin: save the Firebase service account.
+  Future<void> setPush({required String serviceAccount}) => _db.rpc('admin_set_push', params: {
+        'p_service_account': serviceAccount,
+        // The 'push' Edge Function in this same project.
+        'p_function_url': _db.rest.url.replaceFirst(RegExp(r'/rest/v1/?$'), '/functions/v1/push'),
+      });
+
+  Future<void> sendTestPush() => _db.rpc('send_test_push');
 }

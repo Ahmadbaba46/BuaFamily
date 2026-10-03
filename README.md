@@ -44,6 +44,11 @@ share moments and photos, plan family events, and keep everyone's details
   wishes, add-to-calendar and directions. Only admins can pin to Home.
 - **Notifications:** a bell on Home for new events and announcements, being
   tagged, comments on your posts, birthdays and event reminders (live, no refresh).
+- **Phone notifications:** every notification can also pop up on members'
+  phones and in their browsers, even when the app is closed (free, through
+  Firebase Cloud Messaging), in each member's language. Members turn it on per
+  device; tapping a notification opens the right page. Muted kinds are never
+  sent, and urgent blood requests come through with sound.
 - **SMS through [Termii](https://termii.com):** members add their phone number
   and choose birthday reminders and/or events. Every morning at 07:30 (Nigeria
   time) the family gets birthday texts, and people who said Going or Maybe get a
@@ -200,6 +205,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `events`, `event_rsvps` | Family events and each member's reply |
 | `likes`, `comments` | "Ma sha Allah" and comments on posts, photos and events |
 | `notifications` | Each member's in-app inbox |
+| `push_tokens` | The phones and browsers each member turned notifications on for |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
@@ -268,7 +274,41 @@ Each member decides whether they want texts. Admin texts for events and
 announcements are opt-in per post ("Also send SMS"). Hausa texts avoid the
 hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
 
-### 3. Run the app
+### 3. Turn on phone notifications (optional)
+
+Notifications go from the database to the `push` Edge Function
+([`supabase/functions/push`](supabase/functions/push)), which sends them through
+Firebase Cloud Messaging (free). Members who don't turn them on still see
+everything under the bell.
+
+1. Create a project at [console.firebase.google.com](https://console.firebase.google.com)
+   (the free plan is enough).
+2. In **Project settings → General**, add the apps you build and copy their
+   settings into `app/config.json` (see `config.example.json`):
+   - **Android**, package name `com.buafamily.bua_family` → `FIREBASE_ANDROID_APP_ID`;
+   - **iOS**, bundle ID `com.buafamily.buaFamily` → `FIREBASE_IOS_APP_ID`;
+   - **Web** → `FIREBASE_WEB_APP_ID`;
+   - and, shared by all, `FIREBASE_API_KEY`, `FIREBASE_PROJECT_ID` and
+     `FIREBASE_SENDER_ID` (the "messaging sender ID").
+3. For browsers: **Project settings → Cloud Messaging → Web Push certificates →
+   Generate key pair**, and copy the key into `FIREBASE_VAPID_KEY`. For the
+   website on Vercel, add the five web values (`FIREBASE_API_KEY`,
+   `FIREBASE_PROJECT_ID`, `FIREBASE_SENDER_ID`, `FIREBASE_WEB_APP_ID`,
+   `FIREBASE_VAPID_KEY`) as environment variables and redeploy.
+4. For iPhones: upload an APNs key under **Cloud Messaging → Apple app
+   configuration**, and in Xcode turn on the **Push Notifications** capability
+   for the Runner target.
+5. Deploy the function (already done for the family's project):
+   `supabase functions deploy push --no-verify-jwt`. It checks a shared secret
+   that only the database knows instead.
+6. In **Project settings → Service accounts**, choose **Generate new private
+   key**. In the app, open **More → Admin → Settings → Phone notifications**,
+   tap **Firebase key** and choose that file. It is stored encrypted in
+   Supabase Vault.
+7. Turn notifications on for your own phone (**More → Notifications & SMS**)
+   and tap **Send me a test notification**.
+
+### 4. Run the app
 
 You need the [Flutter SDK](https://docs.flutter.dev/get-started/install).
 
@@ -291,11 +331,12 @@ flutter build web --dart-define-from-file=config.json   # website (upload build/
 flutter build ipa --dart-define-from-file=config.json   # iOS (needs a Mac)
 ```
 
-### 4. Moving to a new Supabase project (from a backup)
+### 5. Moving to a new Supabase project (from a backup)
 
 1. Download the latest backup: **More → Import, export & backup → Download**.
-2. Create the new project and apply the migrations (step 1), then point the
-   app at it (step 3).
+2. Create the new project and apply the migrations (step 1), deploy the
+   `push` function if you use notifications (step 3), then point the app at
+   it (step 4).
 3. Sign in first: the first account becomes the admin.
 4. Open **More → Import, export & backup → Restore…**, choose **A backup
    file…**, check what will come back, and tap **Restore**.
@@ -308,6 +349,7 @@ flutter build ipa --dart-define-from-file=config.json   # iOS (needs a Mac)
 ```sh
 cd app && flutter analyze && flutter test   # tree layout, relationships, screens in English and Hausa
 supabase/tests/local/run.sh                 # migrations + permission tests on a throwaway Postgres (run as non-root)
+deno test supabase/functions/push           # push texts, Firebase sign-in and sending
 ```
 
 Both suites run on every push via GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
@@ -322,8 +364,8 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 ## Roadmap
 
-- **Next for notifications:** app push notifications once the app is in the
-  Play Store / App Store.
+- **Play Store / App Store release:** app icon, signing, privacy policy and
+  store listings, so members can install the app with notifications.
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.

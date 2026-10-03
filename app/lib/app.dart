@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'l10n/l10n.dart';
+import 'services/push.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
@@ -178,8 +181,61 @@ class BuaFamilyApp extends ConsumerWidget {
       localizationsDelegates: localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
+      builder: (context, child) => _PushBinding(child: child ?? const SizedBox.shrink()),
     );
   }
+}
+
+/// Opens the page a tapped notification points to, keeps this device
+/// registered for whoever is signed in, and forgets it on sign-out.
+class _PushBinding extends ConsumerStatefulWidget {
+  const _PushBinding({required this.child});
+
+  final Widget child;
+
+  @override
+  ConsumerState<_PushBinding> createState() => _PushBindingState();
+}
+
+class _PushBindingState extends ConsumerState<_PushBinding> {
+  StreamSubscription<String>? _opens;
+  ProviderSubscription<String?>? _signedIn;
+  ProviderSubscription<PushPlatform>? _platform;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(authProvider).beforeSignOut = () => ref.read(pushControllerProvider.notifier).forgetDevice();
+    String? activeId() {
+      final p = ref.read(profileProvider);
+      return p?.isActive ?? false ? p!.id : null;
+    }
+
+    // Firebase may come up after the app is showing: then listen for taps and
+    // re-register this device for whoever is signed in.
+    _platform = ref.listenManual(pushPlatformProvider, (_, platform) {
+      _opens?.cancel();
+      _opens = platform.onOpen.listen((link) => ref.read(routerProvider).push(link));
+      if (platform.available && activeId() != null) ref.read(pushControllerProvider.notifier).resume();
+    }, fireImmediately: true);
+    _signedIn = ref.listenManual(
+      profileProvider.select((p) => p?.isActive ?? false ? p!.id : null),
+      (_, id) {
+        if (id != null) ref.read(pushControllerProvider.notifier).resume();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _opens?.cancel();
+    _signedIn?.close();
+    _platform?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 class _Splash extends ConsumerWidget {

@@ -2706,4 +2706,86 @@ class AppLocalizationsHa extends AppLocalizations {
   String restoreDone(int added, int updated) {
     return 'An maido: $added sun dawo, $updated an mayar.';
   }
+
+  @override
+  String get pushOnThisPhone => 'Sanarwa a wannan waya';
+
+  @override
+  String get pushInThisBrowser => 'Sanarwa a wannan burauza';
+
+  @override
+  String get pushOnSub =>
+      'Sababbin sanarwa za su bayyana nan ko da manhajar a rufe take.';
+
+  @override
+  String get pushOffSub =>
+      'A sanar da kai game da taruka, neman jini, ƙuri\'u da sauransu, ko da manhajar a rufe take.';
+
+  @override
+  String get pushBlocked =>
+      'An toshe sanarwa. Ba da izini ga Bua Family a saitunan wayarka ko burauza, sannan ka sake gwadawa.';
+
+  @override
+  String get pushUnavailable =>
+      'Wannan sigar manhajar ba za ta iya karɓar sanarwa ba tukuna.';
+
+  @override
+  String get pushNotSetUp => 'Wani shugaba bai saita sanarwar waya ba tukuna.';
+
+  @override
+  String get pushTurnedOn => 'An kunna sanarwa a wannan na\'ura.';
+
+  @override
+  String get pushFailed =>
+      'Ba a iya kunna sanarwa ba. Duba haɗin intanet sannan ka sake gwadawa.';
+
+  @override
+  String get pushPromptTitle => 'Karɓi sanarwa a wannan waya';
+
+  @override
+  String get pushPromptBody =>
+      'Ka sani nan take game da neman jini, taruka da labaran iyali.';
+
+  @override
+  String get turnOn => 'Kunna';
+
+  @override
+  String get notNow => 'Ba yanzu ba';
+
+  @override
+  String get pushAdminTitle => 'Sanarwar waya';
+
+  @override
+  String get pushAdminSub =>
+      'Aika kowace sanarwa zuwa wayoyi da burauzan membobi (kyauta, ta Firebase).';
+
+  @override
+  String get pushSetupSteps =>
+      '1. Ƙirƙiri aiki kyauta a console.firebase.google.com. 2. A Project settings › Service accounts, zaɓi “Generate new private key”. 3. Zaɓi wannan fayil a ƙasa. Manhajar na buƙatar saitunan Firebase ɗinku (duba README).';
+
+  @override
+  String get firebaseKey => 'Makullin Firebase';
+
+  @override
+  String firebaseKeySaved(String project) {
+    return 'An adana · $project';
+  }
+
+  @override
+  String get chooseKeyFile => 'Zaɓi fayil ɗin makulli (.json)';
+
+  @override
+  String pushStats(int members, int devices, int sent) {
+    return 'Membobi $members a na\'urori $devices · an aika $sent a wannan mako';
+  }
+
+  @override
+  String get sendTestPush => 'Aiko mini gwajin sanarwa';
+
+  @override
+  String get testPushSent =>
+      'An aika. Za ta zo a duk na\'urar da ka kunna sanarwa.';
+
+  @override
+  String get notifTest => 'Gwajin sanarwa: sanarwa na aiki a wannan na\'ura.';
 }
