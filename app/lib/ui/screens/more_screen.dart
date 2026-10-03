@@ -145,6 +145,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.volunteer_activism_outlined,
+                title: l.welfareFund,
+                onTap: () => context.push('/fund'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.bloodtype_outlined,
                 iconColor: Bua.danger,
                 title: l.bloodDonors,

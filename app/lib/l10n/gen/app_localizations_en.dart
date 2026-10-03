@@ -2058,4 +2058,211 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyOfMyDetails => 'Privacy of my details';
+
+  @override
+  String get welfareFund => 'Welfare fund';
+
+  @override
+  String get fundBalance => 'Fund balance';
+
+  @override
+  String treasurerLine(String names, String time) {
+    return 'Treasurer: $names · updated $time';
+  }
+
+  @override
+  String get treasurer => 'Treasurer';
+
+  @override
+  String get makeTreasurer => 'Make treasurer';
+
+  @override
+  String get removeTreasurer => 'Remove as treasurer';
+
+  @override
+  String get contribute => 'Contribute';
+
+  @override
+  String get askForSupport => 'Ask for support';
+
+  @override
+  String get openCauses => 'Open causes';
+
+  @override
+  String raisedOf(String raised, String target) {
+    return '$raised of $target';
+  }
+
+  @override
+  String contributorsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count contributors',
+      one: '1 contributor',
+      zero: 'No contributors yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String closesOn(String date) {
+    return 'closes $date';
+  }
+
+  @override
+  String get fundNote =>
+      'Money is never handled in the app. You pay the family account or the treasurer directly, record it here, and the treasurer confirms it.';
+
+  @override
+  String get howToPay => 'How to pay';
+
+  @override
+  String get bank => 'Bank';
+
+  @override
+  String get accountNumber => 'Account';
+
+  @override
+  String get accountName => 'Name';
+
+  @override
+  String get copyAccountNumber => 'Copy account number';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get noAccountYet =>
+      'The treasurer hasn\'t added the account details yet. You can still pay the treasurer in cash.';
+
+  @override
+  String get recordContribution => 'Record your contribution';
+
+  @override
+  String get amountNaira => 'Amount (₦)';
+
+  @override
+  String get payTransfer => 'Bank transfer';
+
+  @override
+  String get payCash => 'Cash to treasurer';
+
+  @override
+  String get payMobile => 'Mobile money';
+
+  @override
+  String get attachReceipt => 'Attach receipt (optional)';
+
+  @override
+  String get receiptAttached => 'Receipt attached';
+
+  @override
+  String get showMyName => 'Show my name on the contributors list';
+
+  @override
+  String get recordContributionButton => 'Record contribution';
+
+  @override
+  String get contributionNote =>
+      'The treasurer confirms each contribution. Amounts are private to you and the committee.';
+
+  @override
+  String get contributionRecorded => 'Recorded. The treasurer will confirm it.';
+
+  @override
+  String get amountInvalid => 'Enter an amount.';
+
+  @override
+  String get generalFund => 'General fund';
+
+  @override
+  String get contributeToFund => 'Contribute to the fund';
+
+  @override
+  String get myContributions => 'My contributions';
+
+  @override
+  String get contribPending => 'Waiting for the treasurer';
+
+  @override
+  String get contribConfirmed => 'Confirmed';
+
+  @override
+  String get contribRejected => 'Not confirmed';
+
+  @override
+  String toConfirm(int count) {
+    return 'To confirm · $count';
+  }
+
+  @override
+  String get confirmAction => 'Confirm';
+
+  @override
+  String get notReceived => 'Not received';
+
+  @override
+  String get viewReceipt => 'Receipt';
+
+  @override
+  String get supportRequests => 'Support requests';
+
+  @override
+  String get openCause => 'Open';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get closeCause => 'Close cause';
+
+  @override
+  String get newCause => 'New cause';
+
+  @override
+  String get causeTitle => 'What is it for?';
+
+  @override
+  String get targetAmount => 'Amount needed (₦)';
+
+  @override
+  String get closesOnLabel => 'Closes on (optional)';
+
+  @override
+  String get askSupportNote =>
+      'Your request goes to the treasurer and admins only. If they open it, the family can contribute.';
+
+  @override
+  String get requestSent => 'Sent to the treasurer and admins.';
+
+  @override
+  String get recordPayout => 'Record support paid';
+
+  @override
+  String get forCause => 'For';
+
+  @override
+  String get editAccount => 'Edit account details';
+
+  @override
+  String get openingBalance => 'Money already in the fund (₦)';
+
+  @override
+  String get waitingReview => 'Waiting for review';
+
+  @override
+  String notifFundContribution(String amount) {
+    return 'New contribution to confirm: $amount';
+  }
+
+  @override
+  String notifFundConfirmed(String amount) {
+    return 'Your contribution of $amount was confirmed. Thank you!';
+  }
+
+  @override
+  String notifFundRequest(String title) {
+    return 'Support requested: $title';
+  }
 }

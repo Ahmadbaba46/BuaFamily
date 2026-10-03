@@ -507,7 +507,72 @@ select test.assert((select count(*) = 1 from public.notifications where user_id 
   and data ->> 'patient' = 'Muted test'), 'blood requests cannot be muted');
 
 -- ---------------------------------------------------------------------------
--- 12. Anonymous users see nothing.
+-- 12. Welfare fund.
+-- ---------------------------------------------------------------------------
+-- Admin makes Ibrahim (member2) treasurer; members can't make themselves one.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_set_treasurer(%L, true)$$, :member_id), 'members cannot choose treasurers');
+select test.expect_error($$update public.profiles set is_treasurer = true where id = auth.uid()$$, 'cannot self-appoint as treasurer');
+select test.expect_error($$insert into public.fund_causes (title) values ('My open cause')$$, 'members cannot open causes directly');
+insert into public.fund_causes (title, target_amount, status) values ('Help with rent', 50000, 'proposed');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_set_treasurer(:member2_id, true);
+update public.fund_settings set opening_balance = 100000, bank_name = 'Family Bank', account_number = '0123456789';
+insert into public.fund_causes (title, target_amount, closes_on) values ('School fees', 600000, '2026-10-31');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'fund_request' and user_id = :admin_id), 'committee told about a support request');
+
+-- The treasurer sees the proposal; other members don't.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert(public.is_committee(), 'treasurer is on the committee');
+select test.assert((select count(*) = 2 from public.fund_causes), 'committee sees proposals');
+reset role;
+
+-- Aisha records two contributions (one with a receipt) and stays anonymous on one.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.fund_contributions (cause_id, amount, method, show_name)
+  values ((select id from public.fund_causes where title = 'School fees'), 20000, 'transfer', true);
+insert into public.fund_contributions (cause_id, amount, method, show_name)
+  values ((select id from public.fund_causes where title = 'School fees'), 5000, 'cash', false);
+insert into storage.objects (bucket_id, name) values ('receipts', auth.uid() || '/r1.jpg');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('receipts', '%s/x.jpg')$$, :admin_id),
+  'receipts only in own folder');
+update public.fund_contributions set status = 'confirmed';
+select test.expect_error($$insert into public.fund_contributions (amount, method, status) values (1, 'cash', 'confirmed')$$,
+  'cannot record as already confirmed');
+select test.assert((select count(*) = 1 from public.fund_causes where title = 'Help with rent'), 'requester sees own proposal');
+reset role;
+select test.assert((select count(*) = 0 from public.fund_contributions where status = 'confirmed'), 'members cannot confirm');
+select test.assert((select count(*) = 4 from public.notifications where kind = 'fund_contribution'), 'committee (2) told about each of 2 contributions');
+
+-- The treasurer confirms both.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.fund_contributions set status = 'confirmed';
+select test.assert((select count(*) = 1 from storage.objects where bucket_id = 'receipts'), 'committee can see receipts');
+insert into public.fund_payouts (cause_id, amount, note) values ((select id from public.fund_causes where title = 'School fees'), 10000, 'Term fees');
+reset role;
+select test.assert((select bool_and(reviewed_by = :member2_id and reviewed_at is not null) from public.fund_contributions), 'review stamped');
+select test.assert((select count(*) = 2 from public.notifications where kind = 'fund_confirmed' and user_id = :member_id), 'contributor told');
+
+-- Everyone sees the balance and the cause's progress, not the amounts per person.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert(((public.fund_overview() ->> 'balance')::numeric = 115000), 'balance = opening + confirmed - payouts');
+select test.assert((public.fund_overview() -> 'treasurers' ->> 0) = 'Ibrahim Bua', 'treasurer named');
+select test.assert((public.fund_overview() ->> 'pending') is null, 'pending count only for the committee');
+select test.assert((select raised = 25000 and contributors = 1 and names = array['Aisha Bua'] from public.fund_cause_totals()),
+  'cause totals with listed names');
+select test.assert((select count(*) = 0 from public.fund_payouts), 'payouts are committee-only');
+reset role;
+
+-- ---------------------------------------------------------------------------
+-- 13. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

@@ -1993,4 +1993,210 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get privacyOfMyDetails => 'Sirrin bayanaina';
+
+  @override
+  String get welfareFund => 'Asusun taimakon iyali';
+
+  @override
+  String get fundBalance => 'Kuɗin da ke cikin asusu';
+
+  @override
+  String treasurerLine(String names, String time) {
+    return 'Ma\'aji: $names · an sabunta $time';
+  }
+
+  @override
+  String get treasurer => 'Ma\'aji';
+
+  @override
+  String get makeTreasurer => 'Mai da shi ma\'aji';
+
+  @override
+  String get removeTreasurer => 'Cire daga ma\'aji';
+
+  @override
+  String get contribute => 'Ba da gudummawa';
+
+  @override
+  String get askForSupport => 'Nemi taimako';
+
+  @override
+  String get openCauses => 'Buƙatun da ake tarawa';
+
+  @override
+  String raisedOf(String raised, String target) {
+    return '$raised cikin $target';
+  }
+
+  @override
+  String contributorsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Masu gudummawa $count',
+      zero: 'Babu masu gudummawa tukuna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String closesOn(String date) {
+    return 'za a rufe $date';
+  }
+
+  @override
+  String get fundNote =>
+      'Ba a karɓar kuɗi a cikin manhaja. Kana biya asusun iyali ko ma\'aji kai tsaye, ka rubuta a nan, sannan ma\'aji ya tabbatar.';
+
+  @override
+  String get howToPay => 'Yadda ake biya';
+
+  @override
+  String get bank => 'Banki';
+
+  @override
+  String get accountNumber => 'Lambar asusu';
+
+  @override
+  String get accountName => 'Sunan asusu';
+
+  @override
+  String get copyAccountNumber => 'Kwafi lambar asusu';
+
+  @override
+  String get copied => 'An kwafa';
+
+  @override
+  String get noAccountYet =>
+      'Ma\'aji bai saka bayanan asusu ba tukuna. Za ka iya ba ma\'aji kuɗi hannu.';
+
+  @override
+  String get recordContribution => 'Rubuta gudummawarka';
+
+  @override
+  String get amountNaira => 'Adadi (₦)';
+
+  @override
+  String get payTransfer => 'Tura ta banki';
+
+  @override
+  String get payCash => 'Hannu ga ma\'aji';
+
+  @override
+  String get payMobile => 'Kuɗin waya';
+
+  @override
+  String get attachReceipt => 'Haɗa rasit (ba dole ba)';
+
+  @override
+  String get receiptAttached => 'An haɗa rasit';
+
+  @override
+  String get showMyName => 'Nuna sunana a jerin masu gudummawa';
+
+  @override
+  String get recordContributionButton => 'Rubuta gudummawa';
+
+  @override
+  String get contributionNote =>
+      'Ma\'aji yana tabbatar da kowace gudummawa. Kai da kwamiti kaɗai ke ganin adadin.';
+
+  @override
+  String get contributionRecorded => 'An rubuta. Ma\'aji zai tabbatar.';
+
+  @override
+  String get amountInvalid => 'Saka adadi.';
+
+  @override
+  String get generalFund => 'Asusun gaba ɗaya';
+
+  @override
+  String get contributeToFund => 'Ba da gudummawa ga asusu';
+
+  @override
+  String get myContributions => 'Gudummawata';
+
+  @override
+  String get contribPending => 'Ana jiran ma\'aji';
+
+  @override
+  String get contribConfirmed => 'An tabbatar';
+
+  @override
+  String get contribRejected => 'Ba a tabbatar ba';
+
+  @override
+  String toConfirm(int count) {
+    return 'Don tabbatarwa · $count';
+  }
+
+  @override
+  String get confirmAction => 'Tabbatar';
+
+  @override
+  String get notReceived => 'Ba a karɓa ba';
+
+  @override
+  String get viewReceipt => 'Rasit';
+
+  @override
+  String get supportRequests => 'Buƙatun taimako';
+
+  @override
+  String get openCause => 'Buɗe';
+
+  @override
+  String get decline => 'Ƙi';
+
+  @override
+  String get closeCause => 'Rufe';
+
+  @override
+  String get newCause => 'Sabuwar buƙata';
+
+  @override
+  String get causeTitle => 'Don me ne?';
+
+  @override
+  String get targetAmount => 'Adadin da ake buƙata (₦)';
+
+  @override
+  String get closesOnLabel => 'Ranar rufewa (ba dole ba)';
+
+  @override
+  String get askSupportNote =>
+      'Buƙatarka za ta tafi ga ma\'aji da masu gudanarwa kaɗai. Idan suka buɗe ta, iyali za su iya ba da gudummawa.';
+
+  @override
+  String get requestSent => 'An aika ga ma\'aji da masu gudanarwa.';
+
+  @override
+  String get recordPayout => 'Rubuta taimakon da aka biya';
+
+  @override
+  String get forCause => 'Don';
+
+  @override
+  String get editAccount => 'Gyara bayanan asusu';
+
+  @override
+  String get openingBalance => 'Kuɗin da ke cikin asusu tun farko (₦)';
+
+  @override
+  String get waitingReview => 'Ana jiran dubawa';
+
+  @override
+  String notifFundContribution(String amount) {
+    return 'Sabuwar gudummawa da za a tabbatar: $amount';
+  }
+
+  @override
+  String notifFundConfirmed(String amount) {
+    return 'An tabbatar da gudummawarka ta $amount. Na gode!';
+  }
+
+  @override
+  String notifFundRequest(String title) {
+    return 'An nemi taimako: $title';
+  }
 }

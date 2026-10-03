@@ -11,6 +11,7 @@ import 'ui/screens/blood_donors_screen.dart';
 import 'ui/screens/edit_profile_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
+import 'ui/screens/fund_cause_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/memorial_screen.dart';
@@ -28,6 +29,7 @@ import 'ui/screens/photo_screen.dart';
 import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
+import 'ui/screens/welfare_fund_screen.dart';
 import 'ui/screens/who_can_help_screen.dart';
 import 'ui/theme.dart';
 import 'ui/widgets/home_shell.dart';
@@ -96,6 +98,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/related',
         builder: (_, s) => HowRelatedScreen(fromId: s.uri.queryParameters['a'], toId: s.uri.queryParameters['b']),
       ),
+      GoRoute(path: '/fund', builder: (_, _) => const WelfareFundScreen()),
+      GoRoute(path: '/fund/give', builder: (_, _) => const FundCauseScreen()),
+      GoRoute(path: '/fund/new', builder: (_, s) => NewCauseScreen(ask: s.uri.queryParameters['ask'] == '1')),
+      GoRoute(path: '/fund/cause/:id', builder: (_, s) => FundCauseScreen(causeId: s.pathParameters['id'])),
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),
       GoRoute(path: '/blood', builder: (_, _) => const BloodDonorsScreen()),
       GoRoute(path: '/blood/request', builder: (_, _) => const NewBloodRequestScreen()),

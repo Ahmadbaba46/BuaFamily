@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
+import '../../models/fund.dart';
 import '../../models/notification.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
@@ -24,6 +25,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.remembrance =>
         l.notifRemembrance((n.data['years'] as num?)?.toInt() ?? 0, n.str('name') ?? ''),
       NotificationKind.memory => l.notifMemory(n.str('name') ?? '', n.str('body') ?? ''),
+      NotificationKind.fundContribution => l.notifFundContribution(naira((n.data['amount'] as num?) ?? 0)),
+      NotificationKind.fundConfirmed => l.notifFundConfirmed(naira((n.data['amount'] as num?) ?? 0)),
+      NotificationKind.fundRequest => l.notifFundRequest(n.str('title') ?? ''),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -35,6 +39,8 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.comment => Icons.chat_bubble_outline,
       NotificationKind.bloodRequest || NotificationKind.bloodOffer => Icons.bloodtype_outlined,
       NotificationKind.remembrance || NotificationKind.memory => Icons.dark_mode_outlined,
+      NotificationKind.fundContribution || NotificationKind.fundConfirmed || NotificationKind.fundRequest =>
+        Icons.volunteer_activism_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {

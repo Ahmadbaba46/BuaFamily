@@ -9,6 +9,7 @@ import '../data/repository.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/fund.dart';
 import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
@@ -186,3 +187,23 @@ final memoriesProvider = FutureProvider.family<List<Memory>, String>(
 final remembranceReminderProvider = FutureProvider.family<bool, String>(
   (ref, personId) => ref.watch(repositoryProvider).remembranceReminder(personId),
 );
+
+// ---------------------------------------------------------------- welfare fund
+
+final fundOverviewProvider = FutureProvider<FundOverview>((ref) => ref.watch(repositoryProvider).fundOverview());
+
+final fundCausesProvider = FutureProvider<List<FundCause>>((ref) => ref.watch(repositoryProvider).fundCauses());
+
+final contributionsProvider =
+    FutureProvider<List<Contribution>>((ref) => ref.watch(repositoryProvider).contributions());
+
+final receiptUrlProvider = FutureProvider.family<String, String>(
+  (ref, path) => ref.watch(repositoryProvider).receiptUrl(path),
+);
+
+/// Refresh everything shown on the fund pages.
+void refreshFund(WidgetRef ref) {
+  ref.invalidate(fundOverviewProvider);
+  ref.invalidate(fundCausesProvider);
+  ref.invalidate(contributionsProvider);
+}

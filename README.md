@@ -56,6 +56,12 @@ share moments and photos, plan family events, and keep everyone's details
   with only their blood group and town. Anyone can post a blood request; donors
   with a compatible blood group are alerted in the app (and by SMS if they opted
   in), offer with one tap, and the person who asked is told.
+- **Welfare fund:** the fund balance, open causes (school fees, hospital
+  bills, reunions) with progress, and how to pay. Members pay the family
+  account or the treasurer, record it in the app, and a treasurer confirms it.
+  Amounts stay private to the contributor and the committee (admins and
+  treasurers); everyone sees totals and the names of those who chose to be
+  listed. Anyone can ask for support privately.
 - **Birthdays & remembrance:** today, this week and the coming month at a
   glance: birthdays, death anniversaries, wedding anniversaries and events,
   with a quick greeting or prayer.
@@ -117,6 +123,10 @@ Design mockups for the app (sample data). The app follows these designs; the scr
     <td align="center" valign="top" width="25%"><img src="docs/mockups/how-related.png" alt="How are we related?" width="180"><br><sub>How are we related?</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/memorial.png" alt="Memorial page" width="180"><br><sub>Memorial page</sub></td>
   </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause & contributions" width="180"><br><sub>Fund cause & contributions</sub></td>
+  </tr>
 </table>
 
 ### Admin & settings
@@ -141,16 +151,12 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 </table>
 
 <details>
-<summary><b>Designed for later</b> (6 screens)</summary>
+<summary><b>Designed for later</b> (4 screens)</summary>
 
 <table>
   <tr>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause" width="180"><br><sub>Fund cause</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
-  </tr>
-  <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
   </tr>
@@ -176,6 +182,7 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 | `likes`, `comments` | "Ma sha Allah" and comments on posts, photos and events |
 | `notifications` | Each member's in-app inbox |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
+| `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
 | `memories`, `remembrance_reminders` | Prayers and memories on memorial pages; who wants an anniversary reminder |
 | `private.sms_outbox` | Text messages waiting to be sent, sent or failed (not reachable from the app) |
 
