@@ -900,6 +900,32 @@ select test.expect_error($$select public.register_push_token('suspended-device-t
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 19. Comment notifications name the commenter and open the post.
+-- ---------------------------------------------------------------------------
+select test.assert((select data ->> 'name' like 'Aisha%' and link = '/posts/' || (select id from public.posts where body = 'Eid photos')
+  from public.notifications where kind = 'comment' and user_id = :admin_id and data ->> 'body' = 'Lovely'),
+  'comment notification names the commenter and opens the post');
+select test.assert((select link like '/posts/%' from public.notifications where kind = 'tagged' and user_id = :member_id),
+  'tag notification opens the post');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.comments (post_id, body) values ((select id from public.posts where body = 'Eid photos'), 'Thank you');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'comment' and user_id = :member_id
+  and data ->> 'body' = 'Thank you' and (data ->> 'also')::boolean), 'earlier commenters hear about replies');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'comment' and user_id = :admin_id
+  and data ->> 'body' = 'Thank you'), 'nobody is told about their own comment');
+
+-- An unlinked member says which person they are: admins hear about it.
+update public.profiles set person_id = null where id = :member2_id;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.profiles set requested_person_id = (select id from test.ids where name='ibrahim') where id = auth.uid();
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where user_id = :admin_id and kind = 'account_request'
+  and data ->> 'person' is not null and actor_id = :member2_id), 'admins hear when a member says "this is me"');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

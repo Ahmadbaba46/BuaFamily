@@ -2836,4 +2836,37 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get pendingPushHint => 'Sami sanarwa da zarar admin ya amince da kai.';
+
+  @override
+  String notifCommentBy(String name, String body) {
+    return 'Sharhi daga $name: “$body”';
+  }
+
+  @override
+  String notifCommentAlso(String name, String body) {
+    return 'Sabon sharhi daga $name a inda ka yi sharhi: “$body”';
+  }
+
+  @override
+  String notifAccountClaim(String name, String person) {
+    return '$name: “Ni ne $person” a bishiyar iyali';
+  }
+
+  @override
+  String get postGone => 'An cire wannan rubutu.';
+
+  @override
+  String get findMeInTree => 'Nemo kanka a bishiyar iyali';
+
+  @override
+  String get findMeHint =>
+      'Haɗa asusunka da wurinka a bishiyar iyali don samun bayananka, hotonka da cikakkun bayanai.';
+
+  @override
+  String linkWaiting(String name) {
+    return 'Ana jiran admin ya haɗa ka da $name';
+  }
+
+  @override
+  String get linkedNow => 'An haɗa. Wannan ne bayananka yanzu.';
 }

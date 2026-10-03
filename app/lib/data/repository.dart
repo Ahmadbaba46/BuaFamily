@@ -217,6 +217,12 @@ class FamilyRepository {
     return rows.map(Post.fromJson).toList();
   }
 
+  /// One moment or announcement; null when it was removed.
+  Future<Post?> post(String id) async {
+    final row = await _db.from('posts').select(Post.select).eq('id', id).maybeSingle();
+    return row == null ? null : Post.fromJson(row);
+  }
+
   /// Ids of every post, photo and event the current user has liked.
   Future<Set<String>> myLikes() async {
     final rows = await _db.from('likes').select('post_id, photo_id, event_id').eq('user_id', userId!);

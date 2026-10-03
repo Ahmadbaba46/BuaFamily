@@ -4651,6 +4651,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get a notification the moment an admin approves you.'**
   String get pendingPushHint;
+
+  /// No description provided for @notifCommentBy.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} commented: “{body}”'**
+  String notifCommentBy(String name, String body);
+
+  /// No description provided for @notifCommentAlso.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} also commented: “{body}”'**
+  String notifCommentAlso(String name, String body);
+
+  /// No description provided for @notifAccountClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} says they are {person} in the tree'**
+  String notifAccountClaim(String name, String person);
+
+  /// No description provided for @postGone.
+  ///
+  /// In en, this message translates to:
+  /// **'This post was removed.'**
+  String get postGone;
+
+  /// No description provided for @findMeInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Find yourself in the tree'**
+  String get findMeInTree;
+
+  /// No description provided for @findMeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Link your account to your place in the tree to get your own profile, photo and details.'**
+  String get findMeHint;
+
+  /// No description provided for @linkWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for an admin to link you to {name}'**
+  String linkWaiting(String name);
+
+  /// No description provided for @linkedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked. This is now your profile.'**
+  String get linkedNow;
 }
 
 class _AppLocalizationsDelegate

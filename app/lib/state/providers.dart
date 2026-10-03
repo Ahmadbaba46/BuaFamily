@@ -157,9 +157,29 @@ final photosOfProvider = FutureProvider.family<List<Photo>, String>(
 
 final eventsProvider = FutureProvider<List<FamilyEvent>>((ref) => ref.watch(repositoryProvider).events());
 
-final commentsProvider = FutureProvider.family<List<Comment>, Target>(
+/// Fetched fresh each time comments are opened.
+final commentsProvider = FutureProvider.autoDispose.family<List<Comment>, Target>(
   (ref, target) => ref.watch(repositoryProvider).comments(target),
 );
+
+final postProvider = FutureProvider.autoDispose.family<Post?, String>(
+  (ref, id) => ref.watch(repositoryProvider).post(id),
+);
+
+/// Refetches what other members may have changed meanwhile: used when the app
+/// comes back to the foreground and when a new notification arrives.
+void refreshSharedContent(WidgetRef ref, {bool inbox = false}) {
+  if (inbox) ref.invalidate(notificationsProvider);
+  ref.invalidate(feedProvider);
+  ref.invalidate(myLikesProvider);
+  ref.invalidate(eventsProvider);
+  ref.invalidate(commentsProvider);
+  ref.invalidate(postProvider);
+  ref.invalidate(albumsProvider);
+  ref.invalidate(bloodRequestsProvider);
+  ref.invalidate(pollsProvider);
+  ref.invalidate(storiesProvider);
+}
 
 // ---------------------------------------------------------------- notifications
 

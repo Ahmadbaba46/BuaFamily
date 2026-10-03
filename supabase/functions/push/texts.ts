@@ -20,7 +20,12 @@ const en: Texts = {
   birthday: (d) => `${s(d, "name")}'s birthday today (${n(d, "age")})`,
   event_reminder: (d) => `Tomorrow: ${s(d, "title")}`,
   tagged: (d) => ("photo_id" in d ? "You were tagged in a photo" : "You were tagged in a moment"),
-  comment: (d) => `New comment: “${s(d, "body")}”`,
+  comment: (d) =>
+    !s(d, "name")
+      ? `New comment: “${s(d, "body")}”`
+      : d.also === true
+      ? `${s(d, "name")} also commented: “${s(d, "body")}”`
+      : `${s(d, "name")} commented: “${s(d, "body")}”`,
   blood_request: (d) => `${s(d, "blood_group")} blood needed for ${s(d, "patient")} at ${s(d, "hospital")}`,
   blood_offer: (d) => `A relative can donate blood (${s(d, "blood_group")})`,
   remembrance: (d) =>
@@ -35,7 +40,11 @@ const en: Texts = {
   story: (d) => `New story from ${s(d, "speaker")}: ${s(d, "title")}`,
   test: () => "Test notification: notifications are working on this device.",
   account_request: (d) =>
-    s(d, "note") ? `${s(d, "name")} says: “${s(d, "note")}”` : `New sign-up waiting for approval: ${s(d, "name")}`,
+    s(d, "person")
+      ? `${s(d, "name")} says they are ${s(d, "person")} in the tree`
+      : s(d, "note")
+      ? `${s(d, "name")} says: “${s(d, "note")}”`
+      : `New sign-up waiting for approval: ${s(d, "name")}`,
   change_request: (d) =>
     s(d, "request_kind") === "create_person"
       ? `${s(d, "name")} suggested adding ${s(d, "person") || "someone"} to the tree`
@@ -53,7 +62,12 @@ const ha: Texts = {
   birthday: (d) => `Ranar haihuwar ${s(d, "name")} yau (${n(d, "age")})`,
   event_reminder: (d) => `Gobe: ${s(d, "title")}`,
   tagged: (d) => ("photo_id" in d ? "An saka ka a hoto" : "An saka ka a wani rubutu"),
-  comment: (d) => `Sabon sharhi: “${s(d, "body")}”`,
+  comment: (d) =>
+    !s(d, "name")
+      ? `Sabon sharhi: “${s(d, "body")}”`
+      : d.also === true
+      ? `Sabon sharhi daga ${s(d, "name")} a inda ka yi sharhi: “${s(d, "body")}”`
+      : `Sharhi daga ${s(d, "name")}: “${s(d, "body")}”`,
   blood_request: (d) => `Ana buƙatar jini ${s(d, "blood_group")} don ${s(d, "patient")} a ${s(d, "hospital")}`,
   blood_offer: (d) => `Wani ɗan uwa zai iya ba da jini (${s(d, "blood_group")})`,
   remembrance: (d) => `Shekara ${n(d, "years")} da rasuwar ${s(d, "name")}`,
@@ -67,7 +81,11 @@ const ha: Texts = {
   story: (d) => `Sabon labari daga ${s(d, "speaker")}: ${s(d, "title")}`,
   test: () => "Gwajin sanarwa: sanarwa na aiki a wannan na'ura.",
   account_request: (d) =>
-    s(d, "note") ? `Bayani daga ${s(d, "name")}: “${s(d, "note")}”` : `Sabon rajista na jiran amincewa: ${s(d, "name")}`,
+    s(d, "person")
+      ? `${s(d, "name")}: “Ni ne ${s(d, "person")}” a bishiyar iyali`
+      : s(d, "note")
+      ? `Bayani daga ${s(d, "name")}: “${s(d, "note")}”`
+      : `Sabon rajista na jiran amincewa: ${s(d, "name")}`,
   change_request: (d) =>
     s(d, "request_kind") === "create_person"
       ? `Shawara daga ${s(d, "name")}: a ƙara ${s(d, "person") || "wani"} a bishiyar iyali`
