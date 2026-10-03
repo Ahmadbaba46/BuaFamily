@@ -1,15 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
+import '../../models/social.dart' show PickedImage;
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/social.dart' show StoragePhoto;
 
 /// Add a new person (optionally as a relative of [relationTo]) or edit [editId].
 ///
@@ -43,6 +48,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
   bool _living = true;
   DateTime? _death;
   bool _deathApprox = false;
+  PickedImage? _photo;
 
   late String? _relType = widget.relationType;
   String? _otherParentId;
@@ -128,6 +134,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
     final isAdmin = ref.read(isAdminProvider);
     final myPersonId = ref.read(profileProvider)?.personId;
     final values = _values();
+    final photo = _photo;
     setState(() => _busy = true);
 
     String? message;
@@ -147,19 +154,29 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
               };
         if (isAdmin) {
           openId = await repo.createPerson(values, relation: relation);
+          if (photo != null) await repo.uploadPhoto(openId!, Uint8List.fromList(photo.bytes), photo.extension);
         } else {
+          if (photo != null) values['photo_path'] = await repo.uploadPendingPhoto(photo);
           await repo.submitRequest(RequestKind.createPerson, {'person': values, 'relation': ?relation});
           message = l.sentForApproval;
         }
         return;
       }
 
+      // A new photo goes straight on for admins and for your own record;
+      // otherwise it travels with the suggestion.
+      final direct = isAdmin || original.id == myPersonId;
+      if (photo != null && direct) {
+        await repo.uploadPhoto(original.id, Uint8List.fromList(photo.bytes), photo.extension);
+      }
+
       // Edit: only send what changed.
       final before = original.toJson();
-      final changes = {
+      final changes = <String, dynamic>{
         for (final e in values.entries)
           if (before[e.key] != e.value) e.key: e.value,
       };
+      if (photo != null && !direct) changes['photo_path'] = await repo.uploadPendingPhoto(photo);
       if (changes.isEmpty) return;
       if (isAdmin) {
         await repo.updatePerson(original.id, changes);
@@ -258,6 +275,21 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
               const SizedBox(height: 14),
             ],
             _card([
+              _PhotoField(
+                picked: _photo,
+                currentPath: _original?.photoPath,
+                onPick: () async {
+                  final f = await ImagePicker().pickImage(
+                    source: ImageSource.gallery,
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                    imageQuality: 80,
+                  );
+                  if (f == null) return;
+                  final bytes = await f.readAsBytes();
+                  setState(() => _photo = PickedImage(bytes, f.name.contains('.') ? f.name.split('.').last : 'jpg'));
+                },
+              ),
               Row(children: [
                 Expanded(child: _field('first_name', l.firstName, required: true)),
                 const SizedBox(width: 10),
@@ -268,14 +300,12 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
               _field('nickname', l.nickname),
               LabeledField(
                 label: l.sex,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: PillSegmented<Sex>(
-                    values: Sex.values,
-                    labelOf: l.sexLabel,
-                    selected: _sex,
-                    onChanged: (v) => setState(() => _sex = v),
-                  ),
+                child: PillSegmented<Sex>(
+                  values: Sex.values,
+                  expand: true,
+                  labelOf: l.sexLabel,
+                  selected: _sex,
+                  onChanged: (v) => setState(() => _sex = v),
                 ),
               ),
             ]),
@@ -491,5 +521,45 @@ class _DateField extends StatelessWidget {
         ),
       ]),
     );
+  }
+}
+
+/// Round photo with an "Add photo" / "Change photo" button.
+class _PhotoField extends StatelessWidget {
+  const _PhotoField({required this.picked, required this.currentPath, required this.onPick});
+
+  final PickedImage? picked;
+  final String? currentPath;
+  final VoidCallback onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final has = picked != null || currentPath != null;
+    return Row(children: [
+      Material(
+        color: Bua.greenTint,
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onPick,
+          child: SizedBox(
+            width: 72,
+            height: 72,
+            child: picked != null
+                ? Image.memory(Uint8List.fromList(picked!.bytes), fit: BoxFit.cover)
+                : currentPath != null
+                    ? StoragePhoto(currentPath!)
+                    : const Icon(Icons.add_a_photo_outlined, color: Bua.green, size: 28),
+          ),
+        ),
+      ),
+      const SizedBox(width: 14),
+      OutlinedButton.icon(
+        onPressed: onPick,
+        icon: const Icon(Icons.photo_camera_outlined, size: 18),
+        label: Text(has ? l.changePhoto : l.addPhoto),
+      ),
+    ]);
   }
 }

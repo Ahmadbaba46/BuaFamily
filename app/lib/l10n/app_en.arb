@@ -1782,5 +1782,7 @@
   },
   "sendTestPush": "Send me a test notification",
   "testPushSent": "Sent. It should arrive on every device where you turned notifications on.",
-  "notifTest": "Test notification: notifications are working on this device."
+  "notifTest": "Test notification: notifications are working on this device.",
+  "addPhoto": "Add photo",
+  "photoLabel": "Photo"
 }
