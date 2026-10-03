@@ -763,4 +763,16 @@ class FamilyRepository {
   Future<void> backupNow() => _db.rpc('admin_backup_now');
 
   Future<Object?> backupData(int slot) => _db.rpc('admin_backup', params: {'p_slot': slot});
+
+  /// Puts a stored backup back (slot -1 is the restore point). With [dryRun]
+  /// nothing changes; the counts say what would. Returns per-table
+  /// {added, updated, skipped}.
+  Future<Map<String, dynamic>> restoreBackup(int slot, {bool undoChanges = false, bool dryRun = true}) async =>
+      Map<String, dynamic>.from(await _db.rpc('admin_restore_backup',
+          params: {'p_slot': slot, 'p_overwrite': undoChanges, 'p_dry_run': dryRun}) as Map);
+
+  /// The same for a downloaded backup file.
+  Future<Map<String, dynamic>> restoreData(Object data, {bool undoChanges = false, bool dryRun = true}) async =>
+      Map<String, dynamic>.from(await _db.rpc('admin_restore',
+          params: {'p_data': data, 'p_overwrite': undoChanges, 'p_dry_run': dryRun}) as Map);
 }

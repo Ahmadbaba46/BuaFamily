@@ -144,8 +144,8 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
           ),
           for (final b in all)
             ListTile(
-              leading: const Icon(Icons.inventory_2_outlined, color: Bua.green),
-              title: Text(l.weekdayDate(b.takenAt)),
+              leading: Icon(b.isRestorePoint ? Icons.undo : Icons.inventory_2_outlined, color: Bua.green),
+              title: Text(b.isRestorePoint ? l.beforeLastRestore(l.weekdayDate(b.takenAt)) : l.weekdayDate(b.takenAt)),
               subtitle: Text('${l.clock(b.takenAt)} · ${(b.sizeBytes / 1024).ceil()} KB'),
               trailing: IconButton(
                 tooltip: l.download,
@@ -166,7 +166,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
     final l = context.l10n;
     final weekly = ref.watch(settingsProvider).value?.weeklyBackup ?? true;
     final backups = ref.watch(backupsProvider).value ?? const <Backup>[];
-    final latest = backups.firstOrNull;
+    final latest = backups.where((b) => !b.isRestorePoint).firstOrNull;
 
     Widget exportRow(_Export kind, IconData icon, String title, String subtitle) => InkWell(
           onTap: _busy == null ? () => _export(kind) : null,
@@ -287,6 +287,11 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
                   ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Icon(Icons.backup_outlined, size: 18),
               label: Text(l.backupNow),
+            ),
+            TextButton.icon(
+              onPressed: () => context.push('/admin/restore'),
+              icon: const Icon(Icons.settings_backup_restore, size: 18),
+              label: Text(l.restoreEllipsis),
             ),
             if (backups.length > 1)
               TextButton.icon(

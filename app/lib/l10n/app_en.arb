@@ -1667,5 +1667,74 @@
         "type": "String"
       }
     }
+  },
+  "restoreTitle": "Restore from a backup",
+  "restoreSubtitle": "Bring back deleted or changed family data",
+  "restoreEllipsis": "Restore…",
+  "chooseBackup": "Choose a backup",
+  "beforeLastRestore": "Before the last restore · {date}",
+  "@beforeLastRestore": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "backupFile": "A backup file…",
+  "backupFileChosen": "File: {name}",
+  "@backupFileChosen": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notABackup": "This file is not a Bua Family backup.",
+  "undoChanges": "Also undo changes made since",
+  "undoChangesSub": "Edits made after the backup are changed back. Nothing is deleted either way.",
+  "restorePreview": "What will happen",
+  "checkingBackup": "Checking the backup…",
+  "restoreUpToDate": "Nothing to restore: today's data already has everything in this backup.",
+  "restoreGroup": "{group, select, tree{Family tree} details{Work, studies, contact & health} sharing{Posts & photos} events{Events} memories{Memories & stories} support{Blood requests & welfare fund} other{Mentorship & polls}}",
+  "@restoreGroup": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "restoreCounts": "{added} to bring back · {updated} to change back",
+  "@restoreCounts": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "updated": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreSkippedCount": "{count} can't go back",
+  "@restoreSkippedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreSafety": "A copy of today's data is saved first, so you can undo this from “Before the last restore”.",
+  "restoreLimits": "Accounts aren't restored: members sign in again and an admin links them. Photos, voice recordings and receipts are files; the backup has their details but not the files.",
+  "restoreButton": "Restore",
+  "restoreConfirm": "Restore this backup now?",
+  "restoreDone": "Restored: {added} brought back, {updated} changed back.",
+  "@restoreDone": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "updated": {
+        "type": "int"
+      }
+    }
   }
 }

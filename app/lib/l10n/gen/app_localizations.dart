@@ -4315,6 +4315,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} people · printed {date}'**
   String treePosterSubtitle(int count, String date);
+
+  /// No description provided for @restoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a backup'**
+  String get restoreTitle;
+
+  /// No description provided for @restoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring back deleted or changed family data'**
+  String get restoreSubtitle;
+
+  /// No description provided for @restoreEllipsis.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore…'**
+  String get restoreEllipsis;
+
+  /// No description provided for @chooseBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a backup'**
+  String get chooseBackup;
+
+  /// No description provided for @beforeLastRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Before the last restore · {date}'**
+  String beforeLastRestore(String date);
+
+  /// No description provided for @backupFile.
+  ///
+  /// In en, this message translates to:
+  /// **'A backup file…'**
+  String get backupFile;
+
+  /// No description provided for @backupFileChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'File: {name}'**
+  String backupFileChosen(String name);
+
+  /// No description provided for @notABackup.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not a Bua Family backup.'**
+  String get notABackup;
+
+  /// No description provided for @undoChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Also undo changes made since'**
+  String get undoChanges;
+
+  /// No description provided for @undoChangesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Edits made after the backup are changed back. Nothing is deleted either way.'**
+  String get undoChangesSub;
+
+  /// No description provided for @restorePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'What will happen'**
+  String get restorePreview;
+
+  /// No description provided for @checkingBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the backup…'**
+  String get checkingBackup;
+
+  /// No description provided for @restoreUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to restore: today\'s data already has everything in this backup.'**
+  String get restoreUpToDate;
+
+  /// No description provided for @restoreGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'{group, select, tree{Family tree} details{Work, studies, contact & health} sharing{Posts & photos} events{Events} memories{Memories & stories} support{Blood requests & welfare fund} other{Mentorship & polls}}'**
+  String restoreGroup(String group);
+
+  /// No description provided for @restoreCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'{added} to bring back · {updated} to change back'**
+  String restoreCounts(int added, int updated);
+
+  /// No description provided for @restoreSkippedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} can\'t go back'**
+  String restoreSkippedCount(int count);
+
+  /// No description provided for @restoreSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'A copy of today\'s data is saved first, so you can undo this from “Before the last restore”.'**
+  String get restoreSafety;
+
+  /// No description provided for @restoreLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts aren\'t restored: members sign in again and an admin links them. Photos, voice recordings and receipts are files; the backup has their details but not the files.'**
+  String get restoreLimits;
+
+  /// No description provided for @restoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreButton;
+
+  /// No description provided for @restoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this backup now?'**
+  String get restoreConfirm;
+
+  /// No description provided for @restoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restored: {added} brought back, {updated} changed back.'**
+  String restoreDone(int added, int updated);
 }
 
 class _AppLocalizationsDelegate

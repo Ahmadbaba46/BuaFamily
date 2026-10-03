@@ -2708,4 +2708,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String treePosterSubtitle(int count, String date) {
     return '$count people · printed $date';
   }
+
+  @override
+  String get restoreTitle => 'Restore from a backup';
+
+  @override
+  String get restoreSubtitle => 'Bring back deleted or changed family data';
+
+  @override
+  String get restoreEllipsis => 'Restore…';
+
+  @override
+  String get chooseBackup => 'Choose a backup';
+
+  @override
+  String beforeLastRestore(String date) {
+    return 'Before the last restore · $date';
+  }
+
+  @override
+  String get backupFile => 'A backup file…';
+
+  @override
+  String backupFileChosen(String name) {
+    return 'File: $name';
+  }
+
+  @override
+  String get notABackup => 'This file is not a Bua Family backup.';
+
+  @override
+  String get undoChanges => 'Also undo changes made since';
+
+  @override
+  String get undoChangesSub =>
+      'Edits made after the backup are changed back. Nothing is deleted either way.';
+
+  @override
+  String get restorePreview => 'What will happen';
+
+  @override
+  String get checkingBackup => 'Checking the backup…';
+
+  @override
+  String get restoreUpToDate =>
+      'Nothing to restore: today\'s data already has everything in this backup.';
+
+  @override
+  String restoreGroup(String group) {
+    String _temp0 = intl.Intl.selectLogic(group, {
+      'tree': 'Family tree',
+      'details': 'Work, studies, contact & health',
+      'sharing': 'Posts & photos',
+      'events': 'Events',
+      'memories': 'Memories & stories',
+      'support': 'Blood requests & welfare fund',
+      'other': 'Mentorship & polls',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String restoreCounts(int added, int updated) {
+    return '$added to bring back · $updated to change back';
+  }
+
+  @override
+  String restoreSkippedCount(int count) {
+    return '$count can\'t go back';
+  }
+
+  @override
+  String get restoreSafety =>
+      'A copy of today\'s data is saved first, so you can undo this from “Before the last restore”.';
+
+  @override
+  String get restoreLimits =>
+      'Accounts aren\'t restored: members sign in again and an admin links them. Photos, voice recordings and receipts are files; the backup has their details but not the files.';
+
+  @override
+  String get restoreButton => 'Restore';
+
+  @override
+  String get restoreConfirm => 'Restore this backup now?';
+
+  @override
+  String restoreDone(int added, int updated) {
+    return 'Restored: $added brought back, $updated changed back.';
+  }
 }

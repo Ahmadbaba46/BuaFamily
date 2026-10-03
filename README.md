@@ -80,6 +80,12 @@ share moments and photos, plan family events, and keep everyone's details
   people already in the tree are matched, and an admin reviews the matches
   before anything is added. The database also keeps a weekly backup of all
   the family's data (the last eight weeks) that admins can download.
+- **Restore from a backup (admins):** pick a stored backup or a downloaded
+  backup file and the app first shows what would change (people and
+  relationships to bring back, edits to undo). Restoring brings back what was
+  deleted and, if chosen, changes later edits back; it never deletes anything
+  added since, and sends no notifications. A copy of the data from just before
+  is kept, so a restore can itself be undone.
 - **Birthdays & remembrance:** today, this week and the coming month at a
   glance: birthdays, death anniversaries, wedding anniversaries and events,
   with a quick greeting or prayer.
@@ -198,6 +204,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
 | `stories` | Elders' recorded stories: who is speaking, language, transcript (audio in the private `stories` bucket) |
+| `private.restore_points` | The family's data from just before the last restore, so it can be undone |
 | `private.backups` | Weekly JSON snapshots of the family's data, eight rotating slots (not reachable from the app; admins download through `admin_backup`) |
 | `polls`, `poll_options`, `poll_votes` | Family polls, their choices and each member's (secret) vote |
 | `memories`, `remembrance_reminders` | Prayers and memories on memorial pages; who wants an anniversary reminder |
@@ -284,6 +291,18 @@ flutter build web --dart-define-from-file=config.json   # website (upload build/
 flutter build ipa --dart-define-from-file=config.json   # iOS (needs a Mac)
 ```
 
+### 4. Moving to a new Supabase project (from a backup)
+
+1. Download the latest backup: **More → Import, export & backup → Download**.
+2. Create the new project and apply the migrations (step 1), then point the
+   app at it (step 3).
+3. Sign in first: the first account becomes the admin.
+4. Open **More → Import, export & backup → Restore…**, choose **A backup
+   file…**, check what will come back, and tap **Restore**.
+5. Members sign in again and the admin links each account to its person, as
+   when the app started. Photos, voice recordings and receipts are files, not
+   part of the backup; copy the storage buckets separately if you need them.
+
 ## Tests
 
 ```sh
@@ -305,5 +324,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 - **Next for notifications:** app push notifications once the app is in the
   Play Store / App Store.
-- **Restore from a backup:** today a backup can be downloaded and kept safe;
-  restoring one into a fresh project is still a manual job for a developer.
+- **Restoring files:** backups hold the family's data but not photos, voice
+  recordings or receipts, which are files in storage. A full copy of those
+  would need a separate storage export.

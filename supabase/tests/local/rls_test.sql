@@ -708,7 +708,68 @@ select test.assert((select private.take_backup() is null), 'weekly backup can be
 update public.app_settings set weekly_backup = true;
 
 -- ---------------------------------------------------------------------------
--- 15. Anonymous users see nothing.
+-- 15. Restoring a backup.
+-- ---------------------------------------------------------------------------
+-- After the backup, Musa is renamed, Bashir deleted and the story removed.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.persons set first_name = 'Musa-renamed' where first_name = 'Musa';
+delete from public.persons where first_name = 'Bashir';
+delete from public.stories;
+create temp table restore_check as
+  select (select slot from public.admin_backups() where slot >= 0 limit 1) as slot,
+         (select count(*) from public.notifications) as notes;
+
+-- A trial run reports what would come back and changes nothing.
+select test.assert((
+  select r -> 'persons' = '{"added": 1, "updated": 0, "skipped": 0}'::jsonb
+     and (r -> 'parent_child' ->> 'added')::int = 2
+     and (r -> 'stories' ->> 'added')::int = 1
+  from public.admin_restore_backup((select slot from restore_check)) r), 'trial run counts');
+select test.assert((select count(*) = 0 from public.persons where first_name = 'Bashir'), 'trial run changes nothing');
+select test.assert((select count(*) = 0 from public.admin_backups() where slot = -1), 'no restore point from a trial');
+select test.assert((
+  select (r -> 'persons' ->> 'updated')::int = 1
+  from public.admin_restore_backup((select slot from restore_check), true) r), 'trial run with undo counts the rename');
+
+-- The real restore brings everything back, quietly, and keeps a restore point.
+select public.admin_restore_backup((select slot from restore_check), true, false);
+select test.assert((select count(*) = 1 from public.persons where first_name = 'Bashir'), 'deleted person back');
+select test.assert((select count(*) = 2 from public.parent_child pc join public.persons p on p.id = pc.child_id
+  where p.first_name = 'Bashir'), 'his parents back');
+select test.assert((select count(*) = 1 from public.persons where first_name = 'Musa')
+  and (select count(*) = 0 from public.persons where first_name = 'Musa-renamed'), 'edit undone');
+select test.assert((select count(*) = 1 from public.stories), 'story back');
+select test.assert((select count(*) from public.notifications) = (select notes from restore_check), 'restoring sends no notifications');
+select test.assert((select count(*) = 1 from public.admin_backups() where slot = -1), 'restore point kept');
+select test.assert((select (public.admin_backup((-1)::smallint) -> 'persons') @> '[{"first_name": "Musa-renamed"}]'),
+  'restore point has the data from before');
+-- Restoring again changes nothing.
+select test.assert((select sum((v ->> 'added')::int + (v ->> 'updated')::int) = 0
+  from jsonb_each(public.admin_restore_backup((select slot from restore_check), true)) e(k, v)), 'restore is repeatable');
+
+-- Rows from accounts that no longer exist: optional links are cleared, the rest skipped.
+select test.assert((
+  select r -> 'persons' = '{"added": 1, "updated": 0, "skipped": 0}'::jsonb
+     and r -> 'stories' = '{"added": 0, "updated": 0, "skipped": 1}'::jsonb
+  from public.admin_restore(jsonb_build_object(
+    'format', 'bua-family-backup',
+    'persons', jsonb_build_array(jsonb_build_object('id', gen_random_uuid(), 'first_name', 'Hadiza',
+                                                    'created_by', gen_random_uuid())),
+    'stories', jsonb_build_array(jsonb_build_object('id', gen_random_uuid(), 'title', 'Old', 'speaker_name', 'X',
+                                                    'audio_path', 'x.m4a', 'added_by', gen_random_uuid()))
+  ), false, false) r), 'unknown accounts handled');
+select test.expect_error($$select public.admin_restore('{"persons": []}')$$, 'only Bua Family backups');
+reset role;
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_restore('{"format": "bua-family-backup"}')$$, 'members cannot restore');
+select test.expect_error($$select public.admin_backup((-1)::smallint)$$, 'members cannot read the restore point');
+reset role;
+
+-- ---------------------------------------------------------------------------
+-- 16. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;
