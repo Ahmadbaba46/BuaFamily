@@ -3223,6 +3223,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy of my details'**
   String get privacyOfMyDetails;
+
+  /// No description provided for @welfareFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Welfare fund'**
+  String get welfareFund;
+
+  /// No description provided for @fundBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Fund balance'**
+  String get fundBalance;
+
+  /// No description provided for @treasurerLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Treasurer: {names} · updated {time}'**
+  String treasurerLine(String names, String time);
+
+  /// No description provided for @treasurer.
+  ///
+  /// In en, this message translates to:
+  /// **'Treasurer'**
+  String get treasurer;
+
+  /// No description provided for @makeTreasurer.
+  ///
+  /// In en, this message translates to:
+  /// **'Make treasurer'**
+  String get makeTreasurer;
+
+  /// No description provided for @removeTreasurer.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove as treasurer'**
+  String get removeTreasurer;
+
+  /// No description provided for @contribute.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribute'**
+  String get contribute;
+
+  /// No description provided for @askForSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for support'**
+  String get askForSupport;
+
+  /// No description provided for @openCauses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open causes'**
+  String get openCauses;
+
+  /// No description provided for @raisedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{raised} of {target}'**
+  String raisedOf(String raised, String target);
+
+  /// No description provided for @contributorsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No contributors yet} =1{1 contributor} other{{count} contributors}}'**
+  String contributorsCount(int count);
+
+  /// No description provided for @closesOn.
+  ///
+  /// In en, this message translates to:
+  /// **'closes {date}'**
+  String closesOn(String date);
+
+  /// No description provided for @fundNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Money is never handled in the app. You pay the family account or the treasurer directly, record it here, and the treasurer confirms it.'**
+  String get fundNote;
+
+  /// No description provided for @howToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'How to pay'**
+  String get howToPay;
+
+  /// No description provided for @bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bank;
+
+  /// No description provided for @accountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountNumber;
+
+  /// No description provided for @accountName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get accountName;
+
+  /// No description provided for @copyAccountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy account number'**
+  String get copyAccountNumber;
+
+  /// No description provided for @copied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get copied;
+
+  /// No description provided for @noAccountYet.
+  ///
+  /// In en, this message translates to:
+  /// **'The treasurer hasn\'t added the account details yet. You can still pay the treasurer in cash.'**
+  String get noAccountYet;
+
+  /// No description provided for @recordContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Record your contribution'**
+  String get recordContribution;
+
+  /// No description provided for @amountNaira.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (₦)'**
+  String get amountNaira;
+
+  /// No description provided for @payTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank transfer'**
+  String get payTransfer;
+
+  /// No description provided for @payCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash to treasurer'**
+  String get payCash;
+
+  /// No description provided for @payMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile money'**
+  String get payMobile;
+
+  /// No description provided for @attachReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach receipt (optional)'**
+  String get attachReceipt;
+
+  /// No description provided for @receiptAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt attached'**
+  String get receiptAttached;
+
+  /// No description provided for @showMyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Show my name on the contributors list'**
+  String get showMyName;
+
+  /// No description provided for @recordContributionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Record contribution'**
+  String get recordContributionButton;
+
+  /// No description provided for @contributionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The treasurer confirms each contribution. Amounts are private to you and the committee.'**
+  String get contributionNote;
+
+  /// No description provided for @contributionRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded. The treasurer will confirm it.'**
+  String get contributionRecorded;
+
+  /// No description provided for @amountInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount.'**
+  String get amountInvalid;
+
+  /// No description provided for @generalFund.
+  ///
+  /// In en, this message translates to:
+  /// **'General fund'**
+  String get generalFund;
+
+  /// No description provided for @contributeToFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribute to the fund'**
+  String get contributeToFund;
+
+  /// No description provided for @myContributions.
+  ///
+  /// In en, this message translates to:
+  /// **'My contributions'**
+  String get myContributions;
+
+  /// No description provided for @contribPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the treasurer'**
+  String get contribPending;
+
+  /// No description provided for @contribConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get contribConfirmed;
+
+  /// No description provided for @contribRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not confirmed'**
+  String get contribRejected;
+
+  /// No description provided for @toConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'To confirm · {count}'**
+  String toConfirm(int count);
+
+  /// No description provided for @confirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmAction;
+
+  /// No description provided for @notReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Not received'**
+  String get notReceived;
+
+  /// No description provided for @viewReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get viewReceipt;
+
+  /// No description provided for @supportRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Support requests'**
+  String get supportRequests;
+
+  /// No description provided for @openCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openCause;
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get decline;
+
+  /// No description provided for @closeCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Close cause'**
+  String get closeCause;
+
+  /// No description provided for @newCause.
+  ///
+  /// In en, this message translates to:
+  /// **'New cause'**
+  String get newCause;
+
+  /// No description provided for @causeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it for?'**
+  String get causeTitle;
+
+  /// No description provided for @targetAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount needed (₦)'**
+  String get targetAmount;
+
+  /// No description provided for @closesOnLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes on (optional)'**
+  String get closesOnLabel;
+
+  /// No description provided for @askSupportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request goes to the treasurer and admins only. If they open it, the family can contribute.'**
+  String get askSupportNote;
+
+  /// No description provided for @requestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to the treasurer and admins.'**
+  String get requestSent;
+
+  /// No description provided for @recordPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Record support paid'**
+  String get recordPayout;
+
+  /// No description provided for @forCause.
+  ///
+  /// In en, this message translates to:
+  /// **'For'**
+  String get forCause;
+
+  /// No description provided for @editAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit account details'**
+  String get editAccount;
+
+  /// No description provided for @openingBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Money already in the fund (₦)'**
+  String get openingBalance;
+
+  /// No description provided for @waitingReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for review'**
+  String get waitingReview;
+
+  /// No description provided for @notifFundContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'New contribution to confirm: {amount}'**
+  String notifFundContribution(String amount);
+
+  /// No description provided for @notifFundConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contribution of {amount} was confirmed. Thank you!'**
+  String notifFundConfirmed(String amount);
+
+  /// No description provided for @notifFundRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Support requested: {title}'**
+  String notifFundRequest(String title);
 }
 
 class _AppLocalizationsDelegate

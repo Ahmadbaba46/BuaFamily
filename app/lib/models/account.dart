@@ -20,6 +20,7 @@ class Profile {
     this.smsBirthdays = true,
     this.smsEvents = true,
     this.mutedNotifications = const [],
+    this.isTreasurer = false,
   });
 
   final String id;
@@ -42,6 +43,12 @@ class Profile {
   /// Notification kinds (database names) this member chose not to receive.
   final List<String> mutedNotifications;
 
+  /// Treasurers confirm welfare fund contributions with the admins.
+  final bool isTreasurer;
+
+  /// Admins and treasurers manage the welfare fund.
+  bool get isCommittee => isActive && (isAdmin || isTreasurer);
+
   bool get isAdmin => role == AppRole.admin && status == AccountStatus.active;
   bool get isActive => status == AccountStatus.active;
 
@@ -61,6 +68,7 @@ class Profile {
         smsBirthdays: j['sms_birthdays'] as bool? ?? true,
         smsEvents: j['sms_events'] as bool? ?? true,
         mutedNotifications: [for (final k in (j['muted_notifications'] as List? ?? const [])) k as String],
+        isTreasurer: j['is_treasurer'] as bool? ?? false,
       );
 }
 

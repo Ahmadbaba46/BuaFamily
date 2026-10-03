@@ -1241,5 +1241,127 @@
   "notifCommentsMine": "Comments on my posts",
   "urgentBlood": "Urgent blood requests",
   "alwaysOn": "Always on",
-  "privacyOfMyDetails": "Privacy of my details"
+  "privacyOfMyDetails": "Privacy of my details",
+  "welfareFund": "Welfare fund",
+  "fundBalance": "Fund balance",
+  "treasurerLine": "Treasurer: {names} · updated {time}",
+  "@treasurerLine": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "treasurer": "Treasurer",
+  "makeTreasurer": "Make treasurer",
+  "removeTreasurer": "Remove as treasurer",
+  "contribute": "Contribute",
+  "askForSupport": "Ask for support",
+  "openCauses": "Open causes",
+  "raisedOf": "{raised} of {target}",
+  "@raisedOf": {
+    "placeholders": {
+      "raised": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "contributorsCount": "{count, plural, =0{No contributors yet} =1{1 contributor} other{{count} contributors}}",
+  "@contributorsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closesOn": "closes {date}",
+  "@closesOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "fundNote": "Money is never handled in the app. You pay the family account or the treasurer directly, record it here, and the treasurer confirms it.",
+  "howToPay": "How to pay",
+  "bank": "Bank",
+  "accountNumber": "Account",
+  "accountName": "Name",
+  "copyAccountNumber": "Copy account number",
+  "copied": "Copied",
+  "noAccountYet": "The treasurer hasn't added the account details yet. You can still pay the treasurer in cash.",
+  "recordContribution": "Record your contribution",
+  "amountNaira": "Amount (₦)",
+  "payTransfer": "Bank transfer",
+  "payCash": "Cash to treasurer",
+  "payMobile": "Mobile money",
+  "attachReceipt": "Attach receipt (optional)",
+  "receiptAttached": "Receipt attached",
+  "showMyName": "Show my name on the contributors list",
+  "recordContributionButton": "Record contribution",
+  "contributionNote": "The treasurer confirms each contribution. Amounts are private to you and the committee.",
+  "contributionRecorded": "Recorded. The treasurer will confirm it.",
+  "amountInvalid": "Enter an amount.",
+  "generalFund": "General fund",
+  "contributeToFund": "Contribute to the fund",
+  "myContributions": "My contributions",
+  "contribPending": "Waiting for the treasurer",
+  "contribConfirmed": "Confirmed",
+  "contribRejected": "Not confirmed",
+  "toConfirm": "To confirm · {count}",
+  "@toConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmAction": "Confirm",
+  "notReceived": "Not received",
+  "viewReceipt": "Receipt",
+  "supportRequests": "Support requests",
+  "openCause": "Open",
+  "decline": "Decline",
+  "closeCause": "Close cause",
+  "newCause": "New cause",
+  "causeTitle": "What is it for?",
+  "targetAmount": "Amount needed (₦)",
+  "closesOnLabel": "Closes on (optional)",
+  "askSupportNote": "Your request goes to the treasurer and admins only. If they open it, the family can contribute.",
+  "requestSent": "Sent to the treasurer and admins.",
+  "recordPayout": "Record support paid",
+  "forCause": "For",
+  "editAccount": "Edit account details",
+  "openingBalance": "Money already in the fund (₦)",
+  "waitingReview": "Waiting for review",
+  "notifFundContribution": "New contribution to confirm: {amount}",
+  "@notifFundContribution": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "notifFundConfirmed": "Your contribution of {amount} was confirmed. Thank you!",
+  "@notifFundConfirmed": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "notifFundRequest": "Support requested: {title}",
+  "@notifFundRequest": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -248,6 +248,10 @@ class _AccountsTab extends ConsumerWidget {
                   style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
+          if (p.isTreasurer) ...[
+            Pill(l.treasurer, background: Bua.goldTint, color: Bua.goldInk),
+            const SizedBox(width: 6),
+          ],
           p.role == AppRole.admin
               ? Pill(l.roleAdmin, background: Bua.green, color: Colors.white)
               : Pill(l.roleMember, background: Bua.track, color: Bua.ink),
@@ -259,12 +263,15 @@ class _AccountsTab extends ConsumerWidget {
                 'link' => link(p),
                 'role' => update(p, role: p.role == AppRole.admin ? AppRole.member : AppRole.admin),
                 'suspend' => update(p, status: AccountStatus.suspended),
+                'treasurer' => guarded(context, () => ref.read(repositoryProvider).setTreasurer(p.id, !p.isTreasurer))
+                    .then((ok) => ok ? ref.invalidate(profilesProvider) : null),
                 _ => update(p, status: AccountStatus.active),
               },
               itemBuilder: (_) => [
                 PopupMenuItem(value: 'link', child: Text(l.linkToPerson)),
                 if (p.status == AccountStatus.active) ...[
                   PopupMenuItem(value: 'role', child: Text(p.role == AppRole.admin ? l.makeMember : l.makeAdmin)),
+                  PopupMenuItem(value: 'treasurer', child: Text(p.isTreasurer ? l.removeTreasurer : l.makeTreasurer)),
                   PopupMenuItem(value: 'suspend', child: Text(l.suspend)),
                 ] else
                   PopupMenuItem(value: 'activate', child: Text(l.activate)),

@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/fund.dart';
 import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/person.dart';
@@ -504,4 +505,76 @@ class FamilyRepository {
 
   Future<void> setMutedNotifications(List<String> kinds) =>
       _db.from('profiles').update({'muted_notifications': kinds}).eq('id', userId!);
+
+  // ---------------------------------------------------------------- welfare fund
+
+  static const receiptsBucket = 'receipts';
+
+  Future<FundOverview> fundOverview() async {
+    final j = await _db.rpc('fund_overview');
+    return j == null ? const FundOverview() : FundOverview.fromJson((j as Map).cast<String, dynamic>());
+  }
+
+  /// Causes the user may see, with confirmed totals.
+  Future<List<FundCause>> fundCauses() async {
+    final r = await Future.wait<dynamic>([
+      _db.from('fund_causes').select().order('created_at', ascending: false),
+      _db.rpc('fund_cause_totals'),
+    ]);
+    final totals = {for (final t in (r[1] as List)) (t as Map)['cause_id'] as String: t.cast<String, dynamic>()};
+    return [for (final c in (r[0] as List)) FundCause.fromJson((c as Map).cast<String, dynamic>(), totals: totals[c['id']])];
+  }
+
+  /// Your own contributions; the committee gets everyone's.
+  Future<List<Contribution>> contributions() async {
+    final rows = await _db.from('fund_contributions').select().order('created_at', ascending: false).limit(300);
+    return rows.map(Contribution.fromJson).toList();
+  }
+
+  Future<void> recordContribution({
+    String? causeId,
+    required double amount,
+    required PayMethod method,
+    bool showName = true,
+    PickedImage? receipt,
+  }) async {
+    String? path;
+    if (receipt != null) {
+      final ext = receipt.extension.toLowerCase().replaceAll('jpeg', 'jpg');
+      path = '$userId/${DateTime.now().millisecondsSinceEpoch}.$ext';
+      await _db.storage.from(receiptsBucket).uploadBinary(
+            path,
+            Uint8List.fromList(receipt.bytes),
+            fileOptions: FileOptions(contentType: ext == 'pdf' ? 'application/pdf' : (ext == 'jpg' ? 'image/jpeg' : 'image/$ext')),
+          );
+    }
+    await _db.from('fund_contributions').insert({
+      'cause_id': causeId,
+      'amount': amount,
+      'method': method.name,
+      'show_name': showName,
+      'receipt_path': path,
+    });
+  }
+
+  Future<String> receiptUrl(String path) => _db.storage.from(receiptsBucket).createSignedUrl(path, 60 * 10);
+
+  Future<void> reviewContribution(String id, ContributionStatus status) =>
+      _db.from('fund_contributions').update({'status': status.name}).eq('id', id);
+
+  Future<void> withdrawContribution(String id) => _db.from('fund_contributions').delete().eq('id', id);
+
+  Future<void> createCause(Map<String, dynamic> cause) => _db.from('fund_causes').insert(cause);
+
+  Future<void> updateCause(String id, Map<String, dynamic> changes) =>
+      _db.from('fund_causes').update(changes).eq('id', id);
+
+  Future<void> recordPayout({String? causeId, required double amount, String? note}) =>
+      _db.from('fund_payouts').insert({'cause_id': causeId, 'amount': amount, 'note': note, 'recorded_by': userId});
+
+  Future<void> updateFundSettings(Map<String, dynamic> changes) =>
+      _db.from('fund_settings').update(changes).eq('id', true);
+
+  Future<void> setTreasurer(String userId, bool on) =>
+      _db.rpc('admin_set_treasurer', params: {'p_user_id': userId, 'p_on': on});
 }
