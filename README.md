@@ -4,7 +4,7 @@ A private app for the Bua family: browse the family tree, get to know relatives,
 share moments and photos, plan family events, and keep everyone's details
 (living and deceased) in one place. English and Hausa.
 
-- **App:** Flutter (Android, iOS and web from one codebase) in [`app/`](app)
+- **App:** Flutter (Android app and website from one codebase) in [`app/`](app)
 - **Backend:** Supabase (PostgreSQL, auth, photo storage) in [`supabase/`](supabase)
 
 ## What's in the app
@@ -281,7 +281,7 @@ Notifications go from the database to the `push` Edge Function
 Firebase Cloud Messaging (free) using the family's Firebase project
 **buafamily**. Members who don't turn them on still see everything under the bell.
 
-Already done: the Firebase project with Android, iOS and web apps
+Already done: the Firebase project with the Android and web apps
 (`com.fuyoudhat.buafamily`), the web settings built into the app
 (`app/lib/services/push.dart`), the database side and the deployed function.
 
@@ -293,16 +293,12 @@ Still to do:
    In the app, open **More → Admin → Settings → Phone notifications**, tap
    **Firebase key** and choose that file. It is stored encrypted in Supabase
    Vault; delete the downloaded file afterwards.
-2. **Android and iPhone builds:** in
+2. **Android app:** in
    [Project settings → General](https://console.firebase.google.com/project/buafamily/settings/general),
    download the Android app's `google-services.json` and copy its
-   `current_key` into `app/config.json` as `FIREBASE_ANDROID_API_KEY`; download
-   the iOS app's `GoogleService-Info.plist` and copy its `API_KEY` into
-   `FIREBASE_IOS_API_KEY`. (Don't commit those files.) The website needs nothing.
-3. **iPhones only:** upload an APNs key from your Apple Developer account under
-   **Project settings → Cloud Messaging → Apple app configuration**, and turn
-   on the **Push Notifications** capability for the Runner target in Xcode.
-4. Turn notifications on for your own phone (**More → Notifications & SMS**)
+   `current_key` into `app/config.json` as `FIREBASE_ANDROID_API_KEY` (don't
+   commit that file). The website needs nothing.
+3. Turn notifications on for your own phone (**More → Notifications & SMS**)
    and tap **Send me a test notification**.
 
 For a different Firebase project, change the IDs at the top of
@@ -329,20 +325,11 @@ Release builds:
 ```sh
 flutter build apk --dart-define-from-file=config.json   # Android
 flutter build web --dart-define-from-file=config.json   # website (upload build/web to any static host)
-flutter build ipa --dart-define-from-file=config.json   # iOS (needs a Mac)
 ```
 
-**iPhone:** Apple only builds iPhone apps on a Mac with Xcode, and installing
-on other people's phones needs an [Apple Developer Program](https://developer.apple.com/programs/)
-membership ($99 a year), which is also what allows iPhone notifications.
-On a Mac: open `app/ios/Runner.xcworkspace` in Xcode, choose your team under
-**Signing & Capabilities** (bundle ID `com.fuyoudhat.buafamily`), add
-**Push Notifications**, then run `flutter build ipa` and upload the result with
-Apple's Transporter app to TestFlight; family members install it from the
-TestFlight app. Without a Mac, a hosted build service such as
-[Codemagic](https://codemagic.io) can build and upload it from this repository.
-Until then, iPhone users can use the website: added to the Home Screen
-(Share → Add to Home Screen, iOS 16.4 or later) it can also receive notifications.
+**iPhone:** there is no iPhone app planned. Family members on iPhones use the
+website; added to the Home Screen (Safari → Share → Add to Home Screen, iOS
+16.4 or later) it opens like an app and can receive notifications.
 
 ### 5. Moving to a new Supabase project (from a backup)
 
@@ -377,8 +364,9 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 ## Roadmap
 
-- **Play Store / App Store release:** app icon, signing, privacy policy and
-  store listings, so members can install the app with notifications.
+- **Play Store release:** app icon, signing, privacy policy and the store
+  listing, so Android members can install the app. (No iPhone app is planned;
+  iPhone users use the website.)
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.
