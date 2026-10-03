@@ -79,14 +79,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   bottom: false,
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Container(
-                      width: 84,
-                      height: 84,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(26),
-                        boxShadow: const [BoxShadow(color: Color(0x2E000000), blurRadius: 24, offset: Offset(0, 8))],
+                      width: 96,
+                      height: 96,
+                      decoration: const BoxDecoration(
+                        boxShadow: [BoxShadow(color: Color(0x2E000000), blurRadius: 24, offset: Offset(0, 8))],
+                        borderRadius: BorderRadius.all(Radius.circular(24)),
                       ),
-                      child: const Icon(Icons.account_tree_rounded, size: 44, color: Bua.green),
+                      child: Image.asset('assets/brand/app_icon.png', semanticLabel: l.appTitle),
                     ),
                     const SizedBox(height: 14),
                     Text(l.appTitle,

@@ -75,6 +75,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/brand/app_icon.png
+
   # Noto Sans covers the Hausa alphabet (Ɗ ɗ Ƙ ƙ Ƴ ƴ), which default fonts may lack.
   fonts:
     - family: NotoSans
