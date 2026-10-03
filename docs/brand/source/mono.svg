@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><g transform="translate(256 256) scale(0.72) translate(-258 -306)"><rect x="92" y="170" width="164" height="276" rx="82" fill="white"/><g fill="black" stroke="black" stroke-width="14"><rect x="256" y="150" width="168" height="296" rx="84"/></g><g fill="white"><rect x="256" y="150" width="168" height="296" rx="84"/></g><g fill="black" stroke="black" stroke-width="14"><rect x="190" y="292" width="132" height="168" rx="66"/></g><g fill="white"><rect x="190" y="292" width="132" height="168" rx="66"/></g><g stroke="black" stroke-width="14" stroke-linejoin="round" fill="black"><path d="M256 292 C 256 272, 256 260, 256 250" stroke-width="22" fill="none"/><path d="M256 262 C 234 262, 218 248, 216 226 C 240 224, 256 238, 256 262 Z"/><path d="M256 256 C 278 256, 294 242, 296 220 C 272 218, 256 232, 256 256 Z"/></g><path d="M256 292 C 256 272, 256 260, 256 250" stroke="white" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M256 262 C 234 262, 218 248, 216 226 C 240 224, 256 238, 256 262 Z" fill="white"/><path d="M256 256 C 278 256, 294 242, 296 220 C 272 218, 256 232, 256 256 Z" fill="white"/><path d="M106 224 L242 224" stroke="black" stroke-width="9"/><path d="M128 206 l10 -10 l10 10 l-10 10 Z M164 206 l10 -10 l10 10 l-10 10 Z M200 206 l10 -10 l10 10 l-10 10 Z" fill="black"/><ellipse cx="340" cy="276" rx="58" ry="66" fill="none" stroke="black" stroke-width="8"/><path d="M136.9 285.2 Q151.0 266.2 165.0 285.2" fill="none" stroke="black" stroke-width="5.4" stroke-linecap="round"/>
+<path d="M183.0 285.2 Q197.0 266.2 211.1 285.2" fill="none" stroke="black" stroke-width="5.4" stroke-linecap="round"/>
+
+
+<path d="M161.2 296.8 Q174.0 310.9 186.8 296.8" fill="none" stroke="black" stroke-width="5.4" stroke-linecap="round"/><path d="M306.4 277.1 Q319.1 259.9 331.9 277.1" fill="none" stroke="black" stroke-width="4.9" stroke-linecap="round"/>
+<path d="M348.1 277.1 Q360.9 259.9 373.6 277.1" fill="none" stroke="black" stroke-width="4.9" stroke-linecap="round"/>
+
+
+<path d="M328.4 287.6 Q340.0 300.4 351.6 287.6" fill="none" stroke="black" stroke-width="4.9" stroke-linecap="round"/><path d="M227.0 350.9 Q238.0 336.1 249.0 350.9" fill="none" stroke="black" stroke-width="4.2" stroke-linecap="round"/>
+<path d="M263.0 350.9 Q274.0 336.1 285.0 350.9" fill="none" stroke="black" stroke-width="4.2" stroke-linecap="round"/>
+
+
+<path d="M246.0 360.0 Q256.0 371.0 266.0 360.0" fill="none" stroke="black" stroke-width="4.2" stroke-linecap="round"/></g></mask></defs><rect width="512" height="512" fill="white" mask="url(#m)"/></svg>

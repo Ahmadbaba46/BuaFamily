@@ -19,7 +19,7 @@ self.addEventListener('push', (event) => {
       self.registration.showNotification(n.title || 'Bua Family', {
         body: n.body || '',
         icon: '/icons/Icon-192.png',
-        badge: '/icons/Icon-192.png',
+        badge: '/icons/badge-96.png',
         tag: data.id || undefined,
         data: { link: data.link || '/notifications' },
       }),

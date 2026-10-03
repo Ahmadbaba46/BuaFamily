@@ -5,6 +5,13 @@
         android:label="Bua Family"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Push notifications: the family silhouette in the status bar, tinted Bua green. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_bua" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/bua_green" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
