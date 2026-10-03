@@ -1,12 +1,10 @@
 {
   "@@locale": "ha",
   "appTitle": "Iyalin Bua",
-
   "navTree": "Bishiya",
   "navMembers": "'Yan uwa",
   "navAdmin": "Shugabanci",
   "navMore": "Ƙari",
-
   "signIn": "Shiga",
   "signUp": "Buɗe asusu",
   "email": "Imel",
@@ -22,7 +20,6 @@
   "invalidEmail": "Shigar da ingantaccen imel",
   "passwordTooShort": "Aƙalla haruffa 8",
   "welcomeTagline": "Bishiyarmu, lokutanmu, iyalinmu.",
-
   "pendingTitle": "Ana jiran amincewa",
   "pendingBody": "Dole ne shugaban iyali ya amince da asusunka. Gaya musu kai wanene domin su haɗa ka da wurinka a cikin bishiya.",
   "claimNoteLabel": "Kai wanene a cikin iyali?",
@@ -30,7 +27,6 @@
   "suspendedTitle": "An dakatar da asusu",
   "suspendedBody": "An dakatar da asusunka. Da fatan za a tuntuɓi shugaban iyali.",
   "checkAgain": "Sake dubawa",
-
   "save": "Ajiye",
   "saved": "An ajiye",
   "cancel": "Soke",
@@ -44,7 +40,6 @@
   "no": "A'a",
   "errorGeneric": "An samu matsala: {error}",
   "notConfigured": "Ba a haɗa manhajar da sabar ba tukuna. Gina ta da SUPABASE_URL da SUPABASE_PUBLISHABLE_KEY.",
-
   "treeEmpty": "Babu kowa a cikin bishiyar iyali tukuna.",
   "addFirstPerson": "Ƙara mutum na farko",
   "chooseRoot": "Fara bishiya daga…",
@@ -53,14 +48,12 @@
   "collapseDeep": "Naɗe tsararraki na ƙasa",
   "hiddenCount": "+{count}",
   "shownElsewhere": "An nuna a wani wuri a bishiyar",
-
   "searchHint": "Nema da suna, wuri ko reshe",
   "peopleCount": "{count, plural, =1{Mutum 1} other{Mutane {count}}}",
   "noResults": "Ba a samu kowa ba",
   "filterAll": "Duka",
   "filterLiving": "Masu rai",
   "filterDeceased": "Marigayai",
-
   "lateLabel": "{sex, select, female{Marigayiya} other{Marigayi}}",
   "born": "Haihuwa",
   "died": "Rasuwa",
@@ -90,13 +83,11 @@
   "viewInTree": "Duba a bishiya",
   "thisIsMe": "Wannan ni ne",
   "thisIsMeSent": "An aika. Shugaba zai tabbatar ya haɗa asusunka.",
-
   "addFather": "Uba",
   "addMother": "Uwa",
   "addSpouse": "Abokin aure",
   "addSon": "Ɗa",
   "addDaughter": "'Ya",
-
   "title": "Laƙabi (misali Alhaji, Hajiya, Dr)",
   "firstName": "Suna",
   "middleName": "Suna na tsakiya",
@@ -136,11 +127,9 @@
   "relationParentOf": "Mahaifin wannan mutum",
   "relationChildOf": "Ɗan wannan mutum",
   "relationSpouseOf": "Abokin auren wannan mutum",
-
   "sentForApproval": "An aika wa shugabanni don amincewa",
   "coreChangesSent": "An aika sauye-sauyen suna, kwanan wata da matsayin rai ga shugabanni don amincewa.",
   "contributionsOff": "Shugabanni sun kashe ƙara dangi a yanzu.",
-
   "requestsTitle": "Buƙatu",
   "pendingRequests": "Buƙatun da ke jira",
   "myRequests": "Buƙatuna",
@@ -158,7 +147,6 @@
   "reqAddParentChild": "{parent} mahaifi ne na {child}",
   "reqAddUnion": "{a} da {b} ma'aurata ne",
   "withdraw": "Janye",
-
   "accountsTitle": "Asusai",
   "pendingAccounts": "Ana jiran amincewa",
   "activeAccounts": "Masu aiki",
@@ -173,7 +161,6 @@
   "wantsToBe": "Ya ce shi ne: {name}",
   "roleAdmin": "Shugaba",
   "roleMember": "Ɗan iyali",
-
   "settingsTitle": "Saituna",
   "familyName": "Sunan iyali",
   "memberContributions": "'Yan iyali za su iya ƙara dangi",
@@ -184,7 +171,6 @@
   "english": "Turanci",
   "hausa": "Hausa",
   "myProfile": "Bayanina",
-
   "institution": "Makaranta",
   "qualification": "Takardar shaida",
   "field": "Fannin karatu",
@@ -208,7 +194,6 @@
   "genotype": "Genotype",
   "conditions": "Cututtukan gado ko na dindindin",
   "healthPrivacyNote": "Bayanan lafiya sirri ne sai dai idan ka zaɓi raba su da iyali.",
-
   "relSelf": "Kai ne",
   "relSpouse": "{sex, select, male{Miji} female{Mata} other{Abokin aure}}",
   "relParent": "{sex, select, male{Uba} female{Uwa} other{Mahaifi}}",
@@ -227,5 +212,45 @@
   "relChildInLaw": "{sex, select, female{Surukuwa} other{Suruki}}",
   "relSiblingInLaw": "{sex, select, female{Surukuwa} other{Suruki}}",
   "relByMarriage": "Dangin aure",
-  "relNone": "Babu dangantaka da aka rubuta"
+  "relNone": "Babu dangantaka da aka rubuta",
+  "welcomeBack": "Barka da dawowa",
+  "createYourAccount": "Buɗe asusunka",
+  "privateSpaceNote": "Wuri na sirri ga iyalin Bua. Shugaban iyali ne ke amincewa da sababbin asusai.",
+  "pendingGreeting": "Salamu alaikum, {name}. Shugaban iyali zai amince da asusunka ya haɗa ka da wurinka a bishiya.",
+  "claimHelp": "Ambaci iyayenka ko kakanninka domin shugaba ya gane ka da sauri.",
+  "stepCreated": "An buɗe asusu",
+  "stepReview": "Shugaba zai duba ya haɗa ka",
+  "stepExplore": "Bincika bishiyar iyali",
+  "startingFrom": "Farawa daga",
+  "change": "Canja",
+  "findRelative": "Nemo dangi",
+  "zoomIn": "Ƙara girma",
+  "zoomOut": "Rage girma",
+  "centreOnMe": "Nuna ni",
+  "yourRelation": "{relation}",
+  "sideFather": "ta wajen uba",
+  "sideMother": "ta wajen uwa",
+  "educationWork": "Ilimi da aiki",
+  "addEducation": "Ƙara ilimi",
+  "addWork": "Ƙara aiki",
+  "addSkill": "Ƙara ƙwarewa",
+  "sharedWithFamily": "An raba da iyali",
+  "privateLabel": "Sirri",
+  "addingTo": "Ana ƙarawa ga",
+  "newPersonIs": "Dangantakar sabon mutum da {name}…",
+  "approvalBanner": "Shugaba zai duba wannan kafin ya bayyana a bishiya. Za ka gan shi a Ƙari › Buƙatuna.",
+  "sendForApproval": "Aika don amincewa",
+  "approveAndLink": "Amince ka haɗa",
+  "linkSomeoneElse": "Haɗa da wani",
+  "adminAlwaysOwn": "'Yan iyali kullum za su iya gyara hotonsu, aikinsu da ƙwarewarsu",
+  "adminAlwaysDirect": "Shugabanni kullum suna ƙara da gyara kai tsaye",
+  "privacyTitle": "Sirri.",
+  "privacyNote": "'Yan iyali da aka amince da su kaɗai za su iya buɗe manhajar. Bayanan lafiya sirri ne sai mutum ya raba su; shugabanni na iya ganinsu koyaushe.",
+  "adminRequestsAccounts": "Shugabanci: buƙatu da asusai",
+  "viewMyProfile": "Duba bayanina",
+  "account": "Asusu",
+  "pendingCount": "{count} na jira",
+  "myRequestsHelp": "Gyaran da ka bayar zai bayyana a bishiya da zarar shugaba ya amince.",
+  "seeInTree": "Duba a bishiya",
+  "married": "Da aure"
 }

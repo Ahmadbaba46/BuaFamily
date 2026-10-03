@@ -854,4 +854,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get relNone => 'No recorded relation';
+
+  @override
+  String get welcomeBack => 'Welcome back';
+
+  @override
+  String get createYourAccount => 'Create your account';
+
+  @override
+  String get privateSpaceNote =>
+      'A private space for the Bua family. New accounts are approved by a family admin.';
+
+  @override
+  String pendingGreeting(String name) {
+    return 'Salamu alaikum, $name. A family admin will approve your account and link you to your place in the tree.';
+  }
+
+  @override
+  String get claimHelp =>
+      'Mention your parents or grandparents so the admin can find you quickly.';
+
+  @override
+  String get stepCreated => 'Account created';
+
+  @override
+  String get stepReview => 'An admin reviews and links you';
+
+  @override
+  String get stepExplore => 'Explore the family tree';
+
+  @override
+  String get startingFrom => 'Starting from';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get findRelative => 'Find a relative';
+
+  @override
+  String get zoomIn => 'Zoom in';
+
+  @override
+  String get zoomOut => 'Zoom out';
+
+  @override
+  String get centreOnMe => 'Centre on me';
+
+  @override
+  String yourRelation(String relation) {
+    return 'Your $relation';
+  }
+
+  @override
+  String get sideFather => 'father’s side';
+
+  @override
+  String get sideMother => 'mother’s side';
+
+  @override
+  String get educationWork => 'Education & work';
+
+  @override
+  String get addEducation => 'Add education';
+
+  @override
+  String get addWork => 'Add work';
+
+  @override
+  String get addSkill => 'Add skill';
+
+  @override
+  String get sharedWithFamily => 'Shared with family';
+
+  @override
+  String get privateLabel => 'Private';
+
+  @override
+  String get addingTo => 'Adding to';
+
+  @override
+  String newPersonIs(String name) {
+    return 'New person is $name’s…';
+  }
+
+  @override
+  String get approvalBanner =>
+      'An admin will review this before it appears in the tree. You’ll see it under More › My requests.';
+
+  @override
+  String get sendForApproval => 'Send for approval';
+
+  @override
+  String get approveAndLink => 'Approve & link';
+
+  @override
+  String get linkSomeoneElse => 'Link someone else';
+
+  @override
+  String get adminAlwaysOwn =>
+      'Members can always edit their own photo, work and skills';
+
+  @override
+  String get adminAlwaysDirect => 'Admins always add and edit directly';
+
+  @override
+  String get privacyTitle => 'Privacy.';
+
+  @override
+  String get privacyNote =>
+      'Only approved family members can open the app. Health details stay private unless the person shares them; admins can always see them.';
+
+  @override
+  String get adminRequestsAccounts => 'Admin: requests & accounts';
+
+  @override
+  String get viewMyProfile => 'View my profile';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String pendingCount(int count) {
+    return '$count pending';
+  }
+
+  @override
+  String get myRequestsHelp =>
+      'Changes you suggest appear in the tree once a family admin approves them.';
+
+  @override
+  String get seeInTree => 'See in the tree';
+
+  @override
+  String get married => 'Married';
 }

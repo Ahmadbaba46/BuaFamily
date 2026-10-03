@@ -839,4 +839,139 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get relNone => 'Babu dangantaka da aka rubuta';
+
+  @override
+  String get welcomeBack => 'Barka da dawowa';
+
+  @override
+  String get createYourAccount => 'Buɗe asusunka';
+
+  @override
+  String get privateSpaceNote =>
+      'Wuri na sirri ga iyalin Bua. Shugaban iyali ne ke amincewa da sababbin asusai.';
+
+  @override
+  String pendingGreeting(String name) {
+    return 'Salamu alaikum, $name. Shugaban iyali zai amince da asusunka ya haɗa ka da wurinka a bishiya.';
+  }
+
+  @override
+  String get claimHelp =>
+      'Ambaci iyayenka ko kakanninka domin shugaba ya gane ka da sauri.';
+
+  @override
+  String get stepCreated => 'An buɗe asusu';
+
+  @override
+  String get stepReview => 'Shugaba zai duba ya haɗa ka';
+
+  @override
+  String get stepExplore => 'Bincika bishiyar iyali';
+
+  @override
+  String get startingFrom => 'Farawa daga';
+
+  @override
+  String get change => 'Canja';
+
+  @override
+  String get findRelative => 'Nemo dangi';
+
+  @override
+  String get zoomIn => 'Ƙara girma';
+
+  @override
+  String get zoomOut => 'Rage girma';
+
+  @override
+  String get centreOnMe => 'Nuna ni';
+
+  @override
+  String yourRelation(String relation) {
+    return '$relation';
+  }
+
+  @override
+  String get sideFather => 'ta wajen uba';
+
+  @override
+  String get sideMother => 'ta wajen uwa';
+
+  @override
+  String get educationWork => 'Ilimi da aiki';
+
+  @override
+  String get addEducation => 'Ƙara ilimi';
+
+  @override
+  String get addWork => 'Ƙara aiki';
+
+  @override
+  String get addSkill => 'Ƙara ƙwarewa';
+
+  @override
+  String get sharedWithFamily => 'An raba da iyali';
+
+  @override
+  String get privateLabel => 'Sirri';
+
+  @override
+  String get addingTo => 'Ana ƙarawa ga';
+
+  @override
+  String newPersonIs(String name) {
+    return 'Dangantakar sabon mutum da $name…';
+  }
+
+  @override
+  String get approvalBanner =>
+      'Shugaba zai duba wannan kafin ya bayyana a bishiya. Za ka gan shi a Ƙari › Buƙatuna.';
+
+  @override
+  String get sendForApproval => 'Aika don amincewa';
+
+  @override
+  String get approveAndLink => 'Amince ka haɗa';
+
+  @override
+  String get linkSomeoneElse => 'Haɗa da wani';
+
+  @override
+  String get adminAlwaysOwn =>
+      '\'Yan iyali kullum za su iya gyara hotonsu, aikinsu da ƙwarewarsu';
+
+  @override
+  String get adminAlwaysDirect =>
+      'Shugabanni kullum suna ƙara da gyara kai tsaye';
+
+  @override
+  String get privacyTitle => 'Sirri.';
+
+  @override
+  String get privacyNote =>
+      '\'Yan iyali da aka amince da su kaɗai za su iya buɗe manhajar. Bayanan lafiya sirri ne sai mutum ya raba su; shugabanni na iya ganinsu koyaushe.';
+
+  @override
+  String get adminRequestsAccounts => 'Shugabanci: buƙatu da asusai';
+
+  @override
+  String get viewMyProfile => 'Duba bayanina';
+
+  @override
+  String get account => 'Asusu';
+
+  @override
+  String pendingCount(int count) {
+    return '$count na jira';
+  }
+
+  @override
+  String get myRequestsHelp =>
+      'Gyaran da ka bayar zai bayyana a bishiya da zarar shugaba ya amince.';
+
+  @override
+  String get seeInTree => 'Duba a bishiya';
+
+  @override
+  String get married => 'Da aure';
 }

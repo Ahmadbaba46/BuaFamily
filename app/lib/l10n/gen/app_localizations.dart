@@ -1375,6 +1375,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No recorded relation'**
   String get relNone;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
+  /// No description provided for @createYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get createYourAccount;
+
+  /// No description provided for @privateSpaceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A private space for the Bua family. New accounts are approved by a family admin.'**
+  String get privateSpaceNote;
+
+  /// No description provided for @pendingGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Salamu alaikum, {name}. A family admin will approve your account and link you to your place in the tree.'**
+  String pendingGreeting(String name);
+
+  /// No description provided for @claimHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Mention your parents or grandparents so the admin can find you quickly.'**
+  String get claimHelp;
+
+  /// No description provided for @stepCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get stepCreated;
+
+  /// No description provided for @stepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'An admin reviews and links you'**
+  String get stepReview;
+
+  /// No description provided for @stepExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the family tree'**
+  String get stepExplore;
+
+  /// No description provided for @startingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get startingFrom;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @findRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a relative'**
+  String get findRelative;
+
+  /// No description provided for @zoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get zoomIn;
+
+  /// No description provided for @zoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get zoomOut;
+
+  /// No description provided for @centreOnMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Centre on me'**
+  String get centreOnMe;
+
+  /// No description provided for @yourRelation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {relation}'**
+  String yourRelation(String relation);
+
+  /// No description provided for @sideFather.
+  ///
+  /// In en, this message translates to:
+  /// **'father’s side'**
+  String get sideFather;
+
+  /// No description provided for @sideMother.
+  ///
+  /// In en, this message translates to:
+  /// **'mother’s side'**
+  String get sideMother;
+
+  /// No description provided for @educationWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Education & work'**
+  String get educationWork;
+
+  /// No description provided for @addEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add education'**
+  String get addEducation;
+
+  /// No description provided for @addWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Add work'**
+  String get addWork;
+
+  /// No description provided for @addSkill.
+  ///
+  /// In en, this message translates to:
+  /// **'Add skill'**
+  String get addSkill;
+
+  /// No description provided for @sharedWithFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared with family'**
+  String get sharedWithFamily;
+
+  /// No description provided for @privateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get privateLabel;
+
+  /// No description provided for @addingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding to'**
+  String get addingTo;
+
+  /// No description provided for @newPersonIs.
+  ///
+  /// In en, this message translates to:
+  /// **'New person is {name}’s…'**
+  String newPersonIs(String name);
+
+  /// No description provided for @approvalBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'An admin will review this before it appears in the tree. You’ll see it under More › My requests.'**
+  String get approvalBanner;
+
+  /// No description provided for @sendForApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Send for approval'**
+  String get sendForApproval;
+
+  /// No description provided for @approveAndLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve & link'**
+  String get approveAndLink;
+
+  /// No description provided for @linkSomeoneElse.
+  ///
+  /// In en, this message translates to:
+  /// **'Link someone else'**
+  String get linkSomeoneElse;
+
+  /// No description provided for @adminAlwaysOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Members can always edit their own photo, work and skills'**
+  String get adminAlwaysOwn;
+
+  /// No description provided for @adminAlwaysDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins always add and edit directly'**
+  String get adminAlwaysDirect;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy.'**
+  String get privacyTitle;
+
+  /// No description provided for @privacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only approved family members can open the app. Health details stay private unless the person shares them; admins can always see them.'**
+  String get privacyNote;
+
+  /// No description provided for @adminRequestsAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin: requests & accounts'**
+  String get adminRequestsAccounts;
+
+  /// No description provided for @viewMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View my profile'**
+  String get viewMyProfile;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @pendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pending'**
+  String pendingCount(int count);
+
+  /// No description provided for @myRequestsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes you suggest appear in the tree once a family admin approves them.'**
+  String get myRequestsHelp;
+
+  /// No description provided for @seeInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'See in the tree'**
+  String get seeInTree;
+
+  /// No description provided for @married.
+  ///
+  /// In en, this message translates to:
+  /// **'Married'**
+  String get married;
 }
 
 class _AppLocalizationsDelegate

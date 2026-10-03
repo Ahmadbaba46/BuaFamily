@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
+import '../widgets/bua.dart';
 import '../widgets/common.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
@@ -65,69 +67,126 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Form(
-                key: _form,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Icon(Icons.account_tree, size: 64, color: theme.colorScheme.primary),
-                    const SizedBox(height: 12),
-                    Text(l.appTitle, textAlign: TextAlign.center, style: theme.textTheme.headlineMedium),
-                    const SizedBox(height: 4),
-                    Text(l.welcomeTagline, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
-                    const SizedBox(height: 32),
-                    if (_signUp) ...[
-                      TextFormField(
-                        controller: _name,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(labelText: l.displayName),
-                        validator: (v) => (v ?? '').trim().isEmpty ? l.required : null,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              PatternBand(
+                height: 340,
+                child: SafeArea(
+                  bottom: false,
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Container(
+                      width: 84,
+                      height: 84,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(26),
+                        boxShadow: const [BoxShadow(color: Color(0x2E000000), blurRadius: 24, offset: Offset(0, 8))],
                       ),
-                      const SizedBox(height: 12),
-                    ],
-                    TextFormField(
-                      controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      autofillHints: const [AutofillHints.email],
-                      decoration: InputDecoration(labelText: l.email),
-                      validator: (v) => (v ?? '').contains('@') ? null : l.invalidEmail,
+                      child: const Icon(Icons.account_tree_rounded, size: 44, color: Bua.green),
                     ),
-                    const SizedBox(height: 12),
-                    TextFormField(
-                      controller: _password,
-                      obscureText: true,
-                      autofillHints: const [AutofillHints.password],
-                      decoration: InputDecoration(labelText: l.password),
-                      validator: (v) => (v ?? '').length < 8 ? l.passwordTooShort : null,
-                      onFieldSubmitted: (_) => _submit(),
-                    ),
+                    const SizedBox(height: 14),
+                    Text(l.appTitle,
+                        style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white)),
+                    const SizedBox(height: 6),
+                    Text(l.welcomeTagline, style: const TextStyle(fontSize: 15, color: Bua.greenTint)),
                     const SizedBox(height: 20),
-                    FilledButton(
-                      onPressed: _busy ? null : _submit,
-                      child: _busy
-                          ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                          : Text(_signUp ? l.signUp : l.signIn),
-                    ),
-                    if (!_signUp)
-                      TextButton(onPressed: _busy ? null : _forgot, child: Text(l.forgotPassword)),
-                    TextButton(
-                      onPressed: _busy ? null : () => setState(() => _signUp = !_signUp),
-                      child: Text(_signUp ? l.haveAccount : l.noAccount),
-                    ),
-                    const SizedBox(height: 16),
-                    const Center(child: LanguageToggle()),
-                  ],
+                  ]),
                 ),
               ),
-            ),
+              Transform.translate(
+                offset: const Offset(0, -28),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: const [BoxShadow(color: Color(0x1A17231B), blurRadius: 24, offset: Offset(0, 6))],
+                  ),
+                  child: Form(
+                    key: _form,
+                    child: AutofillGroup(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                        Text(_signUp ? l.createYourAccount : l.welcomeBack,
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 14),
+                        if (_signUp) ...[
+                          LabeledField(
+                            label: l.displayName,
+                            child: TextFormField(
+                              controller: _name,
+                              textCapitalization: TextCapitalization.words,
+                              autofillHints: const [AutofillHints.name],
+                              validator: (v) => (v ?? '').trim().isEmpty ? l.required : null,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                        ],
+                        LabeledField(
+                          label: l.email,
+                          child: TextFormField(
+                            controller: _email,
+                            keyboardType: TextInputType.emailAddress,
+                            autofillHints: const [AutofillHints.email],
+                            validator: (v) => (v ?? '').contains('@') ? null : l.invalidEmail,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        LabeledField(
+                          label: l.password,
+                          child: TextFormField(
+                            controller: _password,
+                            obscureText: true,
+                            autofillHints: [_signUp ? AutofillHints.newPassword : AutofillHints.password],
+                            validator: (v) => (v ?? '').length < 8 ? l.passwordTooShort : null,
+                            onFieldSubmitted: (_) => _submit(),
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        FilledButton(
+                          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+                          onPressed: _busy ? null : _submit,
+                          child: _busy
+                              ? const SizedBox.square(
+                                  dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                              : Text(_signUp ? l.signUp : l.signIn),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(children: [
+                          if (!_signUp)
+                            TextButton(
+                              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                              onPressed: _busy ? null : _forgot,
+                              child: Text(l.forgotPassword, style: const TextStyle(fontWeight: FontWeight.w500)),
+                            ),
+                          const Spacer(),
+                          TextButton(
+                            style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                            onPressed: _busy ? null : () => setState(() => _signUp = !_signUp),
+                            child: Text(_signUp ? l.signIn : l.signUp),
+                          ),
+                        ]),
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+              const Center(child: LanguageToggle()),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: Text(
+                  l.privateSpaceNote,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+                ),
+              ),
+              const SizedBox(height: 32),
+            ]),
           ),
         ),
       ),
@@ -141,13 +200,11 @@ class LanguageToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    return SegmentedButton<String>(
-      segments: [
-        ButtonSegment(value: 'en', label: Text(l.english)),
-        ButtonSegment(value: 'ha', label: Text(l.hausa)),
-      ],
-      selected: {l.localeName},
-      onSelectionChanged: (s) => ref.read(localeProvider.notifier).set(Locale(s.first)),
+    return PillSegmented<String>(
+      values: const ['en', 'ha'],
+      labelOf: (v) => v == 'en' ? l.english : l.hausa,
+      selected: l.localeName,
+      onChanged: (v) => ref.read(localeProvider.notifier).set(Locale(v)),
     );
   }
 }

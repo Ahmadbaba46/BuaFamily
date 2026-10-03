@@ -1,12 +1,10 @@
 {
   "@@locale": "en",
   "appTitle": "Bua Family",
-
   "navTree": "Tree",
   "navMembers": "Members",
   "navAdmin": "Admin",
   "navMore": "More",
-
   "signIn": "Sign in",
   "signUp": "Create account",
   "email": "Email",
@@ -22,7 +20,6 @@
   "invalidEmail": "Enter a valid email",
   "passwordTooShort": "At least 8 characters",
   "welcomeTagline": "Our tree, our moments, our family.",
-
   "pendingTitle": "Waiting for approval",
   "pendingBody": "A family admin needs to approve your account. Tell them who you are so they can link you to your place in the tree.",
   "claimNoteLabel": "Who are you in the family?",
@@ -30,7 +27,6 @@
   "suspendedTitle": "Account suspended",
   "suspendedBody": "Your account has been suspended. Please contact a family admin.",
   "checkAgain": "Check again",
-
   "save": "Save",
   "saved": "Saved",
   "cancel": "Cancel",
@@ -43,9 +39,14 @@
   "yes": "Yes",
   "no": "No",
   "errorGeneric": "Something went wrong: {error}",
-  "@errorGeneric": {"placeholders": {"error": {"type": "String"}}},
+  "@errorGeneric": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "notConfigured": "The app is not connected to a server yet. Build it with SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.",
-
   "treeEmpty": "No one is in the family tree yet.",
   "addFirstPerson": "Add the first person",
   "chooseRoot": "Start tree from…",
@@ -53,19 +54,35 @@
   "expandAll": "Expand all",
   "collapseDeep": "Collapse lower generations",
   "hiddenCount": "+{count}",
-  "@hiddenCount": {"placeholders": {"count": {"type": "int"}}},
+  "@hiddenCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "shownElsewhere": "Shown elsewhere in the tree",
-
   "searchHint": "Search by name, place or branch",
   "peopleCount": "{count, plural, =1{1 person} other{{count} people}}",
-  "@peopleCount": {"placeholders": {"count": {"type": "int"}}},
+  "@peopleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "noResults": "No one found",
   "filterAll": "All",
   "filterLiving": "Living",
   "filterDeceased": "Deceased",
-
   "lateLabel": "{sex, select, female{Late} other{Late}}",
-  "@lateLabel": {"placeholders": {"sex": {"type": "String"}}},
+  "@lateLabel": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "born": "Born",
   "died": "Died",
   "buried": "Buried at",
@@ -90,18 +107,22 @@
   "suggestEdit": "Suggest an edit",
   "deletePerson": "Remove from tree",
   "confirmDeletePerson": "Remove {name} and all their links from the tree? This cannot be undone.",
-  "@confirmDeletePerson": {"placeholders": {"name": {"type": "String"}}},
+  "@confirmDeletePerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "changePhoto": "Change photo",
   "viewInTree": "View in tree",
   "thisIsMe": "This is me",
   "thisIsMeSent": "Sent. An admin will confirm and link your account.",
-
   "addFather": "Father",
   "addMother": "Mother",
   "addSpouse": "Spouse",
   "addSon": "Son",
   "addDaughter": "Daughter",
-
   "title": "Title (e.g. Alhaji, Hajiya, Dr)",
   "firstName": "First name",
   "middleName": "Middle name",
@@ -134,21 +155,37 @@
   "pickDate": "Pick date",
   "clear": "Clear",
   "newPersonTitle": "Add {relation}",
-  "@newPersonTitle": {"placeholders": {"relation": {"type": "String"}}},
+  "@newPersonTitle": {
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      }
+    }
+  },
   "newPerson": "Add person",
   "ofPerson": "of {name}",
-  "@ofPerson": {"placeholders": {"name": {"type": "String"}}},
+  "@ofPerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "selectPerson": "Select a person",
   "relationIs": "{name} is the…",
-  "@relationIs": {"placeholders": {"name": {"type": "String"}}},
+  "@relationIs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "relationParentOf": "Parent of this person",
   "relationChildOf": "Child of this person",
   "relationSpouseOf": "Spouse of this person",
-
   "sentForApproval": "Sent to the admins for approval",
   "coreChangesSent": "Name, date and life-status changes were sent to the admins for approval.",
   "contributionsOff": "Adding relatives is currently turned off by the admins.",
-
   "requestsTitle": "Requests",
   "pendingRequests": "Pending requests",
   "myRequests": "My requests",
@@ -160,19 +197,63 @@
   "statusApproved": "Approved",
   "statusRejected": "Rejected",
   "requestedBy": "Requested by {name}",
-  "@requestedBy": {"placeholders": {"name": {"type": "String"}}},
+  "@requestedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "reqCreatePerson": "Add {name}",
-  "@reqCreatePerson": {"placeholders": {"name": {"type": "String"}}},
+  "@reqCreatePerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "reqRelation": "as {relation} of {other}",
-  "@reqRelation": {"placeholders": {"relation": {"type": "String"}, "other": {"type": "String"}}},
+  "@reqRelation": {
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      },
+      "other": {
+        "type": "String"
+      }
+    }
+  },
   "reqUpdatePerson": "Update details of {name}",
-  "@reqUpdatePerson": {"placeholders": {"name": {"type": "String"}}},
+  "@reqUpdatePerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "reqAddParentChild": "{parent} is a parent of {child}",
-  "@reqAddParentChild": {"placeholders": {"parent": {"type": "String"}, "child": {"type": "String"}}},
+  "@reqAddParentChild": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
   "reqAddUnion": "{a} and {b} are married",
-  "@reqAddUnion": {"placeholders": {"a": {"type": "String"}, "b": {"type": "String"}}},
+  "@reqAddUnion": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
   "withdraw": "Withdraw",
-
   "accountsTitle": "Accounts",
   "pendingAccounts": "Waiting for approval",
   "activeAccounts": "Active",
@@ -183,13 +264,24 @@
   "makeMember": "Remove admin",
   "linkToPerson": "Link to person",
   "linkedTo": "Linked to {name}",
-  "@linkedTo": {"placeholders": {"name": {"type": "String"}}},
+  "@linkedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "notLinked": "Not linked to anyone in the tree",
   "wantsToBe": "Says they are: {name}",
-  "@wantsToBe": {"placeholders": {"name": {"type": "String"}}},
+  "@wantsToBe": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "roleAdmin": "Admin",
   "roleMember": "Member",
-
   "settingsTitle": "Settings",
   "familyName": "Family name",
   "memberContributions": "Members can add relatives",
@@ -200,7 +292,6 @@
   "english": "English",
   "hausa": "Hausa",
   "myProfile": "My profile",
-
   "institution": "School / institution",
   "qualification": "Qualification",
   "field": "Field of study",
@@ -224,40 +315,227 @@
   "genotype": "Genotype",
   "conditions": "Known hereditary or chronic conditions",
   "healthPrivacyNote": "Health details are private unless you choose to share them with the family.",
-
   "relSelf": "You",
   "relSpouse": "{sex, select, male{Husband} female{Wife} other{Spouse}}",
-  "@relSpouse": {"placeholders": {"sex": {"type": "String"}}},
+  "@relSpouse": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relParent": "{sex, select, male{Father} female{Mother} other{Parent}}",
-  "@relParent": {"placeholders": {"sex": {"type": "String"}}},
+  "@relParent": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relChild": "{sex, select, male{Son} female{Daughter} other{Child}}",
-  "@relChild": {"placeholders": {"sex": {"type": "String"}}},
+  "@relChild": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relSibling": "{sex, select, male{Brother} female{Sister} other{Sibling}}",
-  "@relSibling": {"placeholders": {"sex": {"type": "String"}}},
+  "@relSibling": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relHalfSibling": "{sex, select, male{Half-brother} female{Half-sister} other{Half-sibling}} ({via, select, male{same father} female{same mother} other{one shared parent}})",
-  "@relHalfSibling": {"placeholders": {"sex": {"type": "String"}, "via": {"type": "String"}}},
+  "@relHalfSibling": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      },
+      "via": {
+        "type": "String"
+      }
+    }
+  },
   "relGrandparent": "{greats, plural, =0{Grand} =1{Great-grand} =2{Great-great-grand} other{{greats}× great-grand}}{sex, select, male{father} female{mother} other{parent}}",
-  "@relGrandparent": {"placeholders": {"greats": {"type": "int"}, "sex": {"type": "String"}}},
+  "@relGrandparent": {
+    "placeholders": {
+      "greats": {
+        "type": "int"
+      },
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relGrandchild": "{greats, plural, =0{Grand} =1{Great-grand} =2{Great-great-grand} other{{greats}× great-grand}}{sex, select, male{son} female{daughter} other{child}}",
-  "@relGrandchild": {"placeholders": {"greats": {"type": "int"}, "sex": {"type": "String"}}},
+  "@relGrandchild": {
+    "placeholders": {
+      "greats": {
+        "type": "int"
+      },
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relUncleAunt": "{greats, plural, =0{} =1{Great-} other{{greats}× great-}}{sex, select, male{uncle} female{aunt} other{uncle/aunt}}",
-  "@relUncleAunt": {"placeholders": {"greats": {"type": "int"}, "sex": {"type": "String"}, "side": {"type": "String"}}},
+  "@relUncleAunt": {
+    "placeholders": {
+      "greats": {
+        "type": "int"
+      },
+      "sex": {
+        "type": "String"
+      },
+      "side": {
+        "type": "String"
+      }
+    }
+  },
   "relNephewNiece": "{greats, plural, =0{} =1{Grand-} other{{greats}× great-grand-}}{sex, select, male{nephew} female{niece} other{nephew/niece}}",
-  "@relNephewNiece": {"placeholders": {"greats": {"type": "int"}, "sex": {"type": "String"}}},
+  "@relNephewNiece": {
+    "placeholders": {
+      "greats": {
+        "type": "int"
+      },
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relCousin": "{degree, plural, =1{First} =2{Second} other{Distant}} cousin{removed, plural, =0{} =1{ once removed} =2{ twice removed} other{ {removed} times removed}}",
-  "@relCousin": {"placeholders": {"degree": {"type": "int"}, "removed": {"type": "int"}, "sex": {"type": "String"}}},
+  "@relCousin": {
+    "placeholders": {
+      "degree": {
+        "type": "int"
+      },
+      "removed": {
+        "type": "int"
+      },
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relStepParent": "{sex, select, male{Stepfather} female{Stepmother} other{Step-parent}}",
-  "@relStepParent": {"placeholders": {"sex": {"type": "String"}}},
+  "@relStepParent": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relStepChild": "{sex, select, male{Stepson} female{Stepdaughter} other{Stepchild}}",
-  "@relStepChild": {"placeholders": {"sex": {"type": "String"}}},
+  "@relStepChild": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relCoSpouse": "{sex, select, female{Co-wife} other{Co-spouse}}",
-  "@relCoSpouse": {"placeholders": {"sex": {"type": "String"}}},
+  "@relCoSpouse": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relParentInLaw": "{sex, select, male{Father-in-law} female{Mother-in-law} other{Parent-in-law}}",
-  "@relParentInLaw": {"placeholders": {"sex": {"type": "String"}}},
+  "@relParentInLaw": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relChildInLaw": "{sex, select, male{Son-in-law} female{Daughter-in-law} other{Child-in-law}}",
-  "@relChildInLaw": {"placeholders": {"sex": {"type": "String"}}},
+  "@relChildInLaw": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relSiblingInLaw": "{sex, select, male{Brother-in-law} female{Sister-in-law} other{Sibling-in-law}}",
-  "@relSiblingInLaw": {"placeholders": {"sex": {"type": "String"}}},
+  "@relSiblingInLaw": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
   "relByMarriage": "Related by marriage",
-  "relNone": "No recorded relation"
+  "relNone": "No recorded relation",
+  "welcomeBack": "Welcome back",
+  "createYourAccount": "Create your account",
+  "privateSpaceNote": "A private space for the Bua family. New accounts are approved by a family admin.",
+  "pendingGreeting": "Salamu alaikum, {name}. A family admin will approve your account and link you to your place in the tree.",
+  "@pendingGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "claimHelp": "Mention your parents or grandparents so the admin can find you quickly.",
+  "stepCreated": "Account created",
+  "stepReview": "An admin reviews and links you",
+  "stepExplore": "Explore the family tree",
+  "startingFrom": "Starting from",
+  "change": "Change",
+  "findRelative": "Find a relative",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out",
+  "centreOnMe": "Centre on me",
+  "yourRelation": "Your {relation}",
+  "@yourRelation": {
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      }
+    }
+  },
+  "sideFather": "father’s side",
+  "sideMother": "mother’s side",
+  "educationWork": "Education & work",
+  "addEducation": "Add education",
+  "addWork": "Add work",
+  "addSkill": "Add skill",
+  "sharedWithFamily": "Shared with family",
+  "privateLabel": "Private",
+  "addingTo": "Adding to",
+  "newPersonIs": "New person is {name}’s…",
+  "@newPersonIs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "approvalBanner": "An admin will review this before it appears in the tree. You’ll see it under More › My requests.",
+  "sendForApproval": "Send for approval",
+  "approveAndLink": "Approve & link",
+  "linkSomeoneElse": "Link someone else",
+  "adminAlwaysOwn": "Members can always edit their own photo, work and skills",
+  "adminAlwaysDirect": "Admins always add and edit directly",
+  "privacyTitle": "Privacy.",
+  "privacyNote": "Only approved family members can open the app. Health details stay private unless the person shares them; admins can always see them.",
+  "adminRequestsAccounts": "Admin: requests & accounts",
+  "viewMyProfile": "View my profile",
+  "account": "Account",
+  "pendingCount": "{count} pending",
+  "@pendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "myRequestsHelp": "Changes you suggest appear in the tree once a family admin approves them.",
+  "seeInTree": "See in the tree",
+  "married": "Married"
 }

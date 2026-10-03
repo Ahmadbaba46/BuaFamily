@@ -9,11 +9,12 @@ import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
 import '../widgets/common.dart';
 
-const _metrics = TreeMetrics();
+const _metrics = TreeMetrics(nodeWidth: 136, nodeHeight: 58, siblingGap: 16, spouseGap: 14, levelGap: 64);
 const _initialDepth = 3;
-const _toggleOverhang = 12.0;
+const _toggleOverhang = 10.0;
 
 class TreeScreen extends ConsumerStatefulWidget {
   const TreeScreen({super.key, this.focusId});
@@ -111,17 +112,45 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
       ..translateByDouble(_viewport.width / 2 - c.dx, _viewport.height / 2 - c.dy, 0, 1);
   }
 
-  void _fit(TreeLayout layout) {
+  void _fit(TreeLayout layout, {bool readable = false, String? centreXOn}) {
     if (_viewport == Size.zero || layout.size == Size.zero) return;
-    final scale = math.min(
+    var scale = math.min(
       1.0,
       math.min(_viewport.width / layout.size.width, _viewport.height / layout.size.height),
     );
-    final dx = (_viewport.width - layout.size.width * scale) / 2;
+    // On first open, keep names legible and let people pan, rather than
+    // shrinking a big family to fit the screen.
+    if (readable) scale = math.max(scale, 0.85);
+    // The layout centres each parent over its children, so centring the whole
+    // layout keeps the root in view.
+    var dx = (_viewport.width - layout.size.width * scale) / 2;
+    final anchor = centreXOn == null ? null : layout.nodeFor(centreXOn);
+    if (anchor != null && layout.size.width * scale > _viewport.width) {
+      // Wide tree: show the viewer's own branch first.
+      final x = (anchor.offset.dx + _metrics.nodeWidth / 2) * scale;
+      dx = (_viewport.width / 2 - x).clamp(_viewport.width - layout.size.width * scale, 0.0);
+    }
     _transform.value = Matrix4.identity()
-      ..translateByDouble(math.max(0, dx), 0, 0, 1)
+      ..translateByDouble(dx, 0, 0, 1)
       ..scaleByDouble(scale, scale, 1, 1);
   }
+
+  /// Zoom by [factor] around the centre of the viewport.
+  void _zoom(double factor) {
+    final c = Offset(_viewport.width / 2, _viewport.height / 2);
+    final current = _transform.value.getMaxScaleOnAxis();
+    final f = (current * factor).clamp(0.05, 2.5) / current;
+    _transform.value = Matrix4.identity()
+      ..translateByDouble(c.dx, c.dy, 0, 1)
+      ..scaleByDouble(f, f, 1, 1)
+      ..translateByDouble(-c.dx, -c.dy, 0, 1)
+      ..multiply(_transform.value);
+  }
+
+  void _focusOn(String personId) => setState(() {
+        _pendingFocus = personId;
+        _rootId = null;
+      });
 
   Future<void> _chooseRoot(FamilyGraph g) async {
     final p = await pickPerson(context, g);
@@ -156,65 +185,244 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
         if (focus != null) {
           _centerOn(layout, focus);
         } else if (_transform.value.isIdentity()) {
-          _fit(layout);
+          _fit(layout, readable: true, centreXOn: ref.read(profileProvider)?.personId);
         }
       });
     }
 
+    final myPersonId = ref.watch(profileProvider)?.personId;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(root == null ? l.navTree : graph![root]!.displayName),
-        actions: [
-          if (graph != null && graph.persons.isNotEmpty)
-            IconButton(
-              tooltip: l.chooseRoot,
-              icon: const Icon(Icons.swap_vert),
-              onPressed: () => _chooseRoot(graph),
+      body: SafeArea(
+        bottom: false,
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 8, 0),
+            child: Row(children: [
+              Expanded(child: Text(l.navTree, style: Theme.of(context).textTheme.titleLarge)),
+              if (graph != null && graph.persons.isNotEmpty)
+                IconButton(
+                  tooltip: l.findRelative,
+                  icon: const Icon(Icons.search),
+                  onPressed: () async {
+                    final p = await pickPerson(context, graph);
+                    if (p != null) _focusOn(p.id);
+                  },
+                ),
+              if (layout != null)
+                PopupMenuButton<String>(
+                  onSelected: (v) => setState(() {
+                    switch (v) {
+                      case 'fit':
+                        _fit(layout!);
+                      case 'expand':
+                        _collapsed = {};
+                      case 'collapse':
+                        _collapsed = collapseBeyondDepth(graph!, root!, _initialDepth);
+                      case 'refresh':
+                        ref.invalidate(graphProvider);
+                    }
+                  }),
+                  itemBuilder: (_) => [
+                    PopupMenuItem(value: 'fit', child: Text(l.fitToScreen)),
+                    PopupMenuItem(value: 'expand', child: Text(l.expandAll)),
+                    PopupMenuItem(value: 'collapse', child: Text(l.collapseDeep)),
+                    PopupMenuItem(value: 'refresh', child: Text(l.refresh)),
+                  ],
+                ),
+            ]),
+          ),
+          if (graph != null && root != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              child: _StartingFromBar(name: graph[root]!.displayName, onChange: () => _chooseRoot(graph)),
             ),
-          if (layout != null)
-            PopupMenuButton<String>(
-              onSelected: (v) => setState(() {
-                switch (v) {
-                  case 'fit':
-                    _fit(layout!);
-                  case 'expand':
-                    _collapsed = {};
-                  case 'collapse':
-                    _collapsed = collapseBeyondDepth(graph!, root!, _initialDepth);
-                  case 'refresh':
-                    ref.invalidate(graphProvider);
-                }
-              }),
-              itemBuilder: (_) => [
-                PopupMenuItem(value: 'fit', child: Text(l.fitToScreen)),
-                PopupMenuItem(value: 'expand', child: Text(l.expandAll)),
-                PopupMenuItem(value: 'collapse', child: Text(l.collapseDeep)),
-                PopupMenuItem(value: 'refresh', child: Text(l.refresh)),
-              ],
+          Expanded(
+            child: AsyncBody(
+              value: graphAsync,
+              onRetry: () => ref.invalidate(graphProvider),
+              builder: (g) {
+                if (layout == null) return _EmptyTree(canAdd: ref.watch(isAdminProvider));
+                return LayoutBuilder(builder: (context, constraints) {
+                  _viewport = constraints.biggest;
+                  return Stack(children: [
+                    const Positioned.fill(child: CustomPaint(painter: _DotGridPainter())),
+                    Positioned.fill(
+                      child: _TreeCanvas(
+                        graph: g,
+                        layout: layout!,
+                        transform: _transform,
+                        myPersonId: myPersonId,
+                        onToggle: (id) => setState(() {
+                          if (!_collapsed.remove(id)) _collapsed.add(id);
+                        }),
+                      ),
+                    ),
+                    const Positioned(left: 16, bottom: 16, child: _Legend()),
+                    Positioned(
+                      right: 16,
+                      bottom: 16,
+                      child: _ZoomControls(
+                        onZoomIn: () => _zoom(1.25),
+                        onZoomOut: () => _zoom(0.8),
+                        onCentre: myPersonId == null || g[myPersonId] == null ? null : () => _focusOn(myPersonId),
+                      ),
+                    ),
+                  ]);
+                });
+              },
             ),
-        ],
-      ),
-      body: AsyncBody(
-        value: graphAsync,
-        onRetry: () => ref.invalidate(graphProvider),
-        builder: (g) {
-          if (layout == null) return _EmptyTree(canAdd: ref.watch(isAdminProvider));
-          return LayoutBuilder(builder: (context, constraints) {
-            _viewport = constraints.biggest;
-            return _TreeCanvas(
-              graph: g,
-              layout: layout!,
-              transform: _transform,
-              myPersonId: ref.watch(profileProvider)?.personId,
-              onToggle: (id) => setState(() {
-                if (!_collapsed.remove(id)) _collapsed.add(id);
-              }),
-            );
-          });
-        },
+          ),
+        ]),
       ),
     );
   }
+}
+
+class _StartingFromBar extends StatelessWidget {
+  const _StartingFromBar({required this.name, required this.onChange});
+
+  final String name;
+  final VoidCallback onChange;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return Container(
+      height: 46,
+      padding: const EdgeInsets.only(left: 12, right: 5),
+      decoration: BoxDecoration(
+        color: Bua.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Bua.line),
+      ),
+      child: Row(children: [
+        const Icon(Icons.north, size: 18, color: Bua.green),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text.rich(
+            TextSpan(children: [
+              TextSpan(text: '${l.startingFrom} '),
+              TextSpan(text: name, style: const TextStyle(fontWeight: FontWeight.w600, color: Bua.ink)),
+            ]),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 13, color: Bua.inkMuted),
+          ),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: Bua.greenTint,
+            foregroundColor: Bua.greenDark,
+            minimumSize: const Size(0, 36),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            textStyle: const TextStyle(fontFamily: 'NotoSans', fontSize: 13, fontWeight: FontWeight.w600),
+          ),
+          onPressed: onChange,
+          child: Text(l.change),
+        ),
+      ]),
+    );
+  }
+}
+
+class _Legend extends StatelessWidget {
+  const _Legend();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    Widget row(Widget mark, String label) => Row(mainAxisSize: MainAxisSize.min, children: [
+          SizedBox(width: 16, child: Center(child: mark)),
+          const SizedBox(width: 8),
+          Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkMuted)),
+        ]);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: Bua.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Bua.line),
+        boxShadow: const [BoxShadow(color: Color(0x0F17231B), blurRadius: 8, offset: Offset(0, 2))],
+      ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+        row(
+          Container(
+            width: 14,
+            height: 14,
+            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Bua.lateRing, width: 2)),
+          ),
+          l.lateLabel('other'),
+        ),
+        const SizedBox(height: 8),
+        row(Container(width: 14, height: 3, color: Bua.gold), l.statusMarried),
+        const SizedBox(height: 8),
+        row(
+          Container(
+            width: 14,
+            height: 14,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4), border: Border.all(color: Bua.green, width: 2)),
+          ),
+          l.relSelf,
+        ),
+      ]),
+    );
+  }
+}
+
+class _ZoomControls extends StatelessWidget {
+  const _ZoomControls({required this.onZoomIn, required this.onZoomOut, required this.onCentre});
+
+  final VoidCallback onZoomIn;
+  final VoidCallback onZoomOut;
+  final VoidCallback? onCentre;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    Widget button(IconData icon, String tip, VoidCallback? onTap, {Color color = Bua.ink}) => IconButton(
+          tooltip: tip,
+          onPressed: onTap,
+          icon: Icon(icon, color: color),
+          style: IconButton.styleFrom(minimumSize: const Size(48, 48), shape: const RoundedRectangleBorder()),
+        );
+    return Container(
+      decoration: BoxDecoration(
+        color: Bua.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Bua.line),
+        boxShadow: const [BoxShadow(color: Color(0x0F17231B), blurRadius: 8, offset: Offset(0, 2))],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        button(Icons.add, l.zoomIn, onZoomIn),
+        const SizedBox(width: 48, child: Divider(color: Bua.line)),
+        button(Icons.remove, l.zoomOut, onZoomOut),
+        if (onCentre != null) ...[
+          const SizedBox(width: 48, child: Divider(color: Bua.line)),
+          button(Icons.my_location, l.centreOnMe, onCentre, color: Bua.green),
+        ],
+      ]),
+    );
+  }
+}
+
+class _DotGridPainter extends CustomPainter {
+  const _DotGridPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = const Color(0xFFD5DDD3);
+    for (var y = 10.0; y < size.height; y += 20) {
+      for (var x = 10.0; x < size.width; x += 20) {
+        canvas.drawCircle(Offset(x, y), 1, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DotGridPainter old) => false;
 }
 
 class _EmptyTree extends StatelessWidget {
@@ -260,7 +468,6 @@ class _TreeCanvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return InteractiveViewer(
       transformationController: transform,
       constrained: false,
@@ -271,7 +478,7 @@ class _TreeCanvas extends StatelessWidget {
         size: layout.size,
         child: Stack(children: [
           Positioned.fill(
-            child: CustomPaint(painter: _EdgePainter(layout.edges, scheme.outline, scheme.tertiary)),
+            child: CustomPaint(painter: _EdgePainter(layout.edges, Bua.connector, Bua.gold)),
           ),
           for (final n in layout.nodes)
             Positioned(
@@ -313,27 +520,25 @@ class _NodeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
     final collapsed = node.hiddenDescendants > 0;
     final sub = person.lifespan(approxPrefix: l.approxPrefix());
+    final bg = person.isLiving ? Bua.surface : Bua.lateCard;
 
     final card = Material(
-      color: node.isSpouse ? scheme.surfaceContainerLow : scheme.surfaceContainerHigh,
+      color: bg,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: isMe ? scheme.primary : scheme.outlineVariant,
-          width: isMe ? 2.5 : 1,
-        ),
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: isMe ? Bua.green : Bua.line, width: isMe ? 2 : 1),
       ),
+      elevation: isMe ? 3 : 0,
+      shadowColor: Bua.green.withValues(alpha: 0.35),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => context.push('/person/${person.id}'),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(children: [
-            PersonAvatar(person: person, radius: 18, showPhoto: false),
+            PersonAvatar(person: person, radius: 16, showPhoto: false, gapColor: bg),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -344,7 +549,11 @@ class _NodeCard extends StatelessWidget {
                     person.fullName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.labelLarge?.copyWith(
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      height: 1.25,
+                      fontWeight: FontWeight.w600,
+                      color: Bua.ink,
                       fontStyle: node.isRepeat ? FontStyle.italic : null,
                     ),
                   ),
@@ -355,7 +564,7 @@ class _NodeCard extends StatelessWidget {
                       sub,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
+                      style: const TextStyle(fontSize: 10.5, color: Bua.inkSubtle),
                     ),
                 ],
               ),
@@ -365,7 +574,7 @@ class _NodeCard extends StatelessWidget {
       ),
     );
 
-    return Stack(children: [
+    return Stack(clipBehavior: Clip.none, children: [
       Positioned(
         left: 0,
         right: 0,
@@ -373,6 +582,19 @@ class _NodeCard extends StatelessWidget {
         height: _metrics.nodeHeight,
         child: node.isRepeat ? Tooltip(message: l.shownElsewhere, child: Opacity(opacity: 0.7, child: card)) : card,
       ),
+      if (isMe)
+        Positioned(
+          left: 8,
+          top: -10,
+          child: Container(
+            height: 18,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(color: Bua.green, borderRadius: BorderRadius.circular(9)),
+            alignment: Alignment.center,
+            child: Text(l.relSelf,
+                style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: Colors.white)),
+          ),
+        ),
       if (hasChildren)
         Positioned(
           bottom: 0,
@@ -380,17 +602,17 @@ class _NodeCard extends StatelessWidget {
           right: 0,
           child: Center(
             child: Material(
-              color: collapsed ? scheme.primary : scheme.surfaceContainerHighest,
-              shape: const StadiumBorder(),
+              color: collapsed ? Bua.green : Bua.surface,
+              shape: StadiumBorder(side: BorderSide(color: collapsed ? Bua.green : Bua.line)),
               child: InkWell(
                 customBorder: const StadiumBorder(),
                 onTap: onToggle,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                   child: collapsed
                       ? Text(l.hiddenCount(node.hiddenDescendants),
-                          style: theme.textTheme.labelSmall?.copyWith(color: scheme.onPrimary))
-                      : Icon(Icons.expand_less, size: 16, color: scheme.onSurfaceVariant),
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white))
+                      : const Icon(Icons.expand_less, size: 16, color: Bua.inkMuted),
                 ),
               ),
             ),
@@ -411,7 +633,7 @@ class _EdgePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final line = Paint()
       ..color = lineColor
-      ..strokeWidth = 1.5
+      ..strokeWidth = 1.6
       ..style = PaintingStyle.stroke;
     final marriage = Paint()
       ..color = marriageColor

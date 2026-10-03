@@ -5,9 +5,19 @@ import 'package:go_router/go_router.dart';
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
 
-/// Bottom navigation (phones) or side rail (tablets / web). Branch indexes:
-/// 0 tree, 1 members, 2 admin, 3 more. The admin tab is hidden for members.
+/// Number of things waiting for an admin (requests + new accounts); 0 for members.
+final adminAttentionProvider = Provider<int>((ref) {
+  if (!ref.watch(isAdminProvider)) return 0;
+  final requests = ref.watch(requestsProvider(RequestStatus.pending)).value?.length ?? 0;
+  final accounts =
+      ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending).length ?? 0;
+  return requests + accounts;
+});
+
+/// Bottom navigation (phones) or side rail (tablets / web).
+/// Branches: 0 tree, 1 members, 2 more. Admin tools live under More.
 class HomeShell extends ConsumerWidget {
   const HomeShell({super.key, required this.shell});
 
@@ -16,32 +26,25 @@ class HomeShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final isAdmin = ref.watch(isAdminProvider);
-    final pendingCount = isAdmin
-        ? (ref.watch(requestsProvider(RequestStatus.pending)).value?.length ?? 0)
-        : 0;
+    final attention = ref.watch(adminAttentionProvider);
 
-    final branches = [0, 1, if (isAdmin) 2, 3];
     final items = [
       (Icons.account_tree_outlined, Icons.account_tree, l.navTree),
       (Icons.people_outline, Icons.people, l.navMembers),
-      if (isAdmin) (Icons.admin_panel_settings_outlined, Icons.admin_panel_settings, l.navAdmin),
       (Icons.menu, Icons.menu, l.navMore),
     ];
-    final selected = branches.indexOf(shell.currentIndex).clamp(0, branches.length - 1);
-    void go(int i) => shell.goBranch(branches[i], initialLocation: branches[i] == shell.currentIndex);
+    void go(int i) => shell.goBranch(i, initialLocation: i == shell.currentIndex);
 
-    Widget icon(IconData data, int i) {
-      final badge = branches[i] == 2 && pendingCount > 0;
-      return badge ? Badge(label: Text('$pendingCount'), child: Icon(data)) : Icon(data);
-    }
+    Widget icon(IconData data, int i) => i == 2 && attention > 0
+        ? Badge(label: Text('$attention'), child: Icon(data))
+        : Icon(data);
 
     final wide = MediaQuery.sizeOf(context).width >= 720;
     if (wide) {
       return Scaffold(
         body: Row(children: [
           NavigationRail(
-            selectedIndex: selected,
+            selectedIndex: shell.currentIndex,
             onDestinationSelected: go,
             labelType: NavigationRailLabelType.all,
             destinations: [
@@ -53,24 +56,27 @@ class HomeShell extends ConsumerWidget {
                 ),
             ],
           ),
-          const VerticalDivider(width: 1),
+          const VerticalDivider(width: 1, color: Bua.line),
           Expanded(child: shell),
         ]),
       );
     }
     return Scaffold(
       body: shell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selected,
-        onDestinationSelected: go,
-        destinations: [
-          for (var i = 0; i < items.length; i++)
-            NavigationDestination(
-              icon: icon(items[i].$1, i),
-              selectedIcon: icon(items[i].$2, i),
-              label: items[i].$3,
-            ),
-        ],
+      bottomNavigationBar: DecoratedBox(
+        decoration: const BoxDecoration(border: Border(top: BorderSide(color: Bua.line))),
+        child: NavigationBar(
+          selectedIndex: shell.currentIndex,
+          onDestinationSelected: go,
+          destinations: [
+            for (var i = 0; i < items.length; i++)
+              NavigationDestination(
+                icon: icon(items[i].$1, i),
+                selectedIcon: icon(items[i].$2, i),
+                label: items[i].$3,
+              ),
+          ],
+        ),
       ),
     );
   }

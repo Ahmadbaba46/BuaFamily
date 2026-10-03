@@ -47,7 +47,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('sani'), findsWidgets);
-    expect(find.text('Relationship to you: Uncle'), findsOneWidget);
+    expect(find.text('Your uncle · father’s side'), findsOneWidget);
     expect(find.text('Parents'), findsOneWidget);
     expect(find.text('Carpentry'), findsOneWidget);
     // Members cannot add relatives while contributions are off.
@@ -58,7 +58,7 @@ void main() {
     await tester.pumpWidget(app(const PersonScreen(personId: 'sani'), locale: 'ha'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Dangantaka da kai: Baffa'), findsOneWidget);
+    expect(find.text('Baffa · ta wajen uba'), findsOneWidget);
     expect(find.text('Iyaye'), findsOneWidget);
   });
 
@@ -94,6 +94,9 @@ void main() {
     await tester.pumpWidget(app(const MembersScreen()));
     await tester.pumpAndSettle();
     expect(find.text('12 people'), findsOneWidget);
+    // Each row says how that person is related to the viewer (Aisha).
+    expect(find.textContaining('Your father'), findsOneWidget);
+    expect(find.textContaining('Your grandfather · father’s side'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), 'mus');
     await tester.pumpAndSettle();

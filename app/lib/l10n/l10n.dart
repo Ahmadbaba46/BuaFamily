@@ -47,6 +47,20 @@ extension KinshipLabel on AppLocalizations {
     };
   }
 
+  /// "Your uncle · father’s side" — how a person relates to the viewer.
+  String kinshipToYou(Kinship k) {
+    final label = kinship(k);
+    if (k.type == KinType.none || k.type == KinType.relatedByMarriage || k.type == KinType.self) return label;
+    final base = localeName == 'ha' ? yourRelation(label) : yourRelation(label[0].toLowerCase() + label.substring(1));
+    final side = switch (k.side) {
+      FamilySide.paternal => sideFather,
+      FamilySide.maternal => sideMother,
+      FamilySide.unknown => null,
+    };
+    const sided = {KinType.grandparent, KinType.uncleAunt, KinType.cousin};
+    return side != null && sided.contains(k.type) ? '$base · $side' : base;
+  }
+
   String sexLabel(Sex s) => switch (s) {
         Sex.male => male,
         Sex.female => female,

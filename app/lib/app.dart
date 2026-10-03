@@ -7,25 +7,14 @@ import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/more_screen.dart';
+import 'ui/screens/my_requests_screen.dart';
 import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
+import 'ui/theme.dart';
 import 'ui/widgets/home_shell.dart';
-
-const _seed = Color(0xFF1F6F43); // deep green
-
-ThemeData _theme(Brightness b) {
-  final scheme = ColorScheme.fromSeed(seedColor: _seed, brightness: b);
-  return ThemeData(
-    colorScheme: scheme,
-    useMaterial3: true,
-    fontFamily: 'NotoSans',
-    inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
-    cardTheme: const CardThemeData(margin: EdgeInsets.zero),
-  );
-}
 
 final routerProvider = Provider<GoRouter>((ref) {
   final auth = ref.watch(authProvider.notifier);
@@ -60,13 +49,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(path: '/members', builder: (_, _) => const MembersScreen()),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(path: '/admin', builder: (_, _) => const AdminScreen()),
-          ]),
-          StatefulShellBranch(routes: [
             GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
           ]),
         ],
       ),
+      // Opened from More; admins only (see redirect).
+      GoRoute(path: '/admin', builder: (_, _) => const AdminScreen()),
+      GoRoute(path: '/my-requests', builder: (_, _) => const MyRequestsScreen()),
       GoRoute(
         path: '/person/:id',
         builder: (_, s) => PersonScreen(personId: s.pathParameters['id']!),
@@ -97,8 +86,7 @@ class BuaFamilyApp extends ConsumerWidget {
     return MaterialApp.router(
       onGenerateTitle: (c) => c.l10n.appTitle,
       debugShowCheckedModeBanner: false,
-      theme: _theme(Brightness.light),
-      darkTheme: _theme(Brightness.dark),
+      theme: buildTheme(),
       locale: ref.watch(localeProvider),
       localizationsDelegates: localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

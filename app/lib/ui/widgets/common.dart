@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
 
 /// Readable message from a server or app error.
 String errorText(Object e) => switch (e) {
@@ -65,29 +66,35 @@ class AsyncBody<T> extends StatelessWidget {
   }
 }
 
-/// Round avatar: photo if available, otherwise initials. Deceased people are
-/// shown with a muted ring.
+/// Round avatar: photo if available, otherwise initials on a tint (green for
+/// men, gold for women). Deceased people get a grey ring; [highlight] draws a
+/// coloured ring instead (e.g. "this is you").
 class PersonAvatar extends ConsumerWidget {
-  const PersonAvatar({super.key, required this.person, this.radius = 22, this.showPhoto = true});
+  const PersonAvatar({
+    super.key,
+    required this.person,
+    this.radius = 20,
+    this.showPhoto = true,
+    this.highlight,
+    this.gapColor = Bua.surface,
+  });
 
   final Person person;
   final double radius;
 
   /// Off in the tree view, where hundreds of avatars would each fetch a photo URL.
   final bool showPhoto;
+  final Color? highlight;
+
+  /// Colour of the thin gap between avatar and ring (the background behind it).
+  final Color gapColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scheme = Theme.of(context).colorScheme;
-    final bg = switch (person.sex) {
-      Sex.male => scheme.primaryContainer,
-      Sex.female => scheme.tertiaryContainer,
-      Sex.unknown => scheme.surfaceContainerHighest,
-    };
-    final fg = switch (person.sex) {
-      Sex.male => scheme.onPrimaryContainer,
-      Sex.female => scheme.onTertiaryContainer,
-      Sex.unknown => scheme.onSurfaceVariant,
+    final (bg, fg) = switch (person.sex) {
+      Sex.male => (Bua.maleBg, Bua.maleFg),
+      Sex.female => (Bua.femaleBg, Bua.femaleFg),
+      Sex.unknown => (Bua.unknownBg, Bua.unknownFg),
     };
     final path = person.photoPath;
     final url = path == null || !showPhoto ? null : ref.watch(photoUrlProvider(path)).value;
@@ -97,19 +104,25 @@ class PersonAvatar extends ConsumerWidget {
       foregroundImage: url == null ? null : NetworkImage(url),
       child: Text(
         person.initials,
-        style: TextStyle(color: fg, fontWeight: FontWeight.w600, fontSize: radius * 0.7),
+        style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: radius * 0.66),
       ),
     );
-    if (person.isLiving) return avatar;
+    final ring = highlight ?? (person.isLiving ? null : Bua.lateRing);
+    if (ring == null) return avatar;
+    final w = radius >= 40 ? 3.0 : 2.0;
     return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: scheme.outline, width: 2)),
-      child: avatar,
+      padding: EdgeInsets.all(w),
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: ring, width: w)),
+      child: Container(
+        padding: EdgeInsets.all(w / 2),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: gapColor),
+        child: avatar,
+      ),
     );
   }
 }
 
-/// One-line description under a name: lifespan, "Late", branch.
+/// One-line description under a name: "Late", lifespan, branch.
 String personSubtitle(BuildContext context, Person p) {
   final l = context.l10n;
   final parts = <String>[
@@ -120,23 +133,55 @@ String personSubtitle(BuildContext context, Person p) {
   return parts.join(' · ');
 }
 
+/// Avatar, name and a grey subtitle; the standard person row.
 class PersonTile extends StatelessWidget {
-  const PersonTile({super.key, required this.person, this.trailing, this.onTap, this.subtitle});
+  const PersonTile({
+    super.key,
+    required this.person,
+    this.trailing,
+    this.onTap,
+    this.subtitle,
+    this.subtitleColor,
+    this.highlight,
+  });
 
   final Person person;
   final Widget? trailing;
   final VoidCallback? onTap;
   final String? subtitle;
+  final Color? subtitleColor;
+  final Color? highlight;
 
   @override
   Widget build(BuildContext context) {
     final sub = subtitle ?? personSubtitle(context, person);
-    return ListTile(
-      leading: PersonAvatar(person: person),
-      title: Text(person.displayName),
-      subtitle: sub.isEmpty ? null : Text(sub),
-      trailing: trailing,
+    return InkWell(
       onTap: onTap,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 56),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(children: [
+            PersonAvatar(person: person, highlight: highlight),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(person.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                if (sub.isNotEmpty)
+                  Text(
+                    sub,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: subtitleColor ?? Bua.inkSubtle,
+                      fontWeight: subtitleColor == null ? FontWeight.w400 : FontWeight.w600,
+                    ),
+                  ),
+              ]),
+            ),
+            ?trailing,
+          ]),
+        ),
+      ),
     );
   }
 }
@@ -204,7 +249,7 @@ class _PersonPickerState extends State<_PersonPicker> {
   }
 }
 
-/// Section header used on profile and settings pages.
+/// Uppercase green heading used above plain lists.
 class SectionHeader extends StatelessWidget {
   const SectionHeader(this.title, {super.key, this.action});
 
@@ -218,8 +263,8 @@ class SectionHeader extends StatelessWidget {
       child: Row(children: [
         Expanded(
           child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+            title.toUpperCase(),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.green),
           ),
         ),
         ?action,

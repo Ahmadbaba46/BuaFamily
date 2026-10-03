@@ -11,6 +11,8 @@ import '../../models/details.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
+import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
 
@@ -52,75 +54,158 @@ class _PersonView extends ConsumerWidget {
     final canContribute = ref.watch(canContributeProvider);
     final isMe = profile?.personId == person.id;
     final canEditDetails = isAdmin || isMe;
-    final theme = Theme.of(context);
 
     final myId = profile?.personId;
     final kinship = myId != null && !isMe && graph[myId] != null ? kinshipOf(graph, myId, person.id) : null;
+    final band = person.isLiving ? Bua.green : Bua.memorial;
 
-    return CustomScrollView(slivers: [
-      SliverAppBar(
-        pinned: true,
-        title: Text(person.displayName),
-        actions: [
-          if (canEditDetails || canContribute)
-            IconButton(
-              tooltip: canEditDetails ? l.editPerson : l.suggestEdit,
-              icon: Icon(canEditDetails ? Icons.edit : Icons.edit_note),
-              onPressed: () => context.push('/person/${person.id}/edit'),
+    final facts = [
+      if (person.nickname?.isNotEmpty ?? false) '“${person.nickname}”',
+      if (person.isLiving && person.birthDate != null)
+        '${l.born} ${person.birthDateApprox ? l.approxPrefix() : ''}${person.birthDate!.year}',
+      if (!person.isLiving && person.lifespan(approxPrefix: l.approxPrefix()).isNotEmpty)
+        person.lifespan(approxPrefix: l.approxPrefix()),
+      if (person.isLiving && (person.birthPlace?.isNotEmpty ?? false)) person.birthPlace!,
+      if (!person.isLiving && (person.branch?.isNotEmpty ?? false)) person.branch!,
+    ];
+
+    // Band, top bar and the avatar overlapping the band's lower edge, all in
+    // one Stack so the avatar paints above the band.
+    final header = Stack(clipBehavior: Clip.none, children: [
+      Column(children: [PatternBand(height: 150, color: band), const SizedBox(height: 62)]),
+      SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Row(children: [
+            BackButton(color: Colors.white, onPressed: () => context.canPop() ? context.pop() : context.go('/tree')),
+            const Spacer(),
+            if (canEditDetails || canContribute)
+              IconButton(
+                tooltip: canEditDetails ? l.editPerson : l.suggestEdit,
+                icon: Icon(canEditDetails ? Icons.edit_outlined : Icons.edit_note, color: Colors.white),
+                onPressed: () => context.push('/person/${person.id}/edit'),
+              ),
+            PopupMenuButton<String>(
+              iconColor: Colors.white,
+              onSelected: (v) => _onMenu(context, ref, v),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: 'tree', child: Text(l.viewInTree)),
+                if (profile?.personId == null && profile?.requestedPersonId != person.id)
+                  PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
+                if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
+              ],
             ),
-          PopupMenuButton<String>(
-            onSelected: (v) => _onMenu(context, ref, v),
-            itemBuilder: (_) => [
-              PopupMenuItem(value: 'tree', child: Text(l.viewInTree)),
-              if (profile?.personId == null && profile?.requestedPersonId != person.id)
-                PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
-              if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
-            ],
-          ),
-        ],
+          ]),
+        ),
       ),
-      SliverToBoxAdapter(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          const SizedBox(height: 16),
-          Center(
+      Positioned(
+        top: 150 - 56,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: Semantics(
+            button: canEditDetails,
+            label: canEditDetails ? l.changePhoto : null,
             child: GestureDetector(
               onTap: canEditDetails ? () => _changePhoto(context, ref) : null,
-              child: Stack(children: [
-                PersonAvatar(person: person, radius: 56),
+              child: Stack(clipBehavior: Clip.none, children: [
+                Container(
+                  decoration: const BoxDecoration(color: Bua.ground, shape: BoxShape.circle),
+                  padding: const EdgeInsets.all(4),
+                  child: PersonAvatar(person: person, radius: 50, gapColor: Bua.ground),
+                ),
                 if (canEditDetails)
                   Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: CircleAvatar(
-                      radius: 16,
-                      backgroundColor: theme.colorScheme.primary,
-                      child: Icon(Icons.photo_camera, size: 16, color: theme.colorScheme.onPrimary),
+                    right: 2,
+                    bottom: 2,
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        color: Bua.green,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Bua.ground, width: 3),
+                      ),
+                      child: const Icon(Icons.photo_camera, size: 16, color: Colors.white),
                     ),
                   ),
               ]),
             ),
           ),
-          const SizedBox(height: 12),
-          Text(person.displayName, textAlign: TextAlign.center, style: theme.textTheme.headlineSmall),
-          if (person.nickname?.isNotEmpty ?? false)
-            Text('"${person.nickname}"', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
-          if (personSubtitle(context, person).isNotEmpty)
-            Text(personSubtitle(context, person), textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
-          const SizedBox(height: 8),
-          Center(
-            child: Wrap(spacing: 8, children: [
-              if (isMe) Chip(avatar: const Icon(Icons.person, size: 18), label: Text(l.thisIsYou)),
-              if (kinship != null)
-                Chip(
-                  avatar: const Icon(Icons.link, size: 18),
-                  label: Text('${l.relationshipToYou}: ${l.kinship(kinship)}'),
+        ),
+      ),
+    ]);
+
+    return CustomScrollView(slivers: [
+      SliverToBoxAdapter(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            header,
+            if (!person.isLiving) ...[
+              const SizedBox(height: 10),
+              Center(child: Pill(l.late(person), background: Bua.track, color: Bua.unknownFg)),
+            ],
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(person.displayName, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
+            ),
+            if (facts.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(facts.join(' · '),
+                    textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+              ),
+            const SizedBox(height: 10),
+            if (isMe || kinship != null)
+              Center(
+                child: Container(
+                  constraints: const BoxConstraints(minHeight: 34),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(color: Bua.greenTint, borderRadius: BorderRadius.circular(17)),
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(isMe ? Icons.person : Icons.link, size: 16, color: Bua.greenDark),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        isMe ? l.thisIsYou : l.kinshipToYou(kinship!),
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark),
+                      ),
+                    ),
+                  ]),
                 ),
-            ]),
-          ),
-          _AboutSection(person: person),
-          _FamilySection(graph: graph, person: person, canContribute: canContribute),
-          _DetailsSections(person: person, canEdit: canEditDetails),
-          const SizedBox(height: 32),
+              ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 0),
+              child: Row(children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: const BorderSide(color: Bua.line)),
+                    onPressed: () => context.go('/tree?focus=${person.id}'),
+                    icon: const Icon(Icons.account_tree_outlined, size: 18),
+                    label: Text(l.viewInTree),
+                  ),
+                ),
+                if (canContribute) ...[
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => _FamilySection.addRelative(context, ref, graph, person),
+                      icon: const Icon(Icons.person_add_alt_1, size: 18),
+                      label: Text(l.addRelative),
+                    ),
+                  ),
+                ],
+              ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                _AboutSection(person: person),
+                _FamilySection(graph: graph, person: person),
+                _DetailsSections(person: person, canEdit: canEditDetails),
+              ]),
+            ),
         ]),
       ),
     ]);
@@ -173,45 +258,69 @@ class _AboutSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    String? when(DateTime? d, bool approx, String? place) {
-      final parts = [
-        if (d != null) l.formatDate(d, approx: approx),
-        if (place?.isNotEmpty ?? false) place!,
-      ];
-      return parts.isEmpty ? null : parts.join(' · ');
-    }
+    Widget tile(String label, DateTime? d, bool approx, String? place) => Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(14)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+              Text(d == null ? '—' : l.formatDate(d, approx: approx),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              if (place?.isNotEmpty ?? false) Text(place!, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+            ]),
+          ),
+        );
 
+    final showBirth = person.birthDate != null || (person.birthPlace?.isNotEmpty ?? false);
+    final showDeath = !person.isLiving && (person.deathDate != null || (person.deathPlace?.isNotEmpty ?? false));
+    final bio = person.biography;
     final rows = <(IconData, String, String)>[
-      if (when(person.birthDate, person.birthDateApprox, person.birthPlace) case final v?)
-        (Icons.cake_outlined, l.born, v),
-      if (!person.isLiving)
-        if (when(person.deathDate, person.deathDateApprox, person.deathPlace) case final v?)
-          (Icons.local_florist_outlined, l.died, v),
       if (person.burialPlace?.isNotEmpty ?? false) (Icons.place_outlined, l.buried, person.burialPlace!),
       if (person.branch?.isNotEmpty ?? false) (Icons.account_tree_outlined, l.branch, person.branch!),
     ];
-    final bio = person.biography;
-    if (rows.isEmpty && (bio == null || bio.isEmpty)) return const SizedBox.shrink();
+    if (!showBirth && !showDeath && rows.isEmpty && (bio == null || bio.isEmpty)) return const SizedBox.shrink();
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      SectionHeader(l.sectionAbout),
-      for (final r in rows)
-        ListTile(dense: true, leading: Icon(r.$1), title: Text(r.$2), subtitle: Text(r.$3)),
-      if (bio != null && bio.isNotEmpty)
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(bio, style: Theme.of(context).textTheme.bodyLarge),
-        ),
-    ]);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: SectionCard(title: l.sectionAbout, children: [
+        if (showBirth || showDeath)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Row(children: [
+              if (showBirth) tile(l.born, person.birthDate, person.birthDateApprox, person.birthPlace),
+              if (showBirth && showDeath) const SizedBox(width: 10),
+              if (showDeath) tile(l.died, person.deathDate, person.deathDateApprox, person.deathPlace),
+            ]),
+          ),
+        for (final r in rows)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(children: [
+              Icon(r.$1, size: 20, color: Bua.green),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(r.$2, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  Text(r.$3, style: const TextStyle(fontSize: 15)),
+                ]),
+              ),
+            ]),
+          ),
+        if (bio != null && bio.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 4),
+            child: Text(bio, style: Theme.of(context).textTheme.bodyLarge),
+          ),
+      ]),
+    );
   }
 }
 
 class _FamilySection extends ConsumerWidget {
-  const _FamilySection({required this.graph, required this.person, required this.canContribute});
+  const _FamilySection({required this.graph, required this.person});
 
   final FamilyGraph graph;
   final Person person;
-  final bool canContribute;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -223,52 +332,68 @@ class _FamilySection extends ConsumerWidget {
     final siblings = graph.siblingsOf(id);
     final multipleSpouses = childGroups.keys.where((k) => k != null).length > 1;
 
-    Widget tile(Person p, {String? extra}) {
+    String sexKey(Person p) => switch (p.sex) {
+          Sex.male => 'male',
+          Sex.female => 'female',
+          Sex.unknown => 'other',
+        };
+
+    Widget tile(Person p, String? relation) {
       final base = personSubtitle(context, p);
-      final sub = [?extra, if (base.isNotEmpty) base].join(' · ');
+      final sub = [?relation, if (base.isNotEmpty) base].join(' · ');
       return PersonTile(person: p, subtitle: sub, onTap: () => context.push('/person/${p.id}'));
     }
 
-    String? parentKind(Person parent) {
+    String parentLabel(Person parent) {
       final link = graph.parentLinksOf(id).where((x) => x.parentId == parent.id).firstOrNull;
-      return link == null || link.kind == ParentKind.biological ? null : l.parentKindLabel(link.kind);
+      final rel = l.relParent(sexKey(parent));
+      return link == null || link.kind == ParentKind.biological ? rel : '$rel (${l.parentKindLabel(link.kind)})';
     }
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      SectionHeader(
-        l.sectionFamily,
-        action: canContribute
-            ? TextButton.icon(
-                onPressed: () => _addRelative(context, ref),
-                icon: const Icon(Icons.person_add_alt, size: 18),
-                label: Text(l.addRelative),
-              )
-            : null,
-      ),
-      if (parents.isNotEmpty) ...[
-        _SubHeader(l.parents),
-        for (final p in parents) tile(p, extra: parentKind(p)),
-      ],
-      if (unions.isNotEmpty) ...[
-        _SubHeader(l.spouses),
-        for (final u in unions)
-          if (graph[u.partnerOf(id)!] case final s?)
-            tile(s, extra: u.status == UnionStatus.married ? null : l.unionStatusLabel(u.status)),
-      ],
-      if (childGroups.values.any((c) => c.isNotEmpty)) ...[
-        _SubHeader(l.children),
-        for (final entry in childGroups.entries)
-          for (final c in entry.value)
-            tile(c, extra: multipleSpouses && entry.key != null ? graph[entry.key!]?.firstName : null),
-      ],
-      if (siblings.isNotEmpty) ...[
-        _SubHeader(l.siblings),
-        for (final s in siblings) tile(s, extra: l.kinship(kinshipOf(graph, id, s.id))),
-      ],
-      if (parents.isEmpty && unions.isEmpty && childGroups.isEmpty && siblings.isEmpty)
-        Padding(padding: const EdgeInsets.all(16), child: Text(l.nothingYet)),
-    ]);
+    if (parents.isEmpty && unions.isEmpty && childGroups.isEmpty && siblings.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: SectionCard(title: l.sectionFamily, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 6),
+            child: Text(l.nothingYet, style: Theme.of(context).textTheme.bodySmall),
+          ),
+        ]),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: SectionCard(title: l.sectionFamily, children: [
+        if (parents.isNotEmpty) ...[
+          SubLabel(l.parents),
+          for (final p in parents) tile(p, parentLabel(p)),
+        ],
+        if (unions.isNotEmpty) ...[
+          SubLabel(l.spouses),
+          for (final u in unions)
+            if (graph[u.partnerOf(id)!] case final s?)
+              tile(s, u.status == UnionStatus.married ? l.relSpouse(sexKey(s)) : l.unionStatusLabel(u.status)),
+        ],
+        if (childGroups.values.any((c) => c.isNotEmpty)) ...[
+          SubLabel(l.children),
+          for (final entry in childGroups.entries)
+            for (final c in entry.value)
+              tile(c, [
+                l.relChild(sexKey(c)),
+                if (multipleSpouses && entry.key != null) graph[entry.key!]?.firstName,
+              ].whereType<String>().join(', ')),
+        ],
+        if (siblings.isNotEmpty) ...[
+          SubLabel(l.siblings),
+          for (final s in siblings) tile(s, l.kinship(kinshipOf(graph, id, s.id))),
+        ],
+      ]),
+    );
   }
+
+  static Future<void> addRelative(BuildContext context, WidgetRef ref, FamilyGraph graph, Person person) =>
+      _FamilySection(graph: graph, person: person)._addRelative(context, ref);
 
   Future<void> _addRelative(BuildContext context, WidgetRef ref) async {
     final l = context.l10n;
@@ -356,18 +481,6 @@ class _FamilySection extends ConsumerWidget {
   }
 }
 
-class _SubHeader extends StatelessWidget {
-  const _SubHeader(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-        child: Text(text, style: Theme.of(context).textTheme.labelLarge),
-      );
-}
-
 class _DetailsSections extends ConsumerWidget {
   const _DetailsSections({required this.person, required this.canEdit});
 
@@ -389,9 +502,6 @@ class _DetailsSections extends ConsumerWidget {
       if (await guarded(context, action)) ref.invalidate(detailsProvider(person.id));
     }
 
-    Widget addButton(VoidCallback onPressed) =>
-        IconButton(tooltip: l.add, icon: const Icon(Icons.add), onPressed: onPressed);
-
     Widget? itemMenu({required VoidCallback onEdit, required VoidCallback onDelete}) => canEdit
         ? PopupMenuButton<bool>(
             onSelected: (edit) => edit ? onEdit() : onDelete(),
@@ -405,124 +515,181 @@ class _DetailsSections extends ConsumerWidget {
     String years(int? a, int? b) => [if (a != null) '$a', if (b != null) '$b'].join(' – ');
 
     final empty = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 6),
       child: Text(l.nothingYet, style: Theme.of(context).textTheme.bodySmall),
     );
 
+    Widget detailRow(IconData icon, String title, String subtitle, Widget? trailing) => Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 4, 8),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            IconTile(icon),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                if (subtitle.isNotEmpty) Text(subtitle, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              ]),
+            ),
+            ?trailing,
+          ]),
+        );
+
     final contact = d.contact;
     final health = d.health;
+    final hasWork = d.education.isNotEmpty || d.occupations.isNotEmpty || d.skills.isNotEmpty;
+
+    Widget addMenu() => PopupMenuButton<String>(
+          tooltip: l.add,
+          icon: const Icon(Icons.add, color: Bua.green),
+          onSelected: (v) => switch (v) {
+            'edu' => run(() => _editEducation(context, repo().saveEducation)),
+            'work' => run(() => _editOccupation(context, repo().saveOccupation)),
+            _ => run(() async {
+                final v = await showFormDialog(context, title: l.skill, fields: [TextSpec('skill', l.skill, required: true)]);
+                if (v != null) await repo().addSkill(person.id, v['skill'] as String);
+              }),
+          },
+          itemBuilder: (_) => [
+            PopupMenuItem(value: 'edu', child: Text(l.addEducation)),
+            PopupMenuItem(value: 'work', child: Text(l.addWork)),
+            PopupMenuItem(value: 'skill', child: Text(l.addSkill)),
+          ],
+        );
+
+    Widget editButton(VoidCallback onPressed) =>
+        IconButton(tooltip: l.edit, icon: const Icon(Icons.edit_outlined, size: 20, color: Bua.green), onPressed: onPressed);
+
+    final healthShared = health?.visibility == Audience.family;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      // Education
-      SectionHeader(l.education,
-          action: canEdit ? addButton(() => run(() => _editEducation(context, repo().saveEducation))) : null),
-      if (d.education.isEmpty) empty,
-      for (final e in d.education)
-        ListTile(
-          leading: const Icon(Icons.school_outlined),
-          title: Text(e.institution),
-          subtitle: Text([e.qualification, e.field, years(e.startYear, e.endYear)]
-              .where((s) => s != null && s.isNotEmpty)
-              .join(' · ')),
-          trailing: itemMenu(
-            onEdit: () => run(() => _editEducation(context, repo().saveEducation, e)),
-            onDelete: () => run(() => repo().deleteDetail('person_education', e.id!)),
-          ),
-        ),
-
-      // Work
-      SectionHeader(l.work,
-          action: canEdit ? addButton(() => run(() => _editOccupation(context, repo().saveOccupation))) : null),
-      if (d.occupations.isEmpty) empty,
-      for (final o in d.occupations)
-        ListTile(
-          leading: const Icon(Icons.work_outline),
-          title: Text(o.title),
-          subtitle: Text([o.organization, o.location, if (o.isCurrent) l.currentJob else years(o.startYear, o.endYear)]
-              .where((s) => s != null && s.isNotEmpty)
-              .join(' · ')),
-          trailing: itemMenu(
-            onEdit: () => run(() => _editOccupation(context, repo().saveOccupation, o)),
-            onDelete: () => run(() => repo().deleteDetail('person_occupations', o.id!)),
-          ),
-        ),
-
-      // Skills
-      SectionHeader(l.skills,
-          action: canEdit
-              ? addButton(() => run(() async {
-                    final v = await showFormDialog(context,
-                        title: l.skill, fields: [TextSpec('skill', l.skill, required: true)]);
-                    if (v != null) await repo().addSkill(person.id, v['skill'] as String);
-                  }))
-              : null),
-      if (d.skills.isEmpty)
-        empty
-      else
+      // Education, work and skills
+      if (hasWork || canEdit)
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Wrap(spacing: 8, runSpacing: 4, children: [
-            for (final s in d.skills)
-              InputChip(
-                label: Text(s.skill),
-                onDeleted: canEdit ? () => run(() => repo().deleteDetail('person_skills', s.id!)) : null,
+          padding: const EdgeInsets.only(bottom: 12),
+          child: SectionCard(title: l.educationWork, trailing: canEdit ? addMenu() : null, children: [
+            if (!hasWork) empty,
+            for (final e in d.education)
+              detailRow(
+                Icons.school_outlined,
+                e.institution,
+                [e.qualification, e.field, years(e.startYear, e.endYear)].where((s) => s != null && s.isNotEmpty).join(' · '),
+                itemMenu(
+                  onEdit: () => run(() => _editEducation(context, repo().saveEducation, e)),
+                  onDelete: () => run(() => repo().deleteDetail('person_education', e.id!)),
+                ),
+              ),
+            for (final o in d.occupations)
+              detailRow(
+                Icons.work_outline,
+                [o.title, o.organization].where((s) => s != null && s.isNotEmpty).join(', '),
+                [o.location, if (o.isCurrent) l.currentJob else years(o.startYear, o.endYear)]
+                    .where((s) => s != null && s.isNotEmpty)
+                    .join(' · '),
+                itemMenu(
+                  onEdit: () => run(() => _editOccupation(context, repo().saveOccupation, o)),
+                  onDelete: () => run(() => repo().deleteDetail('person_occupations', o.id!)),
+                ),
+              ),
+            if (d.skills.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                child: Wrap(spacing: 8, runSpacing: 8, children: [
+                  for (final s in d.skills)
+                    InputChip(
+                      label: Text(s.skill),
+                      onDeleted: canEdit ? () => run(() => repo().deleteDetail('person_skills', s.id!)) : null,
+                    ),
+                ]),
               ),
           ]),
         ),
 
-      // Contact (only living people)
-      if (person.isLiving && (canEdit || (contact != null && !contact.isEmpty))) ...[
-        SectionHeader(l.contact,
-            action: canEdit
-                ? IconButton(
-                    tooltip: l.edit,
-                    icon: const Icon(Icons.edit_outlined),
-                    onPressed: () => run(() => _editContact(context, repo(), contact)),
-                  )
-                : null),
-        if (contact == null || contact.isEmpty) empty,
-        if (contact != null) ...[
-          if (contact.phone?.isNotEmpty ?? false)
-            ListTile(dense: true, leading: const Icon(Icons.phone_outlined), title: SelectableText(contact.phone!)),
-          if (contact.email?.isNotEmpty ?? false)
-            ListTile(dense: true, leading: const Icon(Icons.email_outlined), title: SelectableText(contact.email!)),
-          if ([contact.address, contact.city, contact.country].any((s) => s?.isNotEmpty ?? false))
-            ListTile(
-              dense: true,
-              leading: const Icon(Icons.home_outlined),
-              title: Text([contact.address, contact.city, contact.country]
-                  .where((s) => s?.isNotEmpty ?? false)
-                  .join(', ')),
-            ),
-        ],
-      ],
-
       // Health (private unless shared)
-      if (canEdit || (health != null && !health.isEmpty)) ...[
-        SectionHeader(l.health,
-            action: canEdit
-                ? IconButton(
-                    tooltip: l.edit,
-                    icon: const Icon(Icons.edit_outlined),
-                    onPressed: () => run(() => _editHealth(context, repo(), health)),
-                  )
-                : null),
-        if (health == null || health.isEmpty) empty,
-        if (health != null && !health.isEmpty)
-          ListTile(
-            leading: const Icon(Icons.favorite_outline),
-            title: Text([
-              if (health.bloodGroup != null) '${l.bloodGroup}: ${health.bloodGroup}',
-              if (health.genotype != null) '${l.genotype}: ${health.genotype}',
-            ].join(' · ')),
-            subtitle: Text([
-              if (health.conditions?.isNotEmpty ?? false) health.conditions!,
-              health.visibility == Audience.private ? l.visiblePrivate : l.visibleFamily,
-            ].join('\n')),
+      if (canEdit || (health != null && !health.isEmpty))
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: SectionCard(
+            title: l.health,
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              if (health != null && !health.isEmpty)
+                healthShared
+                    ? Pill(l.sharedWithFamily, icon: Icons.people_outline)
+                    : Pill(l.privateLabel, icon: Icons.lock_outline, background: Bua.track, color: Bua.unknownFg),
+              if (canEdit) editButton(() => run(() => _editHealth(context, repo(), health))),
+            ]),
+            children: [
+              if (health == null || health.isEmpty)
+                empty
+              else ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+                  child: Row(children: [
+                    for (final (label, value) in [(l.bloodGroup, health.bloodGroup), (l.genotype, health.genotype)]) ...[
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                          decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(14)),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                            Text(value ?? '—', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+                          ]),
+                        ),
+                      ),
+                      if (label == l.bloodGroup) const SizedBox(width: 10),
+                    ],
+                  ]),
+                ),
+                if (health.conditions?.isNotEmpty ?? false)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                    child: Text(health.conditions!, style: const TextStyle(fontSize: 14)),
+                  ),
+              ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
+                child: Row(children: [
+                  const Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
+                  const SizedBox(width: 6),
+                  Expanded(child: Text(l.healthPrivacyNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle))),
+                ]),
+              ),
+            ],
           ),
-      ],
+        ),
+
+      // Contact (only living people)
+      if (person.isLiving && (canEdit || (contact != null && !contact.isEmpty)))
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: SectionCard(
+            title: l.contact,
+            trailing: canEdit ? editButton(() => run(() => _editContact(context, repo(), contact))) : null,
+            children: [
+              if (contact == null || contact.isEmpty) empty,
+              if (contact != null) ...[
+                if (contact.phone?.isNotEmpty ?? false) _contactRow(Icons.phone_outlined, contact.phone!),
+                if (contact.email?.isNotEmpty ?? false) _contactRow(Icons.email_outlined, contact.email!),
+                if ([contact.address, contact.city, contact.country].any((s) => s?.isNotEmpty ?? false))
+                  _contactRow(
+                    Icons.place_outlined,
+                    [contact.address, contact.city, contact.country].where((s) => s?.isNotEmpty ?? false).join(', '),
+                  ),
+              ],
+            ],
+          ),
+        ),
+      const SizedBox(height: 24),
     ]);
   }
+
+  Widget _contactRow(IconData icon, String text) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(children: [
+          Icon(icon, size: 20, color: Bua.green),
+          const SizedBox(width: 12),
+          Expanded(child: SelectableText(text, style: const TextStyle(fontSize: 15))),
+        ]),
+      );
 
   Future<void> _editEducation(BuildContext context, Future<void> Function(Education) save, [Education? e]) async {
     final l = context.l10n;

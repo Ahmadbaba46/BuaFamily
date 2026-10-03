@@ -7,6 +7,8 @@ import '../../models/account.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
+import '../theme.dart';
+import '../widgets/bua.dart';
 import '../widgets/common.dart';
 
 /// Add a new person (optionally as a relative of [relationTo]) or edit [editId].
@@ -42,6 +44,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
   DateTime? _death;
   bool _deathApprox = false;
 
+  late String? _relType = widget.relationType;
   String? _otherParentId;
   ParentKind _kind = ParentKind.biological;
   UnionStatus _unionStatus = UnionStatus.married;
@@ -84,12 +87,12 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
     if (rel != null) {
       // Sensible defaults from the relative.
       _t('branch').text = rel.branch ?? '';
-      if (widget.relationType == 'child') {
+      if (_relType == 'child') {
         if (rel.sex == Sex.male) _t('last_name').text = rel.lastName ?? '';
         final spouses = g.spousesOf(rel.id);
         if (spouses.length == 1) _otherParentId = spouses.first.id;
       }
-      if (widget.relationType == 'parent' && _sex == Sex.male) {
+      if (_relType == 'parent' && _sex == Sex.male) {
         _t('last_name').text = rel.lastName ?? '';
       }
     }
@@ -136,11 +139,11 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
         final relation = widget.relationTo == null
             ? null
             : {
-                'type': widget.relationType,
+                'type': _relType,
                 'person_id': widget.relationTo,
-                if (widget.relationType != 'spouse') 'kind': _kind.name,
-                if (widget.relationType == 'child' && _otherParentId != null) 'other_parent_id': _otherParentId,
-                if (widget.relationType == 'spouse') 'status': _unionStatus.name,
+                if (_relType != 'spouse') 'kind': _kind.name,
+                if (_relType == 'child' && _otherParentId != null) 'other_parent_id': _otherParentId,
+                if (_relType == 'spouse') 'status': _unionStatus.name,
               };
         if (isAdmin) {
           openId = await repo.createPerson(values, relation: relation);
@@ -204,115 +207,179 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
     if (!isAdmin && !editingSelf && !canContribute) {
       return Scaffold(appBar: AppBar(), body: Center(child: Text(l.contributionsOff)));
     }
+    final needsApproval = !isAdmin && !editingSelf;
 
     final relative = widget.relationTo == null ? null : graph[widget.relationTo!];
     final title = _original != null
         ? (isAdmin || editingSelf ? l.editPerson : l.suggestEdit)
         : relative == null
             ? l.newPerson
-            : '${l.newPersonTitle(_relationLabel(l))} ${l.ofPerson(relative.firstName)}';
+            : l.addRelative;
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          tooltip: l.close,
+          icon: const Icon(Icons.close),
+          onPressed: () => context.canPop() ? context.pop() : context.go('/tree'),
+        ),
         title: Text(title),
-        actions: [
-          TextButton(onPressed: _busy ? null : () => _save(graph), child: Text(l.save)),
-        ],
       ),
       body: Form(
         key: _form,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
           children: [
-            if (!isAdmin && !editingSelf)
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(children: [
-                    const Icon(Icons.info_outline),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text(l.sentForApproval)),
-                  ]),
+            if (needsApproval) ...[
+              InfoBanner(icon: Icons.shield_outlined, text: l.approvalBanner),
+              const SizedBox(height: 14),
+            ],
+            if (relative != null) ...[
+              _card([
+                Text(l.addingTo, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+                Row(children: [
+                  PersonAvatar(person: relative),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(relative.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                      if (personSubtitle(context, relative).isNotEmpty)
+                        Text(personSubtitle(context, relative), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                    ]),
+                  ),
+                ]),
+                if (_original == null) ...[
+                  Text(l.newPersonIs(relative.firstName),
+                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+                  _relationChips(l, relative),
+                ],
+                ..._relationFields(l, graph, relative),
+              ]),
+              const SizedBox(height: 14),
+            ],
+            _card([
+              Row(children: [
+                Expanded(child: _field('first_name', l.firstName, required: true)),
+                const SizedBox(width: 10),
+                Expanded(child: _field('last_name', l.lastName)),
+              ]),
+              _field('middle_name', l.middleName),
+              _field('title', l.title),
+              _field('nickname', l.nickname),
+              LabeledField(
+                label: l.sex,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: PillSegmented<Sex>(
+                    values: Sex.values,
+                    labelOf: l.sexLabel,
+                    selected: _sex,
+                    onChanged: (v) => setState(() => _sex = v),
+                  ),
                 ),
               ),
-            if (relative != null) ..._relationFields(l, graph, relative),
-            _field('title', l.title),
-            _field('first_name', l.firstName, required: true),
-            _field('middle_name', l.middleName),
-            _field('last_name', l.lastName),
-            _field('nickname', l.nickname),
-            const SizedBox(height: 4),
-            Text(l.sex, style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 4),
-            SegmentedButton<Sex>(
-              segments: [
-                ButtonSegment(value: Sex.male, label: Text(l.male)),
-                ButtonSegment(value: Sex.female, label: Text(l.female)),
-                ButtonSegment(value: Sex.unknown, label: Text(l.unknown)),
-              ],
-              selected: {_sex},
-              onSelectionChanged: (s) => setState(() => _sex = s.first),
-            ),
-            const SizedBox(height: 16),
-            _DateField(
-              label: l.birthDate,
-              value: _birth,
-              approx: _birthApprox,
-              onChanged: (d) => setState(() => _birth = d),
-              onApproxChanged: (v) => setState(() => _birthApprox = v),
-            ),
-            _field('birth_place', l.birthPlace),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(l.isLiving),
-              value: _living,
-              onChanged: (v) => setState(() => _living = v),
-            ),
-            if (!_living) ...[
+            ]),
+            const SizedBox(height: 14),
+            _card([
               _DateField(
-                label: l.deathDate,
-                value: _death,
-                approx: _deathApprox,
-                onChanged: (d) => setState(() => _death = d),
-                onApproxChanged: (v) => setState(() => _deathApprox = v),
+                label: l.birthDate,
+                value: _birth,
+                approx: _birthApprox,
+                onChanged: (d) => setState(() => _birth = d),
+                onApproxChanged: (v) => setState(() => _birthApprox = v),
               ),
-              _field('death_place', l.deathPlace),
-              _field('burial_place', l.burialPlace),
-            ],
-            _field('branch', l.branch),
-            _field('biography', l.biography, lines: 5),
-            const SizedBox(height: 16),
-            FilledButton(onPressed: _busy ? null : () => _save(graph), child: Text(l.save)),
+              _field('birth_place', l.birthPlace),
+              ToggleRow(title: l.isLiving, value: _living, onChanged: (v) => setState(() => _living = v)),
+              if (!_living) ...[
+                _DateField(
+                  label: l.deathDate,
+                  value: _death,
+                  approx: _deathApprox,
+                  onChanged: (d) => setState(() => _death = d),
+                  onApproxChanged: (v) => setState(() => _deathApprox = v),
+                ),
+                _field('death_place', l.deathPlace),
+                _field('burial_place', l.burialPlace),
+              ],
+            ]),
+            const SizedBox(height: 14),
+            _card([
+              _field('branch', l.branch),
+              _field('biography', l.biography, lines: 5),
+            ]),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
+              onPressed: _busy ? null : () => _save(graph),
+              icon: Icon(needsApproval ? Icons.send_outlined : Icons.check),
+              label: Text(needsApproval ? l.sendForApproval : l.save),
+            ),
           ],
         ),
       ),
     );
   }
 
-  String _relationLabel(AppLocalizations l) {
-    final sex = switch (_sex) {
-      Sex.male => 'male',
-      Sex.female => 'female',
-      Sex.unknown => 'other',
-    };
-    return switch (widget.relationType) {
-      'parent' => l.relParent(sex),
-      'child' => l.relChild(sex),
-      _ => l.relSpouse(sex),
-    }.toLowerCase();
+  Widget _card(List<Widget> children) => Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final (i, c) in children.indexed) ...[if (i > 0) const SizedBox(height: 12), c],
+          ],
+        ),
+      );
+
+  /// Father / Mother / Spouse / Son / Daughter chips for a new relative.
+  Widget _relationChips(AppLocalizations l, Person relative) {
+    final spouseSex = relative.sex == Sex.male
+        ? Sex.female
+        : relative.sex == Sex.female
+            ? Sex.male
+            : Sex.unknown;
+    final options = <(String, Sex, String)>[
+      ('parent', Sex.male, l.addFather),
+      ('parent', Sex.female, l.addMother),
+      ('spouse', spouseSex, l.addSpouse),
+      ('child', Sex.male, l.addSon),
+      ('child', Sex.female, l.addDaughter),
+    ];
+    return Wrap(spacing: 8, runSpacing: 8, children: [
+      for (final (type, sex, label) in options)
+        ChoiceChip(
+          label: Text(label),
+          selected: _relType == type && (type == 'spouse' || _sex == sex),
+          avatar: _relType == type && (type == 'spouse' || _sex == sex)
+              ? const Icon(Icons.check, size: 16, color: Colors.white)
+              : null,
+          labelStyle: TextStyle(
+            fontSize: 14,
+            color: _relType == type && (type == 'spouse' || _sex == sex) ? Colors.white : Bua.ink,
+            fontWeight: FontWeight.w600,
+          ),
+          onSelected: (_) => setState(() {
+            _relType = type;
+            _sex = sex;
+            if (type == 'child' && _otherParentId == null) {
+              final spouses = ref.read(graphProvider).value?.spousesOf(relative.id) ?? const [];
+              if (spouses.length == 1) _otherParentId = spouses.first.id;
+            }
+          }),
+        ),
+    ]);
   }
 
   List<Widget> _relationFields(AppLocalizations l, FamilyGraph g, Person relative) {
-    switch (widget.relationType) {
+    switch (_relType) {
       case 'child':
         final spouses = g.spousesOf(relative.id);
         return [
           if (spouses.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+            LabeledField(
+              label: l.otherParent,
               child: DropdownButtonFormField<String?>(
                 initialValue: _otherParentId,
-                decoration: InputDecoration(labelText: l.otherParent),
                 items: [
                   for (final s in spouses) DropdownMenuItem(value: s.id, child: Text(s.displayName)),
                   DropdownMenuItem(value: null, child: Text(l.otherParentUnknown)),
@@ -326,11 +393,10 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
         return [_kindField(l)];
       case 'spouse':
         return [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+          LabeledField(
+            label: l.unionStatus,
             child: DropdownButtonFormField<UnionStatus>(
               initialValue: _unionStatus,
-              decoration: InputDecoration(labelText: l.unionStatus),
               items: [
                 for (final s in UnionStatus.values) DropdownMenuItem(value: s, child: Text(l.unionStatusLabel(s))),
               ],
@@ -342,11 +408,10 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
     return const [];
   }
 
-  Widget _kindField(AppLocalizations l) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+  Widget _kindField(AppLocalizations l) => LabeledField(
+        label: l.relationKind,
         child: DropdownButtonFormField<ParentKind>(
           initialValue: _kind,
-          decoration: InputDecoration(labelText: l.relationKind),
           items: [
             for (final k in ParentKind.values) DropdownMenuItem(value: k, child: Text(l.parentKindLabel(k))),
           ],
@@ -354,13 +419,12 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
         ),
       );
 
-  Widget _field(String key, String label, {bool required = false, int lines = 1}) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
+  Widget _field(String key, String label, {bool required = false, int lines = 1}) => LabeledField(
+        label: label,
         child: TextFormField(
           controller: _t(key),
           maxLines: lines,
           textCapitalization: lines > 1 ? TextCapitalization.sentences : TextCapitalization.words,
-          decoration: InputDecoration(labelText: label),
           validator: required ? (v) => (v ?? '').trim().isEmpty ? context.l10n.required : null : null,
         ),
       );
@@ -385,17 +449,12 @@ class _DateField extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final v = value;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        InputDecorator(
-          decoration: InputDecoration(
-            labelText: label,
-            suffixIcon: v == null
-                ? null
-                : IconButton(tooltip: l.clear, icon: const Icon(Icons.clear), onPressed: () => onChanged(null)),
-          ),
+    return LabeledField(
+      label: label,
+      child: Row(children: [
+        Expanded(
           child: InkWell(
+            borderRadius: BorderRadius.circular(12),
             onTap: () async {
               final picked = await showDatePicker(
                 context: context,
@@ -406,16 +465,29 @@ class _DateField extends StatelessWidget {
               );
               if (picked != null) onChanged(approx ? DateTime(picked.year) : picked);
             },
-            child: Text(v == null ? l.pickDate : l.formatDate(v, approx: approx)),
+            child: InputDecorator(
+              decoration: InputDecoration(
+                suffixIcon: v == null
+                    ? const Icon(Icons.calendar_today_outlined, size: 18)
+                    : IconButton(tooltip: l.clear, icon: const Icon(Icons.clear), onPressed: () => onChanged(null)),
+              ),
+              child: Text(
+                v == null ? l.pickDate : l.formatDate(v, approx: approx),
+                style: TextStyle(fontSize: 15, color: v == null ? Bua.inkSubtle : Bua.ink),
+              ),
+            ),
           ),
         ),
-        CheckboxListTile(
-          contentPadding: EdgeInsets.zero,
-          dense: true,
-          controlAffinity: ListTileControlAffinity.leading,
-          title: Text(l.dateApprox),
-          value: approx,
-          onChanged: (b) => onApproxChanged(b ?? false),
+        const SizedBox(width: 6),
+        InkWell(
+          onTap: () => onApproxChanged(!approx),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48, maxWidth: 140),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Checkbox(value: approx, onChanged: (b) => onApproxChanged(b ?? false)),
+              Flexible(child: Text(l.dateApprox, style: const TextStyle(fontSize: 13))),
+            ]),
+          ),
         ),
       ]),
     );

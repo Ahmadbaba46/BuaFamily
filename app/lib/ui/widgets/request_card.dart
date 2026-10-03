@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
 import '../../models/family_graph.dart';
+import '../theme.dart';
+import 'bua.dart';
 
 /// Human-readable summary of a change request.
 class RequestCard extends StatelessWidget {
@@ -12,12 +14,14 @@ class RequestCard extends StatelessWidget {
     required this.graph,
     this.requesterName,
     this.actions = const [],
+    this.showStatus = false,
   });
 
   final ChangeRequest request;
   final FamilyGraph graph;
   final String? requesterName;
   final List<Widget> actions;
+  final bool showStatus;
 
   String _name(String? id) => id == null ? '?' : graph[id]?.displayName ?? '?';
 
@@ -52,53 +56,120 @@ class RequestCard extends StatelessWidget {
     }
   }
 
-  /// Field-by-field list of proposed values for person requests.
-  List<String> _details() {
+  /// Proposed values for person requests, with readable field names.
+  List<(String, String)> _details(AppLocalizations l) {
     final person = request.payload['person'] as Map<String, dynamic>?;
+    final rel = request.payload['relation'] as Map<String, dynamic>?;
     if (person == null) return const [];
+    final labels = {
+      'title': l.title,
+      'first_name': l.firstName,
+      'middle_name': l.middleName,
+      'last_name': l.lastName,
+      'nickname': l.nickname,
+      'sex': l.sex,
+      'birth_date': l.birthDate,
+      'birth_place': l.birthPlace,
+      'death_date': l.deathDate,
+      'death_place': l.deathPlace,
+      'burial_place': l.burialPlace,
+      'branch': l.branch,
+      'biography': l.biography,
+    };
+    String value(String key, Object v) => switch ((key, v)) {
+          ('sex', 'male') => l.male,
+          ('sex', 'female') => l.female,
+          ('sex', _) => l.unknown,
+          ('birth_date' || 'death_date', final String d) when DateTime.tryParse(d) != null =>
+            l.formatDate(DateTime.parse(d), approx: person['${key}_approx'] == true),
+          _ => '$v',
+        };
+    // A new person's name is already in the card title.
+    final inTitle = request.kind == RequestKind.createPerson
+        ? const {'first_name', 'middle_name', 'last_name'}
+        : const <String>{};
     return [
+      if (request.kind == RequestKind.createPerson && rel?['other_parent_id'] != null)
+        (l.otherParent, _name(rel!['other_parent_id'] as String?)),
       for (final e in person.entries)
-        if (e.value != null && e.value != '' && e.value != false) '${e.key.replaceAll('_', ' ')}: ${e.value}',
+        if (labels.containsKey(e.key) && !inTitle.contains(e.key) && e.value != null && e.value != '')
+          (labels[e.key]!, value(e.key, e.value as Object)),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final theme = Theme.of(context);
-    final (statusText, statusColor) = switch (request.status) {
-      RequestStatus.pending => (l.statusPending, theme.colorScheme.tertiary),
-      RequestStatus.approved => (l.statusApproved, theme.colorScheme.primary),
-      RequestStatus.rejected => (l.statusRejected, theme.colorScheme.error),
+    final (icon, tileBg, tileFg) = switch (request.kind) {
+      RequestKind.createPerson => (Icons.person_add_alt_1, Bua.greenTint, Bua.green),
+      RequestKind.updatePerson => (Icons.edit_outlined, Bua.goldTint, Bua.goldInk),
+      RequestKind.addParentChild || RequestKind.addUnion => (Icons.link, Bua.greenTint, Bua.green),
     };
-    final details = _details();
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Expanded(child: Text(_title(l), style: theme.textTheme.titleSmall)),
-            Text(statusText, style: theme.textTheme.labelMedium?.copyWith(color: statusColor)),
+    final details = _details(l);
+    final meta = [if (requesterName != null) l.requestedBy(requesterName!), l.formatDate(request.createdAt)].join(' · ');
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        if (showStatus) ...[
+          Row(children: [_statusPill(l), const SizedBox(width: 8), Expanded(child: Text(meta, style: _meta))]),
+          const SizedBox(height: 8),
+          Text(_title(l), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, height: 1.35)),
+        ] else
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            IconTile(icon, background: tileBg, color: tileFg),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(_title(l), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, height: 1.35)),
+                const SizedBox(height: 2),
+                Text(meta, style: _meta),
+              ]),
+            ),
           ]),
-          const SizedBox(height: 4),
-          Text(
-            [if (requesterName != null) l.requestedBy(requesterName!), l.formatDate(request.createdAt)].join(' · '),
-            style: theme.textTheme.bodySmall,
+        if (details.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(12)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              for (final (k, v) in details)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    SizedBox(width: 110, child: Text(k, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))),
+                    Expanded(child: Text(v, style: const TextStyle(fontSize: 13))),
+                  ]),
+                ),
+            ]),
           ),
-          if (details.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(details.join('\n'), style: theme.textTheme.bodySmall),
-          ],
-          if (request.reviewNote?.isNotEmpty ?? false) ...[
-            const SizedBox(height: 8),
-            Text('“${request.reviewNote}”', style: theme.textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic)),
-          ],
-          if (actions.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: actions),
-          ],
-        ]),
-      ),
+        ],
+        if (request.reviewNote?.isNotEmpty ?? false) ...[
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(12)),
+            child: Text('“${request.reviewNote}”',
+                style: const TextStyle(fontSize: 13, fontStyle: FontStyle.italic, color: Bua.inkBody)),
+          ),
+        ],
+        if (actions.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            for (final (i, a) in actions.indexed) ...[if (i > 0) const SizedBox(width: 10), a],
+          ]),
+        ],
+      ]),
     );
   }
+
+  static const _meta = TextStyle(fontSize: 13, color: Bua.inkSubtle);
+
+  Widget _statusPill(AppLocalizations l) => switch (request.status) {
+        RequestStatus.pending => Pill(l.statusPending.toUpperCase(), background: Bua.goldTint, color: Bua.goldInk),
+        RequestStatus.approved => Pill(l.statusApproved.toUpperCase(), icon: Icons.check),
+        RequestStatus.rejected =>
+          Pill(l.statusRejected.toUpperCase(), background: Bua.dangerTint, color: Bua.dangerInk),
+      };
 }
