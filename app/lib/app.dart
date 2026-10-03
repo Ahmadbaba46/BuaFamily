@@ -10,6 +10,8 @@ import 'ui/screens/blood_donors_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
 import 'ui/screens/home_screen.dart';
+import 'ui/screens/how_related_screen.dart';
+import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/more_screen.dart';
 import 'ui/screens/my_requests_screen.dart';
@@ -84,6 +86,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
       GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: '/settings/notifications', builder: (_, _) => const NotificationSettingsScreen()),
+      GoRoute(
+        path: '/related',
+        builder: (_, s) => HowRelatedScreen(fromId: s.uri.queryParameters['a'], toId: s.uri.queryParameters['b']),
+      ),
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),
       GoRoute(path: '/blood', builder: (_, _) => const BloodDonorsScreen()),
       GoRoute(path: '/blood/request', builder: (_, _) => const NewBloodRequestScreen()),
@@ -113,6 +119,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'edit',
             builder: (_, s) => PersonFormScreen(editId: s.pathParameters['id']),
           ),
+          GoRoute(path: 'memorial', builder: (_, s) => MemorialScreen(personId: s.pathParameters['id']!)),
         ],
       ),
       GoRoute(

@@ -159,20 +159,32 @@ class _PersonView extends ConsumerWidget {
             const SizedBox(height: 10),
             if (isMe || kinship != null)
               Center(
-                child: Container(
-                  constraints: const BoxConstraints(minHeight: 34),
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                  decoration: BoxDecoration(color: Bua.greenTint, borderRadius: BorderRadius.circular(17)),
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(isMe ? Icons.person : Icons.link, size: 16, color: Bua.greenDark),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        isMe ? l.thisIsYou : l.kinshipToYou(kinship!),
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark),
-                      ),
+                child: Material(
+                  color: Bua.greenTint,
+                  borderRadius: BorderRadius.circular(17),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    // Tap to see how you are related, step by step.
+                    onTap: isMe ? null : () => context.push('/related?b=${person.id}'),
+                    child: Container(
+                      constraints: const BoxConstraints(minHeight: 34),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(isMe ? Icons.person : Icons.link, size: 16, color: Bua.greenDark),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            isMe ? l.thisIsYou : l.kinshipToYou(kinship!),
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark),
+                          ),
+                        ),
+                        if (!isMe) ...[
+                          const SizedBox(width: 4),
+                          const Icon(Icons.chevron_right, size: 16, color: Bua.greenDark),
+                        ],
+                      ]),
                     ),
-                  ]),
+                  ),
                 ),
               ),
             Padding(
@@ -198,6 +210,16 @@ class _PersonView extends ConsumerWidget {
                 ],
               ]),
             ),
+            if (!person.isLiving)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                child: FilledButton.tonalIcon(
+                  style: FilledButton.styleFrom(backgroundColor: Bua.memorial, foregroundColor: Colors.white),
+                  onPressed: () => context.push('/person/${person.id}/memorial'),
+                  icon: const Icon(Icons.dark_mode_outlined, size: 18),
+                  label: Text(l.memorialPage),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [

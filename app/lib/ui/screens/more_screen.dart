@@ -127,6 +127,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.link,
+                title: l.howRelated,
+                onTap: () => context.push('/related'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.handshake_outlined,
                 title: l.whoCanHelp,
                 onTap: () => context.push('/help'),

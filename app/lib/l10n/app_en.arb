@@ -1052,5 +1052,140 @@
         "type": "String"
       }
     }
-  }
+  },
+  "memorialPage": "Memorial page",
+  "inLovingMemory": "In loving memory",
+  "memorialPrayer": "{sex, select, female{Allah ya jikanta da rahama} other{Allah ya jikansa da rahama}}",
+  "@memorialPrayer": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
+  "lifeOf": "{sex, select, male{His life} female{Her life} other{Their life}}",
+  "@lifeOf": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
+  "noLifeStory": "No life story yet. Family can add it on the profile.",
+  "seeFullProfile": "See full profile and family",
+  "allPhotos": "All {count}",
+  "@allPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prayersMemories": "Prayers & memories · {count}",
+  "@prayersMemories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addPrayerMemory": "Add a prayer or memory…",
+  "noMemoriesYet": "Be the first to share a prayer or memory.",
+  "remindMeEvery": "Remind me every {date}",
+  "@remindMeEvery": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "remindMeEverySub": "A gentle remembrance notification",
+  "notifRemembrance": "{count, plural, =1{1 year since {name} passed} other{{count} years since {name} passed}}",
+  "@notifRemembrance": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifMemory": "New memory of {name}: “{body}”",
+  "@notifMemory": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "howRelated": "How are we related?",
+  "you": "You",
+  "swap": "Swap",
+  "pickSomeone": "Pick someone",
+  "relatedIsYour": "{name} is your",
+  "@relatedIsYour": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "relatedIsOf": "{name} is {other}'s",
+  "@relatedIsOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "other": {
+        "type": "String"
+      }
+    }
+  },
+  "pathChildOf": "{sex, select, male{son of} female{daughter of} other{child of}}",
+  "@pathChildOf": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
+  "pathParentOf": "{sex, select, male{father of} female{mother of} other{parent of}}",
+  "@pathParentOf": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
+  "pathSpouseOf": "{sex, select, male{husband of} female{wife of} other{spouse of}}",
+  "@pathSpouseOf": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      }
+    }
+  },
+  "pathShared": "Shared {relation}",
+  "@pathShared": {
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      }
+    }
+  },
+  "youSuffix": "{name} (you)",
+  "@youSuffix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "showBothInTree": "Show in the tree",
+  "notConnected": "No connection is recorded in the tree yet.",
+  "sameDistantRelative": "Relative"
 }

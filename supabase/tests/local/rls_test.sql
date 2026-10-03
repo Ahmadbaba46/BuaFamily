@@ -444,7 +444,52 @@ select test.expect_error($$insert into public.blood_offers (request_id) values (
 reset role;
 
 -- ---------------------------------------------------------------------------
--- 10. Anonymous users see nothing.
+-- 10. Memorial pages.
+-- ---------------------------------------------------------------------------
+-- Ibrahim asks to be reminded of Grandpa Ahmadu's anniversary (died 1 January 1990).
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.remembrance_reminders (person_id) values ((select id from test.ids where name='grandpa'));
+reset role;
+
+-- Aisha writes a memory; Ibrahim is told. Memories are only for people who have died.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.memories (person_id, body) values ((select id from test.ids where name='grandpa'), 'He taught me to read.');
+select test.expect_error(format($$insert into public.memories (person_id, body) values (%L, 'Hi')$$,
+  (select id from test.ids where name='aisha')), 'no memorial memories for the living');
+select test.assert((select count(*) = 0 from public.remembrance_reminders), 'reminder choices are private');
+select test.assert((select count(*) = 1 from public.memories), 'members read memories');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'memory' and user_id = :member2_id
+  and data ->> 'body' = 'He taught me to read.'), 'subscriber told about a new memory');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'memory' and user_id = :member_id),
+  'author not told about own memory');
+
+-- Others cannot delete it; the author can.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+delete from public.memories;
+reset role;
+select test.assert((select count(*) = 1 from public.memories), 'others cannot delete a memory');
+
+-- The anniversary reminder, once.
+select private.remembrance_reminders('2026-01-01');
+select private.remembrance_reminders('2026-01-01');
+select private.remembrance_reminders('2026-01-02');
+select test.assert((select count(*) = 1 from public.notifications where kind = 'remembrance' and user_id = :member2_id
+  and (data ->> 'years')::int = 36), 'anniversary reminder sent once with the years');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'remembrance' and user_id <> :member2_id),
+  'only those who asked are reminded');
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+delete from public.memories;
+reset role;
+select test.assert((select count(*) = 0 from public.memories), 'author deleted own memory');
+
+-- ---------------------------------------------------------------------------
+-- 11. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

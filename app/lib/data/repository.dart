@@ -479,4 +479,24 @@ class FamilyRepository {
       : _db.from('blood_offers').delete().eq('request_id', requestId).eq('user_id', userId!);
 
   Future<void> closeBloodRequest(String id) => _db.from('blood_requests').update({'status': 'closed'}).eq('id', id);
+
+  // ---------------------------------------------------------------- memorial pages
+
+  Future<List<Memory>> memories(String personId) async {
+    final rows = await _db.from('memories').select().eq('person_id', personId).order('created_at', ascending: false);
+    return rows.map(Memory.fromJson).toList();
+  }
+
+  Future<void> addMemory(String personId, String body) =>
+      _db.from('memories').insert({'person_id': personId, 'body': body.trim()});
+
+  Future<void> deleteMemory(String id) => _db.from('memories').delete().eq('id', id);
+
+  /// Whether the current user asked to be reminded of this person's anniversary.
+  Future<bool> remembranceReminder(String personId) async =>
+      (await _db.from('remembrance_reminders').select('person_id').eq('person_id', personId)).isNotEmpty;
+
+  Future<void> setRemembranceReminder(String personId, bool on) => on
+      ? _db.from('remembrance_reminders').upsert({'person_id': personId, 'user_id': userId})
+      : _db.from('remembrance_reminders').delete().eq('person_id', personId).eq('user_id', userId!);
 }
