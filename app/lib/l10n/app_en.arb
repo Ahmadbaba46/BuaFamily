@@ -906,5 +906,151 @@
   "notifyFamily": "Notify the whole family",
   "notifyFamilySub": "In the app",
   "alsoSms": "Also send SMS",
-  "alsoSmsSub": "Admins only · uses SMS credit"
+  "alsoSmsSub": "Admins only · uses SMS credit",
+  "whoCanHelp": "Who can help?",
+  "whoCanHelpSub": "Skills and experience across the family",
+  "searchSkills": "Search skills, jobs or studies",
+  "helpCategory": "{category, select, health{Health} law{Law} trades{Trades} teaching{Teaching} business{Business} engineering{Engineering} tech{Tech} islamic{Islamic studies} other{Other}}",
+  "@helpCategory": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "relativesIn": "{count, plural, =0{No one in {category} yet} =1{1 relative in {category}} other{{count} relatives in {category}}}",
+  "@relativesIn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "relativesMatching": "{count, plural, =0{No one matches “{query}”} =1{1 relative matches “{query}”} other{{count} relatives match “{query}”}}",
+  "@relativesMatching": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "relativesWithSkills": "{count, plural, =0{No skills or work listed yet} =1{1 relative with skills or work listed} other{{count} relatives with skills or work listed}}",
+  "@relativesWithSkills": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "helpEmptyNote": "Add your work, studies and skills on your profile so relatives can find you.",
+  "contactNote": "Call buttons appear only for people who share their contact with the family.",
+  "callPerson": "Call {name}",
+  "@callPerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profile": "Profile",
+  "bloodDonors": "Blood donors",
+  "requestBlood": "Request blood",
+  "urgent": "Urgent",
+  "pintsFor": "{count, plural, =1{1 pint for {name}} other{{count} pints for {name}}}",
+  "@pintsFor": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "askedBy": "asked by {name}",
+  "@askedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "iCanDonate": "I can donate",
+  "youOffered": "You offered",
+  "offersSoFar": "{count, plural, =0{No one has offered yet.} =1{1 relative has offered so far.} other{{count} relatives have offered so far.}}",
+  "@offersSoFar": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeRequest": "Close request",
+  "closed": "Closed",
+  "notCompatible": "Your blood group ({group}) can't be given for this request.",
+  "@notCompatible": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "matchesFor": "Matches for",
+  "canReceiveFrom": "{group} (can receive {groups})",
+  "@canReceiveFrom": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      },
+      "groups": {
+        "type": "String"
+      }
+    }
+  },
+  "noDonors": "No donors with a matching blood group have joined yet.",
+  "onDonorList": "You're on the donor list",
+  "changeInHealth": "Change in your health details",
+  "joinDonorList": "Join the donor list",
+  "joinDonorListSub": "Add your blood group in your health details and tick “Blood donor”.",
+  "donorPrivacy": "Only relatives who opted in appear here, showing just their blood group and town. Genotype and other health details are never shown.",
+  "bloodDonorOptIn": "List me as a blood donor",
+  "bloodDonorOptInSub": "Relatives see only your blood group and town.",
+  "bloodDonorLabel": "Blood donor",
+  "bloodGroupNeeded": "Blood group needed",
+  "units": "Pints",
+  "patient": "Who is it for?",
+  "patientHint": "Pick from the family, or type a name",
+  "pickFromFamily": "Pick from the family",
+  "hospital": "Hospital",
+  "contactPhone": "Phone to call",
+  "noteOptional": "Note (optional)",
+  "bloodRequestSent": "Request posted. Matching donors have been told.",
+  "notifBloodRequest": "{group} blood needed for {patient} at {hospital}",
+  "@notifBloodRequest": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      },
+      "patient": {
+        "type": "String"
+      },
+      "hospital": {
+        "type": "String"
+      }
+    }
+  },
+  "notifBloodOffer": "A relative can donate blood ({group})",
+  "@notifBloodOffer": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  }
 }

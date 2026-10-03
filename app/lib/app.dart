@@ -6,6 +6,7 @@ import 'l10n/l10n.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
+import 'ui/screens/blood_donors_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
 import 'ui/screens/home_screen.dart';
@@ -22,6 +23,7 @@ import 'ui/screens/person_screen.dart';
 import 'ui/screens/photo_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
+import 'ui/screens/who_can_help_screen.dart';
 import 'ui/theme.dart';
 import 'ui/widgets/home_shell.dart';
 
@@ -82,6 +84,9 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
       GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: '/settings/notifications', builder: (_, _) => const NotificationSettingsScreen()),
+      GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),
+      GoRoute(path: '/blood', builder: (_, _) => const BloodDonorsScreen()),
+      GoRoute(path: '/blood/request', builder: (_, _) => const NewBloodRequestScreen()),
       GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),
       GoRoute(path: '/albums/of/:person', builder: (_, s) => AlbumScreen(personId: s.pathParameters['person'])),
       GoRoute(path: '/albums/:id', builder: (_, s) => AlbumScreen(albumId: s.pathParameters['id'])),

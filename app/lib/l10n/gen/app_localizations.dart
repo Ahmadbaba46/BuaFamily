@@ -2569,6 +2569,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Admins only · uses SMS credit'**
   String get alsoSmsSub;
+
+  /// No description provided for @whoCanHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can help?'**
+  String get whoCanHelp;
+
+  /// No description provided for @whoCanHelpSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills and experience across the family'**
+  String get whoCanHelpSub;
+
+  /// No description provided for @searchSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Search skills, jobs or studies'**
+  String get searchSkills;
+
+  /// No description provided for @helpCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'{category, select, health{Health} law{Law} trades{Trades} teaching{Teaching} business{Business} engineering{Engineering} tech{Tech} islamic{Islamic studies} other{Other}}'**
+  String helpCategory(String category);
+
+  /// No description provided for @relativesIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No one in {category} yet} =1{1 relative in {category}} other{{count} relatives in {category}}}'**
+  String relativesIn(int count, String category);
+
+  /// No description provided for @relativesMatching.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No one matches “{query}”} =1{1 relative matches “{query}”} other{{count} relatives match “{query}”}}'**
+  String relativesMatching(int count, String query);
+
+  /// No description provided for @relativesWithSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No skills or work listed yet} =1{1 relative with skills or work listed} other{{count} relatives with skills or work listed}}'**
+  String relativesWithSkills(int count);
+
+  /// No description provided for @helpEmptyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your work, studies and skills on your profile so relatives can find you.'**
+  String get helpEmptyNote;
+
+  /// No description provided for @contactNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Call buttons appear only for people who share their contact with the family.'**
+  String get contactNote;
+
+  /// No description provided for @callPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {name}'**
+  String callPerson(String name);
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @bloodDonors.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood donors'**
+  String get bloodDonors;
+
+  /// No description provided for @requestBlood.
+  ///
+  /// In en, this message translates to:
+  /// **'Request blood'**
+  String get requestBlood;
+
+  /// No description provided for @urgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get urgent;
+
+  /// No description provided for @pintsFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pint for {name}} other{{count} pints for {name}}}'**
+  String pintsFor(int count, String name);
+
+  /// No description provided for @askedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'asked by {name}'**
+  String askedBy(String name);
+
+  /// No description provided for @iCanDonate.
+  ///
+  /// In en, this message translates to:
+  /// **'I can donate'**
+  String get iCanDonate;
+
+  /// No description provided for @youOffered.
+  ///
+  /// In en, this message translates to:
+  /// **'You offered'**
+  String get youOffered;
+
+  /// No description provided for @offersSoFar.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No one has offered yet.} =1{1 relative has offered so far.} other{{count} relatives have offered so far.}}'**
+  String offersSoFar(int count);
+
+  /// No description provided for @closeRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Close request'**
+  String get closeRequest;
+
+  /// No description provided for @closed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closed;
+
+  /// No description provided for @notCompatible.
+  ///
+  /// In en, this message translates to:
+  /// **'Your blood group ({group}) can\'t be given for this request.'**
+  String notCompatible(String group);
+
+  /// No description provided for @matchesFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches for'**
+  String get matchesFor;
+
+  /// No description provided for @canReceiveFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{group} (can receive {groups})'**
+  String canReceiveFrom(String group, String groups);
+
+  /// No description provided for @noDonors.
+  ///
+  /// In en, this message translates to:
+  /// **'No donors with a matching blood group have joined yet.'**
+  String get noDonors;
+
+  /// No description provided for @onDonorList.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re on the donor list'**
+  String get onDonorList;
+
+  /// No description provided for @changeInHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Change in your health details'**
+  String get changeInHealth;
+
+  /// No description provided for @joinDonorList.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the donor list'**
+  String get joinDonorList;
+
+  /// No description provided for @joinDonorListSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your blood group in your health details and tick “Blood donor”.'**
+  String get joinDonorListSub;
+
+  /// No description provided for @donorPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Only relatives who opted in appear here, showing just their blood group and town. Genotype and other health details are never shown.'**
+  String get donorPrivacy;
+
+  /// No description provided for @bloodDonorOptIn.
+  ///
+  /// In en, this message translates to:
+  /// **'List me as a blood donor'**
+  String get bloodDonorOptIn;
+
+  /// No description provided for @bloodDonorOptInSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Relatives see only your blood group and town.'**
+  String get bloodDonorOptInSub;
+
+  /// No description provided for @bloodDonorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood donor'**
+  String get bloodDonorLabel;
+
+  /// No description provided for @bloodGroupNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood group needed'**
+  String get bloodGroupNeeded;
+
+  /// No description provided for @units.
+  ///
+  /// In en, this message translates to:
+  /// **'Pints'**
+  String get units;
+
+  /// No description provided for @patient.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is it for?'**
+  String get patient;
+
+  /// No description provided for @patientHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from the family, or type a name'**
+  String get patientHint;
+
+  /// No description provided for @pickFromFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from the family'**
+  String get pickFromFamily;
+
+  /// No description provided for @hospital.
+  ///
+  /// In en, this message translates to:
+  /// **'Hospital'**
+  String get hospital;
+
+  /// No description provided for @contactPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone to call'**
+  String get contactPhone;
+
+  /// No description provided for @noteOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get noteOptional;
+
+  /// No description provided for @bloodRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request posted. Matching donors have been told.'**
+  String get bloodRequestSent;
+
+  /// No description provided for @notifBloodRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'{group} blood needed for {patient} at {hospital}'**
+  String notifBloodRequest(String group, String patient, String hospital);
+
+  /// No description provided for @notifBloodOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'A relative can donate blood ({group})'**
+  String notifBloodOffer(String group);
 }
 
 class _AppLocalizationsDelegate

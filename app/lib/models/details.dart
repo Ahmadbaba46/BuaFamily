@@ -148,6 +148,7 @@ class Health {
     this.genotype,
     this.conditions,
     this.visibility = Audience.private,
+    this.bloodDonor = false,
   });
 
   static const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -159,6 +160,9 @@ class Health {
   final String? conditions;
   final Audience visibility;
 
+  /// Listed on the blood donor page (blood group and town only).
+  final bool bloodDonor;
+
   bool get isEmpty => bloodGroup == null && genotype == null && (conditions?.isEmpty ?? true);
 
   factory Health.fromJson(Map<String, dynamic> j) => Health(
@@ -167,6 +171,7 @@ class Health {
         genotype: j['genotype'] as String?,
         conditions: j['conditions'] as String?,
         visibility: _aud(j['visibility']),
+        bloodDonor: j['blood_donor'] as bool? ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -175,6 +180,7 @@ class Health {
         'genotype': genotype,
         'conditions': conditions,
         'visibility': visibility.name,
+        'blood_donor': bloodDonor && bloodGroup != null,
       };
 }
 

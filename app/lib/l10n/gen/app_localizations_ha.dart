@@ -1546,4 +1546,200 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get alsoSmsSub => 'Masu gudanarwa kaɗai · yana amfani da kuɗin SMS';
+
+  @override
+  String get whoCanHelp => 'Wa zai iya taimakawa?';
+
+  @override
+  String get whoCanHelpSub => 'Ƙwarewa da gogewa a cikin iyali';
+
+  @override
+  String get searchSkills => 'Nemi ƙwarewa, aiki ko karatu';
+
+  @override
+  String helpCategory(String category) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'health': 'Lafiya',
+      'law': 'Shari\'a',
+      'trades': 'Sana\'o\'i',
+      'teaching': 'Koyarwa',
+      'business': 'Kasuwanci',
+      'engineering': 'Injiniya',
+      'tech': 'Fasaha',
+      'islamic': 'Karatun addini',
+      'other': 'Wasu',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String relativesIn(int count, String category) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dangi $count a $category',
+      zero: 'Babu kowa a $category tukuna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativesMatching(int count, String query) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dangi $count sun dace da “$query”',
+      zero: 'Babu wanda ya dace da “$query”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativesWithSkills(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dangi $count da suka saka ƙwarewa ko aiki',
+      zero: 'Ba a saka ƙwarewa ko aiki ba tukuna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get helpEmptyNote =>
+      'Saka aikinka, karatunka da ƙwarewarka a shafinka don dangi su same ka.';
+
+  @override
+  String get contactNote =>
+      'Maɓallin kira yana bayyana ne kawai ga waɗanda suka raba lambarsu da iyali.';
+
+  @override
+  String callPerson(String name) {
+    return 'Kira $name';
+  }
+
+  @override
+  String get profile => 'Shafi';
+
+  @override
+  String get bloodDonors => 'Masu ba da jini';
+
+  @override
+  String get requestBlood => 'Nemi jini';
+
+  @override
+  String get urgent => 'Gaggawa';
+
+  @override
+  String pintsFor(int count, String name) {
+    return 'Pint $count don $name';
+  }
+
+  @override
+  String askedBy(String name) {
+    return '$name ne ya nema';
+  }
+
+  @override
+  String get iCanDonate => 'Zan bayar';
+
+  @override
+  String get youOffered => 'Ka yi tayi';
+
+  @override
+  String offersSoFar(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dangi $count sun yi tayi zuwa yanzu.',
+      zero: 'Babu wanda ya yi tayi tukuna.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get closeRequest => 'Rufe buƙata';
+
+  @override
+  String get closed => 'An rufe';
+
+  @override
+  String notCompatible(String group) {
+    return 'Jininka ($group) ba zai dace da wannan buƙata ba.';
+  }
+
+  @override
+  String get matchesFor => 'Masu dacewa da';
+
+  @override
+  String canReceiveFrom(String group, String groups) {
+    return '$group (zai karɓi $groups)';
+  }
+
+  @override
+  String get noDonors => 'Babu masu ba da jini da suka dace tukuna.';
+
+  @override
+  String get onDonorList => 'Kana cikin jerin masu ba da jini';
+
+  @override
+  String get changeInHealth => 'Canza a bayanan lafiyarka';
+
+  @override
+  String get joinDonorList => 'Shiga jerin masu ba da jini';
+
+  @override
+  String get joinDonorListSub =>
+      'Saka rukunin jininka a bayanan lafiya ka zaɓi “Mai ba da jini”.';
+
+  @override
+  String get donorPrivacy =>
+      'Waɗanda suka amince ne kawai ke bayyana a nan, da rukunin jininsu da garinsu kaɗai. Ba a taɓa nuna genotype ko wasu bayanan lafiya ba.';
+
+  @override
+  String get bloodDonorOptIn => 'Saka ni cikin masu ba da jini';
+
+  @override
+  String get bloodDonorOptInSub =>
+      'Dangi za su ga rukunin jininka da garinka kaɗai.';
+
+  @override
+  String get bloodDonorLabel => 'Mai ba da jini';
+
+  @override
+  String get bloodGroupNeeded => 'Rukunin jinin da ake buƙata';
+
+  @override
+  String get units => 'Pint';
+
+  @override
+  String get patient => 'Don wa ne?';
+
+  @override
+  String get patientHint => 'Zaɓi daga iyali, ko rubuta suna';
+
+  @override
+  String get pickFromFamily => 'Zaɓi daga iyali';
+
+  @override
+  String get hospital => 'Asibiti';
+
+  @override
+  String get contactPhone => 'Lambar da za a kira';
+
+  @override
+  String get noteOptional => 'Bayani (ba dole ba)';
+
+  @override
+  String get bloodRequestSent => 'An saka buƙatar. An sanar da masu dacewa.';
+
+  @override
+  String notifBloodRequest(String group, String patient, String hospital) {
+    return 'Ana buƙatar jini $group don $patient a $hospital';
+  }
+
+  @override
+  String notifBloodOffer(String group) {
+    return 'Wani ɗan uwa zai iya ba da jini ($group)';
+  }
 }

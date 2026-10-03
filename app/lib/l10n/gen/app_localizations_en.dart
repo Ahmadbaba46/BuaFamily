@@ -1584,4 +1584,212 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alsoSmsSub => 'Admins only · uses SMS credit';
+
+  @override
+  String get whoCanHelp => 'Who can help?';
+
+  @override
+  String get whoCanHelpSub => 'Skills and experience across the family';
+
+  @override
+  String get searchSkills => 'Search skills, jobs or studies';
+
+  @override
+  String helpCategory(String category) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'health': 'Health',
+      'law': 'Law',
+      'trades': 'Trades',
+      'teaching': 'Teaching',
+      'business': 'Business',
+      'engineering': 'Engineering',
+      'tech': 'Tech',
+      'islamic': 'Islamic studies',
+      'other': 'Other',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String relativesIn(int count, String category) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relatives in $category',
+      one: '1 relative in $category',
+      zero: 'No one in $category yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativesMatching(int count, String query) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relatives match “$query”',
+      one: '1 relative matches “$query”',
+      zero: 'No one matches “$query”',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String relativesWithSkills(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relatives with skills or work listed',
+      one: '1 relative with skills or work listed',
+      zero: 'No skills or work listed yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get helpEmptyNote =>
+      'Add your work, studies and skills on your profile so relatives can find you.';
+
+  @override
+  String get contactNote =>
+      'Call buttons appear only for people who share their contact with the family.';
+
+  @override
+  String callPerson(String name) {
+    return 'Call $name';
+  }
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get bloodDonors => 'Blood donors';
+
+  @override
+  String get requestBlood => 'Request blood';
+
+  @override
+  String get urgent => 'Urgent';
+
+  @override
+  String pintsFor(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pints for $name',
+      one: '1 pint for $name',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String askedBy(String name) {
+    return 'asked by $name';
+  }
+
+  @override
+  String get iCanDonate => 'I can donate';
+
+  @override
+  String get youOffered => 'You offered';
+
+  @override
+  String offersSoFar(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relatives have offered so far.',
+      one: '1 relative has offered so far.',
+      zero: 'No one has offered yet.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get closeRequest => 'Close request';
+
+  @override
+  String get closed => 'Closed';
+
+  @override
+  String notCompatible(String group) {
+    return 'Your blood group ($group) can\'t be given for this request.';
+  }
+
+  @override
+  String get matchesFor => 'Matches for';
+
+  @override
+  String canReceiveFrom(String group, String groups) {
+    return '$group (can receive $groups)';
+  }
+
+  @override
+  String get noDonors =>
+      'No donors with a matching blood group have joined yet.';
+
+  @override
+  String get onDonorList => 'You\'re on the donor list';
+
+  @override
+  String get changeInHealth => 'Change in your health details';
+
+  @override
+  String get joinDonorList => 'Join the donor list';
+
+  @override
+  String get joinDonorListSub =>
+      'Add your blood group in your health details and tick “Blood donor”.';
+
+  @override
+  String get donorPrivacy =>
+      'Only relatives who opted in appear here, showing just their blood group and town. Genotype and other health details are never shown.';
+
+  @override
+  String get bloodDonorOptIn => 'List me as a blood donor';
+
+  @override
+  String get bloodDonorOptInSub =>
+      'Relatives see only your blood group and town.';
+
+  @override
+  String get bloodDonorLabel => 'Blood donor';
+
+  @override
+  String get bloodGroupNeeded => 'Blood group needed';
+
+  @override
+  String get units => 'Pints';
+
+  @override
+  String get patient => 'Who is it for?';
+
+  @override
+  String get patientHint => 'Pick from the family, or type a name';
+
+  @override
+  String get pickFromFamily => 'Pick from the family';
+
+  @override
+  String get hospital => 'Hospital';
+
+  @override
+  String get contactPhone => 'Phone to call';
+
+  @override
+  String get noteOptional => 'Note (optional)';
+
+  @override
+  String get bloodRequestSent =>
+      'Request posted. Matching donors have been told.';
+
+  @override
+  String notifBloodRequest(String group, String patient, String hospital) {
+    return '$group blood needed for $patient at $hospital';
+  }
+
+  @override
+  String notifBloodOffer(String group) {
+    return 'A relative can donate blood ($group)';
+  }
 }

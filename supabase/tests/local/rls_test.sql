@@ -373,7 +373,78 @@ select test.assert((select count(*) = 1 from private.sms_outbox where message li
 select private.cleanup_old();
 
 -- ---------------------------------------------------------------------------
--- 9. Anonymous users see nothing.
+-- 9. Blood donors.
+-- ---------------------------------------------------------------------------
+-- Aisha (member, O-) opts in as a donor and in to SMS; Ibrahim (member2, A+) opts in too.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.person_health (person_id, blood_group, genotype, visibility, blood_donor)
+  values (public.my_person_id(), 'O-', 'AS', 'private', true)
+  on conflict (person_id) do update set blood_group = 'O-', genotype = 'AS', visibility = 'private', blood_donor = true;
+insert into public.person_contacts (person_id, city, visibility) values (public.my_person_id(), 'Kano', 'private')
+  on conflict (person_id) do update set city = 'Kano', visibility = 'private';
+update public.profiles set sms_opt_in = true where id = auth.uid();
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.person_health (person_id, blood_group, blood_donor) values (public.my_person_id(), 'A+', true);
+-- Other members see donors' blood group and town only, even when health and contact are private.
+select test.assert((select count(*) = 2 from public.blood_donors()), 'two donors listed');
+select test.assert((select blood_group = 'O-' and town = 'Kano' from public.blood_donors()
+  where person_id = (select id from test.ids where name='aisha')), 'donor group and town visible');
+select test.assert((select count(*) = 0 from public.person_health where person_id = (select id from test.ids where name='aisha')),
+  'private health record itself stays hidden');
+
+-- Ibrahim asks for A+ blood for his uncle Musa: Aisha (O-) can give, so she is told.
+insert into public.blood_requests (blood_group, units, patient_person_id, hospital, contact_phone)
+  values ('A+', 2, (select id from test.ids where name='musa'), 'ABUTH Zaria', '0803 000 1111');
+select test.assert((select contact_phone = '2348030001111' from public.blood_requests), 'request phone normalised');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'blood_request' and user_id = :member_id
+  and data ->> 'patient' = 'Musa Bua'), 'compatible donor notified');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'blood_request' and user_id = :member2_id),
+  'requester not notified of own request');
+select test.assert((select count(*) = 1 from private.sms_outbox where dedupe_key like 'blood:%'
+  and message like 'Iyalin Bua: Ana bukatar jini A+ (pint 2) don Musa Bua a ABUTH Zaria.%'), 'donor texted in Hausa');
+
+-- A request for O- would not reach an A+ donor.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.blood_requests (blood_group, patient_name, hospital) values ('O-', 'A neighbour', 'AKTH Kano');
+reset role;
+select test.assert((select count(*) = 0 from public.notifications where kind = 'blood_request' and user_id = :member2_id),
+  'incompatible donor not notified');
+
+-- Aisha offers; Ibrahim hears about it. Others cannot close his request.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.blood_offers (request_id) values ((select id from public.blood_requests where hospital = 'ABUTH Zaria'));
+update public.blood_requests set status = 'closed' where hospital = 'ABUTH Zaria';
+select test.expect_error($$insert into public.blood_requests (blood_group, hospital) values ('O+', 'X')$$, 'request needs a patient');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'blood_offer' and user_id = :member2_id),
+  'requester told about the offer');
+select test.assert((select status = 'open' from public.blood_requests where hospital = 'ABUTH Zaria'), 'only the requester can close');
+
+-- The requester closes it; no more offers. Limit of 3 requests a day.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.blood_requests set status = 'closed' where hospital = 'ABUTH Zaria';
+insert into public.blood_requests (blood_group, patient_name, hospital) values ('B+', 'Two', 'H');
+insert into public.blood_requests (blood_group, patient_name, hospital) values ('B+', 'Three', 'H');
+select test.expect_error($$insert into public.blood_requests (blood_group, patient_name, hospital) values ('B+', 'Four', 'H')$$,
+  'at most 3 requests a day');
+reset role;
+select test.assert((select status = 'closed' and closed_at is not null from public.blood_requests where hospital = 'ABUTH Zaria'),
+  'requester closed the request');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error($$insert into public.blood_offers (request_id) values ((select id from public.blood_requests where hospital = 'ABUTH Zaria'))$$,
+  'no offers on a closed request');
+reset role;
+
+-- ---------------------------------------------------------------------------
+-- 10. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

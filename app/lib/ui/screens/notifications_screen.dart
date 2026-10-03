@@ -18,6 +18,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.eventReminder => l.notifEventReminder(n.str('title') ?? ''),
       NotificationKind.tagged => n.data.containsKey('photo_id') ? l.notifTaggedPhoto : l.notifTaggedPost,
       NotificationKind.comment => l.notifComment(n.str('body') ?? ''),
+      NotificationKind.bloodRequest =>
+        l.notifBloodRequest(n.str('blood_group') ?? '', n.str('patient') ?? '', n.str('hospital') ?? ''),
+      NotificationKind.bloodOffer => l.notifBloodOffer(n.str('blood_group') ?? ''),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -27,6 +30,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.eventReminder => Icons.alarm,
       NotificationKind.tagged => Icons.person_pin_outlined,
       NotificationKind.comment => Icons.chat_bubble_outline,
+      NotificationKind.bloodRequest || NotificationKind.bloodOffer => Icons.bloodtype_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {
@@ -114,6 +118,7 @@ class _NotificationRow extends ConsumerWidget {
     final n = notification;
     final actor = n.actorId == null ? null : authorOf(ref, n.actorId!);
     final gold = n.kind == NotificationKind.announcement || n.kind == NotificationKind.birthday;
+    final blood = n.kind == NotificationKind.bloodRequest;
     final meta = [
       if (actor != null && actor.name.isNotEmpty) actor.name,
       l.ago(n.createdAt),
@@ -128,13 +133,13 @@ class _NotificationRow extends ConsumerWidget {
         color: n.isRead ? null : const Color(0xFFF2F8F4),
         padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          if (actor?.person != null && n.kind != NotificationKind.birthday)
+          if (actor?.person != null && n.kind != NotificationKind.birthday && !blood)
             AuthorAvatar(actor!)
           else
             IconTile(
               _icon(n.kind),
-              background: gold ? Bua.goldTint : Bua.greenTint,
-              color: gold ? Bua.goldInk : Bua.green,
+              background: blood ? Bua.dangerTint : (gold ? Bua.goldTint : Bua.greenTint),
+              color: blood ? Bua.danger : (gold ? Bua.goldInk : Bua.green),
             ),
           const SizedBox(width: 14),
           Expanded(
