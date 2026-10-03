@@ -46,6 +46,87 @@ share moments and photos, plan family events, and keep everyone's details
   announcement to the family. Texts go out in each member's language.
 - **English and Hausa,** switchable at any time.
 
+## Screens
+
+Design mockups for the app (sample data). The app follows these designs; the screens under "Designed for later" aren't built yet.
+
+### Family tree & people
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/main.png" alt="Sign in" width="180"><br><sub>Sign in</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/pending.png" alt="Waiting for approval" width="180"><br><sub>Waiting for approval</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/tree.png" alt="Family tree" width="180"><br><sub>Family tree</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/profile.png" alt="Profile" width="180"><br><sub>Profile</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/profile-hausa.png" alt="Deceased relative, in Hausa" width="180"><br><sub>Deceased relative, in Hausa</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/members.png" alt="Members" width="180"><br><sub>Members</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/add-relative.png" alt="Add a relative" width="180"><br><sub>Add a relative</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/my-requests.png" alt="My requests" width="180"><br><sub>My requests</sub></td>
+  </tr>
+</table>
+
+### Sharing & events
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/home.png" alt="Home feed" width="180"><br><sub>Home feed</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/new-moment.png" alt="Share a moment" width="180"><br><sub>Share a moment</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/albums.png" alt="Albums" width="180"><br><sub>Albums</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/album-detail.png" alt="Album" width="180"><br><sub>Album</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/photo-view.png" alt="Photo with people tagged" width="180"><br><sub>Photo with people tagged</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/events.png" alt="Events & announcements" width="180"><br><sub>Events & announcements</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/event-detail.png" alt="Event & replies" width="180"><br><sub>Event & replies</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/new-event.png" alt="New event or announcement" width="180"><br><sub>New event or announcement</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/notifications.png" alt="Notifications" width="180"><br><sub>Notifications</sub></td>
+  </tr>
+</table>
+
+### Admin & settings
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/admin-requests.png" alt="Admin: requests" width="180"><br><sub>Admin: requests</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/admin-accounts.png" alt="Admin: accounts" width="180"><br><sub>Admin: accounts</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/admin-settings.png" alt="Admin: settings" width="180"><br><sub>Admin: settings</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/more.png" alt="More" width="180"><br><sub>More</sub></td>
+  </tr>
+</table>
+
+<details>
+<summary><b>Designed for later</b> (13 screens)</summary>
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/reminders.png" alt="Birthdays & remembrance" width="180"><br><sub>Birthdays & remembrance</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/how-related.png" alt="How are we related?" width="180"><br><sub>How are we related?</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/who-can-help.png" alt="Who can help? (skills)" width="180"><br><sub>Who can help? (skills)</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/blood-donors.png" alt="Blood donor match" width="180"><br><sub>Blood donor match</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/memorial.png" alt="Memorial page" width="180"><br><sub>Memorial page</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/edit-profile.png" alt="Edit my details & privacy" width="180"><br><sub>Edit my details & privacy</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause" width="180"><br><sub>Fund cause</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/app-settings.png" alt="Language, data & notifications" width="180"><br><sub>Language, data & notifications</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
+  </tr>
+</table>
+
+</details>
+
 ## How the data is organised
 
 | Table | Holds |
