@@ -6,6 +6,7 @@ import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/person.dart';
+import '../models/social.dart';
 
 /// All server access. Row level security on the server decides what each
 /// user may read or change; the app only hides buttons that would fail.
@@ -198,4 +199,175 @@ class FamilyRepository {
   }
 
   Future<void> withdrawRequest(String id) => _db.from('change_requests').delete().eq('id', id);
+
+  // ---------------------------------------------------------------- sharing
+
+  Future<Map<String, Member>> memberDirectory() async {
+    final rows = await _db.rpc('member_directory') as List;
+    return {for (final r in rows) (r as Map)['user_id'] as String: Member.fromJson(r.cast<String, dynamic>())};
+  }
+
+  Future<List<Post>> feed({int limit = 60}) async {
+    final rows = await _db.from('posts').select(Post.select).order('created_at', ascending: false).limit(limit);
+    return rows.map(Post.fromJson).toList();
+  }
+
+  /// Ids of every post, photo and event the current user has liked.
+  Future<Set<String>> myLikes() async {
+    final rows = await _db.from('likes').select('post_id, photo_id, event_id').eq('user_id', userId!);
+    return {for (final r in rows) (r['post_id'] ?? r['photo_id'] ?? r['event_id']) as String};
+  }
+
+  Future<void> setLiked(Target target, bool liked) async {
+    if (liked) {
+      await _db.from('likes').insert({target.column: target.id});
+    } else {
+      await _db.from('likes').delete().eq(target.column, target.id).eq('user_id', userId!);
+    }
+  }
+
+  Future<List<Comment>> comments(Target target) async {
+    final rows = await _db.from('comments').select().eq(target.column, target.id).order('created_at');
+    return rows.map(Comment.fromJson).toList();
+  }
+
+  Future<void> addComment(Target target, String body) =>
+      _db.from('comments').insert({target.column: target.id, 'body': body.trim()});
+
+  Future<void> deleteComment(String id) => _db.from('comments').delete().eq('id', id);
+
+  /// Creates a moment or announcement, uploads its photos (also into [albumId]
+  /// when given) and tags [people] on the post and on every photo.
+  Future<String> createPost({
+    PostKind kind = PostKind.moment,
+    String body = '',
+    String? albumId,
+    bool pinned = false,
+    List<String> people = const [],
+    List<PickedImage> images = const [],
+  }) async {
+    final post = await _db
+        .from('posts')
+        .insert({
+          'kind': kind.name,
+          'body': body.trim(),
+          'album_id': albumId,
+          if (pinned) 'pinned': true,
+        })
+        .select('id')
+        .single();
+    final postId = post['id'] as String;
+    if (people.isNotEmpty) {
+      await _db.from('post_people').insert([for (final p in people) {'post_id': postId, 'person_id': p}]);
+    }
+    final photoIds = <String>[];
+    for (final (i, img) in images.indexed) {
+      final path = await _upload(img, i);
+      final row = await _db
+          .from('photos')
+          .insert({'storage_path': path, 'post_id': postId, 'album_id': albumId})
+          .select('id')
+          .single();
+      photoIds.add(row['id'] as String);
+    }
+    if (people.isNotEmpty && photoIds.isNotEmpty) {
+      await _db.from('photo_people').insert([
+        for (final ph in photoIds)
+          for (final p in people) {'photo_id': ph, 'person_id': p},
+      ]);
+    }
+    return postId;
+  }
+
+  Future<String> _upload(PickedImage img, int index) async {
+    final ext = img.extension.toLowerCase().replaceAll('jpeg', 'jpg');
+    final path = 'uploads/$userId/${DateTime.now().millisecondsSinceEpoch}_$index.$ext';
+    await _db.storage.from(photosBucket).uploadBinary(
+          path,
+          Uint8List.fromList(img.bytes),
+          fileOptions: FileOptions(contentType: ext == 'jpg' ? 'image/jpeg' : 'image/$ext'),
+        );
+    return path;
+  }
+
+  Future<void> deletePost(Post post) async {
+    await _db.from('posts').delete().eq('id', post.id);
+    final mine = post.photos.where((p) => p.uploadedBy == userId).map((p) => p.storagePath).toList();
+    if (mine.isNotEmpty) await _db.storage.from(photosBucket).remove(mine);
+  }
+
+  Future<List<Album>> albums() async {
+    final rows = await _db.from('albums').select(Album.select).order('created_at', ascending: false);
+    return rows.map(Album.fromJson).toList();
+  }
+
+  Future<String> createAlbum(String title, {String? description}) async {
+    final row = await _db
+        .from('albums')
+        .insert({'title': title.trim(), 'description': ?description})
+        .select('id')
+        .single();
+    return row['id'] as String;
+  }
+
+  Future<List<Photo>> albumPhotos(String albumId) async {
+    final rows = await _db
+        .from('photos')
+        .select(Photo.select)
+        .eq('album_id', albumId)
+        .order('taken_year', nullsFirst: false)
+        .order('created_at');
+    return rows.map(Photo.fromJson).toList();
+  }
+
+  Future<List<Photo>> photosOf(String personId) async {
+    final tagged = await _db.from('photo_people').select('photo_id').eq('person_id', personId);
+    if (tagged.isEmpty) return const [];
+    final rows = await _db
+        .from('photos')
+        .select(Photo.select)
+        .inFilter('id', [for (final t in tagged) t['photo_id']])
+        .order('created_at', ascending: false);
+    return rows.map(Photo.fromJson).toList();
+  }
+
+  Future<void> updatePhoto(String id, {String? caption, int? takenYear}) =>
+      _db.from('photos').update({'caption': caption, 'taken_year': takenYear}).eq('id', id);
+
+  Future<void> deletePhoto(Photo photo) async {
+    await _db.from('photos').delete().eq('id', photo.id);
+    if (photo.uploadedBy == userId) await _db.storage.from(photosBucket).remove([photo.storagePath]);
+  }
+
+  Future<void> tagPhoto(String photoId, String personId) =>
+      _db.from('photo_people').insert({'photo_id': photoId, 'person_id': personId});
+
+  Future<void> untagPhoto(String photoId, String personId) =>
+      _db.from('photo_people').delete().eq('photo_id', photoId).eq('person_id', personId);
+
+  // ---------------------------------------------------------------- events
+
+  Future<List<FamilyEvent>> events() async {
+    final rows = await _db.from('events').select(FamilyEvent.select).order('starts_at').limit(500);
+    return rows.map(FamilyEvent.fromJson).toList();
+  }
+
+  Future<String> createEvent(Map<String, dynamic> event) async {
+    final row = await _db.from('events').insert(event).select('id').single();
+    return row['id'] as String;
+  }
+
+  Future<void> deleteEvent(String id) => _db.from('events').delete().eq('id', id);
+
+  Future<void> setRsvp(String eventId, RsvpResponse response, {int guests = 0}) =>
+      _db.from('event_rsvps').upsert({
+        'event_id': eventId,
+        'user_id': userId,
+        'response': response.name,
+        'guests': guests,
+      });
+
+  Future<void> setPinned({String? postId, String? eventId, required bool pinned}) => postId != null
+      ? _db.from('posts').update({'pinned': pinned}).eq('id', postId)
+      : _db.from('events').update({'pinned': pinned}).eq('id', eventId!);
 }

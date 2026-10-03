@@ -111,6 +111,24 @@ class MoreScreen extends ConsumerWidget {
           const SizedBox(height: 18),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(l.family.toUpperCase(),
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+            child: Column(children: [
+              NavRow(
+                icon: Icons.photo_library_outlined,
+                title: l.albums,
+                onTap: () => context.push('/albums'),
+              ),
+            ]),
+          ),
+          const SizedBox(height: 18),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(l.account.toUpperCase(),
                 style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
           ),

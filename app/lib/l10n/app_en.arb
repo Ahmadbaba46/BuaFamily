@@ -537,5 +537,269 @@
   },
   "myRequestsHelp": "Changes you suggest appear in the tree once a family admin approves them.",
   "seeInTree": "See in the tree",
-  "married": "Married"
+  "married": "Married",
+  "navHome": "Home",
+  "navEvents": "Events",
+  "greeting": "Salamu alaikum, {name}",
+  "@greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "birthdayToday": "Birthday today",
+  "turnsAge": "{name} turns {age}",
+  "@turnsAge": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "sendGreeting": "Send a greeting",
+  "remembrance": "Remembrance",
+  "yearsSincePassed": "{count, plural, =1{1 year since {name} passed} other{{count} years since {name} passed}}",
+  "@yearsSincePassed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "addPrayer": "Add a prayer",
+  "announcement": "Announcement",
+  "pinned": "Pinned",
+  "fromAuthor": "From {name} · {time}",
+  "@fromAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shareMomentPrompt": "Share a moment with the family…",
+  "maShaAllah": "Ma sha Allah",
+  "commentsCount": "{count, plural, =0{Comment} =1{1 comment} other{{count} comments}}",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addedPhotosTo": "Added {count, plural, =1{a photo} other{{count} photos}} to",
+  "@addedPhotosTo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedEmpty": "No moments yet. Be the first to share one.",
+  "timeJustNow": "just now",
+  "timeMinutes": "{n}m",
+  "@timeMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHours": "{n}h",
+  "@timeHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "timeYesterday": "Yesterday",
+  "timeDaysAgo": "{n} days ago",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "postOptions": "Post options",
+  "deletePost": "Delete post",
+  "confirmDeletePost": "Delete this post for everyone?",
+  "pinToHome": "Pin to Home",
+  "unpin": "Unpin",
+  "adminsOnly": "Admins only",
+  "shareAMoment": "Share a moment",
+  "post": "Post",
+  "onlyFamilyCanSee": "Only the {family} family can see this",
+  "@onlyFamilyCanSee": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "whatsHappening": "What's happening?",
+  "addPhotos": "Add photos",
+  "removePhoto": "Remove photo",
+  "whosInIt": "Who's in it?",
+  "tagFamily": "Tag family",
+  "untag": "Remove tag",
+  "alsoAddToAlbum": "Also add to album",
+  "dontAddToAlbum": "Don't add to an album",
+  "dataSaverNote": "Photos are resized before upload to save data.",
+  "postEmptyError": "Write something or add a photo.",
+  "albums": "Albums",
+  "newAlbum": "New album",
+  "albumName": "Album name",
+  "create": "Create",
+  "photosOfYou": "Photos of you",
+  "photosTaggedIn": "{count, plural, =0{Photos you're tagged in appear here} =1{1 photo you're tagged in} other{{count} photos you're tagged in}}",
+  "@photosTaggedIn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoCount": "{count, plural, =0{No photos yet} =1{1 photo} other{{count} photos}}",
+  "@photoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "albumsEmpty": "No albums yet. Start one for a wedding, Sallah or old family photos.",
+  "everyone": "Everyone",
+  "addedByRelatives": "added by {count, plural, =1{1 relative} other{{count} relatives}}",
+  "@addedByRelatives": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noPhotos": "No photos here yet.",
+  "photoXofY": "{x} of {y}",
+  "@photoXofY": {
+    "placeholders": {
+      "x": {
+        "type": "int"
+      },
+      "y": {
+        "type": "int"
+      }
+    }
+  },
+  "inThisPhoto": "In this photo",
+  "tagSomeone": "Tag someone",
+  "addedBy": "Added by {name}",
+  "@addedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memoriesCount": "{count, plural, =0{Share a memory} =1{1 memory} other{{count} memories}}",
+  "@memoriesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editDetails": "Edit details",
+  "caption": "Caption",
+  "yearTaken": "Year taken",
+  "deletePhoto": "Delete photo",
+  "confirmDeletePhoto": "Delete this photo?",
+  "comments": "Comments",
+  "writeComment": "Write a comment…",
+  "noCommentsYet": "No comments yet.",
+  "send": "Send",
+  "newLabel": "New",
+  "upcoming": "Upcoming",
+  "announcements": "Announcements",
+  "past": "Past",
+  "latestAnnouncements": "Latest announcements",
+  "noUpcomingEvents": "No upcoming events.",
+  "noPastEvents": "No past events.",
+  "noAnnouncements": "No announcements yet.",
+  "youreGoing": "You're going",
+  "youSaidMaybe": "You said maybe",
+  "youCantGo": "You can't go",
+  "replyNeeded": "Reply needed",
+  "goingCount": "{count} going",
+  "@goingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "maybeCount": "{count} maybe",
+  "@maybeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eventCategory": "{category, select, naming{Naming ceremony} wedding{Wedding} meeting{Family meeting} condolence{Condolence} graduation{Graduation} other{Event}}",
+  "@eventCategory": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "hostedBy": "Hosted by {name}",
+  "@hostedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCalendar": "Add to calendar",
+  "directions": "Directions",
+  "areYouComing": "Are you coming?",
+  "rsvpGoing": "Going",
+  "rsvpMaybe": "Maybe",
+  "rsvpNo": "Can't go",
+  "bringingOthers": "Bringing others with you",
+  "oneFewer": "One fewer",
+  "oneMore": "One more",
+  "seeAll": "See all",
+  "wishes": "Wishes",
+  "writeWish": "Write a wish…",
+  "deleteEvent": "Delete event",
+  "confirmDeleteEvent": "Delete this event for everyone?",
+  "newPost": "New post",
+  "event": "Event",
+  "eventType": "Type",
+  "date": "Date",
+  "time": "Time",
+  "place": "Place",
+  "addressOrArea": "Address or area",
+  "details": "Details",
+  "askReply": "Ask people to reply",
+  "askReplySub": "Going · Maybe · Can't go",
+  "postEvent": "Post event",
+  "postAnnouncement": "Post announcement",
+  "announcementHint": "Write the announcement…",
+  "titleRequired": "Add a title.",
+  "family": "Family",
+  "photos": "Photos"
 }

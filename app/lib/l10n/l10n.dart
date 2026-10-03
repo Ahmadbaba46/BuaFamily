@@ -94,6 +94,41 @@ extension KinshipLabel on AppLocalizations {
   }
 }
 
+extension TimeLabels on AppLocalizations {
+  /// "just now", "5m", "2h", "Yesterday", "3 days ago", then a date.
+  String ago(DateTime t, {DateTime? now}) {
+    final n = now ?? DateTime.now();
+    final d = n.difference(t);
+    if (d.inMinutes < 1) return timeJustNow;
+    if (d.inHours < 1) return timeMinutes(d.inMinutes);
+    final days = DateTime(n.year, n.month, n.day).difference(DateTime(t.year, t.month, t.day)).inDays;
+    if (days == 0) return timeHours(d.inHours);
+    if (days == 1) return timeYesterday;
+    if (days < 7) return timeDaysAgo(days);
+    return formatDate(t);
+  }
+
+  /// "Saturday, 3 October".
+  String weekdayDate(DateTime d) => localeName == 'ha'
+      ? '${_haWeekdays[d.weekday % 7]}, ${d.day} ${_haMonths[d.month - 1]}'
+      : DateFormat('EEEE, d MMMM', 'en').format(d);
+
+  /// "OCT" for date badges.
+  String monthShort(DateTime d) =>
+      (localeName == 'ha' ? _haMonths[d.month - 1].substring(0, 3) : DateFormat.MMM('en').format(d)).toUpperCase();
+
+  /// "8:00am" / "08:00".
+  String clock(DateTime d) =>
+      localeName == 'ha' ? DateFormat.Hm('en').format(d) : DateFormat('h:mma', 'en').format(d).toLowerCase();
+
+  /// "Sat 8:00am".
+  String dayClock(DateTime d) => localeName == 'ha'
+      ? '${_haWeekdays[d.weekday % 7]} ${clock(d)}'
+      : '${DateFormat.E('en').format(d)} ${clock(d)}';
+}
+
+const _haWeekdays = ['Lahadi', 'Litinin', 'Talata', 'Laraba', 'Alhamis', 'Juma\'a', 'Asabar'];
+
 // intl has no Hausa date data, so month names are provided here.
 const _haMonths = [
   'Janairu', 'Fabrairu', 'Maris', 'Afirilu', 'Mayu', 'Yuni',

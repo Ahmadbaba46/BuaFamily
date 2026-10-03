@@ -196,7 +196,83 @@ select test.expect_error(format($$insert into storage.objects (bucket_id, name) 
 reset role;
 
 -- ---------------------------------------------------------------------------
--- 7. Anonymous users see nothing.
+-- 7. Sharing and events.
+-- ---------------------------------------------------------------------------
+\set pending_id '''00000000-0000-0000-0000-00000000000d'''
+insert into auth.users (id, email) values (:pending_id, 'pending@example.com');
+
+-- Member posts a moment with a photo, tags people, adds it to an album.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.albums (title) values ('Sallah 2026');
+insert into public.posts (body, album_id) values ('Sallah day', (select id from public.albums where title = 'Sallah 2026'));
+insert into public.photos (storage_path, post_id, album_id) values
+  ('uploads/' || auth.uid() || '/a.jpg', (select id from public.posts where body = 'Sallah day'), (select id from public.albums where title = 'Sallah 2026'));
+insert into public.post_people (post_id, person_id) values ((select id from public.posts where body = 'Sallah day'), (select id from test.ids where name='musa'));
+insert into public.photo_people (photo_id, person_id) values ((select id from public.photos limit 1), (select id from test.ids where name='musa'));
+insert into storage.objects (bucket_id, name) values ('photos', 'uploads/' || auth.uid() || '/a.jpg');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('photos', 'uploads/%s/x.jpg')$$, :admin_id),
+  'member cannot upload into another user folder');
+select test.expect_error(format($$insert into public.photos (storage_path, album_id) values ('uploads/%s/x.jpg', (select id from public.albums limit 1))$$, :admin_id),
+  'photo path must be in own folder');
+select test.expect_error($$insert into public.posts (body, pinned) values ('Look at me', true)$$, 'member cannot pin a post');
+select test.expect_error(format($$insert into public.posts (body, author_id) values ('Fake', %L)$$, :admin_id), 'cannot post as someone else');
+insert into public.likes (post_id) values ((select id from public.posts where body = 'Sallah day'));
+select test.expect_error($$insert into public.likes (post_id) values ((select id from public.posts where body = 'Sallah day'))$$, 'one like per person');
+select test.expect_error($$insert into public.likes (post_id, photo_id) values ((select id from public.posts limit 1), (select id from public.photos limit 1))$$, 'like has one target');
+insert into public.comments (post_id, body) values ((select id from public.posts where body = 'Sallah day'), 'Barka da Sallah');
+insert into public.events (title, category, starts_at, place) values ('Naming ceremony', 'naming', now() + interval '7 days', 'Kano');
+insert into public.event_rsvps (event_id, response, guests) values ((select id from public.events where title = 'Naming ceremony'), 'going', 2);
+select test.assert((select count(*) = 1 from public.member_directory() where display_name = 'Aisha'), 'members see the directory');
+reset role;
+
+-- Another member sees everything but cannot change or delete it.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.posts), 'other member sees the post');
+select test.assert((select count(*) = 1 from public.photos), 'other member sees the photo');
+select test.assert((select count(*) = 1 from public.event_rsvps), 'other member sees RSVPs');
+update public.posts set body = 'hacked';
+delete from public.posts;
+delete from public.comments;
+update public.event_rsvps set response = 'no';
+delete from public.photo_people;
+reset role;
+select test.assert((select body = 'Sallah day' from public.posts), 'other member cannot edit or delete the post');
+select test.assert((select count(*) = 1 from public.comments), 'other member cannot delete a comment');
+select test.assert((select response = 'going' from public.event_rsvps), 'other member cannot change my RSVP');
+select test.assert((select count(*) = 1 from public.photo_people), 'other member cannot untag someone else''s tag');
+
+-- Admins moderate.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.posts set pinned = true where body = 'Sallah day';
+select test.assert((select pinned from public.posts where body = 'Sallah day'), 'admin can pin');
+delete from public.comments;
+reset role;
+select test.assert((select count(*) = 0 from public.comments), 'admin can delete a comment');
+
+-- The author edits their own post but cannot unpin it.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.posts set body = 'Sallah day at Kaka''s house';
+select test.expect_error($$update public.posts set pinned = false$$, 'author cannot unpin');
+delete from public.photos;
+reset role;
+select test.assert((select body = 'Sallah day at Kaka''s house' and pinned from public.posts), 'author edited own post');
+select test.assert((select count(*) = 0 from public.photos), 'uploader deleted own photo');
+
+-- Pending users see none of it.
+select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.posts), 'pending user sees no posts');
+select test.assert((select count(*) = 0 from public.events), 'pending user sees no events');
+select test.assert((select count(*) = 0 from public.member_directory()), 'pending user sees no directory');
+select test.expect_error($$insert into public.posts (body) values ('hi')$$, 'pending user cannot post');
+reset role;
+
+-- ---------------------------------------------------------------------------
+-- 8. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

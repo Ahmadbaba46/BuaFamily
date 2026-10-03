@@ -9,6 +9,7 @@ import '../data/repository.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/social.dart';
 
 final repositoryProvider = Provider<FamilyRepository>(
   (ref) => FamilyRepository(Supabase.instance.client),
@@ -115,3 +116,34 @@ class LocaleNotifier extends Notifier<Locale?> {
 }
 
 final localeProvider = NotifierProvider<LocaleNotifier, Locale?>(LocaleNotifier.new);
+
+// ---------------------------------------------------------------- sharing & events
+
+/// Active accounts by user id, for author names.
+final membersProvider = FutureProvider<Map<String, Member>>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).memberDirectory();
+});
+
+final feedProvider = FutureProvider<List<Post>>((ref) => ref.watch(repositoryProvider).feed());
+
+final myLikesProvider = FutureProvider<Set<String>>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).myLikes();
+});
+
+final albumsProvider = FutureProvider<List<Album>>((ref) => ref.watch(repositoryProvider).albums());
+
+final albumPhotosProvider = FutureProvider.family<List<Photo>, String>(
+  (ref, albumId) => ref.watch(repositoryProvider).albumPhotos(albumId),
+);
+
+final photosOfProvider = FutureProvider.family<List<Photo>, String>(
+  (ref, personId) => ref.watch(repositoryProvider).photosOf(personId),
+);
+
+final eventsProvider = FutureProvider<List<FamilyEvent>>((ref) => ref.watch(repositoryProvider).events());
+
+final commentsProvider = FutureProvider.family<List<Comment>, Target>(
+  (ref, target) => ref.watch(repositoryProvider).comments(target),
+);

@@ -84,7 +84,10 @@ ThemeData buildTheme() {
         bodySmall: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
         labelLarge: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         labelSmall: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-      );
+      )
+      // The styles above replace the base ones, so set the font again: the
+      // web's default font lacks the Hausa letters (ɗ ƙ ƴ).
+      .apply(fontFamily: 'NotoSans');
 
   return base.copyWith(
     scaffoldBackgroundColor: Bua.ground,

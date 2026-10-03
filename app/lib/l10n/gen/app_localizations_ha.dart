@@ -974,4 +974,414 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get married => 'Da aure';
+
+  @override
+  String get navHome => 'Gida';
+
+  @override
+  String get navEvents => 'Taruka';
+
+  @override
+  String greeting(String name) {
+    return 'Salamu alaikum, $name';
+  }
+
+  @override
+  String get birthdayToday => 'Ranar haihuwa yau';
+
+  @override
+  String turnsAge(String name, int age) {
+    return '$name: shekara $age yau';
+  }
+
+  @override
+  String get sendGreeting => 'Aika gaisuwa';
+
+  @override
+  String get remembrance => 'Tunawa';
+
+  @override
+  String yearsSincePassed(int count, String name) {
+    return 'Shekara $count da rasuwar $name';
+  }
+
+  @override
+  String get addPrayer => 'Yi addu\'a';
+
+  @override
+  String get announcement => 'Sanarwa';
+
+  @override
+  String get pinned => 'An lika';
+
+  @override
+  String fromAuthor(String name, String time) {
+    return 'Daga $name · $time';
+  }
+
+  @override
+  String get shareMomentPrompt => 'Raba wani abu da iyali…';
+
+  @override
+  String get maShaAllah => 'Ma sha Allah';
+
+  @override
+  String commentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sharhi $count',
+      zero: 'Sharhi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String addedPhotosTo(int count) {
+    return 'An ƙara hoto $count a';
+  }
+
+  @override
+  String get feedEmpty => 'Babu abin da aka raba tukuna. Ka zama na farko.';
+
+  @override
+  String get timeJustNow => 'yanzu';
+
+  @override
+  String timeMinutes(int n) {
+    return 'minti $n';
+  }
+
+  @override
+  String timeHours(int n) {
+    return 'awa $n';
+  }
+
+  @override
+  String get timeYesterday => 'Jiya';
+
+  @override
+  String timeDaysAgo(int n) {
+    return 'kwana $n da suka wuce';
+  }
+
+  @override
+  String get postOptions => 'Zaɓuɓɓuka';
+
+  @override
+  String get deletePost => 'Goge rubutu';
+
+  @override
+  String get confirmDeletePost => 'A goge wannan rubutu ga kowa?';
+
+  @override
+  String get pinToHome => 'Lika a Gida';
+
+  @override
+  String get unpin => 'Cire lika';
+
+  @override
+  String get adminsOnly => 'Masu gudanarwa kaɗai';
+
+  @override
+  String get shareAMoment => 'Raba wani abu';
+
+  @override
+  String get post => 'Wallafa';
+
+  @override
+  String onlyFamilyCanSee(String family) {
+    return 'Iyalin $family kaɗai ke ganin wannan';
+  }
+
+  @override
+  String get whatsHappening => 'Me ke faruwa?';
+
+  @override
+  String get addPhotos => 'Ƙara hotuna';
+
+  @override
+  String get removePhoto => 'Cire hoto';
+
+  @override
+  String get whosInIt => 'Su wa ke ciki?';
+
+  @override
+  String get tagFamily => 'Saka dangi';
+
+  @override
+  String get untag => 'Cire alama';
+
+  @override
+  String get alsoAddToAlbum => 'Kuma saka a kundi';
+
+  @override
+  String get dontAddToAlbum => 'Kada a saka a kundi';
+
+  @override
+  String get dataSaverNote =>
+      'Ana rage girman hotuna kafin a ɗora su don adana data.';
+
+  @override
+  String get postEmptyError => 'Rubuta wani abu ko ƙara hoto.';
+
+  @override
+  String get albums => 'Kundin hotuna';
+
+  @override
+  String get newAlbum => 'Sabon kundi';
+
+  @override
+  String get albumName => 'Sunan kundi';
+
+  @override
+  String get create => 'Ƙirƙira';
+
+  @override
+  String get photosOfYou => 'Hotunanka';
+
+  @override
+  String photosTaggedIn(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hoto $count da aka saka ka',
+      zero: 'Hotunan da aka saka ka za su bayyana a nan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String photoCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hoto $count',
+      zero: 'Babu hoto tukuna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get albumsEmpty =>
+      'Babu kundi tukuna. Fara ɗaya don aure, Sallah ko tsofaffin hotunan iyali.';
+
+  @override
+  String get everyone => 'Kowa';
+
+  @override
+  String addedByRelatives(int count) {
+    return 'dangi $count suka ƙara';
+  }
+
+  @override
+  String get noPhotos => 'Babu hotuna a nan tukuna.';
+
+  @override
+  String photoXofY(int x, int y) {
+    return '$x cikin $y';
+  }
+
+  @override
+  String get inThisPhoto => 'A cikin wannan hoto';
+
+  @override
+  String get tagSomeone => 'Saka wani';
+
+  @override
+  String addedBy(String name) {
+    return 'Daga $name';
+  }
+
+  @override
+  String memoriesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tuna baya $count',
+      zero: 'Raba tuna baya',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get editDetails => 'Gyara bayani';
+
+  @override
+  String get caption => 'Bayani';
+
+  @override
+  String get yearTaken => 'Shekarar da aka ɗauka';
+
+  @override
+  String get deletePhoto => 'Goge hoto';
+
+  @override
+  String get confirmDeletePhoto => 'A goge wannan hoto?';
+
+  @override
+  String get comments => 'Sharhi';
+
+  @override
+  String get writeComment => 'Rubuta sharhi…';
+
+  @override
+  String get noCommentsYet => 'Babu sharhi tukuna.';
+
+  @override
+  String get send => 'Aika';
+
+  @override
+  String get newLabel => 'Sabo';
+
+  @override
+  String get upcoming => 'Masu zuwa';
+
+  @override
+  String get announcements => 'Sanarwa';
+
+  @override
+  String get past => 'Sun wuce';
+
+  @override
+  String get latestAnnouncements => 'Sabbin sanarwa';
+
+  @override
+  String get noUpcomingEvents => 'Babu taro mai zuwa.';
+
+  @override
+  String get noPastEvents => 'Babu taron da ya wuce.';
+
+  @override
+  String get noAnnouncements => 'Babu sanarwa tukuna.';
+
+  @override
+  String get youreGoing => 'Za ka je';
+
+  @override
+  String get youSaidMaybe => 'Ka ce watakila';
+
+  @override
+  String get youCantGo => 'Ba za ka samu ba';
+
+  @override
+  String get replyNeeded => 'Ana jiran amsarka';
+
+  @override
+  String goingCount(int count) {
+    return '$count za su je';
+  }
+
+  @override
+  String maybeCount(int count) {
+    return '$count watakila';
+  }
+
+  @override
+  String eventCategory(String category) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'naming': 'Suna',
+      'wedding': 'Aure',
+      'meeting': 'Taron iyali',
+      'condolence': 'Ta\'aziyya',
+      'graduation': 'Yaye',
+      'other': 'Taro',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String hostedBy(String name) {
+    return 'Mai shiryawa: $name';
+  }
+
+  @override
+  String get addToCalendar => 'Saka a kalanda';
+
+  @override
+  String get directions => 'Hanya';
+
+  @override
+  String get areYouComing => 'Za ka zo?';
+
+  @override
+  String get rsvpGoing => 'Zan je';
+
+  @override
+  String get rsvpMaybe => 'Watakila';
+
+  @override
+  String get rsvpNo => 'Ba zan samu ba';
+
+  @override
+  String get bringingOthers => 'Masu rakiyarka';
+
+  @override
+  String get oneFewer => 'Ragi ɗaya';
+
+  @override
+  String get oneMore => 'Ƙari ɗaya';
+
+  @override
+  String get seeAll => 'Duba duka';
+
+  @override
+  String get wishes => 'Fatan alheri';
+
+  @override
+  String get writeWish => 'Rubuta fatan alheri…';
+
+  @override
+  String get deleteEvent => 'Goge taro';
+
+  @override
+  String get confirmDeleteEvent => 'A goge wannan taro ga kowa?';
+
+  @override
+  String get newPost => 'Sabon rubutu';
+
+  @override
+  String get event => 'Taro';
+
+  @override
+  String get eventType => 'Iri';
+
+  @override
+  String get date => 'Rana';
+
+  @override
+  String get time => 'Lokaci';
+
+  @override
+  String get place => 'Wuri';
+
+  @override
+  String get addressOrArea => 'Adireshi ko unguwa';
+
+  @override
+  String get details => 'Bayani';
+
+  @override
+  String get askReply => 'Nemi mutane su amsa';
+
+  @override
+  String get askReplySub => 'Zan je · Watakila · Ba zan samu ba';
+
+  @override
+  String get postEvent => 'Wallafa taro';
+
+  @override
+  String get postAnnouncement => 'Wallafa sanarwa';
+
+  @override
+  String get announcementHint => 'Rubuta sanarwar…';
+
+  @override
+  String get titleRequired => 'Saka suna.';
+
+  @override
+  String get family => 'Iyali';
+
+  @override
+  String get photos => 'Hotuna';
 }

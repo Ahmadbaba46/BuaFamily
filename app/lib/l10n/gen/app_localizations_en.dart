@@ -988,4 +988,435 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get married => 'Married';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navEvents => 'Events';
+
+  @override
+  String greeting(String name) {
+    return 'Salamu alaikum, $name';
+  }
+
+  @override
+  String get birthdayToday => 'Birthday today';
+
+  @override
+  String turnsAge(String name, int age) {
+    return '$name turns $age';
+  }
+
+  @override
+  String get sendGreeting => 'Send a greeting';
+
+  @override
+  String get remembrance => 'Remembrance';
+
+  @override
+  String yearsSincePassed(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count years since $name passed',
+      one: '1 year since $name passed',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get addPrayer => 'Add a prayer';
+
+  @override
+  String get announcement => 'Announcement';
+
+  @override
+  String get pinned => 'Pinned';
+
+  @override
+  String fromAuthor(String name, String time) {
+    return 'From $name · $time';
+  }
+
+  @override
+  String get shareMomentPrompt => 'Share a moment with the family…';
+
+  @override
+  String get maShaAllah => 'Ma sha Allah';
+
+  @override
+  String commentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count comments',
+      one: '1 comment',
+      zero: 'Comment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String addedPhotosTo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos',
+      one: 'a photo',
+    );
+    return 'Added $_temp0 to';
+  }
+
+  @override
+  String get feedEmpty => 'No moments yet. Be the first to share one.';
+
+  @override
+  String get timeJustNow => 'just now';
+
+  @override
+  String timeMinutes(int n) {
+    return '${n}m';
+  }
+
+  @override
+  String timeHours(int n) {
+    return '${n}h';
+  }
+
+  @override
+  String get timeYesterday => 'Yesterday';
+
+  @override
+  String timeDaysAgo(int n) {
+    return '$n days ago';
+  }
+
+  @override
+  String get postOptions => 'Post options';
+
+  @override
+  String get deletePost => 'Delete post';
+
+  @override
+  String get confirmDeletePost => 'Delete this post for everyone?';
+
+  @override
+  String get pinToHome => 'Pin to Home';
+
+  @override
+  String get unpin => 'Unpin';
+
+  @override
+  String get adminsOnly => 'Admins only';
+
+  @override
+  String get shareAMoment => 'Share a moment';
+
+  @override
+  String get post => 'Post';
+
+  @override
+  String onlyFamilyCanSee(String family) {
+    return 'Only the $family family can see this';
+  }
+
+  @override
+  String get whatsHappening => 'What\'s happening?';
+
+  @override
+  String get addPhotos => 'Add photos';
+
+  @override
+  String get removePhoto => 'Remove photo';
+
+  @override
+  String get whosInIt => 'Who\'s in it?';
+
+  @override
+  String get tagFamily => 'Tag family';
+
+  @override
+  String get untag => 'Remove tag';
+
+  @override
+  String get alsoAddToAlbum => 'Also add to album';
+
+  @override
+  String get dontAddToAlbum => 'Don\'t add to an album';
+
+  @override
+  String get dataSaverNote => 'Photos are resized before upload to save data.';
+
+  @override
+  String get postEmptyError => 'Write something or add a photo.';
+
+  @override
+  String get albums => 'Albums';
+
+  @override
+  String get newAlbum => 'New album';
+
+  @override
+  String get albumName => 'Album name';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get photosOfYou => 'Photos of you';
+
+  @override
+  String photosTaggedIn(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos you\'re tagged in',
+      one: '1 photo you\'re tagged in',
+      zero: 'Photos you\'re tagged in appear here',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String photoCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count photos',
+      one: '1 photo',
+      zero: 'No photos yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get albumsEmpty =>
+      'No albums yet. Start one for a wedding, Sallah or old family photos.';
+
+  @override
+  String get everyone => 'Everyone';
+
+  @override
+  String addedByRelatives(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relatives',
+      one: '1 relative',
+    );
+    return 'added by $_temp0';
+  }
+
+  @override
+  String get noPhotos => 'No photos here yet.';
+
+  @override
+  String photoXofY(int x, int y) {
+    return '$x of $y';
+  }
+
+  @override
+  String get inThisPhoto => 'In this photo';
+
+  @override
+  String get tagSomeone => 'Tag someone';
+
+  @override
+  String addedBy(String name) {
+    return 'Added by $name';
+  }
+
+  @override
+  String memoriesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count memories',
+      one: '1 memory',
+      zero: 'Share a memory',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get editDetails => 'Edit details';
+
+  @override
+  String get caption => 'Caption';
+
+  @override
+  String get yearTaken => 'Year taken';
+
+  @override
+  String get deletePhoto => 'Delete photo';
+
+  @override
+  String get confirmDeletePhoto => 'Delete this photo?';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get writeComment => 'Write a comment…';
+
+  @override
+  String get noCommentsYet => 'No comments yet.';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get newLabel => 'New';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get announcements => 'Announcements';
+
+  @override
+  String get past => 'Past';
+
+  @override
+  String get latestAnnouncements => 'Latest announcements';
+
+  @override
+  String get noUpcomingEvents => 'No upcoming events.';
+
+  @override
+  String get noPastEvents => 'No past events.';
+
+  @override
+  String get noAnnouncements => 'No announcements yet.';
+
+  @override
+  String get youreGoing => 'You\'re going';
+
+  @override
+  String get youSaidMaybe => 'You said maybe';
+
+  @override
+  String get youCantGo => 'You can\'t go';
+
+  @override
+  String get replyNeeded => 'Reply needed';
+
+  @override
+  String goingCount(int count) {
+    return '$count going';
+  }
+
+  @override
+  String maybeCount(int count) {
+    return '$count maybe';
+  }
+
+  @override
+  String eventCategory(String category) {
+    String _temp0 = intl.Intl.selectLogic(category, {
+      'naming': 'Naming ceremony',
+      'wedding': 'Wedding',
+      'meeting': 'Family meeting',
+      'condolence': 'Condolence',
+      'graduation': 'Graduation',
+      'other': 'Event',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String hostedBy(String name) {
+    return 'Hosted by $name';
+  }
+
+  @override
+  String get addToCalendar => 'Add to calendar';
+
+  @override
+  String get directions => 'Directions';
+
+  @override
+  String get areYouComing => 'Are you coming?';
+
+  @override
+  String get rsvpGoing => 'Going';
+
+  @override
+  String get rsvpMaybe => 'Maybe';
+
+  @override
+  String get rsvpNo => 'Can\'t go';
+
+  @override
+  String get bringingOthers => 'Bringing others with you';
+
+  @override
+  String get oneFewer => 'One fewer';
+
+  @override
+  String get oneMore => 'One more';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get wishes => 'Wishes';
+
+  @override
+  String get writeWish => 'Write a wish…';
+
+  @override
+  String get deleteEvent => 'Delete event';
+
+  @override
+  String get confirmDeleteEvent => 'Delete this event for everyone?';
+
+  @override
+  String get newPost => 'New post';
+
+  @override
+  String get event => 'Event';
+
+  @override
+  String get eventType => 'Type';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get place => 'Place';
+
+  @override
+  String get addressOrArea => 'Address or area';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get askReply => 'Ask people to reply';
+
+  @override
+  String get askReplySub => 'Going · Maybe · Can\'t go';
+
+  @override
+  String get postEvent => 'Post event';
+
+  @override
+  String get postAnnouncement => 'Post announcement';
+
+  @override
+  String get announcementHint => 'Write the announcement…';
+
+  @override
+  String get titleRequired => 'Add a title.';
+
+  @override
+  String get family => 'Family';
+
+  @override
+  String get photos => 'Photos';
 }

@@ -17,7 +17,7 @@ final adminAttentionProvider = Provider<int>((ref) {
 });
 
 /// Bottom navigation (phones) or side rail (tablets / web).
-/// Branches: 0 tree, 1 members, 2 more. Admin tools live under More.
+/// Branches: 0 home, 1 tree, 2 members, 3 events, 4 more. Admin tools live under More.
 class HomeShell extends ConsumerWidget {
   const HomeShell({super.key, required this.shell});
 
@@ -29,13 +29,15 @@ class HomeShell extends ConsumerWidget {
     final attention = ref.watch(adminAttentionProvider);
 
     final items = [
+      (Icons.home_outlined, Icons.home, l.navHome),
       (Icons.account_tree_outlined, Icons.account_tree, l.navTree),
       (Icons.people_outline, Icons.people, l.navMembers),
+      (Icons.event_outlined, Icons.event, l.navEvents),
       (Icons.menu, Icons.menu, l.navMore),
     ];
     void go(int i) => shell.goBranch(i, initialLocation: i == shell.currentIndex);
 
-    Widget icon(IconData data, int i) => i == 2 && attention > 0
+    Widget icon(IconData data, int i) => i == 4 && attention > 0
         ? Badge(label: Text('$attention'), child: Icon(data))
         : Icon(data);
 

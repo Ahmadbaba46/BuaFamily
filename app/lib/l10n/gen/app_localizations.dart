@@ -1615,6 +1615,678 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Married'**
   String get married;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get navEvents;
+
+  /// No description provided for @greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Salamu alaikum, {name}'**
+  String greeting(String name);
+
+  /// No description provided for @birthdayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday today'**
+  String get birthdayToday;
+
+  /// No description provided for @turnsAge.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} turns {age}'**
+  String turnsAge(String name, int age);
+
+  /// No description provided for @sendGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a greeting'**
+  String get sendGreeting;
+
+  /// No description provided for @remembrance.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembrance'**
+  String get remembrance;
+
+  /// No description provided for @yearsSincePassed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 year since {name} passed} other{{count} years since {name} passed}}'**
+  String yearsSincePassed(int count, String name);
+
+  /// No description provided for @addPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a prayer'**
+  String get addPrayer;
+
+  /// No description provided for @announcement.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement'**
+  String get announcement;
+
+  /// No description provided for @pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get pinned;
+
+  /// No description provided for @fromAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'From {name} · {time}'**
+  String fromAuthor(String name, String time);
+
+  /// No description provided for @shareMomentPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a moment with the family…'**
+  String get shareMomentPrompt;
+
+  /// No description provided for @maShaAllah.
+  ///
+  /// In en, this message translates to:
+  /// **'Ma sha Allah'**
+  String get maShaAllah;
+
+  /// No description provided for @commentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Comment} =1{1 comment} other{{count} comments}}'**
+  String commentsCount(int count);
+
+  /// No description provided for @addedPhotosTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {count, plural, =1{a photo} other{{count} photos}} to'**
+  String addedPhotosTo(int count);
+
+  /// No description provided for @feedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No moments yet. Be the first to share one.'**
+  String get feedEmpty;
+
+  /// No description provided for @timeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get timeJustNow;
+
+  /// No description provided for @timeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}m'**
+  String timeMinutes(int n);
+
+  /// No description provided for @timeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}h'**
+  String timeHours(int n);
+
+  /// No description provided for @timeYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get timeYesterday;
+
+  /// No description provided for @timeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} days ago'**
+  String timeDaysAgo(int n);
+
+  /// No description provided for @postOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Post options'**
+  String get postOptions;
+
+  /// No description provided for @deletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete post'**
+  String get deletePost;
+
+  /// No description provided for @confirmDeletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this post for everyone?'**
+  String get confirmDeletePost;
+
+  /// No description provided for @pinToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin to Home'**
+  String get pinToHome;
+
+  /// No description provided for @unpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get unpin;
+
+  /// No description provided for @adminsOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins only'**
+  String get adminsOnly;
+
+  /// No description provided for @shareAMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a moment'**
+  String get shareAMoment;
+
+  /// No description provided for @post.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get post;
+
+  /// No description provided for @onlyFamilyCanSee.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the {family} family can see this'**
+  String onlyFamilyCanSee(String family);
+
+  /// No description provided for @whatsHappening.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s happening?'**
+  String get whatsHappening;
+
+  /// No description provided for @addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos'**
+  String get addPhotos;
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get removePhoto;
+
+  /// No description provided for @whosInIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Who\'s in it?'**
+  String get whosInIt;
+
+  /// No description provided for @tagFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag family'**
+  String get tagFamily;
+
+  /// No description provided for @untag.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove tag'**
+  String get untag;
+
+  /// No description provided for @alsoAddToAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Also add to album'**
+  String get alsoAddToAlbum;
+
+  /// No description provided for @dontAddToAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t add to an album'**
+  String get dontAddToAlbum;
+
+  /// No description provided for @dataSaverNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos are resized before upload to save data.'**
+  String get dataSaverNote;
+
+  /// No description provided for @postEmptyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Write something or add a photo.'**
+  String get postEmptyError;
+
+  /// No description provided for @albums.
+  ///
+  /// In en, this message translates to:
+  /// **'Albums'**
+  String get albums;
+
+  /// No description provided for @newAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'New album'**
+  String get newAlbum;
+
+  /// No description provided for @albumName.
+  ///
+  /// In en, this message translates to:
+  /// **'Album name'**
+  String get albumName;
+
+  /// No description provided for @create.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// No description provided for @photosOfYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos of you'**
+  String get photosOfYou;
+
+  /// No description provided for @photosTaggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Photos you\'re tagged in appear here} =1{1 photo you\'re tagged in} other{{count} photos you\'re tagged in}}'**
+  String photosTaggedIn(int count);
+
+  /// No description provided for @photoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No photos yet} =1{1 photo} other{{count} photos}}'**
+  String photoCount(int count);
+
+  /// No description provided for @albumsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No albums yet. Start one for a wedding, Sallah or old family photos.'**
+  String get albumsEmpty;
+
+  /// No description provided for @everyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get everyone;
+
+  /// No description provided for @addedByRelatives.
+  ///
+  /// In en, this message translates to:
+  /// **'added by {count, plural, =1{1 relative} other{{count} relatives}}'**
+  String addedByRelatives(int count);
+
+  /// No description provided for @noPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos here yet.'**
+  String get noPhotos;
+
+  /// No description provided for @photoXofY.
+  ///
+  /// In en, this message translates to:
+  /// **'{x} of {y}'**
+  String photoXofY(int x, int y);
+
+  /// No description provided for @inThisPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'In this photo'**
+  String get inThisPhoto;
+
+  /// No description provided for @tagSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag someone'**
+  String get tagSomeone;
+
+  /// No description provided for @addedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by {name}'**
+  String addedBy(String name);
+
+  /// No description provided for @memoriesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Share a memory} =1{1 memory} other{{count} memories}}'**
+  String memoriesCount(int count);
+
+  /// No description provided for @editDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit details'**
+  String get editDetails;
+
+  /// No description provided for @caption.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption'**
+  String get caption;
+
+  /// No description provided for @yearTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Year taken'**
+  String get yearTaken;
+
+  /// No description provided for @deletePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete photo'**
+  String get deletePhoto;
+
+  /// No description provided for @confirmDeletePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this photo?'**
+  String get confirmDeletePhoto;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @writeComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment…'**
+  String get writeComment;
+
+  /// No description provided for @noCommentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet.'**
+  String get noCommentsYet;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @newLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newLabel;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @announcements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get announcements;
+
+  /// No description provided for @past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get past;
+
+  /// No description provided for @latestAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest announcements'**
+  String get latestAnnouncements;
+
+  /// No description provided for @noUpcomingEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming events.'**
+  String get noUpcomingEvents;
+
+  /// No description provided for @noPastEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No past events.'**
+  String get noPastEvents;
+
+  /// No description provided for @noAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'No announcements yet.'**
+  String get noAnnouncements;
+
+  /// No description provided for @youreGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re going'**
+  String get youreGoing;
+
+  /// No description provided for @youSaidMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'You said maybe'**
+  String get youSaidMaybe;
+
+  /// No description provided for @youCantGo.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t go'**
+  String get youCantGo;
+
+  /// No description provided for @replyNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply needed'**
+  String get replyNeeded;
+
+  /// No description provided for @goingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} going'**
+  String goingCount(int count);
+
+  /// No description provided for @maybeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} maybe'**
+  String maybeCount(int count);
+
+  /// No description provided for @eventCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'{category, select, naming{Naming ceremony} wedding{Wedding} meeting{Family meeting} condolence{Condolence} graduation{Graduation} other{Event}}'**
+  String eventCategory(String category);
+
+  /// No description provided for @hostedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by {name}'**
+  String hostedBy(String name);
+
+  /// No description provided for @addToCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to calendar'**
+  String get addToCalendar;
+
+  /// No description provided for @directions.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get directions;
+
+  /// No description provided for @areYouComing.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you coming?'**
+  String get areYouComing;
+
+  /// No description provided for @rsvpGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Going'**
+  String get rsvpGoing;
+
+  /// No description provided for @rsvpMaybe.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe'**
+  String get rsvpMaybe;
+
+  /// No description provided for @rsvpNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t go'**
+  String get rsvpNo;
+
+  /// No description provided for @bringingOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Bringing others with you'**
+  String get bringingOthers;
+
+  /// No description provided for @oneFewer.
+  ///
+  /// In en, this message translates to:
+  /// **'One fewer'**
+  String get oneFewer;
+
+  /// No description provided for @oneMore.
+  ///
+  /// In en, this message translates to:
+  /// **'One more'**
+  String get oneMore;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @wishes.
+  ///
+  /// In en, this message translates to:
+  /// **'Wishes'**
+  String get wishes;
+
+  /// No description provided for @writeWish.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a wish…'**
+  String get writeWish;
+
+  /// No description provided for @deleteEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete event'**
+  String get deleteEvent;
+
+  /// No description provided for @confirmDeleteEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this event for everyone?'**
+  String get confirmDeleteEvent;
+
+  /// No description provided for @newPost.
+  ///
+  /// In en, this message translates to:
+  /// **'New post'**
+  String get newPost;
+
+  /// No description provided for @event.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get event;
+
+  /// No description provided for @eventType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get eventType;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @place.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get place;
+
+  /// No description provided for @addressOrArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Address or area'**
+  String get addressOrArea;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @askReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask people to reply'**
+  String get askReply;
+
+  /// No description provided for @askReplySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Going · Maybe · Can\'t go'**
+  String get askReplySub;
+
+  /// No description provided for @postEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Post event'**
+  String get postEvent;
+
+  /// No description provided for @postAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Post announcement'**
+  String get postAnnouncement;
+
+  /// No description provided for @announcementHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write the announcement…'**
+  String get announcementHint;
+
+  /// No description provided for @titleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a title.'**
+  String get titleRequired;
+
+  /// No description provided for @family.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get family;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
 }
 
 class _AppLocalizationsDelegate

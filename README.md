@@ -1,12 +1,13 @@
 # Bua Family
 
 A private app for the Bua family: browse the family tree, get to know relatives,
-and keep everyone's details (living and deceased) in one place. English and Hausa.
+share moments and photos, plan family events, and keep everyone's details
+(living and deceased) in one place. English and Hausa.
 
 - **App:** Flutter (Android, iOS and web from one codebase) in [`app/`](app)
 - **Backend:** Supabase (PostgreSQL, auth, photo storage) in [`supabase/`](supabase)
 
-## What's in this first version
+## What's in the app
 
 - **Family tree:** zoomable tree from the eldest ancestor down. Wives sit beside
   their husband and each child hangs from their own mother, so households with
@@ -28,6 +29,14 @@ and keep everyone's details (living and deceased) in one place. English and Haus
     dates or life status still go to an admin.
 - **Accounts are separate from people in the tree.** New sign-ups wait for an
   admin, who links them to their place in the tree.
+- **Home feed:** today's birthdays and remembrances, pinned notices, and
+  moments from relatives with photos, people tagged, "Ma sha Allah" and comments.
+- **Albums:** shared family albums (weddings, Sallah, old photos), grouped by
+  decade and filterable by who is in them, plus "Photos of you". Anyone can
+  tag relatives in a photo and add memories. Photos are resized before upload.
+- **Events and announcements:** naming ceremonies, weddings, meetings and more,
+  with Going / Maybe / Can't go replies (and how many people you're bringing),
+  wishes, add-to-calendar and directions. Only admins can pin to Home.
 - **English and Hausa,** switchable at any time.
 
 ## How the data is organised
@@ -42,6 +51,10 @@ and keep everyone's details (living and deceased) in one place. English and Haus
 | `profiles` | Sign-in accounts: role (admin/member), status, linked person |
 | `change_requests` | Member proposals awaiting admin review |
 | `app_settings` | Family name, member proposals on/off, default tree root |
+| `posts`, `post_people` | Moments and announcements, and who they are about |
+| `albums`, `photos`, `photo_people` | Shared albums, photos and who is in each photo |
+| `events`, `event_rsvps` | Family events and each member's reply |
+| `likes`, `comments` | "Ma sha Allah" and comments on posts, photos and events |
 
 Permissions are enforced in the database with row-level security, so they hold
 no matter which app or tool connects:
@@ -53,6 +66,9 @@ no matter which app or tool connects:
 | Change own name, dates or life status | n/a | via approval | ✓ |
 | Add relatives or relationships | n/a | via approval, if switched on | ✓ |
 | See private contact or health details | n/a | own only | ✓ |
+| Post moments, photos, events, announcements; tag, like, comment | ✗ | ✓ | ✓ |
+| Edit or delete a post, photo, event or comment | ✗ | own only | ✓ |
+| Pin to Home | ✗ | ✗ | ✓ |
 | Approve requests, manage accounts and settings | ✗ | ✗ | ✓ |
 
 The database also refuses impossible family structures: a person can't become
@@ -121,8 +137,7 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 ## Roadmap
 
-- **Phase 2, sharing:** moments feed, family photo albums with people tagged,
-  events and announcements with notifications.
+- **Next for sharing and events:** phone notifications and birthday reminders.
 - **Phase 3, family knowledge:** "who can help?" skills directory, blood donor
   matching, memorial pages, birthday and anniversary reminders.
 - **Phase 4:** welfare fund tracker, mentorship, oral-history voice notes,

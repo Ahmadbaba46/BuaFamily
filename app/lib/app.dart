@@ -5,12 +5,19 @@ import 'package:go_router/go_router.dart';
 import 'l10n/l10n.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
+import 'ui/screens/albums_screen.dart';
+import 'ui/screens/event_screen.dart';
+import 'ui/screens/events_screen.dart';
+import 'ui/screens/home_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/more_screen.dart';
 import 'ui/screens/my_requests_screen.dart';
+import 'ui/screens/new_event_screen.dart';
+import 'ui/screens/new_moment_screen.dart';
 import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
+import 'ui/screens/photo_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/tree_screen.dart';
 import 'ui/theme.dart';
@@ -19,7 +26,7 @@ import 'ui/widgets/home_shell.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   final auth = ref.watch(authProvider.notifier);
   return GoRouter(
-    initialLocation: '/tree',
+    initialLocation: '/home',
     refreshListenable: auth,
     redirect: (context, state) {
       final loc = state.matchedLocation;
@@ -28,8 +35,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       final profile = auth.profile;
       if (profile == null) return loc == '/splash' ? null : '/splash';
       if (!profile.isActive) return loc == '/pending' ? null : '/pending';
-      if (loc == '/sign-in' || loc == '/pending' || loc == '/splash') return '/tree';
-      if (loc.startsWith('/admin') && !profile.isAdmin) return '/tree';
+      if (loc == '/sign-in' || loc == '/pending' || loc == '/splash') return '/home';
+      if (loc.startsWith('/admin') && !profile.isAdmin) return '/home';
       return null;
     },
     routes: [
@@ -40,6 +47,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state, shell) => HomeShell(shell: shell),
         branches: [
           StatefulShellBranch(routes: [
+            GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
+          ]),
+          StatefulShellBranch(routes: [
             GoRoute(
               path: '/tree',
               builder: (_, s) => TreeScreen(focusId: s.uri.queryParameters['focus']),
@@ -49,9 +59,36 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(path: '/members', builder: (_, _) => const MembersScreen()),
           ]),
           StatefulShellBranch(routes: [
+            GoRoute(path: '/events', builder: (_, _) => const EventsScreen()),
+          ]),
+          StatefulShellBranch(routes: [
             GoRoute(path: '/more', builder: (_, _) => const MoreScreen()),
           ]),
         ],
+      ),
+      GoRoute(
+        path: '/new-moment',
+        builder: (_, s) => NewMomentScreen(
+          albumId: s.uri.queryParameters['album'],
+          tagPersonId: s.uri.queryParameters['tag'],
+        ),
+      ),
+      GoRoute(
+        path: '/events/new',
+        builder: (_, s) => NewEventScreen(announcement: s.uri.queryParameters['type'] == 'announcement'),
+      ),
+      GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
+      GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),
+      GoRoute(path: '/albums/of/:person', builder: (_, s) => AlbumScreen(personId: s.pathParameters['person'])),
+      GoRoute(path: '/albums/:id', builder: (_, s) => AlbumScreen(albumId: s.pathParameters['id'])),
+      GoRoute(
+        path: '/photo/:id',
+        builder: (_, s) => PhotoScreen(
+          photoId: s.pathParameters['id']!,
+          albumId: s.uri.queryParameters['album'],
+          postId: s.uri.queryParameters['post'],
+          personId: s.uri.queryParameters['of'],
+        ),
       ),
       // Opened from More; admins only (see redirect).
       GoRoute(path: '/admin', builder: (_, _) => const AdminScreen()),
