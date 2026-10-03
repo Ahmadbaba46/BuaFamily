@@ -2788,4 +2788,10 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get notifTest => 'Gwajin sanarwa: sanarwa na aiki a wannan na\'ura.';
+
+  @override
+  String get addPhoto => 'Saka hoto';
+
+  @override
+  String get photoLabel => 'Hoto';
 }

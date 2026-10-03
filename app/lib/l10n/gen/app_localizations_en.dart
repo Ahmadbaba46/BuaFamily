@@ -2879,4 +2879,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifTest =>
       'Test notification: notifications are working on this device.';
+
+  @override
+  String get addPhoto => 'Add photo';
+
+  @override
+  String get photoLabel => 'Photo';
 }

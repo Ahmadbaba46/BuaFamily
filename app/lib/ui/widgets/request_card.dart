@@ -5,6 +5,7 @@ import '../../models/account.dart';
 import '../../models/family_graph.dart';
 import '../theme.dart';
 import 'bua.dart';
+import 'social.dart' show StoragePhoto;
 
 /// Human-readable summary of a change request.
 class RequestCard extends StatelessWidget {
@@ -144,6 +145,16 @@ class RequestCard extends StatelessWidget {
                 ),
             ]),
           ),
+        ],
+        if ((request.payload['person'] as Map<String, dynamic>?)?['photo_path'] case final String path) ...[
+          const SizedBox(height: 10),
+          Row(children: [
+            SizedBox(width: 110, child: Text(l.photoLabel, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(width: 72, height: 72, child: StoragePhoto(path)),
+            ),
+          ]),
         ],
         if (request.reviewNote?.isNotEmpty ?? false) ...[
           const SizedBox(height: 10),

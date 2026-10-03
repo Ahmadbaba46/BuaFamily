@@ -4579,6 +4579,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Test notification: notifications are working on this device.'**
   String get notifTest;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get addPhoto;
+
+  /// No description provided for @photoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photoLabel;
 }
 
 class _AppLocalizationsDelegate

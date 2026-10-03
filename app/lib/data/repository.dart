@@ -288,6 +288,10 @@ class FamilyRepository {
     return postId;
   }
 
+  /// A photo for a suggested person or edit, kept in the member's own uploads
+  /// folder until an admin approves the request (which then uses its path).
+  Future<String> uploadPendingPhoto(PickedImage img) => _upload(img, 0);
+
   Future<String> _upload(PickedImage img, int index) async {
     final ext = img.extension.toLowerCase().replaceAll('jpeg', 'jpg');
     final path = 'uploads/$userId/${DateTime.now().millisecondsSinceEpoch}_$index.$ext';
