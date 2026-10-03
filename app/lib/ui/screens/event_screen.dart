@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hero_page.dart';
 import '../widgets/social.dart';
 
 String _utc(DateTime d) {
@@ -57,8 +58,40 @@ class EventScreen extends ConsumerWidget {
       if (event.endsAt != null) l.clock(event.endsAt!),
     ].join(' – ');
 
+    void back() => context.canPop() ? context.pop() : context.go('/events');
+    final actions = <Widget>[
+      if (canDelete || isAdmin)
+        PopupMenuButton<String>(
+          iconColor: Colors.white,
+          onSelected: (v) async {
+            final repo = ref.read(repositoryProvider);
+            if (v == 'pin') {
+              if (await guarded(context, () => repo.setPinned(eventId: event.id, pinned: !event.pinned))) {
+                ref.invalidate(eventsProvider);
+              }
+            } else if (v == 'delete') {
+              if (!await confirm(context, l.confirmDeleteEvent) || !context.mounted) return;
+              if (await guarded(context, () => repo.deleteEvent(event.id))) {
+                ref.invalidate(eventsProvider);
+                if (context.mounted) context.canPop() ? context.pop() : context.go('/events');
+              }
+            }
+          },
+          itemBuilder: (_) => [
+            if (isAdmin) PopupMenuItem(value: 'pin', child: Text(event.pinned ? l.unpin : l.pinToHome)),
+            if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deleteEvent)),
+          ],
+        ),
+    ];
+
     return Scaffold(
-      body: ListView(padding: EdgeInsets.zero, children: [
+      body: HeroPage(
+        title: event.title,
+        color: Bua.green,
+        bandHeight: 210,
+        onBack: back,
+        actions: actions,
+        child: ListView(padding: EdgeInsets.zero, children: [
         PatternBand(
           height: 210,
           child: SafeArea(
@@ -67,33 +100,9 @@ class EventScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(4, 4, 4, 18),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
-                  BackButton(
-                    color: Colors.white,
-                    onPressed: () => context.canPop() ? context.pop() : context.go('/events'),
-                  ),
+                  BackButton(color: Colors.white, onPressed: back),
                   const Spacer(),
-                  if (canDelete || isAdmin)
-                    PopupMenuButton<String>(
-                      iconColor: Colors.white,
-                      onSelected: (v) async {
-                        final repo = ref.read(repositoryProvider);
-                        if (v == 'pin') {
-                          if (await guarded(context, () => repo.setPinned(eventId: event.id, pinned: !event.pinned))) {
-                            ref.invalidate(eventsProvider);
-                          }
-                        } else if (v == 'delete') {
-                          if (!await confirm(context, l.confirmDeleteEvent) || !context.mounted) return;
-                          if (await guarded(context, () => repo.deleteEvent(event.id))) {
-                            ref.invalidate(eventsProvider);
-                            if (context.mounted) context.canPop() ? context.pop() : context.go('/events');
-                          }
-                        }
-                      },
-                      itemBuilder: (_) => [
-                        if (isAdmin) PopupMenuItem(value: 'pin', child: Text(event.pinned ? l.unpin : l.pinToHome)),
-                        if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deleteEvent)),
-                      ],
-                    ),
+                  ...actions,
                 ]),
                 const Spacer(),
                 Padding(
@@ -164,6 +173,7 @@ class EventScreen extends ConsumerWidget {
           ]),
         ),
       ]),
+      ),
     );
   }
 }

@@ -2953,4 +2953,10 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get sortFamily => 'Tsarin iyali';
+
+  @override
+  String get helpEachOther => 'Taimakon juna';
+
+  @override
+  String get openMenu => 'Buɗe jerin zaɓuɓɓuka';
 }

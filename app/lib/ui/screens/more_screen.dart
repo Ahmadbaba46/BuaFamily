@@ -7,6 +7,7 @@ import '../../models/account.dart';
 import '../../models/social.dart' show Member;
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/home_shell.dart';
@@ -35,12 +36,16 @@ class MoreScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: ListView(padding: const EdgeInsets.fromLTRB(16, 14, 16, 24), children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Text(l.navMore, style: Theme.of(context).textTheme.titleLarge),
+            padding: EdgeInsets.fromLTRB(sidebarAlwaysOpen(context) ? 20 : 8, 10, 16, 8),
+            child: Row(children: [
+              const SidebarButton(),
+              Expanded(child: Text(l.navMore, style: Theme.of(context).textTheme.titleLarge)),
+            ]),
           ),
-          const SizedBox(height: 12),
+          Expanded(
+            child: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
           Material(
             color: Bua.surface,
             borderRadius: BorderRadius.circular(20),
@@ -262,6 +267,8 @@ class MoreScreen extends ConsumerWidget {
                 onTap: () => ref.read(authProvider).signOut(),
               ),
             ]),
+          ),
+          ]),
           ),
         ]),
       ),

@@ -4831,6 +4831,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Family order'**
   String get sortFamily;
+
+  /// No description provided for @helpEachOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Help each other'**
+  String get helpEachOther;
+
+  /// No description provided for @openMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu'**
+  String get openMenu;
 }
 
 class _AppLocalizationsDelegate

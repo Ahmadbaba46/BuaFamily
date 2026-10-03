@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../models/account.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import 'app_sidebar.dart';
 
 /// Number of things waiting for an admin (requests + new accounts); 0 for members.
 final adminAttentionProvider = Provider<int>((ref) {
@@ -16,8 +17,9 @@ final adminAttentionProvider = Provider<int>((ref) {
   return requests + accounts;
 });
 
-/// Bottom navigation (phones) or side rail (tablets / web).
-/// Branches: 0 home, 1 tree, 2 members, 3 events, 4 more. Admin tools live under More.
+/// Bottom navigation and a sidebar drawer (phones), a side rail (tablets), or
+/// the full sidebar always open (wide screens; see the app frame).
+/// Branches: 0 home, 1 tree, 2 members, 3 events, 4 more.
 class HomeShell extends ConsumerWidget {
   const HomeShell({super.key, required this.shell});
 
@@ -41,9 +43,22 @@ class HomeShell extends ConsumerWidget {
         ? Badge(label: Text('$attention'), child: Icon(data))
         : Icon(data);
 
+    final drawer = Drawer(
+      width: 300,
+      child: AppSidebar(
+        router: GoRouter.of(context),
+        onDone: () => sidebarScaffoldKey.currentState?.closeDrawer(),
+      ),
+    );
+
+    // The sidebar is already beside every page.
+    if (sidebarAlwaysOpen(context)) return Scaffold(key: sidebarScaffoldKey, body: shell);
+
     final wide = MediaQuery.sizeOf(context).width >= 720;
     if (wide) {
       return Scaffold(
+        key: sidebarScaffoldKey,
+        drawer: drawer,
         body: Row(children: [
           NavigationRail(
             selectedIndex: shell.currentIndex,
@@ -64,6 +79,8 @@ class HomeShell extends ConsumerWidget {
       );
     }
     return Scaffold(
+      key: sidebarScaffoldKey,
+      drawer: drawer,
       body: shell,
       bottomNavigationBar: DecoratedBox(
         decoration: const BoxDecoration(border: Border(top: BorderSide(color: Bua.line))),

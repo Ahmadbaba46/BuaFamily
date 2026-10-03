@@ -8,6 +8,7 @@ import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/app_sidebar.dart';
 import '../widgets/common.dart';
 
 enum _Filter { all, living, deceased }
@@ -70,12 +71,14 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
             final showMe = me != null && people.any((p) => p.id == me.id);
             final others = people.where((p) => p.id != me?.id).toList();
 
-            return CustomScrollView(slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+            final header = Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    Text(l.navMembers, style: Theme.of(context).textTheme.titleLarge),
+                    Row(children: [
+                      // Lines the ☰ icon up with the search box below.
+                      Transform.translate(offset: const Offset(-12, 0), child: const SidebarButton()),
+                      Expanded(child: Text(l.navMembers, style: Theme.of(context).textTheme.titleLarge)),
+                    ]),
                     const SizedBox(height: 12),
                     TextField(
                       decoration: InputDecoration(
@@ -137,8 +140,12 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                       ),
                     ]),
                   ]),
-                ),
-              ),
+                );
+
+            return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              header,
+              Expanded(
+                child: CustomScrollView(slivers: [
               if (people.isEmpty)
                 SliverFillRemaining(hasScrollBody: false, child: Center(child: Text(l.noResults)))
               else ...[
@@ -191,6 +198,8 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                     ),
                   ),
               ],
+                ]),
+              ),
             ]);
           },
         ),

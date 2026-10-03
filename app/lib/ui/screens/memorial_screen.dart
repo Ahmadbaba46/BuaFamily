@@ -10,6 +10,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hero_page.dart';
 import '../widgets/social.dart';
 
 String _sexKey(Sex s) => switch (s) {
@@ -44,7 +45,12 @@ class MemorialScreen extends ConsumerWidget {
     final sex = _sexKey(p.sex);
 
     return Scaffold(
-      body: ListView(padding: EdgeInsets.zero, children: [
+      body: HeroPage(
+        title: p.displayName,
+        color: Bua.memorial,
+        bandHeight: 330,
+        onBack: () => context.canPop() ? context.pop() : context.go('/person/$personId'),
+        child: ListView(padding: EdgeInsets.zero, children: [
         PatternBand(
           height: 330,
           color: Bua.memorial,
@@ -152,6 +158,7 @@ class MemorialScreen extends ConsumerWidget {
           ]),
         ),
       ]),
+      ),
     );
   }
 }
