@@ -157,6 +157,18 @@ class MoreScreen extends ConsumerWidget {
                 value: openBlood > 0 ? '$openBlood ${l.urgent.toLowerCase()}' : null,
                 onTap: () => context.push('/blood'),
               ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.school_outlined,
+                title: l.mentorsTitle,
+                onTap: () => context.push('/mentors'),
+              ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.how_to_vote_outlined,
+                title: l.pollsTitle,
+                onTap: () => context.push('/polls'),
+              ),
             ]),
           ),
           const SizedBox(height: 18),

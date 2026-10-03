@@ -28,6 +28,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.fundContribution => l.notifFundContribution(naira((n.data['amount'] as num?) ?? 0)),
       NotificationKind.fundConfirmed => l.notifFundConfirmed(naira((n.data['amount'] as num?) ?? 0)),
       NotificationKind.fundRequest => l.notifFundRequest(n.str('title') ?? ''),
+      NotificationKind.mentorRequest => l.notifMentorRequest(n.str('body') ?? ''),
+      NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
+      NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -41,6 +44,8 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.remembrance || NotificationKind.memory => Icons.dark_mode_outlined,
       NotificationKind.fundContribution || NotificationKind.fundConfirmed || NotificationKind.fundRequest =>
         Icons.volunteer_activism_outlined,
+      NotificationKind.mentorRequest || NotificationKind.opportunity => Icons.school_outlined,
+      NotificationKind.poll => Icons.how_to_vote_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {

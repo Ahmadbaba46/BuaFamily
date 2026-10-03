@@ -113,6 +113,10 @@ extension TimeLabels on AppLocalizations {
       ? '${_haWeekdays[d.weekday % 7]}, ${d.day} ${_haMonths[d.month - 1]}'
       : DateFormat('EEEE, d MMMM', 'en').format(d);
 
+  /// "17 Oct".
+  String dayMonth(DateTime d) =>
+      localeName == 'ha' ? '${d.day} ${_haMonths[d.month - 1]}' : DateFormat('d MMM', 'en').format(d);
+
   /// "OCT" for date badges.
   String monthShort(DateTime d) =>
       (localeName == 'ha' ? _haMonths[d.month - 1].substring(0, 3) : DateFormat.MMM('en').format(d)).toUpperCase();

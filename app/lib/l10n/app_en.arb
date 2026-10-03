@@ -1363,5 +1363,145 @@
         "type": "String"
       }
     }
+  },
+  "mentorsTitle": "Mentors & scholarships",
+  "tabMentors": "Mentors",
+  "tabStudents": "Students",
+  "tabOpportunities": "Opportunities",
+  "newOpportunity": "New opportunity",
+  "sharedBy": "Shared by {name}",
+  "@sharedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineOn": "deadline {date}",
+  "@deadlineOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "offeringGuidance": "Relatives offering guidance",
+  "lookingForHelp": "Students looking for help",
+  "ask": "Ask",
+  "askMentorTitle": "Ask {name}",
+  "@askMentorTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "askMentorHint": "What would you like help with?",
+  "askSent": "Sent. {name} will see your note.",
+  "@askSent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "asksToYou": "Asks to you",
+  "offerToMentor": "Offer to mentor",
+  "editMentoring": "Edit my mentoring",
+  "stopMentoring": "Stop mentoring",
+  "mentorAreas": "Areas you can help with",
+  "mentorAreasHint": "e.g. Medicine · residency applications",
+  "imLookingForHelp": "I'm looking for help",
+  "editMyRequest": "Edit my request",
+  "removeMyRequest": "Remove my request",
+  "studyField": "What are you studying?",
+  "whatHelp": "What help are you looking for?",
+  "shareOpportunity": "Share an opportunity",
+  "opportunityTitle": "Title",
+  "link": "Link (optional)",
+  "deadlineOptional": "Deadline (optional)",
+  "open": "Open",
+  "noMentorsYet": "No one has offered to mentor yet.",
+  "noStudentsYet": "No students are looking for help right now.",
+  "noOpportunitiesYet": "No opportunities shared yet.",
+  "pollsTitle": "Polls",
+  "newPoll": "New poll",
+  "closesDate": "closes {date}",
+  "@closesDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "youVoted": "you voted",
+  "notVotedYet": "not voted yet",
+  "vote": "Vote",
+  "changeVote": "Change my vote",
+  "votedOf": "{count} of {eligible} members voted",
+  "@votedOf": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "eligible": {
+        "type": "int"
+      }
+    }
+  },
+  "decided": "Decided",
+  "decidedLine": "{percent}% chose this · decided {date}",
+  "@decidedLine": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "closePoll": "Close poll",
+  "deletePoll": "Delete poll",
+  "question": "Question",
+  "pollContext": "What is it for? (optional)",
+  "pollContextHint": "e.g. For the family meeting",
+  "choices": "Choices",
+  "choiceN": "Choice {n}",
+  "@choiceN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "addChoice": "Add a choice",
+  "closesOnPoll": "Voting closes",
+  "needTwoChoices": "Add a question and at least two choices.",
+  "noPollsYet": "No polls yet. Ask the family a question.",
+  "secretBallot": "Votes are secret. You see the results after you vote or when the poll closes.",
+  "notifMentorRequest": "Someone asked for your guidance: “{body}”",
+  "@notifMentorRequest": {
+    "placeholders": {
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "notifOpportunity": "New opportunity: {title}",
+  "@notifOpportunity": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPoll": "New poll: {question}",
+  "@notifPoll": {
+    "placeholders": {
+      "question": {
+        "type": "String"
+      }
+    }
   }
 }

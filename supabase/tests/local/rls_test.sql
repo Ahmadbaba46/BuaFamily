@@ -572,7 +572,77 @@ select test.assert((select count(*) = 0 from public.fund_payouts), 'payouts are 
 reset role;
 
 -- ---------------------------------------------------------------------------
--- 13. Anonymous users see nothing.
+-- 13. Mentorship and polls.
+-- ---------------------------------------------------------------------------
+-- Ibrahim offers to mentor; Aisha is looking for help and asks him.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.mentors (areas) values ('Civil engineering · site work');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.mentee_requests (field, message) values ('Computer Science', 'Looking for internship advice.');
+insert into public.mentor_asks (mentor_user_id, message) values (:member2_id, 'Could we talk about internships?');
+select test.expect_error(format($$insert into public.mentors (user_id, areas) values (%L, 'x')$$, :admin_id), 'cannot list someone else as mentor');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'mentor_request' and user_id = :member2_id), 'mentor told');
+
+-- The admin can't read the ask; posting an opportunity tells the student.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.mentor_asks), 'asks are private to the two people');
+insert into public.opportunities (title, url, deadline) values ('Postgraduate scholarship', 'https://example.org', '2026-11-30');
+select test.expect_error($$insert into public.opportunities (title, url) values ('Bad', 'javascript:alert(1)')$$, 'only web links');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'opportunity' and user_id = :member_id), 'student told about the opportunity');
+
+-- Polls: Aisha asks; the others are told.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.polls (question, closes_at) values ('Where should the reunion be?', now() + interval '7 days');
+insert into public.poll_options (poll_id, label, sort_order)
+  select id, x.label, x.n from public.polls, (values ('Kano', 1), ('Kaduna', 2), ('Zaria', 3)) x(label, n)
+  where question = 'Where should the reunion be?';
+reset role;
+select test.assert((select count(*) = 2 from public.notifications where kind = 'poll'), 'family told about the poll');
+
+-- Ibrahim sees no counts until he votes, then sees them; he can change his vote.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.poll_results()), 'no results before voting');
+insert into public.poll_votes (poll_id, option_id)
+  select p.id, o.id from public.polls p join public.poll_options o on o.poll_id = p.id where o.label = 'Kaduna';
+update public.poll_votes set option_id = (select id from public.poll_options where label = 'Kano');
+select test.assert((select votes = 1 and total = 1 from public.poll_results() r join public.poll_options o on o.id = r.option_id
+  where o.label = 'Kano'), 'results after voting, changed vote counted');
+select test.expect_error($$insert into public.poll_options (poll_id, label) select id, 'Abuja' from public.polls$$,
+  'only the creator adds options');
+reset role;
+
+-- The admin votes; Ibrahim can't see the admin's ballot.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.poll_votes (poll_id, option_id) select poll_id, id from public.poll_options where label = 'Zaria';
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.poll_votes), 'ballots are secret');
+reset role;
+
+-- Closing ends voting; everyone then sees the results.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.polls set closed = true;
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.poll_votes set option_id = (select id from public.poll_options where label = 'Zaria');
+reset role;
+select test.assert((select o.label = 'Kano' from public.poll_votes v join public.poll_options o on o.id = v.option_id
+  where v.user_id = :member2_id), 'no vote changes after closing');
+
+-- ---------------------------------------------------------------------------
+-- 14. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

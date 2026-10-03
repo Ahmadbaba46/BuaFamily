@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/repository.dart';
 import '../models/account.dart';
+import '../models/community.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
@@ -207,3 +208,9 @@ void refreshFund(WidgetRef ref) {
   ref.invalidate(fundCausesProvider);
   ref.invalidate(contributionsProvider);
 }
+
+// ---------------------------------------------------------------- mentorship & polls
+
+final mentorshipProvider = FutureProvider<Mentorship>((ref) => ref.watch(repositoryProvider).mentorship());
+
+final pollsProvider = FutureProvider<List<Poll>>((ref) => ref.watch(repositoryProvider).polls());

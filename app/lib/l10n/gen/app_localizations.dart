@@ -3583,6 +3583,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Support requested: {title}'**
   String notifFundRequest(String title);
+
+  /// No description provided for @mentorsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentors & scholarships'**
+  String get mentorsTitle;
+
+  /// No description provided for @tabMentors.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentors'**
+  String get tabMentors;
+
+  /// No description provided for @tabStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Students'**
+  String get tabStudents;
+
+  /// No description provided for @tabOpportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunities'**
+  String get tabOpportunities;
+
+  /// No description provided for @newOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'New opportunity'**
+  String get newOpportunity;
+
+  /// No description provided for @sharedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared by {name}'**
+  String sharedBy(String name);
+
+  /// No description provided for @deadlineOn.
+  ///
+  /// In en, this message translates to:
+  /// **'deadline {date}'**
+  String deadlineOn(String date);
+
+  /// No description provided for @offeringGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Relatives offering guidance'**
+  String get offeringGuidance;
+
+  /// No description provided for @lookingForHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Students looking for help'**
+  String get lookingForHelp;
+
+  /// No description provided for @ask.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get ask;
+
+  /// No description provided for @askMentorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask {name}'**
+  String askMentorTitle(String name);
+
+  /// No description provided for @askMentorHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like help with?'**
+  String get askMentorHint;
+
+  /// No description provided for @askSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. {name} will see your note.'**
+  String askSent(String name);
+
+  /// No description provided for @asksToYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Asks to you'**
+  String get asksToYou;
+
+  /// No description provided for @offerToMentor.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer to mentor'**
+  String get offerToMentor;
+
+  /// No description provided for @editMentoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my mentoring'**
+  String get editMentoring;
+
+  /// No description provided for @stopMentoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop mentoring'**
+  String get stopMentoring;
+
+  /// No description provided for @mentorAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'Areas you can help with'**
+  String get mentorAreas;
+
+  /// No description provided for @mentorAreasHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Medicine · residency applications'**
+  String get mentorAreasHint;
+
+  /// No description provided for @imLookingForHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m looking for help'**
+  String get imLookingForHelp;
+
+  /// No description provided for @editMyRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my request'**
+  String get editMyRequest;
+
+  /// No description provided for @removeMyRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove my request'**
+  String get removeMyRequest;
+
+  /// No description provided for @studyField.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you studying?'**
+  String get studyField;
+
+  /// No description provided for @whatHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'What help are you looking for?'**
+  String get whatHelp;
+
+  /// No description provided for @shareOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Share an opportunity'**
+  String get shareOpportunity;
+
+  /// No description provided for @opportunityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get opportunityTitle;
+
+  /// No description provided for @link.
+  ///
+  /// In en, this message translates to:
+  /// **'Link (optional)'**
+  String get link;
+
+  /// No description provided for @deadlineOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline (optional)'**
+  String get deadlineOptional;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @noMentorsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has offered to mentor yet.'**
+  String get noMentorsYet;
+
+  /// No description provided for @noStudentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No students are looking for help right now.'**
+  String get noStudentsYet;
+
+  /// No description provided for @noOpportunitiesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No opportunities shared yet.'**
+  String get noOpportunitiesYet;
+
+  /// No description provided for @pollsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Polls'**
+  String get pollsTitle;
+
+  /// No description provided for @newPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'New poll'**
+  String get newPoll;
+
+  /// No description provided for @closesDate.
+  ///
+  /// In en, this message translates to:
+  /// **'closes {date}'**
+  String closesDate(String date);
+
+  /// No description provided for @youVoted.
+  ///
+  /// In en, this message translates to:
+  /// **'you voted'**
+  String get youVoted;
+
+  /// No description provided for @notVotedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'not voted yet'**
+  String get notVotedYet;
+
+  /// No description provided for @vote.
+  ///
+  /// In en, this message translates to:
+  /// **'Vote'**
+  String get vote;
+
+  /// No description provided for @changeVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Change my vote'**
+  String get changeVote;
+
+  /// No description provided for @votedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {eligible} members voted'**
+  String votedOf(int count, int eligible);
+
+  /// No description provided for @decided.
+  ///
+  /// In en, this message translates to:
+  /// **'Decided'**
+  String get decided;
+
+  /// No description provided for @decidedLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% chose this · decided {date}'**
+  String decidedLine(int percent, String date);
+
+  /// No description provided for @closePoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Close poll'**
+  String get closePoll;
+
+  /// No description provided for @deletePoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete poll'**
+  String get deletePoll;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @pollContext.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it for? (optional)'**
+  String get pollContext;
+
+  /// No description provided for @pollContextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. For the family meeting'**
+  String get pollContextHint;
+
+  /// No description provided for @choices.
+  ///
+  /// In en, this message translates to:
+  /// **'Choices'**
+  String get choices;
+
+  /// No description provided for @choiceN.
+  ///
+  /// In en, this message translates to:
+  /// **'Choice {n}'**
+  String choiceN(int n);
+
+  /// No description provided for @addChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a choice'**
+  String get addChoice;
+
+  /// No description provided for @closesOnPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Voting closes'**
+  String get closesOnPoll;
+
+  /// No description provided for @needTwoChoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a question and at least two choices.'**
+  String get needTwoChoices;
+
+  /// No description provided for @noPollsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No polls yet. Ask the family a question.'**
+  String get noPollsYet;
+
+  /// No description provided for @secretBallot.
+  ///
+  /// In en, this message translates to:
+  /// **'Votes are secret. You see the results after you vote or when the poll closes.'**
+  String get secretBallot;
+
+  /// No description provided for @notifMentorRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone asked for your guidance: “{body}”'**
+  String notifMentorRequest(String body);
+
+  /// No description provided for @notifOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'New opportunity: {title}'**
+  String notifOpportunity(String title);
+
+  /// No description provided for @notifPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'New poll: {question}'**
+  String notifPoll(String question);
 }
 
 class _AppLocalizationsDelegate

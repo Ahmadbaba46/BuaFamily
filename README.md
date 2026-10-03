@@ -62,6 +62,14 @@ share moments and photos, plan family events, and keep everyone's details
   Amounts stay private to the contributor and the committee (admins and
   treasurers); everyone sees totals and the names of those who chose to be
   listed. Anyone can ask for support privately.
+- **Mentors & scholarships:** relatives offer guidance in their field,
+  students say what help they want, and anyone can share a scholarship or
+  job. "Ask" sends a mentor a private note; students hear about new
+  opportunities.
+- **Polls:** any member can ask the family a question with a closing date.
+  Ballots are secret: you see the results once you have voted or the poll has
+  closed, and you can change your vote until then. Closed polls are kept as
+  the family's decisions.
 - **Birthdays & remembrance:** today, this week and the coming month at a
   glance: birthdays, death anniversaries, wedding anniversaries and events,
   with a quick greeting or prayer.
@@ -126,6 +134,8 @@ Design mockups for the app (sample data). The app follows these designs; the scr
   <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause & contributions" width="180"><br><sub>Fund cause & contributions</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls & family decisions" width="180"><br><sub>Polls & family decisions</sub></td>
   </tr>
 </table>
 
@@ -151,13 +161,11 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 </table>
 
 <details>
-<summary><b>Designed for later</b> (4 screens)</summary>
+<summary><b>Designed for later</b> (2 screens)</summary>
 
 <table>
   <tr>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
   </tr>
 </table>
@@ -183,6 +191,8 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 | `notifications` | Each member's in-app inbox |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
+| `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
+| `polls`, `poll_options`, `poll_votes` | Family polls, their choices and each member's (secret) vote |
 | `memories`, `remembrance_reminders` | Prayers and memories on memorial pages; who wants an anniversary reminder |
 | `private.sms_outbox` | Text messages waiting to be sent, sent or failed (not reachable from the app) |
 
@@ -290,5 +300,4 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
   Play Store / App Store.
 - **Phase 3, family knowledge:** "who can help?" skills directory, blood donor
   matching, memorial pages, anniversary reminders.
-- **Phase 4:** welfare fund tracker, mentorship, oral-history voice notes,
-  polls, GEDCOM import and export.
+- **Phase 4:** oral-history voice notes, GEDCOM import and export.
