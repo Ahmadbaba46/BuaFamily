@@ -57,6 +57,9 @@ class Backup {
   final DateTime takenAt;
   final int sizeBytes;
 
+  /// The copy saved automatically just before the last restore.
+  bool get isRestorePoint => slot < 0;
+
   factory Backup.fromJson(Map<String, dynamic> j) =>
       Backup(slot: j['slot'] as int, takenAt: _ts(j['taken_at']), sizeBytes: j['size_bytes'] as int? ?? 0);
 }
@@ -67,4 +70,46 @@ String clockDuration(Duration d) {
   final m = d.inMinutes.remainder(60);
   final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
   return h > 0 ? '$h:${m.toString().padLeft(2, '0')}:$s' : '$m:$s';
+}
+
+/// What a restore did (or would do), grouped for people to read.
+class RestoreSummary {
+  RestoreSummary(Map<String, dynamic> perTable) {
+    for (final e in perTable.entries) {
+      final v = Map<String, dynamic>.from(e.value as Map);
+      final g = groupOf(e.key);
+      final c = groups.putIfAbsent(g, () => RestoreCounts());
+      c.added += v['added'] as int? ?? 0;
+      c.updated += v['updated'] as int? ?? 0;
+      c.skipped += v['skipped'] as int? ?? 0;
+    }
+  }
+
+  /// tree, details, sharing, events, memories, support, community.
+  final groups = <String, RestoreCounts>{};
+
+  int get added => groups.values.fold(0, (s, c) => s + c.added);
+  int get updated => groups.values.fold(0, (s, c) => s + c.updated);
+  int get skipped => groups.values.fold(0, (s, c) => s + c.skipped);
+  bool get nothingToDo => added == 0 && updated == 0;
+
+  static String groupOf(String table) => switch (table) {
+        'persons' || 'unions' || 'parent_child' => 'tree',
+        'person_education' || 'person_occupations' || 'person_skills' || 'person_contacts' || 'person_health' => 'details',
+        'albums' || 'posts' || 'post_people' || 'photos' || 'photo_people' || 'comments' => 'sharing',
+        'events' || 'event_rsvps' => 'events',
+        'memories' || 'stories' => 'memories',
+        'blood_requests' || 'fund_settings' || 'fund_causes' || 'fund_contributions' || 'fund_payouts' => 'support',
+        _ => 'community',
+      };
+
+  static const order = ['tree', 'details', 'sharing', 'events', 'memories', 'support', 'community'];
+}
+
+class RestoreCounts {
+  int added = 0;
+  int updated = 0;
+  int skipped = 0;
+
+  bool get isEmpty => added == 0 && updated == 0 && skipped == 0;
 }

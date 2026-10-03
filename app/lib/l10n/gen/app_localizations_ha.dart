@@ -2617,4 +2617,93 @@ class AppLocalizationsHa extends AppLocalizations {
   String treePosterSubtitle(int count, String date) {
     return 'Mutane $count · an buga $date';
   }
+
+  @override
+  String get restoreTitle => 'Maido da bayanai daga ajiya';
+
+  @override
+  String get restoreSubtitle =>
+      'Dawo da bayanan iyali da aka goge ko aka sauya';
+
+  @override
+  String get restoreEllipsis => 'Maido…';
+
+  @override
+  String get chooseBackup => 'Zaɓi ajiya';
+
+  @override
+  String beforeLastRestore(String date) {
+    return 'Kafin maidowar ƙarshe · $date';
+  }
+
+  @override
+  String get backupFile => 'Fayil ɗin ajiya…';
+
+  @override
+  String backupFileChosen(String name) {
+    return 'Fayil: $name';
+  }
+
+  @override
+  String get notABackup => 'Wannan fayil ba ajiyar Bua Family ba ne.';
+
+  @override
+  String get undoChanges => 'Har da soke sauye-sauyen da aka yi bayan haka';
+
+  @override
+  String get undoChangesSub =>
+      'Za a mayar da gyare-gyaren da aka yi bayan ajiyar. Ba a goge komai ba.';
+
+  @override
+  String get restorePreview => 'Abin da zai faru';
+
+  @override
+  String get checkingBackup => 'Ana duba ajiyar…';
+
+  @override
+  String get restoreUpToDate =>
+      'Babu abin da za a maido: bayanan yau sun riga sun ƙunshi komai na wannan ajiyar.';
+
+  @override
+  String restoreGroup(String group) {
+    String _temp0 = intl.Intl.selectLogic(group, {
+      'tree': 'Bishiyar iyali',
+      'details': 'Aiki, karatu, sadarwa da lafiya',
+      'sharing': 'Rubuce-rubuce da hotuna',
+      'events': 'Taruka',
+      'memories': 'Tunawa da labarai',
+      'support': 'Neman jini da asusun walwala',
+      'other': 'Jagoranci da ƙuri\'u',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String restoreCounts(int added, int updated) {
+    return '$added za a dawo da su · $updated za a mayar';
+  }
+
+  @override
+  String restoreSkippedCount(int count) {
+    return '$count ba za su dawo ba';
+  }
+
+  @override
+  String get restoreSafety =>
+      'Za a adana kwafin bayanan yau tukuna, don ka iya soke wannan daga “Kafin maidowar ƙarshe”.';
+
+  @override
+  String get restoreLimits =>
+      'Ba a maido da asusun shiga ba: membobi za su sake shiga, shugaba ya haɗa su. Hotuna, naɗaɗɗun murya da rasit fayiloli ne; ajiyar na da bayaninsu amma ba fayilolin ba.';
+
+  @override
+  String get restoreButton => 'Maido';
+
+  @override
+  String get restoreConfirm => 'A maido da wannan ajiyar yanzu?';
+
+  @override
+  String restoreDone(int added, int updated) {
+    return 'An maido: $added sun dawo, $updated an mayar.';
+  }
 }

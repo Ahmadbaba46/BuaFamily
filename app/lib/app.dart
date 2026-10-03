@@ -31,6 +31,7 @@ import 'ui/screens/person_screen.dart';
 import 'ui/screens/photo_screen.dart';
 import 'ui/screens/polls_screen.dart';
 import 'ui/screens/reminders_screen.dart';
+import 'ui/screens/restore_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/stories_screen.dart';
 import 'ui/screens/tree_screen.dart';
@@ -132,6 +133,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => AdminScreen(initialTab: s.uri.queryParameters['tab'] == 'settings' ? 2 : 0),
       ),
       GoRoute(path: '/admin/data', builder: (_, _) => const ImportExportScreen()),
+      GoRoute(path: '/admin/restore', builder: (_, _) => const RestoreScreen()),
       GoRoute(
         path: '/admin/import',
         redirect: (_, s) => s.extra is ImportPlan ? null : '/admin/data',
