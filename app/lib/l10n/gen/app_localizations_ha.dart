@@ -1876,4 +1876,121 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get sameDistantRelative => 'Dangi';
+
+  @override
+  String get tapToLoad => 'Taɓa don buɗe hoto';
+
+  @override
+  String get remindersTitle => 'Ranakun haihuwa da tunawa';
+
+  @override
+  String todayDate(String date) {
+    return 'Yau · $date';
+  }
+
+  @override
+  String get thisWeek => 'Wannan mako';
+
+  @override
+  String get comingUp => 'Masu zuwa';
+
+  @override
+  String yearsMarried(String names, int count) {
+    return '$names · shekara $count da aure';
+  }
+
+  @override
+  String get kindBirthday => 'Ranar haihuwa';
+
+  @override
+  String get kindWedding => 'Ranar aure';
+
+  @override
+  String get greet => 'Gaisa';
+
+  @override
+  String get pray => 'Yi addu\'a';
+
+  @override
+  String get remindersNote =>
+      'Ranakun tunawa sun fito daga ranakun rasuwa da aka rubuta. Ranakun haihuwa na masu rai ne kaɗai.';
+
+  @override
+  String get nothingComingUp => 'Babu komai a wata mai zuwa.';
+
+  @override
+  String get editMyDetails => 'Gyara bayanaina';
+
+  @override
+  String get nameDatesNote => 'Suna da ranaku:';
+
+  @override
+  String get askAnAdmin => 'nemi mai gudanarwa';
+
+  @override
+  String get aboutMe => 'Game da ni';
+
+  @override
+  String get myStory => 'Labarina';
+
+  @override
+  String get whoSeesContact => 'Wa zai ga bayanan tuntuɓata?';
+
+  @override
+  String get whoSeesHealth => 'Wa zai ga bayanan lafiyata?';
+
+  @override
+  String get wholeFamily => 'Dukan iyali';
+
+  @override
+  String get onlyMeAdmins => 'Ni da masu gudanarwa kaɗai';
+
+  @override
+  String get notLinkedEdit =>
+      'Ba a haɗa asusunka da wurinka a bishiya ba tukuna. Mai gudanarwa zai iya haɗa shi.';
+
+  @override
+  String get settingsScreen => 'Saituna';
+
+  @override
+  String get languageHarshe => 'Harshe · Language';
+
+  @override
+  String get dataSaver => 'Adana data';
+
+  @override
+  String get tapToLoadPhotos => 'Buɗe hotuna sai na taɓa su';
+
+  @override
+  String get tapToLoadPhotosSub => 'Yana adana data a wannan waya';
+
+  @override
+  String get shrinkUploads => 'Rage girman hotuna kafin ɗorawa';
+
+  @override
+  String get shrinkUploadsSub => 'Yana rage amfani da data har kashi 80';
+
+  @override
+  String get notifyMeAbout => 'Sanar da ni game da';
+
+  @override
+  String get notifEventsAnnouncements => 'Sanarwa da taruka';
+
+  @override
+  String get notifBirthdaysRemembrance => 'Ranakun haihuwa da tunawa';
+
+  @override
+  String get notifTagged => 'Idan an saka ni a hotuna';
+
+  @override
+  String get notifCommentsMine => 'Sharhi kan rubutuna';
+
+  @override
+  String get urgentBlood => 'Buƙatun jini na gaggawa';
+
+  @override
+  String get alwaysOn => 'Kullum a kunne';
+
+  @override
+  String get privacyOfMyDetails => 'Sirrin bayanaina';
 }

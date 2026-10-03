@@ -3001,6 +3001,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Relative'**
   String get sameDistantRelative;
+
+  /// No description provided for @tapToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to load photo'**
+  String get tapToLoad;
+
+  /// No description provided for @remindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays & remembrance'**
+  String get remindersTitle;
+
+  /// No description provided for @todayDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Today · {date}'**
+  String todayDate(String date);
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get thisWeek;
+
+  /// No description provided for @comingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up'**
+  String get comingUp;
+
+  /// No description provided for @yearsMarried.
+  ///
+  /// In en, this message translates to:
+  /// **'{names} · {count, plural, =1{1 year married} other{{count} years married}}'**
+  String yearsMarried(String names, int count);
+
+  /// No description provided for @kindBirthday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday'**
+  String get kindBirthday;
+
+  /// No description provided for @kindWedding.
+  ///
+  /// In en, this message translates to:
+  /// **'Wedding anniversary'**
+  String get kindWedding;
+
+  /// No description provided for @greet.
+  ///
+  /// In en, this message translates to:
+  /// **'Greet'**
+  String get greet;
+
+  /// No description provided for @pray.
+  ///
+  /// In en, this message translates to:
+  /// **'Pray'**
+  String get pray;
+
+  /// No description provided for @remindersNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembrance dates come from recorded dates of death. Birthdays show only for living relatives.'**
+  String get remindersNote;
+
+  /// No description provided for @nothingComingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in the next month.'**
+  String get nothingComingUp;
+
+  /// No description provided for @editMyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my details'**
+  String get editMyDetails;
+
+  /// No description provided for @nameDatesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Name & dates:'**
+  String get nameDatesNote;
+
+  /// No description provided for @askAnAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'ask an admin'**
+  String get askAnAdmin;
+
+  /// No description provided for @aboutMe.
+  ///
+  /// In en, this message translates to:
+  /// **'About me'**
+  String get aboutMe;
+
+  /// No description provided for @myStory.
+  ///
+  /// In en, this message translates to:
+  /// **'My story'**
+  String get myStory;
+
+  /// No description provided for @whoSeesContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can see my contact?'**
+  String get whoSeesContact;
+
+  /// No description provided for @whoSeesHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can see my health details?'**
+  String get whoSeesHealth;
+
+  /// No description provided for @wholeFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole family'**
+  String get wholeFamily;
+
+  /// No description provided for @onlyMeAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Only me & admins'**
+  String get onlyMeAdmins;
+
+  /// No description provided for @notLinkedEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account isn\'t linked to your place in the tree yet. An admin can link it.'**
+  String get notLinkedEdit;
+
+  /// No description provided for @settingsScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsScreen;
+
+  /// No description provided for @languageHarshe.
+  ///
+  /// In en, this message translates to:
+  /// **'Language · Harshe'**
+  String get languageHarshe;
+
+  /// No description provided for @dataSaver.
+  ///
+  /// In en, this message translates to:
+  /// **'Data saver'**
+  String get dataSaver;
+
+  /// No description provided for @tapToLoadPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Load photos only when I tap them'**
+  String get tapToLoadPhotos;
+
+  /// No description provided for @tapToLoadPhotosSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Saves mobile data on this phone'**
+  String get tapToLoadPhotosSub;
+
+  /// No description provided for @shrinkUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'Shrink photos before upload'**
+  String get shrinkUploads;
+
+  /// No description provided for @shrinkUploadsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses up to 80% less data'**
+  String get shrinkUploadsSub;
+
+  /// No description provided for @notifyMeAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me about'**
+  String get notifyMeAbout;
+
+  /// No description provided for @notifEventsAnnouncements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements & events'**
+  String get notifEventsAnnouncements;
+
+  /// No description provided for @notifBirthdaysRemembrance.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays & remembrance'**
+  String get notifBirthdaysRemembrance;
+
+  /// No description provided for @notifTagged.
+  ///
+  /// In en, this message translates to:
+  /// **'When I\'m tagged in photos'**
+  String get notifTagged;
+
+  /// No description provided for @notifCommentsMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments on my posts'**
+  String get notifCommentsMine;
+
+  /// No description provided for @urgentBlood.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent blood requests'**
+  String get urgentBlood;
+
+  /// No description provided for @alwaysOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on'**
+  String get alwaysOn;
+
+  /// No description provided for @privacyOfMyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy of my details'**
+  String get privacyOfMyDetails;
 }
 
 class _AppLocalizationsDelegate

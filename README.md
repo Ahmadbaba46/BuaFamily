@@ -56,6 +56,15 @@ share moments and photos, plan family events, and keep everyone's details
   with only their blood group and town. Anyone can post a blood request; donors
   with a compatible blood group are alerted in the app (and by SMS if they opted
   in), offer with one tap, and the person who asked is told.
+- **Birthdays & remembrance:** today, this week and the coming month at a
+  glance: birthdays, death anniversaries, wedding anniversaries and events,
+  with a quick greeting or prayer.
+- **Edit my details:** members update their nickname, story, phone, town,
+  blood group, genotype and skills, and choose whether contact and health
+  details are shared with the family or kept for admins only.
+- **Settings:** language, data saver (load photos only when tapped, shrink
+  uploads) and which notifications to receive. Urgent blood requests always
+  come through.
 - **English and Hausa,** switchable at any time.
 
 ## Screens
@@ -121,23 +130,28 @@ Design mockups for the app (sample data). The app follows these designs; the scr
   </tr>
 </table>
 
-<details>
-<summary><b>Designed for later</b> (9 screens)</summary>
+### Settings & personal
 
 <table>
   <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/reminders.png" alt="Birthdays & remembrance" width="180"><br><sub>Birthdays & remembrance</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/edit-profile.png" alt="Edit my details & privacy" width="180"><br><sub>Edit my details & privacy</sub></td>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/app-settings.png" alt="Settings" width="180"><br><sub>Settings</sub></td>
+  </tr>
+</table>
+
+<details>
+<summary><b>Designed for later</b> (6 screens)</summary>
+
+<table>
+  <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/welfare-fund.png" alt="Welfare fund" width="180"><br><sub>Welfare fund</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/fund-cause.png" alt="Fund cause" width="180"><br><sub>Fund cause</sub></td>
-  </tr>
-  <tr>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/app-settings.png" alt="Language, data & notifications" width="180"><br><sub>Language, data & notifications</sub></td>
   </tr>
   <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls" width="180"><br><sub>Polls</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
   </tr>
 </table>

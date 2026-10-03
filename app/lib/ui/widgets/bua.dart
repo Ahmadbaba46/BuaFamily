@@ -216,6 +216,7 @@ class PillSegmented<T> extends StatelessWidget {
     required this.selected,
     required this.onChanged,
     this.height = 40,
+    this.expand = false,
   });
 
   final List<T> values;
@@ -224,14 +225,18 @@ class PillSegmented<T> extends StatelessWidget {
   final ValueChanged<T> onChanged;
   final double height;
 
+  /// Fill the available width, sharing it equally (long labels shrink).
+  final bool expand;
+
   @override
   Widget build(BuildContext context) {
+    Widget wrap(Widget child) => expand ? Expanded(child: child) : child;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(color: Bua.track, borderRadius: BorderRadius.circular(height)),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
+      child: Row(mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min, children: [
         for (final v in values)
-          Semantics(
+          wrap(Semantics(
               selected: v == selected,
               button: true,
               child: InkWell(
@@ -239,7 +244,6 @@ class PillSegmented<T> extends StatelessWidget {
                 onTap: () => onChanged(v),
                 child: Container(
                   height: height,
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
                   alignment: Alignment.center,
                   decoration: v == selected
                       ? BoxDecoration(
@@ -248,6 +252,7 @@ class PillSegmented<T> extends StatelessWidget {
                           boxShadow: const [BoxShadow(color: Color(0x1F000000), blurRadius: 3, offset: Offset(0, 1))],
                         )
                       : null,
+                  padding: EdgeInsets.symmetric(horizontal: expand ? 8 : 18),
                   child: Text(
                     labelOf(v),
                     maxLines: 1,
@@ -260,7 +265,7 @@ class PillSegmented<T> extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            )),
       ]),
     );
   }

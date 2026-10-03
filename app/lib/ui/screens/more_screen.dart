@@ -127,6 +127,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.cake_outlined,
+                title: l.remindersTitle,
+                onTap: () => context.push('/reminders'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.link,
                 title: l.howRelated,
                 onTap: () => context.push('/related'),
@@ -158,6 +164,20 @@ class MoreScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
             child: Column(children: [
+              NavRow(
+                icon: Icons.settings_outlined,
+                title: l.settingsScreen,
+                onTap: () => context.push('/settings'),
+              ),
+              const InsetDivider(),
+              if (me != null) ...[
+                NavRow(
+                  icon: Icons.edit_outlined,
+                  title: l.editMyDetails,
+                  onTap: () => context.push('/me/edit'),
+                ),
+                const InsetDivider(),
+              ],
               NavRow(
                 icon: Icons.notifications_none,
                 title: l.notificationsSms,

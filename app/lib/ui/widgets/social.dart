@@ -8,14 +8,17 @@ import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../models/social.dart';
+import '../../state/prefs.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import 'bua.dart';
 import 'common.dart';
 
-/// Picks photos from the device, resized to save data.
-Future<List<PickedImage>> pickImages() async {
-  final files = await ImagePicker().pickMultiImage(maxWidth: 1600, maxHeight: 1600, imageQuality: 80);
+/// Picks photos from the device, resized to save data unless [shrink] is off.
+Future<List<PickedImage>> pickImages({bool shrink = true}) async {
+  final files = shrink
+      ? await ImagePicker().pickMultiImage(maxWidth: 1600, maxHeight: 1600, imageQuality: 80)
+      : await ImagePicker().pickMultiImage();
   return [
     for (final f in files)
       PickedImage(await f.readAsBytes(), f.name.contains('.') ? f.name.split('.').last : 'jpg'),
@@ -23,7 +26,8 @@ Future<List<PickedImage>> pickImages() async {
 }
 
 /// An image from the private photos bucket, with a tinted placeholder.
-class StoragePhoto extends ConsumerWidget {
+/// With the data saver on, it loads only when tapped.
+class StoragePhoto extends ConsumerStatefulWidget {
   const StoragePhoto(this.path, {super.key, this.fit = BoxFit.cover, this.placeholder = const Color(0xFFD9E4DA)});
 
   final String path;
@@ -31,15 +35,37 @@ class StoragePhoto extends ConsumerWidget {
   final Color placeholder;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final url = ref.watch(photoUrlProvider(path)).value;
+  ConsumerState<StoragePhoto> createState() => _StoragePhotoState();
+}
+
+class _StoragePhotoState extends ConsumerState<StoragePhoto> {
+  bool _requested = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final saver = ref.watch(devicePrefsProvider.select((p) => p.tapToLoadPhotos));
+    if (saver && !_requested) {
+      return Semantics(
+        button: true,
+        label: context.l10n.tapToLoad,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() => _requested = true),
+          child: ColoredBox(
+            color: widget.placeholder,
+            child: const Center(child: Icon(Icons.download_for_offline_outlined, color: Bua.inkMuted)),
+          ),
+        ),
+      );
+    }
+    final url = ref.watch(photoUrlProvider(widget.path)).value;
     return ColoredBox(
-      color: placeholder,
+      color: widget.placeholder,
       child: url == null
           ? const SizedBox.expand()
           : Image.network(
               url,
-              fit: fit,
+              fit: widget.fit,
               width: double.infinity,
               height: double.infinity,
               errorBuilder: (_, _, _) => const Center(child: Icon(Icons.broken_image_outlined, color: Bua.inkSubtle)),

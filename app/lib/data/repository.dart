@@ -499,4 +499,9 @@ class FamilyRepository {
   Future<void> setRemembranceReminder(String personId, bool on) => on
       ? _db.from('remembrance_reminders').upsert({'person_id': personId, 'user_id': userId})
       : _db.from('remembrance_reminders').delete().eq('person_id', personId).eq('user_id', userId!);
+
+  // ---------------------------------------------------------------- my settings
+
+  Future<void> setMutedNotifications(List<String> kinds) =>
+      _db.from('profiles').update({'muted_notifications': kinds}).eq('id', userId!);
 }

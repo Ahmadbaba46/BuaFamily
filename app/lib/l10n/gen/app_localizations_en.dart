@@ -1935,4 +1935,127 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sameDistantRelative => 'Relative';
+
+  @override
+  String get tapToLoad => 'Tap to load photo';
+
+  @override
+  String get remindersTitle => 'Birthdays & remembrance';
+
+  @override
+  String todayDate(String date) {
+    return 'Today · $date';
+  }
+
+  @override
+  String get thisWeek => 'This week';
+
+  @override
+  String get comingUp => 'Coming up';
+
+  @override
+  String yearsMarried(String names, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count years married',
+      one: '1 year married',
+    );
+    return '$names · $_temp0';
+  }
+
+  @override
+  String get kindBirthday => 'Birthday';
+
+  @override
+  String get kindWedding => 'Wedding anniversary';
+
+  @override
+  String get greet => 'Greet';
+
+  @override
+  String get pray => 'Pray';
+
+  @override
+  String get remindersNote =>
+      'Remembrance dates come from recorded dates of death. Birthdays show only for living relatives.';
+
+  @override
+  String get nothingComingUp => 'Nothing in the next month.';
+
+  @override
+  String get editMyDetails => 'Edit my details';
+
+  @override
+  String get nameDatesNote => 'Name & dates:';
+
+  @override
+  String get askAnAdmin => 'ask an admin';
+
+  @override
+  String get aboutMe => 'About me';
+
+  @override
+  String get myStory => 'My story';
+
+  @override
+  String get whoSeesContact => 'Who can see my contact?';
+
+  @override
+  String get whoSeesHealth => 'Who can see my health details?';
+
+  @override
+  String get wholeFamily => 'Whole family';
+
+  @override
+  String get onlyMeAdmins => 'Only me & admins';
+
+  @override
+  String get notLinkedEdit =>
+      'Your account isn\'t linked to your place in the tree yet. An admin can link it.';
+
+  @override
+  String get settingsScreen => 'Settings';
+
+  @override
+  String get languageHarshe => 'Language · Harshe';
+
+  @override
+  String get dataSaver => 'Data saver';
+
+  @override
+  String get tapToLoadPhotos => 'Load photos only when I tap them';
+
+  @override
+  String get tapToLoadPhotosSub => 'Saves mobile data on this phone';
+
+  @override
+  String get shrinkUploads => 'Shrink photos before upload';
+
+  @override
+  String get shrinkUploadsSub => 'Uses up to 80% less data';
+
+  @override
+  String get notifyMeAbout => 'Notify me about';
+
+  @override
+  String get notifEventsAnnouncements => 'Announcements & events';
+
+  @override
+  String get notifBirthdaysRemembrance => 'Birthdays & remembrance';
+
+  @override
+  String get notifTagged => 'When I\'m tagged in photos';
+
+  @override
+  String get notifCommentsMine => 'Comments on my posts';
+
+  @override
+  String get urgentBlood => 'Urgent blood requests';
+
+  @override
+  String get alwaysOn => 'Always on';
+
+  @override
+  String get privacyOfMyDetails => 'Privacy of my details';
 }

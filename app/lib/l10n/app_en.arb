@@ -1187,5 +1187,59 @@
   },
   "showBothInTree": "Show in the tree",
   "notConnected": "No connection is recorded in the tree yet.",
-  "sameDistantRelative": "Relative"
+  "sameDistantRelative": "Relative",
+  "tapToLoad": "Tap to load photo",
+  "remindersTitle": "Birthdays & remembrance",
+  "todayDate": "Today · {date}",
+  "@todayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeek": "This week",
+  "comingUp": "Coming up",
+  "yearsMarried": "{names} · {count, plural, =1{1 year married} other{{count} years married}}",
+  "@yearsMarried": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kindBirthday": "Birthday",
+  "kindWedding": "Wedding anniversary",
+  "greet": "Greet",
+  "pray": "Pray",
+  "remindersNote": "Remembrance dates come from recorded dates of death. Birthdays show only for living relatives.",
+  "nothingComingUp": "Nothing in the next month.",
+  "editMyDetails": "Edit my details",
+  "nameDatesNote": "Name & dates:",
+  "askAnAdmin": "ask an admin",
+  "aboutMe": "About me",
+  "myStory": "My story",
+  "whoSeesContact": "Who can see my contact?",
+  "whoSeesHealth": "Who can see my health details?",
+  "wholeFamily": "Whole family",
+  "onlyMeAdmins": "Only me & admins",
+  "notLinkedEdit": "Your account isn't linked to your place in the tree yet. An admin can link it.",
+  "settingsScreen": "Settings",
+  "languageHarshe": "Language · Harshe",
+  "dataSaver": "Data saver",
+  "tapToLoadPhotos": "Load photos only when I tap them",
+  "tapToLoadPhotosSub": "Saves mobile data on this phone",
+  "shrinkUploads": "Shrink photos before upload",
+  "shrinkUploadsSub": "Uses up to 80% less data",
+  "notifyMeAbout": "Notify me about",
+  "notifEventsAnnouncements": "Announcements & events",
+  "notifBirthdaysRemembrance": "Birthdays & remembrance",
+  "notifTagged": "When I'm tagged in photos",
+  "notifCommentsMine": "Comments on my posts",
+  "urgentBlood": "Urgent blood requests",
+  "alwaysOn": "Always on",
+  "privacyOfMyDetails": "Privacy of my details"
 }

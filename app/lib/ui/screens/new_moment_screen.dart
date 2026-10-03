@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/social.dart';
+import '../../state/prefs.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
@@ -38,7 +39,7 @@ class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
 
   Future<void> _addPhotos() async {
     try {
-      final picked = await pickImages();
+      final picked = await pickImages(shrink: ref.read(devicePrefsProvider).shrinkUploads);
       if (picked.isNotEmpty) setState(() => _images.addAll(picked));
     } catch (e) {
       if (mounted) showError(context, e);
