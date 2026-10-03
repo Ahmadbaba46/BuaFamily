@@ -49,6 +49,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
   DateTime? _death;
   bool _deathApprox = false;
   PickedImage? _photo;
+  int? _birthOrder;
 
   late String? _relType = widget.relationType;
   String? _otherParentId;
@@ -86,6 +87,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
       _living = p.isLiving;
       _death = p.deathDate;
       _deathApprox = p.deathDateApprox;
+      _birthOrder = p.birthOrder;
       return;
     }
     _sex = sexFromString(widget.presetSex);
@@ -97,6 +99,10 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
         if (rel.sex == Sex.male) _t('last_name').text = rel.lastName ?? '';
         final spouses = g.spousesOf(rel.id);
         if (spouses.length == 1) _otherParentId = spouses.first.id;
+        // Usually the next one born.
+        final kids = g.childrenOf(rel.id);
+        final highest = kids.map((k) => k.birthOrder ?? 0).fold(kids.length, (a, b) => a > b ? a : b);
+        _birthOrder = highest < 60 ? highest + 1 : null;
       }
       if (_relType == 'parent' && _sex == Sex.male) {
         _t('last_name').text = rel.lastName ?? '';
@@ -119,6 +125,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
       'sex': _sex.name,
       'birth_date': _birth == null ? null : _dateStr(_birth),
       'birth_date_approx': _birthApprox,
+      'birth_order': _birthOrder,
       'is_living': _living,
       'death_date': _living || _death == null ? null : _dateStr(_death),
       'death_date_approx': !_living && _deathApprox,
@@ -319,6 +326,19 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
                 onApproxChanged: (v) => setState(() => _birthApprox = v),
               ),
               _field('birth_place', l.birthPlace),
+              LabeledField(
+                label: l.birthOrder,
+                child: DropdownButtonFormField<int?>(
+                  initialValue: _birthOrder,
+                  isExpanded: true,
+                  decoration: InputDecoration(helperText: l.birthOrderHint, helperMaxLines: 2),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text(l.birthOrderNone)),
+                    for (var i = 1; i <= 60; i++) DropdownMenuItem(value: i, child: Text(l.ordinal(i))),
+                  ],
+                  onChanged: (v) => setState(() => _birthOrder = v),
+                ),
+              ),
               ToggleRow(title: l.isLiving, value: _living, onChanged: (v) => setState(() => _living = v)),
               if (!_living) ...[
                 _DateField(

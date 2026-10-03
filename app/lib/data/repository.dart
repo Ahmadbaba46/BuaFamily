@@ -125,6 +125,16 @@ class FamilyRepository {
     await _db.from('unions').insert({'partner1_id': a, 'partner2_id': b, 'status': status.name});
   }
 
+  /// Admin: removes the link only; both people stay in the tree.
+  Future<void> removeParentChild(String parentId, String childId) =>
+      _db.from('parent_child').delete().eq('parent_id', parentId).eq('child_id', childId);
+
+  Future<void> removeUnion(String unionId) => _db.from('unions').delete().eq('id', unionId);
+
+  /// Admin: links in the tree that look wrong.
+  Future<List<Map<String, dynamic>>> treeProblems() async =>
+      ((await _db.rpc('tree_problems')) as List).cast<Map<String, dynamic>>();
+
   // ---------------------------------------------------------------- photos
 
   Future<void> uploadPhoto(String personId, Uint8List bytes, String extension) async {
@@ -140,6 +150,19 @@ class FamilyRepository {
 
   Future<String> photoUrl(String path) =>
       _db.storage.from(photosBucket).createSignedUrl(path, 60 * 60);
+
+  /// Many photo links in a few requests (for the tree, where everyone shows).
+  Future<Map<String, String>> photoUrls(List<String> paths) async {
+    final result = <String, String>{};
+    for (var i = 0; i < paths.length; i += 200) {
+      final batch = paths.sublist(i, i + 200 > paths.length ? paths.length : i + 200);
+      final signed = await _db.storage.from(photosBucket).createSignedUrlsResult(batch, 60 * 60 * 6);
+      for (final s in signed.whereType<SignedUrlSuccess>()) {
+        result[s.path] = s.signedUrl;
+      }
+    }
+    return result;
+  }
 
   // ---------------------------------------------------------------- details
 

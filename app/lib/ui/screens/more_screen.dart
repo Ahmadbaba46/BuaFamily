@@ -122,11 +122,19 @@ class MoreScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 4),
               decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
-              child: NavRow(
-                icon: Icons.import_export,
-                title: l.dataTitle,
-                onTap: () => context.push('/admin/data'),
-              ),
+              child: Column(children: [
+                NavRow(
+                  icon: Icons.import_export,
+                  title: l.dataTitle,
+                  onTap: () => context.push('/admin/data'),
+                ),
+                const InsetDivider(),
+                NavRow(
+                  icon: Icons.rule,
+                  title: l.checkTree,
+                  onTap: () => context.push('/admin/tree-check'),
+                ),
+              ]),
             ),
           ],
           const SizedBox(height: 18),

@@ -300,6 +300,7 @@ class _AboutSection extends StatelessWidget {
     final rows = <(IconData, String, String)>[
       if (person.burialPlace?.isNotEmpty ?? false) (Icons.place_outlined, l.buried, person.burialPlace!),
       if (person.branch?.isNotEmpty ?? false) (Icons.account_tree_outlined, l.branch, person.branch!),
+      if (person.birthOrder case final n?) (Icons.format_list_numbered, l.birthOrder, l.ordinal(n)),
     ];
     if (!showBirth && !showDeath && rows.isEmpty && (bio == null || bio.isEmpty)) return const SizedBox.shrink();
 
@@ -361,11 +362,43 @@ class _FamilySection extends ConsumerWidget {
           Sex.unknown => 'other',
         };
 
-    Widget tile(Person p, String? relation) {
+    // Admins only for now: approving a member's removal suggestion needs
+    // migration 20261010000002 on the live database.
+    final canChange = ref.watch(isAdminProvider);
+
+    Widget tile(Person p, String? relation, {VoidCallback? onRemove}) {
       final base = personSubtitle(context, p);
       final sub = [?relation, if (base.isNotEmpty) base].join(' · ');
-      return PersonTile(person: p, subtitle: sub, onTap: () => context.push('/person/${p.id}'));
+      return PersonTile(
+        person: p,
+        subtitle: sub,
+        onTap: () => context.push('/person/${p.id}'),
+        trailing: onRemove == null || !canChange
+            ? null
+            : PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert, size: 20, color: Bua.inkSubtle),
+                tooltip: l.removeRelationship,
+                onSelected: (_) => onRemove(),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: 'remove',
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.link_off, color: Bua.danger),
+                      title: Text(l.removeRelationship),
+                    ),
+                  ),
+                ],
+              ),
+      );
     }
+
+    void removeParent(Person parent, Person child) => _removeLink(
+          context,
+          ref,
+          question: l.confirmRemoveParent(parent.displayName, child.displayName),
+          remove: (repo) => repo.removeParentChild(parent.id, child.id),
+        );
 
     String parentLabel(Person parent) {
       final link = graph.parentLinksOf(id).where((x) => x.parentId == parent.id).firstOrNull;
@@ -390,22 +423,35 @@ class _FamilySection extends ConsumerWidget {
       child: SectionCard(title: l.sectionFamily, children: [
         if (parents.isNotEmpty) ...[
           SubLabel(l.parents),
-          for (final p in parents) tile(p, parentLabel(p)),
+          for (final p in parents) tile(p, parentLabel(p), onRemove: () => removeParent(p, person)),
         ],
         if (unions.isNotEmpty) ...[
           SubLabel(l.spouses),
           for (final u in unions)
             if (graph[u.partnerOf(id)!] case final s?)
-              tile(s, u.status == UnionStatus.married ? l.relSpouse(sexKey(s)) : l.unionStatusLabel(u.status)),
+              tile(
+                s,
+                u.status == UnionStatus.married ? l.relSpouse(sexKey(s)) : l.unionStatusLabel(u.status),
+                onRemove: () => _removeLink(
+                  context,
+                  ref,
+                  question: l.confirmRemoveUnion(person.displayName, s.displayName),
+                  remove: (repo) => repo.removeUnion(u.id),
+                ),
+              ),
         ],
         if (childGroups.values.any((c) => c.isNotEmpty)) ...[
           SubLabel(l.children),
           for (final entry in childGroups.entries)
             for (final c in entry.value)
-              tile(c, [
-                l.relChild(sexKey(c)),
-                if (multipleSpouses && entry.key != null) graph[entry.key!]?.firstName,
-              ].whereType<String>().join(', ')),
+              tile(
+                c,
+                [
+                  l.relChild(sexKey(c)),
+                  if (multipleSpouses && entry.key != null) graph[entry.key!]?.firstName,
+                ].whereType<String>().join(', '),
+                onRemove: () => removeParent(person, c),
+              ),
         ],
         if (siblings.isNotEmpty) ...[
           SubLabel(l.siblings),
@@ -413,6 +459,21 @@ class _FamilySection extends ConsumerWidget {
         ],
       ]),
     );
+  }
+
+  /// Admin: removes a relationship, never the people.
+  Future<void> _removeLink(
+    BuildContext context,
+    WidgetRef ref, {
+    required String question,
+    required Future<void> Function(FamilyRepository repo) remove,
+  }) async {
+    final l = context.l10n;
+    if (!await confirm(context, question) || !context.mounted) return;
+    final ok = await guarded(context, () => remove(ref.read(repositoryProvider)));
+    if (!ok || !context.mounted) return;
+    ref.invalidate(graphProvider);
+    showSnack(context, l.relationshipRemoved);
   }
 
   static Future<void> addRelative(BuildContext context, WidgetRef ref, FamilyGraph graph, Person person) =>

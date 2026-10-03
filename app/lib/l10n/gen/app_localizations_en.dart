@@ -2961,4 +2961,87 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get linkedNow => 'Linked. This is now your profile.';
+
+  @override
+  String get birthOrder => 'Birth order among siblings';
+
+  @override
+  String get birthOrderHint =>
+      '1 for the first-born. Siblings are listed in this order.';
+
+  @override
+  String get birthOrderNone => 'Not set';
+
+  @override
+  String reqRemoveParentChild(String parent, String child) {
+    return 'Remove $parent as a parent of $child';
+  }
+
+  @override
+  String reqRemoveUnion(String a, String b) {
+    return 'Remove the marriage of $a and $b';
+  }
+
+  @override
+  String get removeRelationship => 'Remove relationship';
+
+  @override
+  String confirmRemoveParent(String parent, String child) {
+    return 'Remove $parent as a parent of $child? Both stay in the tree.';
+  }
+
+  @override
+  String confirmRemoveUnion(String a, String b) {
+    return 'Remove the marriage between $a and $b? Both stay in the tree.';
+  }
+
+  @override
+  String get relationshipRemoved => 'Relationship removed';
+
+  @override
+  String get checkTree => 'Check the tree';
+
+  @override
+  String get checkTreeHint => 'Links that look wrong, so you can fix them';
+
+  @override
+  String get treeLooksRight => 'Nothing looks wrong in the tree.';
+
+  @override
+  String problemMarriedInLine(String a, String b) {
+    return '$a and $b are married, but one descends from the other';
+  }
+
+  @override
+  String problemParentYounger(String a, String b) {
+    return '$a is a parent of $b but is not at least 10 years older';
+  }
+
+  @override
+  String problemBornAfterDeath(String a, String b) {
+    return '$b was born more than a year after their parent $a died';
+  }
+
+  @override
+  String problemSameBirthOrder(String a, String b) {
+    return '$a and $b have the same birth order';
+  }
+
+  @override
+  String get removeLink => 'Remove link';
+
+  @override
+  String get sortBy => 'Sort';
+
+  @override
+  String get sortName => 'Name (A–Z)';
+
+  @override
+  String get sortOldest => 'Oldest first';
+
+  @override
+  String get sortYoungest => 'Youngest first';
+
+  @override
+  String get sortFamily => 'Family order';
 }

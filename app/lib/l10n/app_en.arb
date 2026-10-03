@@ -1890,5 +1890,107 @@
       }
     }
   },
-  "linkedNow": "Linked. This is now your profile."
+  "linkedNow": "Linked. This is now your profile.",
+  "birthOrder": "Birth order among siblings",
+  "birthOrderHint": "1 for the first-born. Siblings are listed in this order.",
+  "birthOrderNone": "Not set",
+  "reqRemoveParentChild": "Remove {parent} as a parent of {child}",
+  "@reqRemoveParentChild": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "reqRemoveUnion": "Remove the marriage of {a} and {b}",
+  "@reqRemoveUnion": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "removeRelationship": "Remove relationship",
+  "confirmRemoveParent": "Remove {parent} as a parent of {child}? Both stay in the tree.",
+  "@confirmRemoveParent": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmRemoveUnion": "Remove the marriage between {a} and {b}? Both stay in the tree.",
+  "@confirmRemoveUnion": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "relationshipRemoved": "Relationship removed",
+  "checkTree": "Check the tree",
+  "checkTreeHint": "Links that look wrong, so you can fix them",
+  "treeLooksRight": "Nothing looks wrong in the tree.",
+  "problemMarriedInLine": "{a} and {b} are married, but one descends from the other",
+  "@problemMarriedInLine": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "problemParentYounger": "{a} is a parent of {b} but is not at least 10 years older",
+  "@problemParentYounger": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "problemBornAfterDeath": "{b} was born more than a year after their parent {a} died",
+  "@problemBornAfterDeath": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "problemSameBirthOrder": "{a} and {b} have the same birth order",
+  "@problemSameBirthOrder": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "removeLink": "Remove link",
+  "sortBy": "Sort",
+  "sortName": "Name (A–Z)",
+  "sortOldest": "Oldest first",
+  "sortYoungest": "Youngest first",
+  "sortFamily": "Family order"
 }

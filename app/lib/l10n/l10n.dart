@@ -84,6 +84,14 @@ extension KinshipLabel on AppLocalizations {
   /// "Late" prefix for deceased people.
   String late(Person p) => lateLabel(_sex(p.sex));
 
+  /// "1st", "2nd"... (Hausa: "na 1", "na 2"...).
+  String ordinal(int n) {
+    if (localeName == 'ha') return 'na $n';
+    final teen = n % 100 >= 11 && n % 100 <= 13;
+    final suffix = teen ? 'th' : const {1: 'st', 2: 'nd', 3: 'rd'}[n % 10] ?? 'th';
+    return '$n$suffix';
+  }
+
   String approxPrefix() => localeName == 'ha' ? 'kimanin ' : 'c. ';
 
   /// Full date, or just the year (with "c.") when only approximately known.
