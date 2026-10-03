@@ -49,3 +49,7 @@ app.*.map.json
 
 # Local server settings (copy from config.example.json)
 /config.json
+
+# Flutter SDK downloaded by tool/vercel_build.sh
+/.flutter-sdk/
+/.vercel/
