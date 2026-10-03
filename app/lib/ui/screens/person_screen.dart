@@ -644,6 +644,15 @@ class _DetailsSections extends ConsumerWidget {
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                     child: Text(health.conditions!, style: const TextStyle(fontSize: 14)),
                   ),
+                if (health.bloodDonor)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Pill(l.bloodDonorLabel,
+                          icon: Icons.bloodtype_outlined, background: Bua.dangerTint, color: Bua.dangerInk),
+                    ),
+                  ),
               ],
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
@@ -771,6 +780,7 @@ class _DetailsSections extends ConsumerWidget {
           initial: h?.genotype, options: {null: '—', for (final g in Health.genotypes) g: g}),
       TextSpec('conditions', l.conditions, initial: h?.conditions, multiline: true),
       ChoiceSpec<Audience>('vis', l.visibleTo, options: _audiences(l), initial: h?.visibility ?? Audience.private),
+      if (person.isLiving) SwitchSpec('donor', l.bloodDonorOptIn, initial: h?.bloodDonor ?? false),
     ]);
     if (v == null) return;
     await repo.saveHealth(Health(
@@ -779,6 +789,7 @@ class _DetailsSections extends ConsumerWidget {
       genotype: v['genotype'] as String?,
       conditions: v['conditions'] as String?,
       visibility: v['vis'] as Audience,
+      bloodDonor: v['donor'] as bool? ?? false,
     ));
   }
 }

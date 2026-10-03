@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/person.dart';
 import '../models/social.dart';
@@ -413,4 +414,69 @@ class FamilyRepository {
       _db.rpc('admin_set_sms_secret', params: {'p_api_key': apiKey, 'p_base_url': baseUrl});
 
   Future<void> sendTestSms() => _db.rpc('send_test_sms');
+
+  // ---------------------------------------------------------------- who can help & blood
+
+  /// Skills, work and study of every living person, with contact details
+  /// where the person shares them with the family.
+  Future<List<HelpProfile>> helpDirectory(FamilyGraph graph) async {
+    final r = await Future.wait([
+      _all('person_occupations'),
+      _all('person_education'),
+      _all('person_skills'),
+      _allBy('person_contacts', 'person_id', columns: 'person_id, phone, city'),
+    ]);
+    Map<String, List<T>> byPerson<T>(List<Map<String, dynamic>> rows, T Function(Map<String, dynamic>) f) {
+      final out = <String, List<T>>{};
+      for (final row in rows) {
+        out.putIfAbsent(row['person_id'] as String, () => []).add(f(row));
+      }
+      return out;
+    }
+
+    final jobs = byPerson(r[0], Occupation.fromJson);
+    final study = byPerson(r[1], Education.fromJson);
+    final skills = byPerson(r[2], Skill.fromJson);
+    final contacts = {for (final c in r[3]) c['person_id'] as String: c};
+    final ids = {...jobs.keys, ...study.keys, ...skills.keys};
+    return [
+      for (final id in ids)
+        if (graph[id] case final p? when p.isLiving)
+          HelpProfile(
+            person: p,
+            occupations: jobs[id] ?? const [],
+            education: study[id] ?? const [],
+            skills: skills[id] ?? const [],
+            phone: contacts[id]?['phone'] as String?,
+            city: contacts[id]?['city'] as String?,
+          ),
+    ]..sort((a, b) => a.person.displayName.compareTo(b.person.displayName));
+  }
+
+  Future<List<Map<String, dynamic>>> _allBy(String table, String order, {String columns = '*'}) async {
+    final out = <Map<String, dynamic>>[];
+    for (var from = 0;; from += _pageSize) {
+      final page = await _db.from(table).select(columns).order(order).range(from, from + _pageSize - 1);
+      out.addAll(page);
+      if (page.length < _pageSize) return out;
+    }
+  }
+
+  Future<List<BloodDonor>> bloodDonors() async {
+    final rows = await _db.rpc('blood_donors') as List;
+    return [for (final r in rows) BloodDonor.fromJson((r as Map).cast<String, dynamic>())];
+  }
+
+  Future<List<BloodRequest>> bloodRequests() async {
+    final rows = await _db.from('blood_requests').select(BloodRequest.select).order('created_at', ascending: false).limit(50);
+    return rows.map(BloodRequest.fromJson).toList();
+  }
+
+  Future<void> createBloodRequest(Map<String, dynamic> request) => _db.from('blood_requests').insert(request);
+
+  Future<void> setBloodOffer(String requestId, bool offering) => offering
+      ? _db.from('blood_offers').insert({'request_id': requestId})
+      : _db.from('blood_offers').delete().eq('request_id', requestId).eq('user_id', userId!);
+
+  Future<void> closeBloodRequest(String id) => _db.from('blood_requests').update({'status': 'closed'}).eq('id', id);
 }

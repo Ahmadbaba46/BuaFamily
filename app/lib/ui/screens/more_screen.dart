@@ -22,6 +22,7 @@ class MoreScreen extends ConsumerWidget {
     final me = profile?.personId == null ? null : graph?[profile!.personId!];
     final isAdmin = ref.watch(isAdminProvider);
     final attention = ref.watch(adminAttentionProvider);
+    final openBlood = ref.watch(bloodRequestsProvider).value?.where((r) => r.open).length ?? 0;
     final myPending = ref
             .watch(requestsProvider(null))
             .value
@@ -123,6 +124,20 @@ class MoreScreen extends ConsumerWidget {
                 icon: Icons.photo_library_outlined,
                 title: l.albums,
                 onTap: () => context.push('/albums'),
+              ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.handshake_outlined,
+                title: l.whoCanHelp,
+                onTap: () => context.push('/help'),
+              ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.bloodtype_outlined,
+                iconColor: Bua.danger,
+                title: l.bloodDonors,
+                value: openBlood > 0 ? '$openBlood ${l.urgent.toLowerCase()}' : null,
+                onTap: () => context.push('/blood'),
               ),
             ]),
           ),

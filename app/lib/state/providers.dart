@@ -9,6 +9,7 @@ import '../data/repository.dart';
 import '../models/account.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
+import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
 
@@ -163,3 +164,15 @@ final unreadCountProvider = Provider<int>(
 );
 
 final smsStatusProvider = FutureProvider<SmsStatus>((ref) => ref.watch(repositoryProvider).smsStatus());
+
+// ---------------------------------------------------------------- who can help & blood
+
+final helpDirectoryProvider = FutureProvider<List<HelpProfile>>((ref) async {
+  final graph = await ref.watch(graphProvider.future);
+  return ref.watch(repositoryProvider).helpDirectory(graph);
+});
+
+final bloodDonorsProvider = FutureProvider<List<BloodDonor>>((ref) => ref.watch(repositoryProvider).bloodDonors());
+
+final bloodRequestsProvider =
+    FutureProvider<List<BloodRequest>>((ref) => ref.watch(repositoryProvider).bloodRequests());
