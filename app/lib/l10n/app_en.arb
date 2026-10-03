@@ -1503,5 +1503,169 @@
         "type": "String"
       }
     }
+  },
+  "storiesTitle": "Elders’ stories",
+  "storiesSubtitle": "Voices of the family, kept for the next generation",
+  "nowPlaying": "Now playing",
+  "listen": "Listen",
+  "otherLanguage": "Other",
+  "transcript": "Transcript",
+  "noStoriesYet": "No stories yet. Record the first one.",
+  "recordStory": "Record an elder’s story",
+  "recordHint": "Try asking: How did you meet? What was Kano like when you were young?",
+  "deleteStory": "Delete story",
+  "deleteStoryConfirm": "Delete this story and its recording?",
+  "newStory": "New story",
+  "tapToRecord": "Tap to start recording",
+  "recordingNow": "Recording… {time}",
+  "@recordingNow": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToStop": "Tap to stop",
+  "recordedLength": "Recorded · {time}",
+  "@recordedLength": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "recordAgain": "Record again",
+  "chooseAudioFile": "Or choose an audio file (cassette transfer, voice note)",
+  "micDenied": "Allow the microphone in your phone’s settings to record.",
+  "storyTitle": "What is the story about?",
+  "whoSpeaking": "Who is speaking?",
+  "sourceNote": "Where and when was it recorded? (optional)",
+  "sourceNoteHint": "e.g. Recorded 1979 on cassette, digitised by Bello",
+  "transcriptOptional": "Transcript (optional)",
+  "saveStory": "Save story",
+  "uploading": "Uploading…",
+  "needAudio": "Record or choose a recording first.",
+  "needTitleSpeaker": "Add a title and who is speaking.",
+  "notifStory": "New story from {speaker}: {title}",
+  "@notifStory": {
+    "placeholders": {
+      "speaker": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "dataTitle": "Import, export & backup",
+  "dataSubtitle": "Admins only · your data is never locked in",
+  "exportHeading": "Export",
+  "exportGedcom": "Family tree (GEDCOM)",
+  "exportGedcomSub": "Opens in other genealogy apps",
+  "exportCsv": "Spreadsheet (CSV)",
+  "exportCsvSub": "Everyone, with dates and places",
+  "exportPdf": "Printable tree (PDF)",
+  "exportPdfSub": "Poster size, for family gatherings",
+  "includeDetails": "Include contact & health details",
+  "savedFile": "Saved {file}",
+  "@savedFile": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "importHeading": "Import",
+  "chooseImportFile": "Choose a GEDCOM or CSV file",
+  "importReviewNote": "You’ll review matches before anything is added",
+  "downloadTemplate": "Download the spreadsheet template",
+  "importError": "Couldn’t read this file: {message}",
+  "@importError": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "weeklyBackupOn": "Weekly backup is on",
+  "weeklyBackupOff": "Weekly backup is off",
+  "lastBackup": "Last backup {date}",
+  "@lastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noBackupYet": "No backup yet",
+  "download": "Download",
+  "keepWeeklyBackup": "Keep a weekly backup",
+  "backupNow": "Back up now",
+  "backupDone": "Backup saved",
+  "earlierBackups": "Earlier backups",
+  "backupsKept": "Backups from the last eight weeks are kept.",
+  "reviewImport": "Review import",
+  "importSummary": "{added} new · {matched} already in the tree · {links, plural, =1{1 relationship} other{{links} relationships}}",
+  "@importSummary": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "matched": {
+        "type": "int"
+      },
+      "links": {
+        "type": "int"
+      }
+    }
+  },
+  "importNew": "New",
+  "sameAs": "Same as {name} in the tree",
+  "@sameAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notSame": "Not the same person",
+  "addToTree": "Add to the tree",
+  "importDone": "Added {people, plural, =1{1 person} other{{people} people}} and {links, plural, =1{1 relationship} other{{links} relationships}}.",
+  "@importDone": {
+    "placeholders": {
+      "people": {
+        "type": "int"
+      },
+      "links": {
+        "type": "int"
+      }
+    }
+  },
+  "importSkipped": "{count, plural, =1{1 relationship was} other{{count} relationships were}} skipped because they don’t fit the tree.",
+  "@importSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "treePosterTitle": "The {family} Family",
+  "@treePosterTitle": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "treePosterSubtitle": "{count} people · printed {date}",
+  "@treePosterSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

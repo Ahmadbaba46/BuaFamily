@@ -642,7 +642,73 @@ select test.assert((select o.label = 'Kano' from public.poll_votes v join public
   where v.user_id = :member2_id), 'no vote changes after closing');
 
 -- ---------------------------------------------------------------------------
--- 14. Anonymous users see nothing.
+-- 14. Elders' stories, import and backups.
+-- ---------------------------------------------------------------------------
+-- Aisha uploads a story told by her grandfather; the others are told.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into storage.objects (bucket_id, name) values ('stories', :member_id || '/kano.m4a');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('stories', %L)$$,
+  :admin_id || '/x.m4a'), 'audio only into your own folder');
+insert into public.stories (title, speaker_id, language, audio_path, duration_seconds, source_note)
+  values ('How the family came to Kano', (select id from test.ids where name = 'grandpa'), 'ha',
+          :member_id || '/kano.m4a', 760, 'Recorded 1979 on cassette');
+select test.expect_error($$insert into public.stories (title, audio_path) values ('No speaker', 'x.m4a')$$,
+  'a story needs a speaker');
+reset role;
+select test.assert((select count(*) = 2 from public.notifications where kind = 'story'), 'family told about the story');
+select test.assert((select data ->> 'speaker' = 'Ahmadu Bua' from public.notifications where kind = 'story' limit 1),
+  'notification names the speaker');
+
+-- Ibrahim can listen but not change it.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.stories), 'members see stories');
+select test.assert((select count(*) = 1 from storage.objects where bucket_id = 'stories'), 'members can open the audio');
+update public.stories set title = 'Changed';
+select test.expect_error($$select public.admin_import('{}')$$, 'members cannot import');
+select test.expect_error($$select public.admin_backup_now()$$, 'members cannot take backups');
+reset role;
+select test.assert((select title = 'How the family came to Kano' from public.stories), 'only the uploader or an admin edits');
+
+-- Import: Musa is matched; his new son and wife are added, the duplicate link
+-- to Aisha is ignored, and a third biological parent is skipped.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((
+  select r = '{"people": 3, "parents": 2, "unions": 1, "skipped": 1}'::jsonb
+  from public.admin_import(jsonb_build_object(
+    'people', jsonb_build_array(
+      jsonb_build_object('key', 'I1', 'id', (select id from test.ids where name = 'musa')),
+      jsonb_build_object('key', 'I2', 'id', (select id from test.ids where name = 'aisha')),
+      jsonb_build_object('key', 'I3', 'first_name', 'Bashir', 'last_name', 'Bua', 'sex', 'male', 'birth_date', '1985-04-02'),
+      jsonb_build_object('key', 'I4', 'first_name', 'Amina', 'sex', 'female'),
+      jsonb_build_object('key', 'I5', 'first_name', 'Rukayya', 'sex', 'female')),
+    'parents', jsonb_build_array(
+      jsonb_build_object('parent', 'I1', 'child', 'I3'),
+      jsonb_build_object('parent', 'I4', 'child', 'I3'),
+      jsonb_build_object('parent', 'I1', 'child', 'I2'),
+      jsonb_build_object('parent', 'I5', 'child', 'I3'),
+      jsonb_build_object('parent', 'I1', 'child', 'missing')),
+    'unions', jsonb_build_array(jsonb_build_object('a', 'I1', 'b', 'I4'))
+  )) r), 'import adds new people and links, skipping duplicates and impossible links');
+select test.assert((select count(*) = 2 from public.parent_child pc join public.persons p on p.id = pc.child_id
+  where p.first_name = 'Bashir'), 'Bashir has his two parents');
+
+-- Backups: on demand, listed, and downloadable; switched off, the weekly job skips.
+select test.assert((select public.admin_backup_now() is not null), 'backup taken');
+select test.assert((select count(*) = 1 and min(size_bytes) > 0 from public.admin_backups()), 'backup listed');
+select test.assert((select jsonb_array_length(public.admin_backup(slot) -> 'persons') = (select count(*) from public.persons)
+  from public.admin_backups()), 'backup has every person');
+select test.assert((select public.admin_backup(slot) -> 'stories' -> 0 ->> 'title' = 'How the family came to Kano'
+  from public.admin_backups()), 'backup includes stories');
+update public.app_settings set weekly_backup = false;
+reset role;
+select test.assert((select private.take_backup() is null), 'weekly backup can be switched off');
+update public.app_settings set weekly_backup = true;
+
+-- ---------------------------------------------------------------------------
+-- 15. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
 set role anon;

@@ -3925,6 +3925,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New poll: {question}'**
   String notifPoll(String question);
+
+  /// No description provided for @storiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Elders’ stories'**
+  String get storiesTitle;
+
+  /// No description provided for @storiesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voices of the family, kept for the next generation'**
+  String get storiesSubtitle;
+
+  /// No description provided for @nowPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Now playing'**
+  String get nowPlaying;
+
+  /// No description provided for @listen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get listen;
+
+  /// No description provided for @otherLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get otherLanguage;
+
+  /// No description provided for @transcript.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcript'**
+  String get transcript;
+
+  /// No description provided for @noStoriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No stories yet. Record the first one.'**
+  String get noStoriesYet;
+
+  /// No description provided for @recordStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Record an elder’s story'**
+  String get recordStory;
+
+  /// No description provided for @recordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Try asking: How did you meet? What was Kano like when you were young?'**
+  String get recordHint;
+
+  /// No description provided for @deleteStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete story'**
+  String get deleteStory;
+
+  /// No description provided for @deleteStoryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this story and its recording?'**
+  String get deleteStoryConfirm;
+
+  /// No description provided for @newStory.
+  ///
+  /// In en, this message translates to:
+  /// **'New story'**
+  String get newStory;
+
+  /// No description provided for @tapToRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start recording'**
+  String get tapToRecord;
+
+  /// No description provided for @recordingNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording… {time}'**
+  String recordingNow(String time);
+
+  /// No description provided for @tapToStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to stop'**
+  String get tapToStop;
+
+  /// No description provided for @recordedLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded · {time}'**
+  String recordedLength(String time);
+
+  /// No description provided for @recordAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Record again'**
+  String get recordAgain;
+
+  /// No description provided for @chooseAudioFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Or choose an audio file (cassette transfer, voice note)'**
+  String get chooseAudioFile;
+
+  /// No description provided for @micDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the microphone in your phone’s settings to record.'**
+  String get micDenied;
+
+  /// No description provided for @storyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the story about?'**
+  String get storyTitle;
+
+  /// No description provided for @whoSpeaking.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is speaking?'**
+  String get whoSpeaking;
+
+  /// No description provided for @sourceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Where and when was it recorded? (optional)'**
+  String get sourceNote;
+
+  /// No description provided for @sourceNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Recorded 1979 on cassette, digitised by Bello'**
+  String get sourceNoteHint;
+
+  /// No description provided for @transcriptOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcript (optional)'**
+  String get transcriptOptional;
+
+  /// No description provided for @saveStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Save story'**
+  String get saveStory;
+
+  /// No description provided for @uploading.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading…'**
+  String get uploading;
+
+  /// No description provided for @needAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record or choose a recording first.'**
+  String get needAudio;
+
+  /// No description provided for @needTitleSpeaker.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a title and who is speaking.'**
+  String get needTitleSpeaker;
+
+  /// No description provided for @notifStory.
+  ///
+  /// In en, this message translates to:
+  /// **'New story from {speaker}: {title}'**
+  String notifStory(String speaker, String title);
+
+  /// No description provided for @dataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import, export & backup'**
+  String get dataTitle;
+
+  /// No description provided for @dataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins only · your data is never locked in'**
+  String get dataSubtitle;
+
+  /// No description provided for @exportHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportHeading;
+
+  /// No description provided for @exportGedcom.
+  ///
+  /// In en, this message translates to:
+  /// **'Family tree (GEDCOM)'**
+  String get exportGedcom;
+
+  /// No description provided for @exportGedcomSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens in other genealogy apps'**
+  String get exportGedcomSub;
+
+  /// No description provided for @exportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreadsheet (CSV)'**
+  String get exportCsv;
+
+  /// No description provided for @exportCsvSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone, with dates and places'**
+  String get exportCsvSub;
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Printable tree (PDF)'**
+  String get exportPdf;
+
+  /// No description provided for @exportPdfSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Poster size, for family gatherings'**
+  String get exportPdfSub;
+
+  /// No description provided for @includeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Include contact & health details'**
+  String get includeDetails;
+
+  /// No description provided for @savedFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved {file}'**
+  String savedFile(String file);
+
+  /// No description provided for @importHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get importHeading;
+
+  /// No description provided for @chooseImportFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a GEDCOM or CSV file'**
+  String get chooseImportFile;
+
+  /// No description provided for @importReviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ll review matches before anything is added'**
+  String get importReviewNote;
+
+  /// No description provided for @downloadTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the spreadsheet template'**
+  String get downloadTemplate;
+
+  /// No description provided for @importError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t read this file: {message}'**
+  String importError(String message);
+
+  /// No description provided for @weeklyBackupOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly backup is on'**
+  String get weeklyBackupOn;
+
+  /// No description provided for @weeklyBackupOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly backup is off'**
+  String get weeklyBackupOff;
+
+  /// No description provided for @lastBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup {date}'**
+  String lastBackup(String date);
+
+  /// No description provided for @noBackupYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get noBackupYet;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @keepWeeklyBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a weekly backup'**
+  String get keepWeeklyBackup;
+
+  /// No description provided for @backupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get backupNow;
+
+  /// No description provided for @backupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupDone;
+
+  /// No description provided for @earlierBackups.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier backups'**
+  String get earlierBackups;
+
+  /// No description provided for @backupsKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups from the last eight weeks are kept.'**
+  String get backupsKept;
+
+  /// No description provided for @reviewImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Review import'**
+  String get reviewImport;
+
+  /// No description provided for @importSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{added} new · {matched} already in the tree · {links, plural, =1{1 relationship} other{{links} relationships}}'**
+  String importSummary(int added, int matched, int links);
+
+  /// No description provided for @importNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get importNew;
+
+  /// No description provided for @sameAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as {name} in the tree'**
+  String sameAs(String name);
+
+  /// No description provided for @notSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Not the same person'**
+  String get notSame;
+
+  /// No description provided for @addToTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to the tree'**
+  String get addToTree;
+
+  /// No description provided for @importDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {people, plural, =1{1 person} other{{people} people}} and {links, plural, =1{1 relationship} other{{links} relationships}}.'**
+  String importDone(int people, int links);
+
+  /// No description provided for @importSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 relationship was} other{{count} relationships were}} skipped because they don’t fit the tree.'**
+  String importSkipped(int count);
+
+  /// No description provided for @treePosterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The {family} Family'**
+  String treePosterTitle(String family);
+
+  /// No description provided for @treePosterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} people · printed {date}'**
+  String treePosterSubtitle(int count, String date);
 }
 
 class _AppLocalizationsDelegate

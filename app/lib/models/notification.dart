@@ -1,6 +1,6 @@
 /// An entry in the in-app notification inbox. The text is written by the app
 /// from [kind] and [data], in the reader's language.
-enum NotificationKind { event, announcement, birthday, eventReminder, tagged, comment, bloodRequest, bloodOffer, remembrance, memory, fundContribution, fundConfirmed, fundRequest, mentorRequest, opportunity, poll }
+enum NotificationKind { event, announcement, birthday, eventReminder, tagged, comment, bloodRequest, bloodOffer, remembrance, memory, fundContribution, fundConfirmed, fundRequest, mentorRequest, opportunity, poll, story }
 
 const _kinds = {
   'event': NotificationKind.event,
@@ -19,6 +19,7 @@ const _kinds = {
   'mentor_request': NotificationKind.mentorRequest,
   'opportunity': NotificationKind.opportunity,
   'poll': NotificationKind.poll,
+  'story': NotificationKind.story,
 };
 
 class AppNotification {

@@ -2459,4 +2459,253 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifPoll(String question) {
     return 'New poll: $question';
   }
+
+  @override
+  String get storiesTitle => 'Elders’ stories';
+
+  @override
+  String get storiesSubtitle =>
+      'Voices of the family, kept for the next generation';
+
+  @override
+  String get nowPlaying => 'Now playing';
+
+  @override
+  String get listen => 'Listen';
+
+  @override
+  String get otherLanguage => 'Other';
+
+  @override
+  String get transcript => 'Transcript';
+
+  @override
+  String get noStoriesYet => 'No stories yet. Record the first one.';
+
+  @override
+  String get recordStory => 'Record an elder’s story';
+
+  @override
+  String get recordHint =>
+      'Try asking: How did you meet? What was Kano like when you were young?';
+
+  @override
+  String get deleteStory => 'Delete story';
+
+  @override
+  String get deleteStoryConfirm => 'Delete this story and its recording?';
+
+  @override
+  String get newStory => 'New story';
+
+  @override
+  String get tapToRecord => 'Tap to start recording';
+
+  @override
+  String recordingNow(String time) {
+    return 'Recording… $time';
+  }
+
+  @override
+  String get tapToStop => 'Tap to stop';
+
+  @override
+  String recordedLength(String time) {
+    return 'Recorded · $time';
+  }
+
+  @override
+  String get recordAgain => 'Record again';
+
+  @override
+  String get chooseAudioFile =>
+      'Or choose an audio file (cassette transfer, voice note)';
+
+  @override
+  String get micDenied =>
+      'Allow the microphone in your phone’s settings to record.';
+
+  @override
+  String get storyTitle => 'What is the story about?';
+
+  @override
+  String get whoSpeaking => 'Who is speaking?';
+
+  @override
+  String get sourceNote => 'Where and when was it recorded? (optional)';
+
+  @override
+  String get sourceNoteHint =>
+      'e.g. Recorded 1979 on cassette, digitised by Bello';
+
+  @override
+  String get transcriptOptional => 'Transcript (optional)';
+
+  @override
+  String get saveStory => 'Save story';
+
+  @override
+  String get uploading => 'Uploading…';
+
+  @override
+  String get needAudio => 'Record or choose a recording first.';
+
+  @override
+  String get needTitleSpeaker => 'Add a title and who is speaking.';
+
+  @override
+  String notifStory(String speaker, String title) {
+    return 'New story from $speaker: $title';
+  }
+
+  @override
+  String get dataTitle => 'Import, export & backup';
+
+  @override
+  String get dataSubtitle => 'Admins only · your data is never locked in';
+
+  @override
+  String get exportHeading => 'Export';
+
+  @override
+  String get exportGedcom => 'Family tree (GEDCOM)';
+
+  @override
+  String get exportGedcomSub => 'Opens in other genealogy apps';
+
+  @override
+  String get exportCsv => 'Spreadsheet (CSV)';
+
+  @override
+  String get exportCsvSub => 'Everyone, with dates and places';
+
+  @override
+  String get exportPdf => 'Printable tree (PDF)';
+
+  @override
+  String get exportPdfSub => 'Poster size, for family gatherings';
+
+  @override
+  String get includeDetails => 'Include contact & health details';
+
+  @override
+  String savedFile(String file) {
+    return 'Saved $file';
+  }
+
+  @override
+  String get importHeading => 'Import';
+
+  @override
+  String get chooseImportFile => 'Choose a GEDCOM or CSV file';
+
+  @override
+  String get importReviewNote =>
+      'You’ll review matches before anything is added';
+
+  @override
+  String get downloadTemplate => 'Download the spreadsheet template';
+
+  @override
+  String importError(String message) {
+    return 'Couldn’t read this file: $message';
+  }
+
+  @override
+  String get weeklyBackupOn => 'Weekly backup is on';
+
+  @override
+  String get weeklyBackupOff => 'Weekly backup is off';
+
+  @override
+  String lastBackup(String date) {
+    return 'Last backup $date';
+  }
+
+  @override
+  String get noBackupYet => 'No backup yet';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get keepWeeklyBackup => 'Keep a weekly backup';
+
+  @override
+  String get backupNow => 'Back up now';
+
+  @override
+  String get backupDone => 'Backup saved';
+
+  @override
+  String get earlierBackups => 'Earlier backups';
+
+  @override
+  String get backupsKept => 'Backups from the last eight weeks are kept.';
+
+  @override
+  String get reviewImport => 'Review import';
+
+  @override
+  String importSummary(int added, int matched, int links) {
+    String _temp0 = intl.Intl.pluralLogic(
+      links,
+      locale: localeName,
+      other: '$links relationships',
+      one: '1 relationship',
+    );
+    return '$added new · $matched already in the tree · $_temp0';
+  }
+
+  @override
+  String get importNew => 'New';
+
+  @override
+  String sameAs(String name) {
+    return 'Same as $name in the tree';
+  }
+
+  @override
+  String get notSame => 'Not the same person';
+
+  @override
+  String get addToTree => 'Add to the tree';
+
+  @override
+  String importDone(int people, int links) {
+    String _temp0 = intl.Intl.pluralLogic(
+      people,
+      locale: localeName,
+      other: '$people people',
+      one: '1 person',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      links,
+      locale: localeName,
+      other: '$links relationships',
+      one: '1 relationship',
+    );
+    return 'Added $_temp0 and $_temp1.';
+  }
+
+  @override
+  String importSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count relationships were',
+      one: '1 relationship was',
+    );
+    return '$_temp0 skipped because they don’t fit the tree.';
+  }
+
+  @override
+  String treePosterTitle(String family) {
+    return 'The $family Family';
+  }
+
+  @override
+  String treePosterSubtitle(int count, String date) {
+    return '$count people · printed $date';
+  }
 }
