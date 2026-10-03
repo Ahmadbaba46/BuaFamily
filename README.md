@@ -70,6 +70,16 @@ share moments and photos, plan family events, and keep everyone's details
   Ballots are secret: you see the results once you have voted or the poll has
   closed, and you can change your vote until then. Closed polls are kept as
   the family's decisions.
+- **Elders' stories:** record an elder telling a story right in the app, or
+  upload an old recording (a cassette transfer, a voice note), with who is
+  speaking, the language and an optional transcript. Every member can listen;
+  the family is told when a new story is added.
+- **Import, export & backup (admins):** export the tree as GEDCOM (opens in
+  other genealogy apps), a spreadsheet (CSV) or a poster-size printable PDF,
+  optionally with contact and health details. Import a GEDCOM or CSV file:
+  people already in the tree are matched, and an admin reviews the matches
+  before anything is added. The database also keeps a weekly backup of all
+  the family's data (the last eight weeks) that admins can download.
 - **Birthdays & remembrance:** today, this week and the coming month at a
   glance: birthdays, death anniversaries, wedding anniversaries and events,
   with a quick greeting or prayer.
@@ -83,7 +93,7 @@ share moments and photos, plan family events, and keep everyone's details
 
 ## Screens
 
-Design mockups for the app (sample data). The app follows these designs; the screens under "Designed for later" aren't built yet.
+Design mockups for the app (sample data). The app follows these designs.
 
 ### Family tree & people
 
@@ -137,6 +147,9 @@ Design mockups for the app (sample data). The app follows these designs; the scr
     <td align="center" valign="top" width="25%"><img src="docs/mockups/mentorship.png" alt="Mentors & scholarships" width="180"><br><sub>Mentors & scholarships</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/polls.png" alt="Polls & family decisions" width="180"><br><sub>Polls & family decisions</sub></td>
   </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
+  </tr>
 </table>
 
 ### Admin & settings
@@ -147,6 +160,9 @@ Design mockups for the app (sample data). The app follows these designs; the scr
     <td align="center" valign="top" width="25%"><img src="docs/mockups/admin-accounts.png" alt="Admin: accounts" width="180"><br><sub>Admin: accounts</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/admin-settings.png" alt="Admin: settings" width="180"><br><sub>Admin: settings</sub></td>
     <td align="center" valign="top" width="25%"><img src="docs/mockups/more.png" alt="More" width="180"><br><sub>More</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
   </tr>
 </table>
 
@@ -160,17 +176,6 @@ Design mockups for the app (sample data). The app follows these designs; the scr
   </tr>
 </table>
 
-<details>
-<summary><b>Designed for later</b> (2 screens)</summary>
-
-<table>
-  <tr>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/oral-history.png" alt="Elders' stories" width="180"><br><sub>Elders' stories</sub></td>
-    <td align="center" valign="top" width="25%"><img src="docs/mockups/import-export.png" alt="Import, export & backup" width="180"><br><sub>Import, export & backup</sub></td>
-  </tr>
-</table>
-
-</details>
 
 ## How the data is organised
 
@@ -192,6 +197,8 @@ Design mockups for the app (sample data). The app follows these designs; the scr
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
+| `stories` | Elders' recorded stories: who is speaking, language, transcript (audio in the private `stories` bucket) |
+| `private.backups` | Weekly JSON snapshots of the family's data, eight rotating slots (not reachable from the app; admins download through `admin_backup`) |
 | `polls`, `poll_options`, `poll_votes` | Family polls, their choices and each member's (secret) vote |
 | `memories`, `remembrance_reminders` | Prayers and memories on memorial pages; who wants an anniversary reminder |
 | `private.sms_outbox` | Text messages waiting to be sent, sent or failed (not reachable from the app) |
@@ -298,6 +305,5 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 - **Next for notifications:** app push notifications once the app is in the
   Play Store / App Store.
-- **Phase 3, family knowledge:** "who can help?" skills directory, blood donor
-  matching, memorial pages, anniversary reminders.
-- **Phase 4:** oral-history voice notes, GEDCOM import and export.
+- **Restore from a backup:** today a backup can be downloaded and kept safe;
+  restoring one into a fresh project is still a manual job for a developer.

@@ -2393,4 +2393,228 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifPoll(String question) {
     return 'Sabuwar ƙuri\'a: $question';
   }
+
+  @override
+  String get storiesTitle => 'Labaran dattijai';
+
+  @override
+  String get storiesSubtitle =>
+      'Muryoyin iyali, an adana su don zuri\'a mai zuwa';
+
+  @override
+  String get nowPlaying => 'Ana saurara';
+
+  @override
+  String get listen => 'Saurara';
+
+  @override
+  String get otherLanguage => 'Wani';
+
+  @override
+  String get transcript => 'Rubutaccen labari';
+
+  @override
+  String get noStoriesYet => 'Babu labari tukuna. Naɗi na farko.';
+
+  @override
+  String get recordStory => 'Naɗi labarin dattijo';
+
+  @override
+  String get recordHint =>
+      'Gwada tambaya: Yaya kuka haɗu? Yaya Kano take lokacin kuruciyarku?';
+
+  @override
+  String get deleteStory => 'Share labari';
+
+  @override
+  String get deleteStoryConfirm => 'A share wannan labari da naɗinsa?';
+
+  @override
+  String get newStory => 'Sabon labari';
+
+  @override
+  String get tapToRecord => 'Taɓa don fara naɗi';
+
+  @override
+  String recordingNow(String time) {
+    return 'Ana naɗi… $time';
+  }
+
+  @override
+  String get tapToStop => 'Taɓa don tsayawa';
+
+  @override
+  String recordedLength(String time) {
+    return 'An naɗa · $time';
+  }
+
+  @override
+  String get recordAgain => 'Sake naɗi';
+
+  @override
+  String get chooseAudioFile =>
+      'Ko zaɓi fayil ɗin sauti (daga kaset, saƙon murya)';
+
+  @override
+  String get micDenied => 'Ba da izinin makirufo a saitunan wayarka don naɗi.';
+
+  @override
+  String get storyTitle => 'Labarin mene ne?';
+
+  @override
+  String get whoSpeaking => 'Wane ne ke magana?';
+
+  @override
+  String get sourceNote => 'A ina kuma yaushe aka naɗa? (ba dole ba)';
+
+  @override
+  String get sourceNoteHint =>
+      'misali An naɗa a 1979 a kaset, Bello ya mayar da shi na zamani';
+
+  @override
+  String get transcriptOptional => 'Rubutaccen labari (ba dole ba)';
+
+  @override
+  String get saveStory => 'Adana labari';
+
+  @override
+  String get uploading => 'Ana lodawa…';
+
+  @override
+  String get needAudio => 'Fara naɗi ko zaɓi naɗi tukuna.';
+
+  @override
+  String get needTitleSpeaker => 'Saka suna da wanda ke magana.';
+
+  @override
+  String notifStory(String speaker, String title) {
+    return 'Sabon labari daga $speaker: $title';
+  }
+
+  @override
+  String get dataTitle => 'Shigowa, fitarwa da ajiya';
+
+  @override
+  String get dataSubtitle => 'Shugabanni kawai · bayananku ba a kulle suke ba';
+
+  @override
+  String get exportHeading => 'Fitarwa';
+
+  @override
+  String get exportGedcom => 'Bishiyar iyali (GEDCOM)';
+
+  @override
+  String get exportGedcomSub => 'Yana buɗewa a wasu manhajojin asalin iyali';
+
+  @override
+  String get exportCsv => 'Tebur (CSV)';
+
+  @override
+  String get exportCsvSub => 'Kowa, tare da kwanaki da wurare';
+
+  @override
+  String get exportPdf => 'Bishiyar bugawa (PDF)';
+
+  @override
+  String get exportPdfSub => 'Babban hoto, don taron iyali';
+
+  @override
+  String get includeDetails => 'Haɗa da lambobin sadarwa da bayanan lafiya';
+
+  @override
+  String savedFile(String file) {
+    return 'An adana $file';
+  }
+
+  @override
+  String get importHeading => 'Shigo da bayanai';
+
+  @override
+  String get chooseImportFile => 'Zaɓi fayil ɗin GEDCOM ko CSV';
+
+  @override
+  String get importReviewNote =>
+      'Za ka duba waɗanda suka yi daidai kafin a ƙara komai';
+
+  @override
+  String get downloadTemplate => 'Sauke samfurin tebur';
+
+  @override
+  String importError(String message) {
+    return 'Ba a iya karanta fayil ɗin ba: $message';
+  }
+
+  @override
+  String get weeklyBackupOn => 'Ajiyar mako-mako tana aiki';
+
+  @override
+  String get weeklyBackupOff => 'Ajiyar mako-mako a kashe take';
+
+  @override
+  String lastBackup(String date) {
+    return 'Ajiya ta ƙarshe $date';
+  }
+
+  @override
+  String get noBackupYet => 'Babu ajiya tukuna';
+
+  @override
+  String get download => 'Sauke';
+
+  @override
+  String get keepWeeklyBackup => 'Riƙa ajiya kowane mako';
+
+  @override
+  String get backupNow => 'Yi ajiya yanzu';
+
+  @override
+  String get backupDone => 'An adana ajiya';
+
+  @override
+  String get earlierBackups => 'Ajiyoyin baya';
+
+  @override
+  String get backupsKept => 'Ana riƙe ajiyoyin makonni takwas na ƙarshe.';
+
+  @override
+  String get reviewImport => 'Duba abin da za a shigo da shi';
+
+  @override
+  String importSummary(int added, int matched, int links) {
+    return '$added sababbi · $matched suna cikin bishiya · alaƙa $links';
+  }
+
+  @override
+  String get importNew => 'Sabo';
+
+  @override
+  String sameAs(String name) {
+    return 'Daidai da $name a bishiya';
+  }
+
+  @override
+  String get notSame => 'Ba shi ba ne';
+
+  @override
+  String get addToTree => 'Ƙara cikin bishiya';
+
+  @override
+  String importDone(int people, int links) {
+    return 'An ƙara mutane $people da alaƙa $links.';
+  }
+
+  @override
+  String importSkipped(int count) {
+    return 'An tsallake alaƙa $count saboda ba su dace da bishiyar ba.';
+  }
+
+  @override
+  String treePosterTitle(String family) {
+    return 'Iyalan $family';
+  }
+
+  @override
+  String treePosterSubtitle(int count, String date) {
+    return 'Mutane $count · an buga $date';
+  }
 }

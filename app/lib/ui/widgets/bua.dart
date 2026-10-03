@@ -378,3 +378,50 @@ class InsetDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Divider(indent: indent, height: 1);
 }
+
+/// A rounded box with a dashed outline, for "record" and "choose a file" areas.
+class DashedBox extends StatelessWidget {
+  const DashedBox({super.key, required this.child, this.onTap, this.color = Bua.lineStrong, this.fill});
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final Color color;
+  final Color? fill;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _DashedBorderPainter(color),
+      child: Material(
+        color: fill ?? Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(onTap: onTap, child: child),
+      ),
+    );
+  }
+}
+
+class _DashedBorderPainter extends CustomPainter {
+  const _DashedBorderPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    final path = Path()
+      ..addRRect(RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(20)).deflate(0.75));
+    for (final metric in path.computeMetrics()) {
+      for (var d = 0.0; d < metric.length; d += 10) {
+        canvas.drawPath(metric.extractPath(d, d + 6), paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashedBorderPainter old) => old.color != color;
+}

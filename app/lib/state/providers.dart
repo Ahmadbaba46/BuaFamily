@@ -14,6 +14,7 @@ import '../models/fund.dart';
 import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
+import '../models/story.dart';
 
 final repositoryProvider = Provider<FamilyRepository>(
   (ref) => FamilyRepository(Supabase.instance.client),
@@ -214,3 +215,12 @@ void refreshFund(WidgetRef ref) {
 final mentorshipProvider = FutureProvider<Mentorship>((ref) => ref.watch(repositoryProvider).mentorship());
 
 final pollsProvider = FutureProvider<List<Poll>>((ref) => ref.watch(repositoryProvider).polls());
+
+// ---------------------------------------------------------------- stories & backups
+
+final storiesProvider = FutureProvider<List<Story>>((ref) => ref.watch(repositoryProvider).stories());
+
+final backupsProvider = FutureProvider<List<Backup>>((ref) {
+  if (!ref.watch(isAdminProvider)) return const [];
+  return ref.watch(repositoryProvider).backups();
+});

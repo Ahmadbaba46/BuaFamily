@@ -31,6 +31,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.mentorRequest => l.notifMentorRequest(n.str('body') ?? ''),
       NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
+      NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -46,6 +47,7 @@ IconData _icon(NotificationKind k) => switch (k) {
         Icons.volunteer_activism_outlined,
       NotificationKind.mentorRequest || NotificationKind.opportunity => Icons.school_outlined,
       NotificationKind.poll => Icons.how_to_vote_outlined,
+      NotificationKind.story => Icons.mic_none,
     };
 
 class NotificationsScreen extends ConsumerWidget {

@@ -10,6 +10,8 @@
 	<string>Choose photos of family members for their profiles.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos of family members for their profiles.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record elders telling the family's stories.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Bua Family</string>
 	<key>CFBundleExecutable</key>

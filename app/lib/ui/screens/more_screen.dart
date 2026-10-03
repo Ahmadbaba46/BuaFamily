@@ -108,6 +108,16 @@ class MoreScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+              child: NavRow(
+                icon: Icons.import_export,
+                title: l.dataTitle,
+                onTap: () => context.push('/admin/data'),
+              ),
+            ),
           ],
           const SizedBox(height: 18),
           Padding(
@@ -168,6 +178,12 @@ class MoreScreen extends ConsumerWidget {
                 icon: Icons.how_to_vote_outlined,
                 title: l.pollsTitle,
                 onTap: () => context.push('/polls'),
+              ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.mic_none,
+                title: l.storiesTitle,
+                onTap: () => context.push('/stories'),
               ),
             ]),
           ),

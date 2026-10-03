@@ -80,6 +80,7 @@ class AppSettings {
     this.smsEnabled = false,
     this.smsSenderId,
     this.smsChannel = 'generic',
+    this.weeklyBackup = true,
   });
 
   final String familyName;
@@ -91,6 +92,9 @@ class AppSettings {
   /// 'generic' or 'dnd' (Termii routes).
   final String smsChannel;
 
+  /// Whether the database keeps a weekly backup.
+  final bool weeklyBackup;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -98,6 +102,7 @@ class AppSettings {
         smsEnabled: j['sms_enabled'] as bool? ?? false,
         smsSenderId: j['sms_sender_id'] as String?,
         smsChannel: j['sms_channel'] as String? ?? 'generic',
+        weeklyBackup: j['weekly_backup'] as bool? ?? true,
       );
 }
 

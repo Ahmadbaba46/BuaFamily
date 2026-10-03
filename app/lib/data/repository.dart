@@ -11,6 +11,7 @@ import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/person.dart';
 import '../models/social.dart';
+import '../models/story.dart';
 
 /// All server access. Row level security on the server decides what each
 /// user may read or change; the app only hides buttons that would fail.
@@ -679,4 +680,87 @@ class FamilyRepository {
   Future<void> closePoll(String id) => _db.from('polls').update({'closed': true}).eq('id', id);
 
   Future<void> deletePoll(String id) => _db.from('polls').delete().eq('id', id);
+
+  // ---------------------------------------------------------------- elders' stories
+
+  static const storiesBucket = 'stories';
+
+  Future<List<Story>> stories() async {
+    final rows = await _db.from('stories').select().order('created_at', ascending: false);
+    return rows.map(Story.fromJson).toList();
+  }
+
+  Future<String> storyAudioUrl(String path) => _db.storage.from(storiesBucket).createSignedUrl(path, 60 * 60 * 6);
+
+  static String audioMime(String ext) => switch (ext.toLowerCase()) {
+        'm4a' || 'mp4' || 'aac' => 'audio/mp4',
+        'mp3' => 'audio/mpeg',
+        'wav' => 'audio/wav',
+        'ogg' || 'oga' || 'opus' => 'audio/ogg',
+        'webm' => 'audio/webm',
+        '3gp' => 'audio/3gpp',
+        _ => 'audio/mpeg',
+      };
+
+  Future<void> addStory({
+    required Uint8List audio,
+    required String extension,
+    required String title,
+    String? speakerId,
+    String? speakerName,
+    required String language,
+    int? durationSeconds,
+    String? sourceNote,
+    String? transcript,
+  }) async {
+    final ext = extension.toLowerCase();
+    final path = '$userId/${DateTime.now().millisecondsSinceEpoch}.$ext';
+    await _db.storage.from(storiesBucket).uploadBinary(path, audio, fileOptions: FileOptions(contentType: audioMime(ext)));
+    try {
+      await _db.from('stories').insert({
+        'title': title.trim(),
+        'speaker_id': speakerId,
+        'speaker_name': speakerId == null ? speakerName?.trim() : null,
+        'language': language,
+        'audio_path': path,
+        'duration_seconds': durationSeconds,
+        'source_note': sourceNote,
+        'transcript': transcript,
+      });
+    } catch (_) {
+      await _db.storage.from(storiesBucket).remove([path]);
+      rethrow;
+    }
+  }
+
+  Future<void> updateStory(String id, Map<String, dynamic> changes) => _db.from('stories').update(changes).eq('id', id);
+
+  Future<void> deleteStory(Story s) async {
+    await _db.from('stories').delete().eq('id', s.id);
+    await _db.storage.from(storiesBucket).remove([s.audioPath]);
+  }
+
+  // ---------------------------------------------------------------- import, export & backup
+
+  /// Contact and health rows for everyone (admins can read them all).
+  Future<({Map<String, Map<String, dynamic>> contacts, Map<String, Map<String, dynamic>> health})> allDetails() async {
+    final r = await Future.wait([_allBy('person_contacts', 'person_id'), _allBy('person_health', 'person_id')]);
+    return (
+      contacts: {for (final c in r[0]) c['person_id'] as String: c},
+      health: {for (final h in r[1]) h['person_id'] as String: h},
+    );
+  }
+
+  /// Adds the reviewed import. Returns counts of people, parents, couples and skipped links.
+  Future<Map<String, dynamic>> adminImport(Map<String, dynamic> plan) async =>
+      Map<String, dynamic>.from(await _db.rpc('admin_import', params: {'p_data': plan}) as Map);
+
+  Future<List<Backup>> backups() async {
+    final rows = await _db.rpc('admin_backups') as List;
+    return rows.map((r) => Backup.fromJson(Map<String, dynamic>.from(r as Map))).toList();
+  }
+
+  Future<void> backupNow() => _db.rpc('admin_backup_now');
+
+  Future<Object?> backupData(int slot) => _db.rpc('admin_backup', params: {'p_slot': slot});
 }
