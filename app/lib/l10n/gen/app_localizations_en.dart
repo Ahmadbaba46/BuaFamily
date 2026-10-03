@@ -2885,4 +2885,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get photoLabel => 'Photo';
+
+  @override
+  String notifAccountRequest(String name) {
+    return 'New sign-up waiting for approval: $name';
+  }
+
+  @override
+  String notifAccountNote(String name, String note) {
+    return '$name says: “$note”';
+  }
+
+  @override
+  String notifChangeAdd(String name, String person) {
+    return '$name suggested adding $person to the tree';
+  }
+
+  @override
+  String notifChangeEdit(String name, String person) {
+    return '$name suggested a change to $person';
+  }
+
+  @override
+  String get notifAccountApproved => 'Welcome! Your account has been approved.';
+
+  @override
+  String notifRequestApproved(String person) {
+    return 'Your suggestion about $person was approved';
+  }
+
+  @override
+  String notifRequestDeclined(String person) {
+    return 'Your suggestion about $person was not accepted';
+  }
+
+  @override
+  String get notifSomeone => 'someone';
+
+  @override
+  String get notifTheTree => 'the tree';
+
+  @override
+  String get pendingPushHint =>
+      'Get a notification the moment an admin approves you.';
 }

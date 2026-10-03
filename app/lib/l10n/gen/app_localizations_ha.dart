@@ -2794,4 +2794,46 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get photoLabel => 'Hoto';
+
+  @override
+  String notifAccountRequest(String name) {
+    return 'Sabon rajista na jiran amincewa: $name';
+  }
+
+  @override
+  String notifAccountNote(String name, String note) {
+    return 'Bayani daga $name: “$note”';
+  }
+
+  @override
+  String notifChangeAdd(String name, String person) {
+    return 'Shawara daga $name: a ƙara $person a bishiyar iyali';
+  }
+
+  @override
+  String notifChangeEdit(String name, String person) {
+    return 'Shawara daga $name: gyara bayanin $person';
+  }
+
+  @override
+  String get notifAccountApproved => 'Barka da zuwa! An amince da asusunka.';
+
+  @override
+  String notifRequestApproved(String person) {
+    return 'An amince da shawararka game da $person';
+  }
+
+  @override
+  String notifRequestDeclined(String person) {
+    return 'Ba a karɓi shawararka game da $person ba';
+  }
+
+  @override
+  String get notifSomeone => 'wani';
+
+  @override
+  String get notifTheTree => 'bishiyar iyali';
+
+  @override
+  String get pendingPushHint => 'Sami sanarwa da zarar admin ya amince da kai.';
 }

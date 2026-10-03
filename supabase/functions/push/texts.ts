@@ -34,6 +34,17 @@ const en: Texts = {
   poll: (d) => `New poll: ${s(d, "question")}`,
   story: (d) => `New story from ${s(d, "speaker")}: ${s(d, "title")}`,
   test: () => "Test notification: notifications are working on this device.",
+  account_request: (d) =>
+    s(d, "note") ? `${s(d, "name")} says: “${s(d, "note")}”` : `New sign-up waiting for approval: ${s(d, "name")}`,
+  change_request: (d) =>
+    s(d, "request_kind") === "create_person"
+      ? `${s(d, "name")} suggested adding ${s(d, "person") || "someone"} to the tree`
+      : `${s(d, "name")} suggested a change to ${s(d, "person") || "the tree"}`,
+  account_approved: () => "Welcome! Your account has been approved.",
+  request_reviewed: (d) =>
+    d.approved === true
+      ? `Your suggestion about ${s(d, "person") || "the tree"} was approved`
+      : `Your suggestion about ${s(d, "person") || "the tree"} was not accepted`,
 };
 
 const ha: Texts = {
@@ -55,6 +66,17 @@ const ha: Texts = {
   poll: (d) => `Sabuwar ƙuri'a: ${s(d, "question")}`,
   story: (d) => `Sabon labari daga ${s(d, "speaker")}: ${s(d, "title")}`,
   test: () => "Gwajin sanarwa: sanarwa na aiki a wannan na'ura.",
+  account_request: (d) =>
+    s(d, "note") ? `Bayani daga ${s(d, "name")}: “${s(d, "note")}”` : `Sabon rajista na jiran amincewa: ${s(d, "name")}`,
+  change_request: (d) =>
+    s(d, "request_kind") === "create_person"
+      ? `Shawara daga ${s(d, "name")}: a ƙara ${s(d, "person") || "wani"} a bishiyar iyali`
+      : `Shawara daga ${s(d, "name")}: gyara bayanin ${s(d, "person") || "bishiyar iyali"}`,
+  account_approved: () => "Barka da zuwa! An amince da asusunka.",
+  request_reviewed: (d) =>
+    d.approved === true
+      ? `An amince da shawararka game da ${s(d, "person") || "bishiyar iyali"}`
+      : `Ba a karɓi shawararka game da ${s(d, "person") || "bishiyar iyali"} ba`,
 };
 
 /** Title and body for one notification. */

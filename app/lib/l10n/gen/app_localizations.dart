@@ -4591,6 +4591,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photo'**
   String get photoLabel;
+
+  /// No description provided for @notifAccountRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'New sign-up waiting for approval: {name}'**
+  String notifAccountRequest(String name);
+
+  /// No description provided for @notifAccountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} says: “{note}”'**
+  String notifAccountNote(String name, String note);
+
+  /// No description provided for @notifChangeAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} suggested adding {person} to the tree'**
+  String notifChangeAdd(String name, String person);
+
+  /// No description provided for @notifChangeEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} suggested a change to {person}'**
+  String notifChangeEdit(String name, String person);
+
+  /// No description provided for @notifAccountApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome! Your account has been approved.'**
+  String get notifAccountApproved;
+
+  /// No description provided for @notifRequestApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your suggestion about {person} was approved'**
+  String notifRequestApproved(String person);
+
+  /// No description provided for @notifRequestDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Your suggestion about {person} was not accepted'**
+  String notifRequestDeclined(String person);
+
+  /// No description provided for @notifSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'someone'**
+  String get notifSomeone;
+
+  /// No description provided for @notifTheTree.
+  ///
+  /// In en, this message translates to:
+  /// **'the tree'**
+  String get notifTheTree;
+
+  /// No description provided for @pendingPushHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a notification the moment an admin approves you.'**
+  String get pendingPushHint;
 }
 
 class _AppLocalizationsDelegate

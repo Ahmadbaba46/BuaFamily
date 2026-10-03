@@ -9,6 +9,7 @@ import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/screens/admin_screen.dart';
 import 'package:bua_family/ui/screens/notification_settings_screen.dart';
 import 'package:bua_family/ui/screens/notifications_screen.dart';
+import 'package:bua_family/ui/screens/pending_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -56,6 +57,17 @@ class FakeRepo extends FamilyRepository {
   Future<void> registerPushToken(String token, String platform) async => registered.add((token, platform));
   @override
   Future<void> unregisterPushToken(String token) async => unregistered.add(token);
+}
+
+class PendingAuth extends AuthController {
+  PendingAuth(super.repo);
+
+  @override
+  Future<void> refresh() async {
+    profile = const Profile(id: 'new', displayName: 'Musa Bua', role: AppRole.member, status: AccountStatus.pending);
+    loading = false;
+    notifyListeners();
+  }
 }
 
 void main() {
@@ -198,5 +210,51 @@ void main() {
     expect(find.text('Choose the key file (.json)'), findsOneWidget);
     expect(find.textContaining('console.firebase.google.com'), findsOneWidget);
     expect(find.text('Send me a test notification'), findsNothing);
+  });
+
+  test('sign-ups, suggestions and reviews read well in both languages', () async {
+    final en = await AppLocalizations.delegate.load(const Locale('en'));
+    final ha = await AppLocalizations.delegate.load(const Locale('ha'));
+    AppNotification n(NotificationKind kind, Map<String, dynamic> data) =>
+        AppNotification(id: 'x', kind: kind, createdAt: DateTime(2026, 10, 3), data: data);
+
+    expect(notificationText(en, n(NotificationKind.accountRequest, {'name': 'Musa'})),
+        'New sign-up waiting for approval: Musa');
+    expect(notificationText(en, n(NotificationKind.accountRequest, {'name': 'Musa', 'note': "Sani's son"})),
+        'Musa says: “Sani\'s son”');
+    expect(
+        notificationText(
+            en, n(NotificationKind.changeRequest, {'name': 'Aisha', 'request_kind': 'create_person', 'person': 'Fatima'})),
+        'Aisha suggested adding Fatima to the tree');
+    expect(notificationText(en, n(NotificationKind.changeRequest, {'name': 'Aisha', 'request_kind': 'update_person'})),
+        'Aisha suggested a change to the tree');
+    expect(notificationText(en, n(NotificationKind.accountApproved, {})), 'Welcome! Your account has been approved.');
+    expect(notificationText(ha, n(NotificationKind.requestReviewed, {'approved': false, 'person': 'Musa Bua'})),
+        'Ba a karɓi shawararka game da Musa Bua ba');
+    expect(AppNotification.fromJson({'id': 'x', 'kind': 'account_request', 'created_at': '2026-10-03T10:00:00Z'})?.kind,
+        NotificationKind.accountRequest);
+  });
+
+  testWidgets('people waiting for approval can ask to be notified', (tester) async {
+    tall(tester);
+    final repo = FakeRepo();
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        pushPlatformProvider.overrideWithValue(FakePlatform()),
+        repositoryProvider.overrideWithValue(repo),
+        authProvider.overrideWith((ref) => PendingAuth(repo)),
+        settingsProvider.overrideWith((ref) async => const AppSettings(pushEnabled: true)),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const PendingScreen(),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Get a notification the moment an admin approves you.'), findsOneWidget);
+    await tester.tap(find.byType(Switch));
+    await tester.pumpAndSettle();
+    expect(repo.registered, hasLength(1));
   });
 }

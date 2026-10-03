@@ -748,5 +748,15 @@
   "testPushSent": "An aika. Za ta zo a duk na'urar da ka kunna sanarwa.",
   "notifTest": "Gwajin sanarwa: sanarwa na aiki a wannan na'ura.",
   "addPhoto": "Saka hoto",
-  "photoLabel": "Hoto"
+  "photoLabel": "Hoto",
+  "notifAccountRequest": "Sabon rajista na jiran amincewa: {name}",
+  "notifAccountNote": "Bayani daga {name}: “{note}”",
+  "notifChangeAdd": "Shawara daga {name}: a ƙara {person} a bishiyar iyali",
+  "notifChangeEdit": "Shawara daga {name}: gyara bayanin {person}",
+  "notifAccountApproved": "Barka da zuwa! An amince da asusunka.",
+  "notifRequestApproved": "An amince da shawararka game da {person}",
+  "notifRequestDeclined": "Ba a karɓi shawararka game da {person} ba",
+  "notifSomeone": "wani",
+  "notifTheTree": "bishiyar iyali",
+  "pendingPushHint": "Sami sanarwa da zarar admin ya amince da kai."
 }

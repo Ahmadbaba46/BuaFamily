@@ -792,11 +792,7 @@ select public.register_push_token(:aisha_token, 'web');
 delete from public.push_tokens where token = :shared_token;
 reset role;
 select test.assert((select count(*) = 2 from public.push_tokens), 'cannot remove someone else''s device');
-select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
-set role authenticated;
-select test.expect_error($$select public.register_push_token('pending-token-0123456789abcdef', 'ios')$$,
-  'pending accounts get no notifications');
-reset role;
+-- (Accounts awaiting approval may register a device too: see section 18.)
 
 -- Until an admin sets it up, nothing is sent.
 create temp table push_check as select coalesce(max(id), 0) as before from net.sent_requests;
@@ -859,6 +855,49 @@ select test.assert((select (public.push_status() ->> 'sent_7d')::int = 2 and pub
 reset role;
 select test.assert((select count(*) = 0 from net.sent_requests where id > (select before from push_check)), 'muted kinds are not pushed');
 update public.profiles set muted_notifications = '{}';
+
+-- ---------------------------------------------------------------------------
+-- 18. Sign-ups, suggestions and reviews reach the inbox.
+-- ---------------------------------------------------------------------------
+select test.assert((select count(*) = 1 from public.notifications
+  where user_id = :admin_id and kind = 'account_request' and data ->> 'email' = 'aisha@example.com' and not data ? 'note'),
+  'admins hear about a sign-up');
+select test.assert((select count(*) = 1 from public.notifications
+  where user_id = :admin_id and kind = 'account_request' and data ->> 'note' = 'Aisha, daughter of Musa'),
+  'admins hear who a new account says they are');
+select test.assert((select link = '/admin?tab=accounts' from public.notifications
+  where user_id = :admin_id and kind = 'account_request' limit 1), 'sign-up opens the accounts tab');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'account_request' and user_id <> :admin_id),
+  'only admins hear about sign-ups');
+select test.assert((select count(*) = 1 from public.notifications where user_id = :member_id and kind = 'account_approved'),
+  'the new member hears they were approved');
+select test.assert((select count(*) = 3 from public.notifications where user_id = :admin_id and kind = 'change_request'
+  and actor_id = :member_id), 'admins hear about each suggestion');
+select test.assert((select count(*) = 1 from public.notifications where user_id = :admin_id and kind = 'change_request'
+  and data ->> 'person' = 'Fatima' and data ->> 'name' is not null), 'a suggestion names who it adds and who asked');
+select test.assert((select count(*) >= 1 from public.notifications where user_id = :member_id and kind = 'request_reviewed'
+  and (data ->> 'approved')::boolean and link = '/my-requests'), 'the member hears their suggestion was approved');
+
+-- A later note edit, or an admin's own suggestion, is not news.
+update public.profiles set claim_note = 'Changed' where id = :pending_id;
+update public.profiles set claim_note = 'Changed again' where id = :pending_id;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'account_request' and data ->> 'note' = 'Changed'),
+  'first note announced once');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'account_request' and data ->> 'note' = 'Changed again'),
+  'later note edits are quiet');
+
+-- People waiting for approval can turn on notifications for their device.
+select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
+set role authenticated;
+select public.register_push_token('pending-device-token-0123456789', 'web');
+reset role;
+select test.assert((select count(*) = 1 from public.push_tokens where user_id = :pending_id), 'pending account registers its device');
+update public.profiles set status = 'suspended' where id = :pending_id;
+select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.register_push_token('suspended-device-token-0123456789', 'web')$$,
+  'suspended account cannot register a device');
+reset role;
 
 -- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
