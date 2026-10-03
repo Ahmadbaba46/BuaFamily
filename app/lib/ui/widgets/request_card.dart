@@ -54,6 +54,10 @@ class RequestCard extends StatelessWidget {
         return l.reqAddParentChild(_name(p['parent_id'] as String?), _name(p['child_id'] as String?));
       case RequestKind.addUnion:
         return l.reqAddUnion(_name(p['partner1_id'] as String?), _name(p['partner2_id'] as String?));
+      case RequestKind.removeParentChild:
+        return l.reqRemoveParentChild(_name(p['parent_id'] as String?), _name(p['child_id'] as String?));
+      case RequestKind.removeUnion:
+        return l.reqRemoveUnion(_name(p['partner1_id'] as String?), _name(p['partner2_id'] as String?));
     }
   }
 
@@ -75,6 +79,7 @@ class RequestCard extends StatelessWidget {
       'death_place': l.deathPlace,
       'burial_place': l.burialPlace,
       'branch': l.branch,
+      'birth_order': l.birthOrder,
       'biography': l.biography,
     };
     String value(String key, Object v) => switch ((key, v)) {
@@ -105,6 +110,7 @@ class RequestCard extends StatelessWidget {
       RequestKind.createPerson => (Icons.person_add_alt_1, Bua.greenTint, Bua.green),
       RequestKind.updatePerson => (Icons.edit_outlined, Bua.goldTint, Bua.goldInk),
       RequestKind.addParentChild || RequestKind.addUnion => (Icons.link, Bua.greenTint, Bua.green),
+      RequestKind.removeParentChild || RequestKind.removeUnion => (Icons.link_off, Bua.dangerTint, Bua.danger),
     };
     final details = _details(l);
     final meta = [if (requesterName != null) l.requestedBy(requesterName!), l.formatDate(request.createdAt)].join(' · ');

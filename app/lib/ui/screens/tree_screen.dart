@@ -538,7 +538,7 @@ class _NodeCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(children: [
-            PersonAvatar(person: person, radius: 16, showPhoto: false, gapColor: bg),
+            PersonAvatar(person: person, radius: 18, showPhoto: false, gapColor: bg),
             const SizedBox(width: 8),
             Expanded(
               child: Column(

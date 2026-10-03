@@ -96,7 +96,7 @@ class FamilyGraph {
   Person? fatherOf(String id) => _firstWithSex(parentsOf(id), Sex.male);
   Person? motherOf(String id) => _firstWithSex(parentsOf(id), Sex.female);
 
-  /// Children ordered by birth date (unknown dates last).
+  /// Children in birth order: the birth order number when set, then date of birth.
   List<Person> childrenOf(String id) =>
       _byBirth(_people(childLinksOf(id).map((l) => l.childId)));
 
@@ -175,6 +175,36 @@ class FamilyGraph {
     return best;
   }
 
+  /// Everyone in family order: each elder, then their spouses who married in,
+  /// then their children in birth order (and so on down). People not
+  /// connected to anyone come last, by name.
+  List<Person> familyOrder() {
+    final seen = <String>{};
+    final out = <Person>[];
+    void visit(Person p) {
+      if (!seen.add(p.id)) return;
+      out.add(p);
+      for (final s in spousesOf(p.id)) {
+        if (parentLinksOf(s.id).isEmpty && seen.add(s.id)) out.add(s);
+      }
+      for (final c in childrenOf(p.id)) {
+        visit(c);
+      }
+    }
+
+    final roots = persons.values.where((p) => parentLinksOf(p.id).isEmpty).toList()
+      ..sort((a, b) {
+        final d = descendantCount(b.id).compareTo(descendantCount(a.id));
+        return d != 0 ? d : compareByBirth(a, b);
+      });
+    for (final r in roots) {
+      if (childLinksOf(r.id).isNotEmpty) visit(r);
+    }
+    final rest = persons.values.where((p) => !seen.contains(p.id)).toList()
+      ..sort((a, b) => a.fullName.toLowerCase().compareTo(b.fullName.toLowerCase()));
+    return [...out, ...rest];
+  }
+
   List<Person> search(String query) {
     final list = persons.values.where((p) => p.matches(query)).toList();
     list.sort((a, b) => a.fullName.toLowerCase().compareTo(b.fullName.toLowerCase()));
@@ -188,7 +218,14 @@ class FamilyGraph {
       people.where((p) => p.sex == sex).firstOrNull;
 
   static List<Person> _byBirth(List<Person> people) {
-    people.sort((a, b) => (a.birthDate ?? DateTime(9999)).compareTo(b.birthDate ?? DateTime(9999)));
+    people.sort(compareByBirth);
     return people;
+  }
+
+  /// Siblings' order: birth order number first (unknown last), then date of birth.
+  static int compareByBirth(Person a, Person b) {
+    final o = (a.birthOrder ?? 1 << 20).compareTo(b.birthOrder ?? 1 << 20);
+    if (o != 0) return o;
+    return (a.birthDate ?? DateTime(9999)).compareTo(b.birthDate ?? DateTime(9999));
   }
 }

@@ -112,6 +112,19 @@ final photoUrlProvider = FutureProvider.family<String, String>(
   (ref, path) => ref.watch(repositoryProvider).photoUrl(path),
 );
 
+/// Links to everyone's profile photo, fetched together whenever the tree
+/// changes. Avatars use these first, so lists and the tree don't each ask for
+/// photos one by one.
+final portraitUrlsProvider = FutureProvider<Map<String, String>>((ref) async {
+  // The links last six hours; fetch new ones before they run out.
+  final renew = Timer(const Duration(hours: 5), ref.invalidateSelf);
+  ref.onDispose(renew.cancel);
+  final graph = await ref.watch(graphProvider.future);
+  final paths = [for (final p in graph.persons.values) ?p.photoPath];
+  if (paths.isEmpty) return const {};
+  return ref.watch(repositoryProvider).photoUrls(paths);
+});
+
 /// UI language. Null means "follow the account / device".
 class LocaleNotifier extends Notifier<Locale?> {
   @override

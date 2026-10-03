@@ -38,6 +38,7 @@ import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/restore_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/stories_screen.dart';
+import 'ui/screens/tree_check_screen.dart';
 import 'ui/screens/tree_screen.dart';
 import 'ui/screens/welfare_fund_screen.dart';
 import 'ui/screens/who_can_help_screen.dart';
@@ -145,6 +146,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/admin/data', builder: (_, _) => const ImportExportScreen()),
       GoRoute(path: '/admin/restore', builder: (_, _) => const RestoreScreen()),
+      GoRoute(path: '/admin/tree-check', builder: (_, _) => const TreeCheckScreen()),
       GoRoute(
         path: '/admin/import',
         redirect: (_, s) => s.extra is ImportPlan ? null : '/admin/data',

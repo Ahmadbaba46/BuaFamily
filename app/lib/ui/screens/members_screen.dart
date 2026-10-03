@@ -12,6 +12,8 @@ import '../widgets/common.dart';
 
 enum _Filter { all, living, deceased }
 
+enum _Sort { name, oldest, youngest, family }
+
 class MembersScreen extends ConsumerStatefulWidget {
   const MembersScreen({super.key});
 
@@ -22,6 +24,7 @@ class MembersScreen extends ConsumerStatefulWidget {
 class _MembersScreenState extends ConsumerState<MembersScreen> {
   String _query = '';
   _Filter _filter = _Filter.all;
+  _Sort _sort = _Sort.name;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,21 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
           value: graphAsync,
           onRetry: () => ref.invalidate(graphProvider),
           builder: (graph) {
-            final people = graph.search(_query).where((p) => switch (_filter) {
+            final matches = graph.search(_query).map((p) => p.id).toSet();
+            final ordered = switch (_sort) {
+              _Sort.name => graph.search(_query),
+              _Sort.family => graph.familyOrder(),
+              _Sort.oldest || _Sort.youngest => graph.search(_query)
+                ..sort((a, b) {
+                  // Unknown birth dates last either way.
+                  if (a.birthDate == null || b.birthDate == null) {
+                    return (a.birthDate == null ? 1 : 0) - (b.birthDate == null ? 1 : 0);
+                  }
+                  final c = a.birthDate!.compareTo(b.birthDate!);
+                  return _sort == _Sort.oldest ? c : -c;
+                }),
+            };
+            final people = ordered.where((p) => matches.contains(p.id)).where((p) => switch (_filter) {
                   _Filter.all => true,
                   _Filter.living => p.isLiving,
                   _Filter.deceased => !p.isLiving,
@@ -74,6 +91,10 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                     ),
                     const SizedBox(height: 12),
                     Row(children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(children: [
                       for (final f in _Filter.values) ...[
                         ChoiceChip(
                           label: Text(switch (f) {
@@ -91,8 +112,29 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                         ),
                         const SizedBox(width: 8),
                       ],
-                      const Spacer(),
+                          ]),
+                        ),
+                      ),
                       Text(l.peopleCount(people.length), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                      PopupMenuButton<_Sort>(
+                        tooltip: l.sortBy,
+                        icon: const Icon(Icons.sort, color: Bua.inkMuted),
+                        initialValue: _sort,
+                        onSelected: (s) => setState(() => _sort = s),
+                        itemBuilder: (_) => [
+                          for (final s in _Sort.values)
+                            CheckedPopupMenuItem(
+                              value: s,
+                              checked: _sort == s,
+                              child: Text(switch (s) {
+                                _Sort.name => l.sortName,
+                                _Sort.oldest => l.sortOldest,
+                                _Sort.youngest => l.sortYoungest,
+                                _Sort.family => l.sortFamily,
+                              }),
+                            ),
+                        ],
+                      ),
                     ]),
                   ]),
                 ),
@@ -130,7 +172,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                         decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(18)),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                           for (final (i, p) in others.indexed) ...[
-                            if (i == 0 || _letter(others[i - 1]) != _letter(p))
+                            if (_sort == _Sort.name && (i == 0 || _letter(others[i - 1]) != _letter(p)))
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                                 child: Text(

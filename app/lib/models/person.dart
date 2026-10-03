@@ -32,6 +32,7 @@ class Person {
     this.biography,
     this.photoPath,
     this.branch,
+    this.birthOrder,
   });
 
   final String id;
@@ -53,6 +54,9 @@ class Person {
   final String? photoPath;
   final String? branch;
 
+  /// 1 for the first-born among their siblings, 2 for the next...
+  final int? birthOrder;
+
   factory Person.fromJson(Map<String, dynamic> j) => Person(
         id: j['id'] as String,
         title: j['title'] as String?,
@@ -72,6 +76,7 @@ class Person {
         biography: j['biography'] as String?,
         photoPath: j['photo_path'] as String?,
         branch: j['branch'] as String?,
+        birthOrder: (j['birth_order'] as num?)?.toInt(),
       );
 
   /// Fields that members cannot change on their own record without approval.
@@ -97,6 +102,7 @@ class Person {
         'burial_place': burialPlace,
         'biography': biography,
         'branch': branch,
+        'birth_order': birthOrder,
       };
 
   String get fullName => [firstName, middleName, lastName]

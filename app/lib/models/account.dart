@@ -111,7 +111,7 @@ class AppSettings {
       );
 }
 
-enum RequestKind { createPerson, updatePerson, addParentChild, addUnion }
+enum RequestKind { createPerson, updatePerson, addParentChild, addUnion, removeParentChild, removeUnion }
 
 enum RequestStatus { pending, approved, rejected }
 
@@ -120,6 +120,8 @@ const _kindNames = {
   RequestKind.updatePerson: 'update_person',
   RequestKind.addParentChild: 'add_parent_child',
   RequestKind.addUnion: 'add_union',
+  RequestKind.removeParentChild: 'remove_parent_child',
+  RequestKind.removeUnion: 'remove_union',
 };
 
 extension RequestKindDb on RequestKind {

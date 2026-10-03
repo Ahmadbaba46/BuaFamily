@@ -82,7 +82,8 @@ class PersonAvatar extends ConsumerWidget {
   final Person person;
   final double radius;
 
-  /// Off in the tree view, where hundreds of avatars would each fetch a photo URL.
+  /// When off, only a photo already fetched with everyone else's is shown
+  /// (see [portraitUrlsProvider]); no single request is made for it.
   final bool showPhoto;
   final Color? highlight;
 
@@ -97,7 +98,10 @@ class PersonAvatar extends ConsumerWidget {
       Sex.unknown => (Bua.unknownBg, Bua.unknownFg),
     };
     final path = person.photoPath;
-    final url = path == null || !showPhoto ? null : ref.watch(photoUrlProvider(path)).value;
+    final batch = path == null ? null : ref.watch(portraitUrlsProvider).value?[path];
+    final url = path == null
+        ? null
+        : batch ?? (showPhoto ? ref.watch(photoUrlProvider(path)).value : null);
     final avatar = CircleAvatar(
       radius: radius,
       backgroundColor: bg,

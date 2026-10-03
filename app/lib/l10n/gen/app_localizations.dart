@@ -4699,6 +4699,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Linked. This is now your profile.'**
   String get linkedNow;
+
+  /// No description provided for @birthOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth order among siblings'**
+  String get birthOrder;
+
+  /// No description provided for @birthOrderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1 for the first-born. Siblings are listed in this order.'**
+  String get birthOrderHint;
+
+  /// No description provided for @birthOrderNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get birthOrderNone;
+
+  /// No description provided for @reqRemoveParentChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {parent} as a parent of {child}'**
+  String reqRemoveParentChild(String parent, String child);
+
+  /// No description provided for @reqRemoveUnion.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the marriage of {a} and {b}'**
+  String reqRemoveUnion(String a, String b);
+
+  /// No description provided for @removeRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove relationship'**
+  String get removeRelationship;
+
+  /// No description provided for @confirmRemoveParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {parent} as a parent of {child}? Both stay in the tree.'**
+  String confirmRemoveParent(String parent, String child);
+
+  /// No description provided for @confirmRemoveUnion.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the marriage between {a} and {b}? Both stay in the tree.'**
+  String confirmRemoveUnion(String a, String b);
+
+  /// No description provided for @relationshipRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship removed'**
+  String get relationshipRemoved;
+
+  /// No description provided for @checkTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the tree'**
+  String get checkTree;
+
+  /// No description provided for @checkTreeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Links that look wrong, so you can fix them'**
+  String get checkTreeHint;
+
+  /// No description provided for @treeLooksRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing looks wrong in the tree.'**
+  String get treeLooksRight;
+
+  /// No description provided for @problemMarriedInLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b} are married, but one descends from the other'**
+  String problemMarriedInLine(String a, String b);
+
+  /// No description provided for @problemParentYounger.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} is a parent of {b} but is not at least 10 years older'**
+  String problemParentYounger(String a, String b);
+
+  /// No description provided for @problemBornAfterDeath.
+  ///
+  /// In en, this message translates to:
+  /// **'{b} was born more than a year after their parent {a} died'**
+  String problemBornAfterDeath(String a, String b);
+
+  /// No description provided for @problemSameBirthOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b} have the same birth order'**
+  String problemSameBirthOrder(String a, String b);
+
+  /// No description provided for @removeLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove link'**
+  String get removeLink;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get sortBy;
+
+  /// No description provided for @sortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (A–Z)'**
+  String get sortName;
+
+  /// No description provided for @sortOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get sortOldest;
+
+  /// No description provided for @sortYoungest.
+  ///
+  /// In en, this message translates to:
+  /// **'Youngest first'**
+  String get sortYoungest;
+
+  /// No description provided for @sortFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family order'**
+  String get sortFamily;
 }
 
 class _AppLocalizationsDelegate

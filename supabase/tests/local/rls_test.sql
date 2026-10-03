@@ -926,6 +926,60 @@ select test.assert((select count(*) = 1 from public.notifications where user_id 
   and data ->> 'person' is not null and actor_id = :member2_id), 'admins hear when a member says "this is me"');
 
 -- ---------------------------------------------------------------------------
+-- 20. Tree rules: birth order, no marrying within one line, removing links.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+-- Hauwa is Grandpa's wife; she cannot also become his granddaughter (via Sani).
+select test.expect_error(format($$insert into public.parent_child (parent_id, child_id) values (%L, %L)$$,
+  (select id from test.ids where name='sani'), (select id from test.ids where name='hauwa')), 'a wife cannot become a granddaughter');
+select test.expect_error(format($$insert into public.unions (partner1_id, partner2_id) values (%L, %L)$$,
+  (select id from test.ids where name='musa'), (select id from test.ids where name='aisha')), 'no marriage to your own child');
+select test.expect_error(format($$insert into public.unions (partner1_id, partner2_id) values (%L, %L)$$,
+  (select id from test.ids where name='aisha'), (select id from test.ids where name='grandpa')), 'no marriage to your grandparent');
+
+-- Birth order is saved and two siblings with the same number are flagged.
+select public.create_person_with_relation('{"first_name":"Halima","sex":"female","birth_order":2}',
+  json_build_object('type','child','person_id',(select id from test.ids where name='musa'))::jsonb);
+update public.persons set birth_order = 2 where id = (select id from test.ids where name='aisha');
+select test.assert((select count(*) = 1 from jsonb_array_elements(public.tree_problems()) x where x ->> 'kind' = 'same_birth_order'),
+  'siblings sharing a birth order are flagged');
+update public.persons set birth_order = 1 where id = (select id from test.ids where name='aisha');
+select test.assert((select count(*) = 0 from jsonb_array_elements(public.tree_problems()) x where x ->> 'kind' = 'same_birth_order'),
+  'fixed birth order clears the problem');
+update public.persons set birth_date = '2000-01-01' where id = (select id from test.ids where name='musa');
+update public.persons set birth_date = '1995-01-01' where id = (select id from test.ids where name='aisha');
+select test.assert((select count(*) >= 1 from jsonb_array_elements(public.tree_problems()) x where x ->> 'kind' = 'parent_younger' and x ->> 'b' = (select id::text from test.ids where name='aisha')),
+  'a parent younger than their child is flagged');
+update public.persons set birth_date = null where id in (select id from test.ids where name in ('musa', 'aisha'));
+
+-- Admins remove a relationship directly; the people stay.
+delete from public.parent_child where kind = 'adopted' and child_id = (select id from test.ids where name='aisha');
+select test.assert((select count(*) = 0 from public.parent_child where kind = 'adopted'), 'admin removes a link');
+reset role;
+
+-- Members suggest removing one; approving it removes the link only.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.tree_problems()$$, 'only admins check the tree');
+insert into public.change_requests (kind, target_person_id, payload) values ('remove_union',
+  (select id from test.ids where name='zainab'),
+  json_build_object('partner1_id', (select id from test.ids where name='zainab'), 'partner2_id', (select id from test.ids where name='grandpa'))::jsonb);
+delete from public.unions;
+reset role;
+select test.assert((select count(*) = 2 from public.unions where partner1_id = (select id from test.ids where name='grandpa')),
+  'members cannot remove a marriage themselves');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.review_change_request((select id from public.change_requests where kind = 'remove_union'), true);
+reset role;
+select test.assert((select count(*) = 0 from public.unions u where (select id from test.ids where name='zainab') in (u.partner1_id, u.partner2_id)),
+  'approved removal deletes the marriage');
+select test.assert((select count(*) = 1 from public.persons where first_name = 'Zainab'), 'the person stays');
+select test.assert((select count(*) = 1 from public.notifications where kind = 'request_reviewed' and data ->> 'request_kind' = 'remove_union'),
+  'the member hears the removal was approved');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

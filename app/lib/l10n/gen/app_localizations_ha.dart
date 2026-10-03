@@ -2869,4 +2869,88 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get linkedNow => 'An haɗa. Wannan ne bayananka yanzu.';
+
+  @override
+  String get birthOrder => 'Matsayin haihuwa tsakanin \'yan uwa';
+
+  @override
+  String get birthOrderHint =>
+      '1 ga ɗan fari. Za a jera \'yan uwa a wannan tsari.';
+
+  @override
+  String get birthOrderNone => 'Ba a saka ba';
+
+  @override
+  String reqRemoveParentChild(String parent, String child) {
+    return 'Cire $parent a matsayin iyayen $child';
+  }
+
+  @override
+  String reqRemoveUnion(String a, String b) {
+    return 'Cire auren $a da $b';
+  }
+
+  @override
+  String get removeRelationship => 'Cire dangantaka';
+
+  @override
+  String confirmRemoveParent(String parent, String child) {
+    return 'A cire $parent a matsayin iyayen $child? Dukansu za su ci gaba da kasancewa a bishiyar iyali.';
+  }
+
+  @override
+  String confirmRemoveUnion(String a, String b) {
+    return 'A cire auren $a da $b? Dukansu za su ci gaba da kasancewa a bishiyar iyali.';
+  }
+
+  @override
+  String get relationshipRemoved => 'An cire dangantakar';
+
+  @override
+  String get checkTree => 'Duba bishiyar iyali';
+
+  @override
+  String get checkTreeHint =>
+      'Haɗe-haɗen da ba su yi daidai ba, don a gyara su';
+
+  @override
+  String get treeLooksRight => 'Babu abin da ya yi kuskure a bishiyar iyali.';
+
+  @override
+  String problemMarriedInLine(String a, String b) {
+    return '$a da $b sun yi aure, amma ɗaya ya fito daga zuriyar ɗayan';
+  }
+
+  @override
+  String problemParentYounger(String a, String b) {
+    return '$a iyayen $b ne amma bai girme shi da shekara 10 ba';
+  }
+
+  @override
+  String problemBornAfterDeath(String a, String b) {
+    return 'An haifi $b fiye da shekara ɗaya bayan rasuwar $a';
+  }
+
+  @override
+  String problemSameBirthOrder(String a, String b) {
+    return '$a da $b suna da matsayin haihuwa iri ɗaya';
+  }
+
+  @override
+  String get removeLink => 'Cire haɗin';
+
+  @override
+  String get sortBy => 'Jera';
+
+  @override
+  String get sortName => 'Suna (A–Z)';
+
+  @override
+  String get sortOldest => 'Manya da farko';
+
+  @override
+  String get sortYoungest => 'Ƙanana da farko';
+
+  @override
+  String get sortFamily => 'Tsarin iyali';
 }
