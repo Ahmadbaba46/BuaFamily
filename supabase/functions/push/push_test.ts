@@ -41,6 +41,11 @@ Deno.test("texts follow the reader's language", () => {
   assertEquals(render("fund_confirmed", { amount: 20000 }, "en", "Bua").body,
     "Your contribution of ₦20,000 was confirmed. Thank you!");
   assertEquals(render("something_new", {}, "en", "Bua").body, "New notification");
+  assertEquals(render("account_request", { name: "Musa" }, "en", "Bua").body, "New sign-up waiting for approval: Musa");
+  assertEquals(render("change_request", { name: "Aisha", request_kind: "create_person", person: "Fatima" }, "en", "Bua").body,
+    "Aisha suggested adding Fatima to the tree");
+  assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,
+    "Ba a karɓi shawararka game da Musa Bua ba");
   assertEquals(render("announcement", { body: "x".repeat(400) }, "en", "Bua").body.length, 298);
   assertEquals(naira(1240000.5), "₦1,240,000.5");
 });

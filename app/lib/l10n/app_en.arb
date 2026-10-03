@@ -1784,5 +1784,66 @@
   "testPushSent": "Sent. It should arrive on every device where you turned notifications on.",
   "notifTest": "Test notification: notifications are working on this device.",
   "addPhoto": "Add photo",
-  "photoLabel": "Photo"
+  "photoLabel": "Photo",
+  "notifAccountRequest": "New sign-up waiting for approval: {name}",
+  "@notifAccountRequest": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAccountNote": "{name} says: “{note}”",
+  "@notifAccountNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "notifChangeAdd": "{name} suggested adding {person} to the tree",
+  "@notifChangeAdd": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifChangeEdit": "{name} suggested a change to {person}",
+  "@notifChangeEdit": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifAccountApproved": "Welcome! Your account has been approved.",
+  "notifRequestApproved": "Your suggestion about {person} was approved",
+  "@notifRequestApproved": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifRequestDeclined": "Your suggestion about {person} was not accepted",
+  "@notifRequestDeclined": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSomeone": "someone",
+  "notifTheTree": "the tree",
+  "pendingPushHint": "Get a notification the moment an admin approves you."
 }

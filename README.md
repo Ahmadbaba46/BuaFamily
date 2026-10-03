@@ -225,11 +225,15 @@ no matter which app or tool connects:
 | Edit own details, photo, education, work, skills | n/a | ✓ | ✓ |
 | Change own name, dates or life status | n/a | via approval | ✓ |
 | Add relatives or relationships | n/a | via approval, if switched on | ✓ |
-| See private contact or health details | n/a | own only | ✓ |
+| See contact or health details | n/a | own, plus what relatives share with the family | ✓ |
 | Post moments, photos, events, announcements; tag, like, comment | ✗ | ✓ | ✓ |
 | Edit or delete a post, photo, event or comment | ✗ | own only | ✓ |
 | Pin to Home | ✗ | ✗ | ✓ |
+| Ask for welfare support, record a contribution | ✗ | ✓ | ✓ |
+| Confirm contributions, open causes, record payouts | ✗ | treasurers only | ✓ |
 | Approve requests, manage accounts and settings | ✗ | ✗ | ✓ |
+| Notified of sign-ups and suggestions | ✗ | ✗ | ✓ |
+| Turn on phone notifications | ✓ (to hear when approved) | ✓ | ✓ |
 
 The database also refuses impossible family structures: a person can't become
 their own ancestor or have two biological fathers.

@@ -34,6 +34,16 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
       NotificationKind.test => l.notifTest,
+      NotificationKind.accountRequest => n.str('note') != null
+          ? l.notifAccountNote(n.str('name') ?? '', n.str('note')!)
+          : l.notifAccountRequest(n.str('name') ?? ''),
+      NotificationKind.changeRequest => n.str('request_kind') == 'create_person'
+          ? l.notifChangeAdd(n.str('name') ?? '', n.str('person') ?? l.notifSomeone)
+          : l.notifChangeEdit(n.str('name') ?? '', n.str('person') ?? l.notifTheTree),
+      NotificationKind.accountApproved => l.notifAccountApproved,
+      NotificationKind.requestReviewed => n.data['approved'] == true
+          ? l.notifRequestApproved(n.str('person') ?? l.notifTheTree)
+          : l.notifRequestDeclined(n.str('person') ?? l.notifTheTree),
     };
 
 IconData _icon(NotificationKind k) => switch (k) {
@@ -51,6 +61,10 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,
       NotificationKind.test => Icons.notifications_active_outlined,
+      NotificationKind.accountRequest => Icons.person_add_alt_outlined,
+      NotificationKind.changeRequest => Icons.edit_note,
+      NotificationKind.accountApproved => Icons.celebration_outlined,
+      NotificationKind.requestReviewed => Icons.fact_check_outlined,
     };
 
 class NotificationsScreen extends ConsumerWidget {

@@ -133,7 +133,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Opened from More; admins only (see redirect).
       GoRoute(
         path: '/admin',
-        builder: (_, s) => AdminScreen(initialTab: s.uri.queryParameters['tab'] == 'settings' ? 2 : 0),
+        builder: (_, s) => AdminScreen(
+          initialTab: switch (s.uri.queryParameters['tab']) {
+            'settings' => 2,
+            'accounts' => 1,
+            _ => 0,
+          },
+        ),
       ),
       GoRoute(path: '/admin/data', builder: (_, _) => const ImportExportScreen()),
       GoRoute(path: '/admin/restore', builder: (_, _) => const RestoreScreen()),
