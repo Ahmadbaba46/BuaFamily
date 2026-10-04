@@ -49,7 +49,9 @@ share moments and photos, plan family events, and keep everyone's details
   tag relatives in a photo and add memories. Photos are resized before upload.
 - **Events and announcements:** naming ceremonies, weddings, meetings and more,
   with Going / Maybe / Can't go replies (and how many people you're bringing),
-  wishes, add-to-calendar and directions. Only admins can pin to Home.
+  wishes, add-to-calendar and directions. Only admins can pin to Home. On the
+  day: "I'm here" to mark who came (the host and admins mark anyone, children
+  and elders too), and the event's own album for photos from the day.
 - **Notifications:** a bell on Home for new events and announcements, being
   tagged, comments on your posts, birthdays and event reminders (live, no refresh).
 - **Phone notifications:** every notification can also pop up on members'

@@ -147,11 +147,15 @@ class Album {
     this.coverPath,
     this.minYear,
     this.maxYear,
+    this.eventId,
   });
 
   final String id;
   final String title;
   final String createdBy;
+
+  /// The event these photos are from, for an event's album.
+  final String? eventId;
   final DateTime createdAt;
   final String? description;
   final int photoCount;
@@ -175,6 +179,7 @@ class Album {
       coverPath: cover.isEmpty ? null : cover.first['storage_path'] as String,
       minYear: years.isEmpty ? null : years.first,
       maxYear: years.isEmpty ? null : years.last,
+      eventId: j['event_id'] as String?,
     );
   }
 }

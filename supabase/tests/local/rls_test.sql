@@ -1674,6 +1674,48 @@ reset role;
 select test.assert((select not (private.backup_data() ? 'dm_messages')), 'private messages are not in backups');
 
 -- ---------------------------------------------------------------------------
+-- 38. Event photos and who came.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.events (title, starts_at) values ('Sallah lunch', now() - interval '1 hour');
+insert into public.events (title, starts_at) values ('Next year''s reunion', now() + interval '200 days');
+insert into test.ids values ('lunch', (select id from public.events where title = 'Sallah lunch'));
+insert into test.ids values ('reunion', (select id from public.events where title = 'Next year''s reunion'));
+reset role;
+
+-- Anyone in the family gets the event's album, made once.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into test.ids values ('lunch_album', public.event_album((select id from test.ids where name = 'lunch')));
+select test.assert((select public.event_album((select id from test.ids where name = 'lunch'))
+  = (select id from test.ids where name = 'lunch_album')), 'one album per event');
+select test.assert((select title = 'Sallah lunch' and event_id = (select id from test.ids where name = 'lunch')
+  from public.albums where id = (select id from test.ids where name = 'lunch_album')), 'named after the event');
+
+-- Members mark themselves as there, once the event has begun.
+insert into public.event_attendance (event_id, person_id)
+  values ((select id from test.ids where name = 'lunch'), public.my_person_id());
+select test.expect_error(format($$insert into public.event_attendance (event_id, person_id) values (%L, public.my_person_id())$$,
+  (select id from test.ids where name = 'reunion')), 'not before the day');
+select test.expect_error(format($$insert into public.event_attendance (event_id, person_id)
+  select %L, id from public.persons where id <> public.my_person_id() limit 1$$,
+  (select id from test.ids where name = 'lunch')), 'members only mark themselves');
+reset role;
+
+-- The host (an admin here) marks anyone, including relatives without the app.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.event_attendance (event_id, person_id)
+  select (select id from test.ids where name = 'lunch'), id from public.persons
+  where id not in (select person_id from public.event_attendance) limit 2;
+select test.assert((select count(*) = 3 from public.event_attendance
+  where event_id = (select id from test.ids where name = 'lunch')), 'three came');
+reset role;
+select test.assert((select private.backup_data() ? 'event_attendance'), 'who came is in backups');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

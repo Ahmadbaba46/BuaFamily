@@ -3253,5 +3253,21 @@
   "includePhotos": "Include photos",
   "includePhotosHint": "Slower, and a bigger file.",
   "makeBook": "Make the book",
-  "makingBook": "Making the family book…"
+  "makingBook": "Making the family book…",
+  "whoCame": "Who came",
+  "whoCameCount": "Who came ({count})",
+  "@whoCameCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "imHere": "I'm here",
+  "youCame": "You're marked as here.",
+  "undoLabel": "Undo",
+  "markWhoCame": "Mark who came",
+  "noOneMarkedYet": "No one marked yet.",
+  "eventPhotosHint": "Share the photos from this day.",
+  "eventPhotosTitle": "Photos from the day"
 }

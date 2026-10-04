@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/l10n.dart';
+import '../../models/family_graph.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
@@ -159,6 +160,13 @@ class EventScreen extends ConsumerWidget {
             if (event.rsvpEnabled) ...[
               const SizedBox(height: 14),
               _Attendees(event: event),
+            ],
+            // From the day itself: who came, and the photos.
+            if (!DateTime.now().isBefore(event.startsAt.subtract(const Duration(hours: 6)))) ...[
+              const SizedBox(height: 14),
+              _WhoCame(event: event),
+              const SizedBox(height: 14),
+              _EventPhotos(event: event),
             ],
             const SizedBox(height: 14),
             SectionCard(
@@ -381,6 +389,207 @@ class _Attendees extends ConsumerWidget {
             );
           }),
       ]),
+    );
+  }
+}
+
+/// Who came, by person in the tree. Members mark themselves; the host and
+/// admins mark anyone (children and elders without the app too).
+class _WhoCame extends ConsumerWidget {
+  const _WhoCame({required this.event});
+
+  final FamilyEvent event;
+
+  Future<void> _set(BuildContext context, WidgetRef ref, {Set<String> add = const {}, Set<String> remove = const {}}) async {
+    final ok = await guarded(
+        context, () => ref.read(repositoryProvider).setAttendance(event.id, add: add, remove: remove));
+    if (ok) ref.invalidate(eventAttendanceProvider(event.id));
+  }
+
+  Future<void> _markMany(BuildContext context, WidgetRef ref, List<String> current) async {
+    final graph = ref.read(graphProvider).value;
+    if (graph == null) return;
+    final chosen = await showModalBottomSheet<Set<String>>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => _PeoplePicker(graph: graph, initial: current.toSet()),
+    );
+    if (chosen == null || !context.mounted) return;
+    await _set(context, ref, add: chosen.difference(current.toSet()), remove: current.toSet().difference(chosen));
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final profile = ref.watch(profileProvider);
+    final me = profile?.personId;
+    final graph = ref.watch(graphProvider).value;
+    final came = ref.watch(eventAttendanceProvider(event.id));
+    final ids = came.value ?? const <String>[];
+    final people = [for (final id in ids) ?graph?[id]]..sort((a, b) => a.displayName.compareTo(b.displayName));
+    final canMarkOthers = event.createdBy == profile?.id || (profile?.isAdmin ?? false);
+    final iCame = me != null && ids.contains(me);
+
+    return SectionCard(
+      title: ids.isEmpty ? l.whoCame : l.whoCameCount(ids.length),
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 14),
+      children: [
+        if (came.isLoading && !came.hasValue)
+          const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator(minHeight: 2))
+        else if (people.isEmpty)
+          Text(l.noOneMarkedYet, style: const TextStyle(fontSize: 14, color: Bua.inkSubtle))
+        else
+          Wrap(spacing: 6, runSpacing: 6, children: [
+            for (final p in people)
+              Tooltip(
+                message: p.displayName,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () => context.push('/person/${p.id}'),
+                  child: PersonAvatar(person: p, radius: 18),
+                ),
+              ),
+          ]),
+        const SizedBox(height: 10),
+        Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          if (me != null && !iCame)
+            FilledButton.icon(
+              onPressed: () => _set(context, ref, add: {me}),
+              icon: const Icon(Icons.how_to_reg_outlined, size: 18),
+              label: Text(l.imHere),
+            ),
+          if (iCame) ...[
+            Text(l.youCame, style: const TextStyle(fontSize: 14, color: Bua.greenDark)),
+            TextButton(onPressed: () => _set(context, ref, remove: {me}), child: Text(l.undoLabel)),
+          ],
+          if (canMarkOthers)
+            OutlinedButton.icon(
+              onPressed: () => _markMany(context, ref, ids),
+              icon: const Icon(Icons.checklist, size: 18),
+              label: Text(l.markWhoCame),
+            ),
+        ]),
+      ],
+    );
+  }
+}
+
+/// Tick everyone who came; returns the chosen ids, or null if closed.
+class _PeoplePicker extends StatefulWidget {
+  const _PeoplePicker({required this.graph, required this.initial});
+
+  final FamilyGraph graph;
+  final Set<String> initial;
+
+  @override
+  State<_PeoplePicker> createState() => _PeoplePickerState();
+}
+
+class _PeoplePickerState extends State<_PeoplePicker> {
+  late final Set<String> _chosen = {...widget.initial};
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final people = widget.graph.familyOrder().where((p) => p.isLiving && p.matches(_query)).toList();
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.9,
+      builder: (context, scroll) => Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Row(children: [
+              Expanded(child: Text(l.markWhoCame, style: Theme.of(context).textTheme.titleLarge)),
+              FilledButton(onPressed: () => Navigator.pop(context, _chosen), child: Text(l.save)),
+            ]),
+            const SizedBox(height: 10),
+            TextField(
+              decoration: InputDecoration(prefixIcon: const Icon(Icons.search), hintText: l.searchByName),
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ]),
+        ),
+        Expanded(
+          child: ListView.builder(
+            controller: scroll,
+            itemCount: people.length,
+            itemBuilder: (_, i) {
+              final p = people[i];
+              return CheckboxListTile(
+                value: _chosen.contains(p.id),
+                onChanged: (v) => setState(() => v == true ? _chosen.add(p.id) : _chosen.remove(p.id)),
+                secondary: PersonAvatar(person: p, radius: 18),
+                title: Text(p.displayName),
+                subtitle: p.branch == null ? null : Text(p.branch!),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
+  }
+}
+
+/// The event's own album: a strip of photos and a way to add more.
+class _EventPhotos extends ConsumerWidget {
+  const _EventPhotos({required this.event});
+
+  final FamilyEvent event;
+
+  Future<void> _add(BuildContext context, WidgetRef ref) async {
+    String? albumId;
+    final ok = await guarded(context, () async => albumId = await ref.read(repositoryProvider).eventAlbum(event.id));
+    if (!ok || albumId == null || !context.mounted) return;
+    ref.invalidate(albumsProvider);
+    context.push('/new-moment?album=$albumId');
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final album = ref.watch(albumsProvider).value?.where((a) => a.eventId == event.id).firstOrNull;
+    final photos = album == null ? const <Photo>[] : ref.watch(albumPhotosProvider(album.id)).value ?? const <Photo>[];
+    return SectionCard(
+      title: l.eventPhotosTitle,
+      trailing: album == null || photos.isEmpty
+          ? null
+          : TextButton(onPressed: () => context.push('/albums/${album.id}'), child: Text(l.seeAll)),
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 14),
+      children: [
+        if (photos.isEmpty)
+          Text(l.eventPhotosHint, style: const TextStyle(fontSize: 14, color: Bua.inkSubtle))
+        else
+          SizedBox(
+            height: 96,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: photos.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 6),
+              itemBuilder: (_, i) => ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  width: 96,
+                  child: GestureDetector(
+                    onTap: () => context.push('/photo/${photos[i].id}?album=${album!.id}'),
+                    child: StoragePhoto(photos[i].storagePath, placeholder: const Color(0xFFE8DDC8)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: FilledButton.tonalIcon(
+            onPressed: () => _add(context, ref),
+            icon: const Icon(Icons.add_photo_alternate_outlined, size: 18),
+            label: Text(l.addPhotos),
+          ),
+        ),
+      ],
     );
   }
 }

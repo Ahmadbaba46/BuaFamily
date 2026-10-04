@@ -1316,5 +1316,14 @@
   "includePhotos": "Haɗa da hotuna",
   "includePhotosHint": "Zai ɗauki lokaci, kuma fayil ɗin zai yi girma.",
   "makeBook": "Shirya littafin",
-  "makingBook": "Ana shirya littafin iyali…"
+  "makingBook": "Ana shirya littafin iyali…",
+  "whoCame": "Waɗanda suka zo",
+  "whoCameCount": "Waɗanda suka zo ({count})",
+  "imHere": "Ina nan",
+  "youCame": "An rubuta kana nan.",
+  "undoLabel": "Soke",
+  "markWhoCame": "Rubuta waɗanda suka zo",
+  "noOneMarkedYet": "Ba a rubuta kowa ba tukuna.",
+  "eventPhotosHint": "Raba hotunan wannan rana.",
+  "eventPhotosTitle": "Hotunan ranar"
 }

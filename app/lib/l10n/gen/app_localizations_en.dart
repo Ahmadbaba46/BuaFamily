@@ -4938,4 +4938,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get makingBook => 'Making the family book…';
+
+  @override
+  String get whoCame => 'Who came';
+
+  @override
+  String whoCameCount(int count) {
+    return 'Who came ($count)';
+  }
+
+  @override
+  String get imHere => 'I\'m here';
+
+  @override
+  String get youCame => 'You\'re marked as here.';
+
+  @override
+  String get undoLabel => 'Undo';
+
+  @override
+  String get markWhoCame => 'Mark who came';
+
+  @override
+  String get noOneMarkedYet => 'No one marked yet.';
+
+  @override
+  String get eventPhotosHint => 'Share the photos from this day.';
+
+  @override
+  String get eventPhotosTitle => 'Photos from the day';
 }
