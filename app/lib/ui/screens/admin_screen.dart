@@ -11,6 +11,7 @@ import '../../models/hijri.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
+import '../widgets/claim_card.dart' show hasOpenClaim;
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
 import '../widgets/hijri.dart';
@@ -19,17 +20,20 @@ import 'get_app_screen.dart';
 import 'users_screen.dart';
 
 class AdminScreen extends ConsumerWidget {
-  const AdminScreen({super.key, this.initialTab = 0});
+  const AdminScreen({super.key, this.initialTab = 0, this.usersFilter = UserFilter.all});
 
   /// 0 requests, 1 accounts, 2 settings.
   final int initialTab;
+
+  /// Which accounts to show first (e.g. claims from a notification).
+  final UserFilter usersFilter;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     final requests = ref.watch(requestsProvider(RequestStatus.pending)).value?.length ?? 0;
     final accounts =
-        ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending).length ?? 0;
+        ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending || hasOpenClaim(p)).length ?? 0;
 
     Widget tab(String label, int count, bool emphasise) => Tab(
           child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -78,7 +82,7 @@ class AdminScreen extends ConsumerWidget {
             Tab(text: l.settingsTitle),
           ]),
         ),
-        body: const TabBarView(children: [_RequestsTab(), UsersView(), _SettingsTab()]),
+        body: TabBarView(children: [const _RequestsTab(), UsersView(initialFilter: usersFilter), const _SettingsTab()]),
       ),
     );
   }

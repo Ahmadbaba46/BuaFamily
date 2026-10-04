@@ -57,6 +57,10 @@ Deno.test("texts follow the reader's language", () => {
     "Happy Islamic New Year 1448!");
   assertEquals(render("dues_reminder", { title: "Monthly dues", owed: 4000 }, "en", "Bua").body,
     "Monthly dues: you owe ₦4,000. Tap to pay.");
+  assertEquals(render("claim_reviewed", { approved: true, person: "Musa Bua" }, "en", "Bua").body,
+    "You're now linked to Musa Bua in the family tree.");
+  assertEquals(render("claim_reviewed", { approved: false, person: "Musa Bua", reason: "Wrong branch" }, "ha", "Bua").body,
+    "Ba a karɓi buƙatarka ta zama Musa Bua ba: “Wrong branch”");
   assertEquals(render("change_request", { name: "Aisha", request_kind: "create_person", person: "Fatima" }, "en", "Bua").body,
     "Aisha suggested adding Fatima to the tree");
   assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,

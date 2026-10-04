@@ -165,6 +165,10 @@ class FamilyRepository {
     return rows.map(Profile.fromJson).toList();
   }
 
+  /// Admin: say no to a "this is me" claim; the member is told (with [reason]).
+  Future<void> declineClaim(String userId, String? reason) =>
+      _db.rpc('admin_decline_claim', params: {'p_user_id': userId, 'p_reason': reason});
+
   Future<void> adminUpdateAccount(
     String userId, {
     AccountStatus? status,

@@ -4483,4 +4483,69 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentMethod => 'How it was paid';
+
+  @override
+  String get filterClaims => 'Claims';
+
+  @override
+  String get claimTitle => 'Says this is them in the tree';
+
+  @override
+  String get claimConfirm => 'Confirm & link';
+
+  @override
+  String get claimDecline => 'Decline';
+
+  @override
+  String get claimDeclineTitle => 'Decline this claim?';
+
+  @override
+  String get claimDeclineReason => 'Reason for them (optional)';
+
+  @override
+  String claimAlreadyLinked(String name) {
+    return '$name\'s account is already linked to this person. Unlink it first if this claim is right.';
+  }
+
+  @override
+  String get claimConfirmed => 'Linked. They\'ll be told.';
+
+  @override
+  String get claimDeclined => 'Declined. They\'ll be told.';
+
+  @override
+  String claimsOnPerson(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n people say this is them',
+      one: 'Someone says this is them',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String personFacts(String born, String parents) {
+    return 'Born $born · $parents';
+  }
+
+  @override
+  String childOf(String names) {
+    return 'child of $names';
+  }
+
+  @override
+  String notifClaimApproved(String person) {
+    return 'You\'re now linked to $person in the family tree.';
+  }
+
+  @override
+  String notifClaimDeclined(String person) {
+    return 'Your request to be linked to $person was declined.';
+  }
+
+  @override
+  String notifClaimDeclinedWhy(String person, String reason) {
+    return 'Your request to be linked to $person was declined: “$reason”';
+  }
 }

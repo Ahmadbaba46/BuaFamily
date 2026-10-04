@@ -7297,6 +7297,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How it was paid'**
   String get paymentMethod;
+
+  /// No description provided for @filterClaims.
+  ///
+  /// In en, this message translates to:
+  /// **'Claims'**
+  String get filterClaims;
+
+  /// No description provided for @claimTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Says this is them in the tree'**
+  String get claimTitle;
+
+  /// No description provided for @claimConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & link'**
+  String get claimConfirm;
+
+  /// No description provided for @claimDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get claimDecline;
+
+  /// No description provided for @claimDeclineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline this claim?'**
+  String get claimDeclineTitle;
+
+  /// No description provided for @claimDeclineReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for them (optional)'**
+  String get claimDeclineReason;
+
+  /// No description provided for @claimAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s account is already linked to this person. Unlink it first if this claim is right.'**
+  String claimAlreadyLinked(String name);
+
+  /// No description provided for @claimConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked. They\'ll be told.'**
+  String get claimConfirmed;
+
+  /// No description provided for @claimDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined. They\'ll be told.'**
+  String get claimDeclined;
+
+  /// No description provided for @claimsOnPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{Someone says this is them} other{{n} people say this is them}}'**
+  String claimsOnPerson(int n);
+
+  /// No description provided for @personFacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Born {born} · {parents}'**
+  String personFacts(String born, String parents);
+
+  /// No description provided for @childOf.
+  ///
+  /// In en, this message translates to:
+  /// **'child of {names}'**
+  String childOf(String names);
+
+  /// No description provided for @notifClaimApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re now linked to {person} in the family tree.'**
+  String notifClaimApproved(String person);
+
+  /// No description provided for @notifClaimDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request to be linked to {person} was declined.'**
+  String notifClaimDeclined(String person);
+
+  /// No description provided for @notifClaimDeclinedWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request to be linked to {person} was declined: “{reason}”'**
+  String notifClaimDeclinedWhy(String person, String reason);
 }
 
 class _AppLocalizationsDelegate

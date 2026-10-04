@@ -52,6 +52,7 @@ import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/stories_screen.dart';
 import 'ui/screens/tree_check_screen.dart';
 import 'ui/screens/tree_screen.dart';
+import 'ui/screens/users_screen.dart' show UserFilter;
 import 'ui/screens/welfare_fund_screen.dart';
 import 'ui/screens/who_can_help_screen.dart';
 import 'domain/family_files.dart' show ImportPlan;
@@ -172,6 +173,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             'accounts' => 1,
             _ => 0,
           },
+          usersFilter: s.uri.queryParameters['filter'] == 'claims' ? UserFilter.claims : UserFilter.all,
         ),
       ),
       GoRoute(path: '/admin/data', builder: (_, _) => const ImportExportScreen()),

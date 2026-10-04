@@ -12,6 +12,7 @@ import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/claim_card.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
@@ -154,6 +155,14 @@ class _PersonView extends ConsumerWidget {
       SliverToBoxAdapter(
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             header,
+            // Admins: members who say this person is them.
+            if (isAdmin)
+              for (final claimant in (ref.watch(profilesProvider).value ?? const <Profile>[])
+                  .where((p) => hasOpenClaim(p) && p.requestedPersonId == person.id))
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: ClaimCard(account: claimant, person: person, showPerson: false),
+                ),
             if (!person.isLiving) ...[
               const SizedBox(height: 10),
               Center(child: Pill(l.late(person), background: Bua.track, color: Bua.unknownFg)),

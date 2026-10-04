@@ -2880,5 +2880,75 @@
   "outLabel": "Out",
   "nothingInPeriod": "No money in or out in this period.",
   "searchByName": "Search by name",
-  "paymentMethod": "How it was paid"
+  "paymentMethod": "How it was paid",
+  "filterClaims": "Claims",
+  "claimTitle": "Says this is them in the tree",
+  "claimConfirm": "Confirm & link",
+  "claimDecline": "Decline",
+  "claimDeclineTitle": "Decline this claim?",
+  "claimDeclineReason": "Reason for them (optional)",
+  "claimAlreadyLinked": "{name}'s account is already linked to this person. Unlink it first if this claim is right.",
+  "@claimAlreadyLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "claimConfirmed": "Linked. They'll be told.",
+  "claimDeclined": "Declined. They'll be told.",
+  "claimsOnPerson": "{n, plural, =1{Someone says this is them} other{{n} people say this is them}}",
+  "@claimsOnPerson": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "personFacts": "Born {born} · {parents}",
+  "@personFacts": {
+    "placeholders": {
+      "born": {
+        "type": "String"
+      },
+      "parents": {
+        "type": "String"
+      }
+    }
+  },
+  "childOf": "child of {names}",
+  "@childOf": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "notifClaimApproved": "You're now linked to {person} in the family tree.",
+  "@notifClaimApproved": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifClaimDeclined": "Your request to be linked to {person} was declined.",
+  "@notifClaimDeclined": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "notifClaimDeclinedWhy": "Your request to be linked to {person} was declined: “{reason}”",
+  "@notifClaimDeclinedWhy": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  }
 }
