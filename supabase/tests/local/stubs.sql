@@ -5,12 +5,17 @@ create role authenticated nologin;
 create role service_role nologin bypassrls;
 create role supabase_auth_admin nologin;
 
+create schema extensions;
+create extension pgcrypto schema extensions;
+
 create schema auth;
 create table auth.users (
   id uuid primary key,
   email text,
   phone text,
-  raw_user_meta_data jsonb not null default '{}'::jsonb
+  raw_user_meta_data jsonb not null default '{}'::jsonb,
+  encrypted_password text,
+  updated_at timestamptz
 );
 create function auth.uid() returns uuid language sql stable as $$
   select nullif(current_setting('request.jwt.claims', true)::jsonb ->> 'sub', '')::uuid

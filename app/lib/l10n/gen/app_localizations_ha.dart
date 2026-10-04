@@ -3964,4 +3964,56 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get pageSignIn => 'shiga';
+
+  @override
+  String get continueWithGoogle => 'Ci gaba da Google';
+
+  @override
+  String get orWord => 'ko';
+
+  @override
+  String get resetHowTitle => 'Sabunta kalmar sirri';
+
+  @override
+  String get resetByEmail => 'Aika hanyar haɗi zuwa imel ɗina';
+
+  @override
+  String get resetByEmailHint => 'Rubuta imel ɗinka a sama tukuna.';
+
+  @override
+  String get resetByText => 'Aika lamba zuwa wayata';
+
+  @override
+  String get resetByTextHint => 'Lambar wayar da ke kan bayananka';
+
+  @override
+  String get sendResetCode => 'Aika lamba';
+
+  @override
+  String resetCodeSentTo(String phone) {
+    return 'Idan $phone na kan wani asusu, lamba na zuwa. Tana aiki na minti 10.';
+  }
+
+  @override
+  String get newPasswordLabel => 'Sabuwar kalmar sirri (haruffa 8 ko fiye)';
+
+  @override
+  String get setNewPassword => 'Saita sabuwar kalmar sirri';
+
+  @override
+  String get resetDone => 'An canza kalmar sirri. Barka da dawowa!';
+
+  @override
+  String get resetSmsOff =>
+      'Ba a saita saƙon waya ba tukuna. Yi amfani da imel ɗinka.';
+
+  @override
+  String get resetTooMany =>
+      'Don Allah ka jira kaɗan kafin ka sake neman lamba.';
+
+  @override
+  String get resetWrongCode => 'Lambar ba daidai ba ce. Duba saƙon.';
+
+  @override
+  String get resetExpired => 'Lambar ta ƙare. Nemi sabuwa.';
 }

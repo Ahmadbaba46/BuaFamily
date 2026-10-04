@@ -1086,5 +1086,21 @@
   "pageAnAlbum": "kundin hotuna",
   "pageAPhoto": "hoto",
   "pageAConversation": "tattaunawar jagoranci",
-  "pageSignIn": "shiga"
+  "pageSignIn": "shiga",
+  "continueWithGoogle": "Ci gaba da Google",
+  "orWord": "ko",
+  "resetHowTitle": "Sabunta kalmar sirri",
+  "resetByEmail": "Aika hanyar haɗi zuwa imel ɗina",
+  "resetByEmailHint": "Rubuta imel ɗinka a sama tukuna.",
+  "resetByText": "Aika lamba zuwa wayata",
+  "resetByTextHint": "Lambar wayar da ke kan bayananka",
+  "sendResetCode": "Aika lamba",
+  "resetCodeSentTo": "Idan {phone} na kan wani asusu, lamba na zuwa. Tana aiki na minti 10.",
+  "newPasswordLabel": "Sabuwar kalmar sirri (haruffa 8 ko fiye)",
+  "setNewPassword": "Saita sabuwar kalmar sirri",
+  "resetDone": "An canza kalmar sirri. Barka da dawowa!",
+  "resetSmsOff": "Ba a saita saƙon waya ba tukuna. Yi amfani da imel ɗinka.",
+  "resetTooMany": "Don Allah ka jira kaɗan kafin ka sake neman lamba.",
+  "resetWrongCode": "Lambar ba daidai ba ce. Duba saƙon.",
+  "resetExpired": "Lambar ta ƙare. Nemi sabuwa."
 }

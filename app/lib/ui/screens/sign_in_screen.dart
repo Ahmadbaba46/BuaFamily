@@ -12,6 +12,7 @@ import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import 'notification_settings_screen.dart' show formatPhone, normalizePhone;
+import 'password_reset_sheet.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -194,15 +195,60 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (mounted) setState(() => _busy = false);
   }
 
+  /// A link by email, or a code by text message.
   Future<void> _forgot() async {
-    final email = _email.text.trim();
-    if (!email.contains('@')) {
-      showSnack(context, context.l10n.invalidEmail);
+    final l = context.l10n;
+    final how = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (c) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+            child: Text(l.resetHowTitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          ),
+          ListTile(
+            leading: const Icon(Icons.sms_outlined, color: Bua.green),
+            title: Text(l.resetByText),
+            subtitle: Text(l.resetByTextHint),
+            onTap: () => Navigator.pop(c, 'sms'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.mail_outline, color: Bua.green),
+            title: Text(l.resetByEmail),
+            subtitle: _email.text.contains('@') ? Text(_email.text.trim()) : Text(l.resetByEmailHint),
+            onTap: () => Navigator.pop(c, 'email'),
+          ),
+          const SizedBox(height: 8),
+        ]),
+      ),
+    );
+    if (!mounted || how == null) return;
+    if (how == 'sms') {
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        showDragHandle: true,
+        builder: (_) => const SafeArea(child: PasswordResetBySms()),
+      );
       return;
     }
-    final l = context.l10n;
+    final email = _email.text.trim();
+    if (!email.contains('@')) {
+      showSnack(context, l.invalidEmail);
+      return;
+    }
     final ok = await guarded(context, () => ref.read(repositoryProvider).auth.resetPasswordForEmail(email));
     if (ok && mounted) showSnack(context, l.resetPasswordSent);
+  }
+
+  Future<void> _google() async {
+    setState(() => _busy = true);
+    await guarded(
+      context,
+      () => ref.read(repositoryProvider).signInWithGoogle(web: kIsWeb, webReturn: kIsWeb ? '${Uri.base.origin}/' : null),
+    );
+    if (mounted) setState(() => _busy = false);
   }
 
   @override
@@ -321,6 +367,24 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                         ]),
                         ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Row(children: [
+                            const Expanded(child: Divider(color: Bua.line)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(l.orWord, style: const TextStyle(color: Bua.inkSubtle)),
+                            ),
+                            const Expanded(child: Divider(color: Bua.line)),
+                          ]),
+                        ),
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+                          onPressed: _busy ? null : _google,
+                          icon: const Text('G', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Bua.green)),
+                          label: Text(l.continueWithGoogle),
+                        ),
+                        const SizedBox(height: 8),
                       ]),
                     ),
                   ),

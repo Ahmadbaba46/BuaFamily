@@ -136,6 +136,26 @@ class FamilyRepository {
           ActivityEntry.fromJson(Map<String, dynamic>.from(r as Map)),
       ];
 
+  // ---------------------------------------------------------------- signing in
+
+  /// Opens Google's sign-in page; the session arrives when it comes back
+  /// (to the website, or to the Android app through its link).
+  Future<bool> signInWithGoogle({required bool web, String? webReturn}) => auth.signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: web ? webReturn : 'com.fuyoudhat.buafamily://login-callback',
+        authScreenLaunchMode: web ? LaunchMode.platformDefault : LaunchMode.externalApplication,
+      );
+
+  /// Texts a password reset code to the phone on the member's profile.
+  /// {ok: true} or {ok: false, reason: 'sms_off' | 'bad_phone' | 'too_many'}.
+  Future<Map<String, dynamic>> requestPasswordResetSms(String phone) async =>
+      Map<String, dynamic>.from(await _db.rpc('request_password_reset_sms', params: {'p_phone': phone}) as Map);
+
+  /// {ok: true, email} or {ok: false, reason: 'weak_password' | 'wrong_code' | 'expired'}.
+  Future<Map<String, dynamic>> resetPasswordWithSms(String phone, String code, String password) async =>
+      Map<String, dynamic>.from(await _db.rpc('reset_password_with_sms',
+          params: {'p_phone': phone, 'p_code': code, 'p_password': password}) as Map);
+
   /// "I'm here": last seen, and a day of activity for the metrics.
   Future<void> touchActivity(String platform, {int? build}) =>
       _db.rpc('touch_activity', params: {'p_platform': platform, 'p_build': ?build});

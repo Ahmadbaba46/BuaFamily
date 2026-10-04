@@ -6619,6 +6619,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'sign-in'**
   String get pageSignIn;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @orWord.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orWord;
+
+  /// No description provided for @resetHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get resetHowTitle;
+
+  /// No description provided for @resetByEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a link to my email'**
+  String get resetByEmail;
+
+  /// No description provided for @resetByEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email above first.'**
+  String get resetByEmailHint;
+
+  /// No description provided for @resetByText.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a code to my phone'**
+  String get resetByText;
+
+  /// No description provided for @resetByTextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The phone number saved on your profile'**
+  String get resetByTextHint;
+
+  /// No description provided for @sendResetCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get sendResetCode;
+
+  /// No description provided for @resetCodeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'If {phone} is on an account, a code is on its way. It works for 10 minutes.'**
+  String resetCodeSentTo(String phone);
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password (8 or more characters)'**
+  String get newPasswordLabel;
+
+  /// No description provided for @setNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Set new password'**
+  String get setNewPassword;
+
+  /// No description provided for @resetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed. Welcome back!'**
+  String get resetDone;
+
+  /// No description provided for @resetSmsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Text messages are not set up yet. Use your email instead.'**
+  String get resetSmsOff;
+
+  /// No description provided for @resetTooMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a little before asking for another code.'**
+  String get resetTooMany;
+
+  /// No description provided for @resetWrongCode.
+  ///
+  /// In en, this message translates to:
+  /// **'That code isn\'t right. Check the text message.'**
+  String get resetWrongCode;
+
+  /// No description provided for @resetExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'That code has expired. Ask for a new one.'**
+  String get resetExpired;
 }
 
 class _AppLocalizationsDelegate

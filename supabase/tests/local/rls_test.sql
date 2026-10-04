@@ -1218,6 +1218,68 @@ update public.persons set biography = 'Updated by the system' where id = (select
 select test.assert((select count(*) = :log_before from public.activity_log), 'system changes are not logged');
 
 -- ---------------------------------------------------------------------------
+-- 27. Password reset by SMS.
+-- ---------------------------------------------------------------------------
+update public.app_settings set sms_enabled = true, sms_sender_id = 'BuaFamily';
+update public.profiles set phone = '2348035550001' where id = :member_id;
+update auth.users set email = 'aisha@example.com', encrypted_password = 'old' where id = :member_id;
+select count(*) as sms_before from private.sms_outbox \gset
+
+set role anon;
+select test.assert((select public.request_password_reset_sms('0803 555 0001') ->> 'ok' = 'true'), 'a code is sent');
+select test.assert((select public.request_password_reset_sms('0803 555 0001') ->> 'reason' = 'too_many'),
+  'one code a minute');
+select test.assert((select public.request_password_reset_sms('0809 999 9999') ->> 'ok' = 'true'),
+  'unknown numbers get the same answer');
+reset role;
+select test.assert((select count(*) = :sms_before + 1 from private.sms_outbox), 'only the member gets a text');
+select test.assert((select message ~ ': [0-9]{6}\. ' from private.sms_outbox
+  where phone = '2348035550001' order by id desc limit 1), 'the text carries a 6-digit code');
+select test.assert((select code_hash not like '%' || substring(o.message from '[0-9]{6}') || '%'
+  from private.password_resets r, private.sms_outbox o
+  where r.phone = '2348035550001' and o.phone = r.phone order by o.id desc limit 1), 'the code is stored hashed');
+-- Make the code known for the test.
+update private.password_resets set code_hash = extensions.crypt('123456', extensions.gen_salt('bf'))
+  where phone = '2348035550001';
+
+set role anon;
+select test.assert((select public.reset_password_with_sms('08035550001', '123456', 'short') ->> 'reason' = 'weak_password'),
+  'passwords need 8 characters');
+select test.assert((select public.reset_password_with_sms('08035550001', '000000', 'new-password-1') ->> 'reason' = 'wrong_code'),
+  'wrong code refused');
+select test.assert((select public.reset_password_with_sms('08035550001', '123456', 'new-password-1') ->> 'email' = 'aisha@example.com'),
+  'right code sets the password and returns the email');
+select test.assert((select public.reset_password_with_sms('08035550001', '123456', 'another-pass') ->> 'reason' = 'expired'),
+  'a code works once');
+select test.expect_error($$select count(*) from private.password_resets$$, 'codes are not readable');
+reset role;
+select test.assert((select encrypted_password = extensions.crypt('new-password-1', encrypted_password)
+  from auth.users where id = :member_id), 'the new password is stored as a bcrypt hash');
+
+-- Five wrong tries end the code.
+update private.password_resets set created_at = created_at - interval '2 minutes';
+set role anon;
+select public.request_password_reset_sms('08035550001');
+select public.reset_password_with_sms('08035550001', '000001', 'whatever-123') from generate_series(1, 5);
+reset role;
+update private.password_resets set code_hash = extensions.crypt('654321', extensions.gen_salt('bf'))
+  where phone = '2348035550001' and used_at is null;
+set role anon;
+select test.assert((select public.reset_password_with_sms('08035550001', '654321', 'whatever-123') ->> 'reason' = 'expired'),
+  'locked after five wrong tries');
+reset role;
+update public.app_settings set sms_enabled = false;
+set role anon;
+select test.assert((select public.request_password_reset_sms('08035550001') ->> 'reason' = 'sms_off'), 'needs SMS set up');
+reset role;
+
+-- Google accounts get Google's name.
+insert into auth.users (id, email, raw_user_meta_data)
+  values ('00000000-0000-0000-0000-0000000000ee', 'zainab.bua@gmail.com', '{"full_name": "Zainab Bua", "avatar_url": "x"}');
+select test.assert((select display_name = 'Zainab Bua' and status = 'pending' from public.profiles
+  where id = '00000000-0000-0000-0000-0000000000ee'), 'Google sign-ups use their Google name');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
