@@ -7759,6 +7759,89 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy policy'**
   String get privacyPolicy;
+
+  /// No description provided for @notifWeeklySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'This week: {active} active, {moments} moments, {photos} photos, {moneyIn} in.'**
+  String notifWeeklySummary(
+    int active,
+    int moments,
+    int photos,
+    String moneyIn,
+  );
+
+  /// No description provided for @notifWeeklyWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} waiting for you.'**
+  String notifWeeklyWaiting(int count);
+
+  /// No description provided for @notifAlertBlood.
+  ///
+  /// In en, this message translates to:
+  /// **'No donor yet for {group} blood for {patient} ({hours} h). Please call around.'**
+  String notifAlertBlood(String group, String patient, int hours);
+
+  /// No description provided for @notifAlertWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting over 3 days: {suggestions} suggestions, {accounts} new accounts.'**
+  String notifAlertWaiting(int suggestions, int accounts);
+
+  /// No description provided for @notifAlertFundLow.
+  ///
+  /// In en, this message translates to:
+  /// **'The welfare fund is down to {balance}, below {threshold}.'**
+  String notifAlertFundLow(String balance, String threshold);
+
+  /// No description provided for @adminUpdatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin updates'**
+  String get adminUpdatesTitle;
+
+  /// No description provided for @weeklySummaryToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly summary on Monday mornings'**
+  String get weeklySummaryToggle;
+
+  /// No description provided for @weeklySummaryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened in the week and what\'s waiting, for every admin.'**
+  String get weeklySummaryHint;
+
+  /// No description provided for @fundAlertBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Warn when the fund is below'**
+  String get fundAlertBelow;
+
+  /// No description provided for @fundAlertHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins and treasurers are told once each time the balance drops below this.'**
+  String get fundAlertHint;
+
+  /// No description provided for @offLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get offLabel;
+
+  /// No description provided for @alertsAlwaysOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins are also alerted when a blood request has no offer after 2 hours, and when suggestions or accounts wait over 3 days.'**
+  String get alertsAlwaysOn;
+
+  /// No description provided for @notifWeeklyForAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly summary (admins)'**
+  String get notifWeeklyForAdmins;
 }
 
 class _AppLocalizationsDelegate

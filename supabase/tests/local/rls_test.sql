@@ -1583,6 +1583,54 @@ reset role;
 update public.app_settings set play_store_url = null;
 
 -- ---------------------------------------------------------------------------
+-- 36. Weekly summary and alerts for admins.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+select test.assert((select private.weekly_summary('2031-01-06') >= 1), 'a weekly summary goes to admins');
+select test.assert((select private.weekly_summary('2031-01-06') = 0), 'only once a week');
+select test.assert((select data ? 'moments' and data ? 'waiting_suggestions' and link = '/admin/metrics'
+  from public.notifications where kind = 'weekly_summary' and user_id = :admin_id order by created_at desc limit 1),
+  'it says what happened and what is waiting');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'weekly_summary' and user_id = :member_id),
+  'members do not get it');
+update public.app_settings set weekly_summary = false;
+select test.assert((select private.weekly_summary('2031-01-13') = 0), 'admins can turn it off');
+update public.app_settings set weekly_summary = true;
+
+-- A blood request with no offer, two hours on.
+insert into public.blood_requests (requested_by, blood_group, patient_name, hospital, created_at)
+  values (:member_id, 'O-', 'Alert patient', 'AKTH', now() - interval '3 hours');
+select private.admin_alerts();
+select test.assert((select count(*) = 1 from public.notifications where kind = 'admin_alert' and user_id = :admin_id
+  and data ->> 'alert' = 'blood_no_offer' and data ->> 'patient' = 'Alert patient'), 'admins hear about a request nobody answered');
+select private.admin_alerts();
+select test.assert((select count(*) = 1 from public.notifications where kind = 'admin_alert'
+  and data ->> 'alert' = 'blood_no_offer' and data ->> 'patient' = 'Alert patient'), 'once');
+update public.blood_requests set status = 'closed' where patient_name = 'Alert patient';
+
+-- The fund below the level set: once, until it recovers.
+update public.app_settings set fund_alert_below = private.fund_balance() + 1000;
+select private.admin_alerts();
+select private.admin_alerts();
+select test.assert((select count(*) = 1 from public.notifications where kind = 'admin_alert' and user_id = :admin_id
+  and data ->> 'alert' = 'fund_low'), 'the fund-low alert goes out once');
+select test.assert((select count(*) = 1 from public.notifications where kind = 'admin_alert' and user_id = :member2_id
+  and data ->> 'alert' = 'fund_low'), 'treasurers hear too');
+update public.app_settings set fund_alert_below = 0;
+select private.admin_alerts();
+select test.assert((select count(*) = 0 from private.alert_marks where key = 'fund_low' and at is not null), 'recovered: ready to warn again');
+update public.app_settings set fund_alert_below = null;
+
+-- Waiting over three days (in the morning, Nigerian time).
+insert into public.change_requests (requested_by, kind, payload, created_at)
+  values (:member_id, 'create_person', '{"first_name": "Waiting"}', now() - interval '4 days');
+select private.admin_alerts(date_trunc('day', now() at time zone 'Africa/Lagos') at time zone 'Africa/Lagos' + interval '9 hours');
+select test.assert((select (data ->> 'suggestions')::int >= 1 from public.notifications where kind = 'admin_alert'
+  and user_id = :admin_id and data ->> 'alert' = 'waiting'), 'admins hear about suggestions waiting three days');
+delete from public.change_requests where payload ->> 'first_name' = 'Waiting';
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

@@ -4687,4 +4687,61 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Manufofin sirri';
+
+  @override
+  String notifWeeklySummary(
+    int active,
+    int moments,
+    int photos,
+    String moneyIn,
+  ) {
+    return 'Wannan mako: mutum $active sun shiga, labarai $moments, hotuna $photos, $moneyIn sun shigo.';
+  }
+
+  @override
+  String notifWeeklyWaiting(int count) {
+    return '$count na jiran ka.';
+  }
+
+  @override
+  String notifAlertBlood(String group, String patient, int hours) {
+    return 'Har yanzu babu mai ba da jinin $group ga $patient (awa $hours). Don Allah a tuntuɓi mutane.';
+  }
+
+  @override
+  String notifAlertWaiting(int suggestions, int accounts) {
+    return 'Sun jira fiye da kwana 3: shawarwari $suggestions, sababbin asusu $accounts.';
+  }
+
+  @override
+  String notifAlertFundLow(String balance, String threshold) {
+    return 'Asusun taimako ya ragu zuwa $balance, ƙasa da $threshold.';
+  }
+
+  @override
+  String get adminUpdatesTitle => 'Sanarwar shugabanni';
+
+  @override
+  String get weeklySummaryToggle => 'Taƙaitaccen mako a safiyar Litinin';
+
+  @override
+  String get weeklySummaryHint =>
+      'Abin da ya faru a mako da abin da ke jira, ga kowane shugaba.';
+
+  @override
+  String get fundAlertBelow => 'Gargaɗi idan asusun ya yi ƙasa da';
+
+  @override
+  String get fundAlertHint =>
+      'Za a sanar da shugabanni da ma\'aji sau ɗaya duk lokacin da kuɗin ya faɗi ƙasa da wannan.';
+
+  @override
+  String get offLabel => 'A kashe';
+
+  @override
+  String get alertsAlwaysOn =>
+      'Ana kuma sanar da shugabanni idan buƙatar jini ba ta samu tayi ba bayan awa 2, da idan shawarwari ko asusu sun jira fiye da kwana 3.';
+
+  @override
+  String get notifWeeklyForAdmins => 'Taƙaitaccen mako (shugabanni)';
 }

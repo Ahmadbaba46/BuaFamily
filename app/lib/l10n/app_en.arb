@@ -3085,5 +3085,74 @@
   "playStoreLinkHelp": "Once the app is on Google Play, paste its link here. The download page then sends people to Play.",
   "playStoreLinkInvalid": "Use the link from Google Play (https://play.google.com/…).",
   "notSet": "Not set",
-  "privacyPolicy": "Privacy policy"
+  "privacyPolicy": "Privacy policy",
+  "notifWeeklySummary": "This week: {active} active, {moments} moments, {photos} photos, {moneyIn} in.",
+  "@notifWeeklySummary": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "moments": {
+        "type": "int"
+      },
+      "photos": {
+        "type": "int"
+      },
+      "moneyIn": {
+        "type": "String"
+      }
+    }
+  },
+  "notifWeeklyWaiting": "{count} waiting for you.",
+  "@notifWeeklyWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifAlertBlood": "No donor yet for {group} blood for {patient} ({hours} h). Please call around.",
+  "@notifAlertBlood": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      },
+      "patient": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "notifAlertWaiting": "Waiting over 3 days: {suggestions} suggestions, {accounts} new accounts.",
+  "@notifAlertWaiting": {
+    "placeholders": {
+      "suggestions": {
+        "type": "int"
+      },
+      "accounts": {
+        "type": "int"
+      }
+    }
+  },
+  "notifAlertFundLow": "The welfare fund is down to {balance}, below {threshold}.",
+  "@notifAlertFundLow": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      },
+      "threshold": {
+        "type": "String"
+      }
+    }
+  },
+  "adminUpdatesTitle": "Admin updates",
+  "weeklySummaryToggle": "Weekly summary on Monday mornings",
+  "weeklySummaryHint": "What happened in the week and what's waiting, for every admin.",
+  "fundAlertBelow": "Warn when the fund is below",
+  "fundAlertHint": "Admins and treasurers are told once each time the balance drops below this.",
+  "offLabel": "Off",
+  "alertsAlwaysOn": "Admins are also alerted when a blood request has no offer after 2 hours, and when suggestions or accounts wait over 3 days.",
+  "notifWeeklyForAdmins": "Weekly summary (admins)"
 }

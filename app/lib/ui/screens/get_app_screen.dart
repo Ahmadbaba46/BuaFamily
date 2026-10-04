@@ -10,6 +10,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/form_dialog.dart';
 
 /// Opens the APK download in the browser (Android then offers to install it).
 /// The Google Play build opens its Play page instead.
@@ -302,28 +303,12 @@ class _PlayStoreLink extends ConsumerWidget {
 
   Future<void> _edit(BuildContext context, WidgetRef ref) async {
     final l = context.l10n;
-    final box = TextEditingController(text: url ?? '');
-    final value = await showDialog<String>(
-      context: context,
-      builder: (c) => AlertDialog(
-        title: Text(l.playStoreLink),
-        content: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(l.playStoreLinkHelp, style: const TextStyle(fontSize: 13, color: Bua.inkMuted, height: 1.4)),
-          const SizedBox(height: 12),
-          TextField(
-            controller: box,
-            keyboardType: TextInputType.url,
-            decoration: const InputDecoration(hintText: 'https://play.google.com/store/apps/details?id=$androidPackage'),
-          ),
-        ]),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(c), child: Text(l.cancel)),
-          FilledButton(onPressed: () => Navigator.pop(c, box.text.trim()), child: Text(l.save)),
-        ],
-      ),
-    );
-    box.dispose();
-    if (value == null || !context.mounted) return;
+    final r = await showFormDialog(context, title: l.playStoreLink, note: l.playStoreLinkHelp, fields: [
+      TextSpec('url', l.playStoreLink,
+          initial: url, hint: 'https://play.google.com/store/apps/details?id=$androidPackage'),
+    ]);
+    if (r == null || !context.mounted) return;
+    final value = (r['url'] as String?) ?? '';
     if (value.isNotEmpty && !value.startsWith('https://play.google.com/')) {
       showSnack(context, l.playStoreLinkInvalid);
       return;

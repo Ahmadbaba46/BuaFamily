@@ -4780,4 +4780,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String notifWeeklySummary(
+    int active,
+    int moments,
+    int photos,
+    String moneyIn,
+  ) {
+    return 'This week: $active active, $moments moments, $photos photos, $moneyIn in.';
+  }
+
+  @override
+  String notifWeeklyWaiting(int count) {
+    return '$count waiting for you.';
+  }
+
+  @override
+  String notifAlertBlood(String group, String patient, int hours) {
+    return 'No donor yet for $group blood for $patient ($hours h). Please call around.';
+  }
+
+  @override
+  String notifAlertWaiting(int suggestions, int accounts) {
+    return 'Waiting over 3 days: $suggestions suggestions, $accounts new accounts.';
+  }
+
+  @override
+  String notifAlertFundLow(String balance, String threshold) {
+    return 'The welfare fund is down to $balance, below $threshold.';
+  }
+
+  @override
+  String get adminUpdatesTitle => 'Admin updates';
+
+  @override
+  String get weeklySummaryToggle => 'Weekly summary on Monday mornings';
+
+  @override
+  String get weeklySummaryHint =>
+      'What happened in the week and what\'s waiting, for every admin.';
+
+  @override
+  String get fundAlertBelow => 'Warn when the fund is below';
+
+  @override
+  String get fundAlertHint =>
+      'Admins and treasurers are told once each time the balance drops below this.';
+
+  @override
+  String get offLabel => 'Off';
+
+  @override
+  String get alertsAlwaysOn =>
+      'Admins are also alerted when a blood request has no offer after 2 hours, and when suggestions or accounts wait over 3 days.';
+
+  @override
+  String get notifWeeklyForAdmins => 'Weekly summary (admins)';
 }

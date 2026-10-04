@@ -1276,5 +1276,18 @@
   "playStoreLinkHelp": "Da zarar manhajar ta hau Google Play, liƙa mahaɗinta a nan. Shafin saukewa zai tura mutane zuwa Play.",
   "playStoreLinkInvalid": "Yi amfani da mahaɗin Google Play (https://play.google.com/…).",
   "notSet": "Ba a saka ba",
-  "privacyPolicy": "Manufofin sirri"
+  "privacyPolicy": "Manufofin sirri",
+  "notifWeeklySummary": "Wannan mako: mutum {active} sun shiga, labarai {moments}, hotuna {photos}, {moneyIn} sun shigo.",
+  "notifWeeklyWaiting": "{count} na jiran ka.",
+  "notifAlertBlood": "Har yanzu babu mai ba da jinin {group} ga {patient} (awa {hours}). Don Allah a tuntuɓi mutane.",
+  "notifAlertWaiting": "Sun jira fiye da kwana 3: shawarwari {suggestions}, sababbin asusu {accounts}.",
+  "notifAlertFundLow": "Asusun taimako ya ragu zuwa {balance}, ƙasa da {threshold}.",
+  "adminUpdatesTitle": "Sanarwar shugabanni",
+  "weeklySummaryToggle": "Taƙaitaccen mako a safiyar Litinin",
+  "weeklySummaryHint": "Abin da ya faru a mako da abin da ke jira, ga kowane shugaba.",
+  "fundAlertBelow": "Gargaɗi idan asusun ya yi ƙasa da",
+  "fundAlertHint": "Za a sanar da shugabanni da ma'aji sau ɗaya duk lokacin da kuɗin ya faɗi ƙasa da wannan.",
+  "offLabel": "A kashe",
+  "alertsAlwaysOn": "Ana kuma sanar da shugabanni idan buƙatar jini ba ta samu tayi ba bayan awa 2, da idan shawarwari ko asusu sun jira fiye da kwana 3.",
+  "notifWeeklyForAdmins": "Taƙaitaccen mako (shugabanni)"
 }

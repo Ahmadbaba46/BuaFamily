@@ -47,6 +47,15 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
               : l.notifClaimDeclinedWhy(n.str('person') ?? '', n.str('reason')!),
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
+      NotificationKind.weeklySummary => _weeklyText(l, n),
+      NotificationKind.adminAlert => switch (n.str('alert')) {
+          'blood_no_offer' => l.notifAlertBlood(
+              n.str('blood_group') ?? '', n.str('patient') ?? '', (n.data['hours'] as num?)?.toInt() ?? 2),
+          'fund_low' => l.notifAlertFundLow(
+              naira((n.data['balance'] as num?) ?? 0), naira((n.data['threshold'] as num?) ?? 0)),
+          _ => l.notifAlertWaiting(
+              (n.data['suggestions'] as num?)?.toInt() ?? 0, (n.data['accounts'] as num?)?.toInt() ?? 0),
+        },
       NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
@@ -65,6 +74,14 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
           ? l.notifRequestApproved(n.str('person') ?? l.notifTheTree)
           : l.notifRequestDeclined(n.str('person') ?? l.notifTheTree),
     };
+
+String _weeklyText(AppLocalizations l, AppNotification n) {
+  int count(String k) => (n.data[k] as num?)?.toInt() ?? 0;
+  final text = l.notifWeeklySummary(
+      count('active'), count('moments'), count('photos'), naira((n.data['money_in'] as num?) ?? 0));
+  final waiting = count('waiting_suggestions') + count('waiting_accounts');
+  return waiting > 0 ? '$text ${l.notifWeeklyWaiting(waiting)}' : text;
+}
 
 String _occasionText(AppLocalizations l, AppNotification n) {
   final o = switch (n.str('occasion')) {
@@ -93,6 +110,8 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.occasion => Icons.nightlight_round,
       NotificationKind.claimReviewed => Icons.how_to_reg_outlined,
       NotificationKind.duesReminder => Icons.event_repeat,
+      NotificationKind.weeklySummary => Icons.insights_outlined,
+      NotificationKind.adminAlert => Icons.warning_amber_rounded,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,
       NotificationKind.test => Icons.notifications_active_outlined,

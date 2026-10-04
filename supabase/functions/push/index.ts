@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
           link: row.link,
           kind: row.kind,
           id: row.id,
-          urgent: row.kind === "blood_request",
+          urgent: row.kind === "blood_request" || (row.kind === "admin_alert" && row.data?.alert === "blood_no_offer"),
         }).then((r) => {
           if (r.result === "sent") sent++;
           else if (r.result === "dead") dead.push(device.token);
