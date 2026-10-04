@@ -4661,4 +4661,30 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get accountDeleted => 'An goge asusunka.';
+
+  @override
+  String get getOnPlay => 'Samo shi a Google Play';
+
+  @override
+  String get downloadApkInstead => 'Ko sauke fayil ɗin manhajar (APK)';
+
+  @override
+  String get updateOnPlay => 'Sabunta a Google Play';
+
+  @override
+  String get playStoreLink => 'Mahaɗin Google Play';
+
+  @override
+  String get playStoreLinkHelp =>
+      'Da zarar manhajar ta hau Google Play, liƙa mahaɗinta a nan. Shafin saukewa zai tura mutane zuwa Play.';
+
+  @override
+  String get playStoreLinkInvalid =>
+      'Yi amfani da mahaɗin Google Play (https://play.google.com/…).';
+
+  @override
+  String get notSet => 'Ba a saka ba';
+
+  @override
+  String get privacyPolicy => 'Manufofin sirri';
 }

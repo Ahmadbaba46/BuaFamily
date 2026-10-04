@@ -4754,4 +4754,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeleted => 'Your account was deleted.';
+
+  @override
+  String get getOnPlay => 'Get it on Google Play';
+
+  @override
+  String get downloadApkInstead => 'Or download the app file (APK)';
+
+  @override
+  String get updateOnPlay => 'Update on Google Play';
+
+  @override
+  String get playStoreLink => 'Google Play link';
+
+  @override
+  String get playStoreLinkHelp =>
+      'Once the app is on Google Play, paste its link here. The download page then sends people to Play.';
+
+  @override
+  String get playStoreLinkInvalid =>
+      'Use the link from Google Play (https://play.google.com/…).';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
 }

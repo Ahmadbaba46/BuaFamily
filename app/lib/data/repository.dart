@@ -1052,6 +1052,13 @@ class FamilyRepository {
     return r == null ? null : AndroidRelease.fromJson(Map<String, dynamic>.from(r as Map));
   }
 
+  /// What anyone may see, also before signing in: the Google Play link and
+  /// the developer's contact details.
+  Future<Map<String, dynamic>> publicInfo() async {
+    final r = await _db.rpc('public_info');
+    return r == null ? const {} : Map<String, dynamic>.from(r as Map);
+  }
+
   /// Public download link (the 'releases' bucket is public).
   String releaseUrl(String path) => _db.storage.from('releases').getPublicUrl(path);
 

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show OtpType;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/l10n.dart';
+import '../../services/app_update.dart' show siteUrl;
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
@@ -399,6 +401,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   ),
                 ),
               const Center(child: LanguageToggle()),
+              Center(
+                child: TextButton(
+                  onPressed: () =>
+                      launchUrl(Uri.parse('$siteUrl/privacy.html'), mode: LaunchMode.externalApplication),
+                  child: Text(l.privacyPolicy, style: const TextStyle(fontSize: 13)),
+                ),
+              ),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48),

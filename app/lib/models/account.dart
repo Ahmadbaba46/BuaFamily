@@ -136,6 +136,7 @@ class AppSettings {
     this.developerWebsite,
     this.hijriOffset = 0,
     this.islamicGreetings = true,
+    this.playStoreUrl,
   });
 
   final String familyName;
@@ -166,6 +167,9 @@ class AppSettings {
   /// Ramadan, Eid and new year greetings to everyone.
   final bool islamicGreetings;
 
+  /// The app's page on Google Play, once it's there.
+  final String? playStoreUrl;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -182,6 +186,7 @@ class AppSettings {
         developerWebsite: j['developer_website'] as String?,
         hijriOffset: (j['hijri_offset'] as num?)?.toInt() ?? 0,
         islamicGreetings: j['islamic_greetings'] as bool? ?? true,
+        playStoreUrl: j['play_store_url'] as String?,
       );
 }
 

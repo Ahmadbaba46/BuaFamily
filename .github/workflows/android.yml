@@ -10,6 +10,9 @@ name: Android app
 # Signing: with the four ANDROID_* repository secrets set (see README,
 # "Android app"), every build is signed with the family's own key, so phones
 # update in place. Without them it is signed with a throwaway test key.
+#
+# With the family key it also builds the Google Play app bundle
+# (bua-family-play.aab, under the run's Artifacts) to upload in Play Console.
 
 on:
   push:
@@ -79,6 +82,24 @@ jobs:
         with:
           name: bua-family-1.0.${{ github.run_number }}
           path: app/bua-family.apk
+
+      # The Google Play build: an app bundle, signed with the family key (Play's
+      # upload key). It updates from Play rather than from a downloaded file.
+      - name: Build for Google Play
+        if: steps.signing.outputs.signed == 'family'
+        run: |
+          flutter build appbundle --release \
+            --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }} \
+            --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY="$SUPABASE_PUBLISHABLE_KEY" \
+            --dart-define=PLAY_STORE=true
+          cp build/app/outputs/bundle/release/app-release.aab bua-family-play.aab
+
+      - uses: actions/upload-artifact@v4
+        if: steps.signing.outputs.signed == 'family'
+        with:
+          name: bua-family-play-1.0.${{ github.run_number }}
+          path: app/bua-family-play.aab
 
       - name: Publish
         uses: softprops/action-gh-release@v2

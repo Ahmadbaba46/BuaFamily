@@ -9,6 +9,21 @@ import '../state/providers.dart';
 /// Where the website lives, for links shared outside the app.
 const siteUrl = String.fromEnvironment('SITE_URL', defaultValue: 'https://buafamily.vercel.app');
 
+/// Built for Google Play (`--dart-define=PLAY_STORE=true`): updates come from
+/// Play, never from a downloaded file (Play doesn't allow that).
+const isPlayBuild = bool.fromEnvironment('PLAY_STORE');
+
+/// The Android app's id on Google Play.
+const androidPackage = 'com.fuyoudhat.buafamily';
+
+/// What anyone may see: the Google Play link, the developer's contact.
+final publicInfoProvider =
+    FutureProvider<Map<String, dynamic>>((ref) => ref.watch(repositoryProvider).publicInfo());
+
+/// The app's Google Play page: the link an admin saved, or the usual one.
+String playStoreUrlOf(Map<String, dynamic>? info) =>
+    info?['play_store_url'] as String? ?? 'https://play.google.com/store/apps/details?id=$androidPackage';
+
 /// The Android build an admin last published (Admin → Settings → Android app).
 class AndroidRelease {
   const AndroidRelease({required this.build, required this.version, required this.path, this.notes, this.publishedAt});

@@ -1268,5 +1268,13 @@
   "deleteAccountKept": "Za a bar wa iyali, ba tare da sunanka ba: matsayinka a bishiyar iyali, kundin hotuna da taruka da ka ƙirƙira, ƙuri'u, labaran dattawa da ka naɗa, da gudummawar asusun taimako.",
   "deleteAccountConfirm": "Na fahimci ba za a iya dawo da shi ba",
   "deleteAccountOnlyAdmin": "Kai kaɗai ne shugaba. Ka mai da wani shugaba tukuna.",
-  "accountDeleted": "An goge asusunka."
+  "accountDeleted": "An goge asusunka.",
+  "getOnPlay": "Samo shi a Google Play",
+  "downloadApkInstead": "Ko sauke fayil ɗin manhajar (APK)",
+  "updateOnPlay": "Sabunta a Google Play",
+  "playStoreLink": "Mahaɗin Google Play",
+  "playStoreLinkHelp": "Da zarar manhajar ta hau Google Play, liƙa mahaɗinta a nan. Shafin saukewa zai tura mutane zuwa Play.",
+  "playStoreLinkInvalid": "Yi amfani da mahaɗin Google Play (https://play.google.com/…).",
+  "notSet": "Ba a saka ba",
+  "privacyPolicy": "Manufofin sirri"
 }

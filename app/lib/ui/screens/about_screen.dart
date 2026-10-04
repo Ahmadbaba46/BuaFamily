@@ -155,6 +155,13 @@ class AboutScreen extends ConsumerWidget {
         const SizedBox(height: 18),
         Center(
           child: TextButton.icon(
+            icon: const Icon(Icons.privacy_tip_outlined, size: 18),
+            label: Text(l.privacyPolicy),
+            onPressed: () => launchUrl(Uri.parse('$siteUrl/privacy.html'), mode: LaunchMode.externalApplication),
+          ),
+        ),
+        Center(
+          child: TextButton.icon(
             icon: const Icon(Icons.description_outlined, size: 18),
             label: Text(l.licensesLabel),
             onPressed: () => showLicensePage(

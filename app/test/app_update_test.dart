@@ -14,8 +14,10 @@ void main() {
     publishedAt: DateTime(2026, 10, 4),
   );
 
-  Widget app(Widget home, {int? installed, AndroidRelease? published}) => ProviderScope(
+  Widget app(Widget home, {int? installed, AndroidRelease? published, Map<String, dynamic> info = const {}}) =>
+      ProviderScope(
         overrides: [
+          publicInfoProvider.overrideWith((ref) async => info),
           androidReleaseProvider.overrideWith((ref) async => published),
           installedBuildProvider.overrideWith((ref) async => installed),
         ],
@@ -72,5 +74,23 @@ void main() {
     await tester.pumpWidget(app(const GetAppScreen()));
     await tester.pumpAndSettle();
     expect(find.text("The Android app hasn't been published yet."), findsOneWidget);
+  });
+
+  testWidgets('once the app is on Google Play, the download page sends people there', (tester) async {
+    tester.view.physicalSize = const Size(390, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(app(const GetAppScreen(),
+        published: release,
+        info: const {'play_store_url': 'https://play.google.com/store/apps/details?id=$androidPackage'}));
+    await tester.pumpAndSettle();
+    expect(find.text('Get it on Google Play'), findsOneWidget);
+    expect(find.text('Or download the app file (APK)'), findsOneWidget);
+    expect(find.text('Download'), findsNothing);
+  });
+
+  test('the Play page is the saved link, or the usual one', () {
+    expect(playStoreUrlOf(null), 'https://play.google.com/store/apps/details?id=com.fuyoudhat.buafamily');
+    expect(playStoreUrlOf(const {'play_store_url': 'https://play.google.com/x'}), 'https://play.google.com/x');
   });
 }

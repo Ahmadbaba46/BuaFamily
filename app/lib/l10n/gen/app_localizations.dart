@@ -7711,6 +7711,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account was deleted.'**
   String get accountDeleted;
+
+  /// No description provided for @getOnPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Get it on Google Play'**
+  String get getOnPlay;
+
+  /// No description provided for @downloadApkInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Or download the app file (APK)'**
+  String get downloadApkInstead;
+
+  /// No description provided for @updateOnPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Update on Google Play'**
+  String get updateOnPlay;
+
+  /// No description provided for @playStoreLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play link'**
+  String get playStoreLink;
+
+  /// No description provided for @playStoreLinkHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Once the app is on Google Play, paste its link here. The download page then sends people to Play.'**
+  String get playStoreLinkHelp;
+
+  /// No description provided for @playStoreLinkInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the link from Google Play (https://play.google.com/…).'**
+  String get playStoreLinkInvalid;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
 }
 
 class _AppLocalizationsDelegate
