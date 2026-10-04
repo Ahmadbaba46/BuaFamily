@@ -6085,6 +6085,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Website (https://…)'**
   String get developerWebsite;
+
+  /// No description provided for @notifMentorRequestFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} asked for your guidance: “{body}”'**
+  String notifMentorRequestFrom(String name, String body);
+
+  /// No description provided for @notifMentorReply.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: “{body}”'**
+  String notifMentorReply(String name, String body);
+
+  /// No description provided for @yourAsks.
+  ///
+  /// In en, this message translates to:
+  /// **'Your asks'**
+  String get yourAsks;
+
+  /// No description provided for @conversationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentorship'**
+  String get conversationTitle;
+
+  /// No description provided for @conversationWithMentor.
+  ///
+  /// In en, this message translates to:
+  /// **'Your mentor · {areas}'**
+  String conversationWithMentor(String areas);
+
+  /// No description provided for @conversationWithStudent.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked you for guidance'**
+  String get conversationWithStudent;
+
+  /// No description provided for @conversationPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the two of you can see this conversation.'**
+  String get conversationPrivate;
+
+  /// No description provided for @writeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message…'**
+  String get writeMessage;
+
+  /// No description provided for @replyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get replyAction;
+
+  /// No description provided for @conversationGone.
+  ///
+  /// In en, this message translates to:
+  /// **'This conversation was removed.'**
+  String get conversationGone;
+
+  /// No description provided for @deleteConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete conversation'**
+  String get deleteConversation;
+
+  /// No description provided for @deleteConversationConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this conversation for both of you?'**
+  String get deleteConversationConfirm;
+
+  /// No description provided for @youPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'You: {text}'**
+  String youPrefix(String text);
+
+  /// No description provided for @newMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newMessages;
 }
 
 class _AppLocalizationsDelegate

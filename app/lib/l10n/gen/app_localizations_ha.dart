@@ -3666,4 +3666,56 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get developerWebsite => 'Shafin yanar gizo (https://…)';
+
+  @override
+  String notifMentorRequestFrom(String name, String body) {
+    return '$name ya nemi jagorarka: “$body”';
+  }
+
+  @override
+  String notifMentorReply(String name, String body) {
+    return '$name: “$body”';
+  }
+
+  @override
+  String get yourAsks => 'Tambayoyinka';
+
+  @override
+  String get conversationTitle => 'Jagoranci';
+
+  @override
+  String conversationWithMentor(String areas) {
+    return 'Jagoranka · $areas';
+  }
+
+  @override
+  String get conversationWithStudent => 'Ya nemi jagorarka';
+
+  @override
+  String get conversationPrivate =>
+      'Ku biyu ne kaɗai ke ganin wannan tattaunawa.';
+
+  @override
+  String get writeMessage => 'Rubuta saƙo…';
+
+  @override
+  String get replyAction => 'Amsa';
+
+  @override
+  String get conversationGone => 'An cire wannan tattaunawa.';
+
+  @override
+  String get deleteConversation => 'Share tattaunawa';
+
+  @override
+  String get deleteConversationConfirm =>
+      'A share wannan tattaunawa ga ku biyu?';
+
+  @override
+  String youPrefix(String text) {
+    return 'Kai: $text';
+  }
+
+  @override
+  String get newMessages => 'Sabo';
 }

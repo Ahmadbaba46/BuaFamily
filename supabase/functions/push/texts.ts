@@ -34,7 +34,9 @@ const en: Texts = {
   fund_contribution: (d) => `New contribution to confirm: ${naira(n(d, "amount"))}`,
   fund_confirmed: (d) => `Your contribution of ${naira(n(d, "amount"))} was confirmed. Thank you!`,
   fund_request: (d) => `Support requested: ${s(d, "title")}`,
-  mentor_request: (d) => `Someone asked for your guidance: “${s(d, "body")}”`,
+  mentor_request: (d) =>
+    s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
+  mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
   opportunity: (d) => `New opportunity: ${s(d, "title")}`,
   poll: (d) => `New poll: ${s(d, "question")}`,
   story: (d) => `New story from ${s(d, "speaker")}: ${s(d, "title")}`,
@@ -76,7 +78,9 @@ const ha: Texts = {
   fund_contribution: (d) => `Sabuwar gudummawa da za a tabbatar: ${naira(n(d, "amount"))}`,
   fund_confirmed: (d) => `An tabbatar da gudummawarka ta ${naira(n(d, "amount"))}. Na gode!`,
   fund_request: (d) => `An nemi taimako: ${s(d, "title")}`,
-  mentor_request: (d) => `Wani ya nemi jagorarka: “${s(d, "body")}”`,
+  mentor_request: (d) =>
+    s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
+  mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
   opportunity: (d) => `Sabuwar dama: ${s(d, "title")}`,
   poll: (d) => `Sabuwar ƙuri'a: ${s(d, "question")}`,
   story: (d) => `Sabon labari daga ${s(d, "speaker")}: ${s(d, "title")}`,

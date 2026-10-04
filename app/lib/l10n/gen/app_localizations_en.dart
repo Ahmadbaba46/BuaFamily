@@ -3757,4 +3757,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get developerWebsite => 'Website (https://…)';
+
+  @override
+  String notifMentorRequestFrom(String name, String body) {
+    return '$name asked for your guidance: “$body”';
+  }
+
+  @override
+  String notifMentorReply(String name, String body) {
+    return '$name: “$body”';
+  }
+
+  @override
+  String get yourAsks => 'Your asks';
+
+  @override
+  String get conversationTitle => 'Mentorship';
+
+  @override
+  String conversationWithMentor(String areas) {
+    return 'Your mentor · $areas';
+  }
+
+  @override
+  String get conversationWithStudent => 'Asked you for guidance';
+
+  @override
+  String get conversationPrivate =>
+      'Only the two of you can see this conversation.';
+
+  @override
+  String get writeMessage => 'Write a message…';
+
+  @override
+  String get replyAction => 'Reply';
+
+  @override
+  String get conversationGone => 'This conversation was removed.';
+
+  @override
+  String get deleteConversation => 'Delete conversation';
+
+  @override
+  String get deleteConversationConfirm =>
+      'Delete this conversation for both of you?';
+
+  @override
+  String youPrefix(String text) {
+    return 'You: $text';
+  }
+
+  @override
+  String get newMessages => 'New';
 }

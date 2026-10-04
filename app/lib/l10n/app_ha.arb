@@ -997,5 +997,19 @@
   "aboutSettingsHint": "Ana nuna su a shafin game da manhaja ga kowa a cikin iyali.",
   "developerName": "Sunan mai haɓakawa",
   "developerCompany": "Kamfani",
-  "developerWebsite": "Shafin yanar gizo (https://…)"
+  "developerWebsite": "Shafin yanar gizo (https://…)",
+  "notifMentorRequestFrom": "{name} ya nemi jagorarka: “{body}”",
+  "notifMentorReply": "{name}: “{body}”",
+  "yourAsks": "Tambayoyinka",
+  "conversationTitle": "Jagoranci",
+  "conversationWithMentor": "Jagoranka · {areas}",
+  "conversationWithStudent": "Ya nemi jagorarka",
+  "conversationPrivate": "Ku biyu ne kaɗai ke ganin wannan tattaunawa.",
+  "writeMessage": "Rubuta saƙo…",
+  "replyAction": "Amsa",
+  "conversationGone": "An cire wannan tattaunawa.",
+  "deleteConversation": "Share tattaunawa",
+  "deleteConversationConfirm": "A share wannan tattaunawa ga ku biyu?",
+  "youPrefix": "Kai: {text}",
+  "newMessages": "Sabo"
 }

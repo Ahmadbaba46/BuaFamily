@@ -93,6 +93,7 @@ class _MentorsTab extends ConsumerWidget {
     final me = ref.watch(profileProvider)?.id;
     final mine = data.mentors.where((m) => m.userId == me).firstOrNull;
     final toMe = data.asks.where((a) => a.mentorUserId == me).toList();
+    final fromMe = data.asks.where((a) => a.fromUserId == me).toList();
     final latest = data.opportunities.firstOrNull;
 
     Future<void> offer() async {
@@ -117,30 +118,23 @@ class _MentorsTab extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
       ],
-      if (toMe.isNotEmpty) ...[
-        GroupHeading(l.asksToYou),
-        const SizedBox(height: 8),
-        Material(
-          color: Bua.surface,
-          borderRadius: BorderRadius.circular(20),
-          clipBehavior: Clip.antiAlias,
-          child: Column(children: [
-            for (final (i, a) in toMe.indexed) ...[
-              if (i > 0) const InsetDivider(indent: 66),
-              Builder(builder: (context) {
-                final who = authorOf(ref, a.fromUserId);
-                return ListTile(
-                  leading: AuthorAvatar(who),
-                  title: Text(who.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                  subtitle: Text('“${a.message}” · ${l.ago(a.createdAt)}'),
-                  onTap: who.person == null ? null : () => context.push('/person/${who.person!.id}'),
-                );
-              }),
-            ],
-          ]),
-        ),
-        const SizedBox(height: 16),
-      ],
+      for (final (title, asks) in [(l.asksToYou, toMe), (l.yourAsks, fromMe)])
+        if (asks.isNotEmpty) ...[
+          GroupHeading(title),
+          const SizedBox(height: 8),
+          Material(
+            color: Bua.surface,
+            borderRadius: BorderRadius.circular(20),
+            clipBehavior: Clip.antiAlias,
+            child: Column(children: [
+              for (final (i, a) in asks.indexed) ...[
+                if (i > 0) const InsetDivider(indent: 66),
+                _ConversationRow(ask: a),
+              ],
+            ]),
+          ),
+          const SizedBox(height: 16),
+        ],
       GroupHeading(l.offeringGuidance),
       const SizedBox(height: 8),
       if (data.mentors.isEmpty)
@@ -181,6 +175,40 @@ class _MentorsTab extends ConsumerWidget {
   }
 }
 
+/// One mentorship conversation: who, the latest message, and whether it's new.
+class _ConversationRow extends ConsumerWidget {
+  const _ConversationRow({required this.ask});
+
+  final MentorAsk ask;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final me = ref.watch(profileProvider)?.id;
+    final who = authorOf(ref, ask.otherThan(me));
+    final unread = ask.unreadFor(me);
+    final last = ask.lastMessage ?? ask.message;
+    return ListTile(
+      leading: AuthorAvatar(who),
+      title: Text(who.name, style: TextStyle(fontWeight: unread ? FontWeight.w700 : FontWeight.w600)),
+      subtitle: Text(
+        '${ask.lastMessageBy == me || (ask.lastMessageBy == null && ask.fromUserId == me) ? l.youPrefix(last) : last} · ${l.ago(ask.activeAt)}',
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(color: unread ? Bua.ink : Bua.inkMuted, fontWeight: unread ? FontWeight.w500 : FontWeight.w400),
+      ),
+      trailing: unread
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(color: Bua.green, borderRadius: BorderRadius.circular(10)),
+              child: Text(l.newMessages, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white)),
+            )
+          : const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+      onTap: () => context.push('/mentors/ask/${ask.id}'),
+    );
+  }
+}
+
 class _MentorRow extends ConsumerWidget {
   const _MentorRow({required this.mentor, required this.isMe});
 
@@ -214,9 +242,12 @@ class _MentorRow extends ConsumerWidget {
                 TextSpec('msg', l.askMentorHint, multiline: true, required: true),
               ]);
               if (v == null || !context.mounted) return;
-              if (await guarded(context, () => ref.read(repositoryProvider).askMentor(mentor.userId, v['msg'] as String))) {
+              String? id;
+              if (await guarded(context, () async => id = await ref.read(repositoryProvider).askMentor(mentor.userId, v['msg'] as String))) {
                 ref.invalidate(mentorshipProvider);
-                if (context.mounted) showSnack(context, l.askSent(who.person?.firstName ?? who.name));
+                if (!context.mounted) return;
+                showSnack(context, l.askSent(who.person?.firstName ?? who.name));
+                if (id != null) context.push('/mentors/ask/$id');
               }
             },
             child: Text(l.ask),
