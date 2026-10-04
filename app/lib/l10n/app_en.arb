@@ -2989,5 +2989,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "familyMakeup": "Who is in the family",
+  "menLabel": "Men",
+  "womenLabel": "Women",
+  "sexNotSet": "Not set",
+  "totalLabel": "Total",
+  "bloodFamily": "Blood family",
+  "marriedIn": "Married in",
+  "notConnectedYet": "Not connected yet",
+  "livingMenWomen": "Living: {men} men · {women} women",
+  "@livingMenWomen": {
+    "placeholders": {
+      "men": {
+        "type": "int"
+      },
+      "women": {
+        "type": "int"
+      }
+    }
+  },
+  "familyMakeupHelp": "Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside."
 }

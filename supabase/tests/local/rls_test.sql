@@ -1479,6 +1479,42 @@ select test.assert((select jsonb_array_length(private.backup_data() -> 'mentor_m
   (select count(*) from public.mentor_messages)), 'every message is in the backup');
 
 -- ---------------------------------------------------------------------------
+-- 33. Blood family, married in, men and women.
+-- ---------------------------------------------------------------------------
+reset role;
+create temp table lin (k text primary key, id uuid not null default gen_random_uuid());
+insert into lin (k) values ('founder'), ('wife'), ('son'), ('daughter_in_law'), ('grandchild'), ('stepchild'),
+  ('son_in_law'), ('daughter'), ('loner');
+insert into public.persons (id, first_name, sex)
+select id, 'Lin ' || k, case when k in ('founder', 'son', 'son_in_law') then 'male'
+                             when k in ('wife', 'daughter_in_law', 'daughter') then 'female'
+                             else 'unknown' end::public.sex from lin;
+insert into public.unions (partner1_id, partner2_id) values
+  ((select id from lin where k = 'founder'), (select id from lin where k = 'wife')),
+  ((select id from lin where k = 'son'), (select id from lin where k = 'daughter_in_law')),
+  ((select id from lin where k = 'son_in_law'), (select id from lin where k = 'daughter'));
+insert into public.parent_child (parent_id, child_id, kind) values
+  ((select id from lin where k = 'founder'), (select id from lin where k = 'son'), 'biological'),
+  ((select id from lin where k = 'wife'), (select id from lin where k = 'son'), 'biological'),
+  ((select id from lin where k = 'founder'), (select id from lin where k = 'daughter'), 'biological'),
+  ((select id from lin where k = 'son'), (select id from lin where k = 'grandchild'), 'biological'),
+  ((select id from lin where k = 'son'), (select id from lin where k = 'stepchild'), 'step');
+select test.assert((select string_agg(lin.k || '=' || g.lineage, ',' order by lin.k)
+    from lin join private.person_lineage() g on g.person_id = lin.id)
+  = 'daughter=blood,daughter_in_law=married_in,founder=blood,grandchild=blood,loner=other,son=blood,'
+    || 'son_in_law=married_in,stepchild=other,wife=married_in', 'who is blood family and who married in');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select (s -> 'composition' -> 'blood' ->> 'male')::int >= 2
+    and (s -> 'composition' -> 'married_in' ->> 'female')::int >= 2
+    and (s -> 'composition' -> 'married_in' ->> 'male')::int >= 1
+    and (s -> 'composition' -> 'married_in' ->> 'living_female')::int >= 2
+  from public.admin_snapshot() s), 'snapshot counts men and women, blood and married in');
+reset role;
+delete from public.persons where id in (select id from lin);
+drop table lin;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

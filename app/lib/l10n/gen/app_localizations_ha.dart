@@ -4535,4 +4535,37 @@ class AppLocalizationsHa extends AppLocalizations {
   String showAllCount(int n) {
     return 'Nuna duka $n';
   }
+
+  @override
+  String get familyMakeup => 'Su waye ke cikin iyali';
+
+  @override
+  String get menLabel => 'Maza';
+
+  @override
+  String get womenLabel => 'Mata';
+
+  @override
+  String get sexNotSet => 'Ba a saka ba';
+
+  @override
+  String get totalLabel => 'Jimilla';
+
+  @override
+  String get bloodFamily => '\'Yan uwa na jini';
+
+  @override
+  String get marriedIn => 'Ta hanyar aure';
+
+  @override
+  String get notConnectedYet => 'Ba a haɗa su ba tukuna';
+
+  @override
+  String livingMenWomen(int men, int women) {
+    return 'Masu rai: maza $men · mata $women';
+  }
+
+  @override
+  String get familyMakeupHelp =>
+      '\'Yan uwa na jini: kakannin farko da duk wanda aka haifa ko aka ɗauka cikin zuriyar. Ta hanyar aure: mazaje da matan da suka shigo daga waje.';
 }

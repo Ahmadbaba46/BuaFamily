@@ -1239,5 +1239,15 @@
   "searchNothing": "Ba a sami komai ba don “{q}”.",
   "searchTypeMore": "Rubuta aƙalla haruffa 2.",
   "searchTips": "Gwada suna, wuri, kalma daga rubutu, ƙwarewa kamar “nas”, ko taro.",
-  "showAllCount": "Nuna duka {n}"
+  "showAllCount": "Nuna duka {n}",
+  "familyMakeup": "Su waye ke cikin iyali",
+  "menLabel": "Maza",
+  "womenLabel": "Mata",
+  "sexNotSet": "Ba a saka ba",
+  "totalLabel": "Jimilla",
+  "bloodFamily": "'Yan uwa na jini",
+  "marriedIn": "Ta hanyar aure",
+  "notConnectedYet": "Ba a haɗa su ba tukuna",
+  "livingMenWomen": "Masu rai: maza {men} · mata {women}",
+  "familyMakeupHelp": "'Yan uwa na jini: kakannin farko da duk wanda aka haifa ko aka ɗauka cikin zuriyar. Ta hanyar aure: mazaje da matan da suka shigo daga waje."
 }
