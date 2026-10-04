@@ -327,6 +327,18 @@ flutter build apk --dart-define-from-file=config.json   # Android
 flutter build web --dart-define-from-file=config.json   # website (upload build/web to any static host)
 ```
 
+**Android app on a Windows computer:** with Flutter and Android Studio
+installed, clone the project and run
+
+```
+powershell -ExecutionPolicy Bypass -File app\tool\build_android.ps1
+```
+
+The first run writes `app\config.json` and creates the family signing key in
+your user folder (`bua-family.jks`, it asks for a password: keep both safe);
+the APK is copied to the top of the project folder. Run it again after
+`git pull` to build an update.
+
 **Android app (built on GitHub):** the *Android app* workflow
 (`.github/workflows/android.yml`) builds the APK whenever the app changes on
 `master`, or by hand from **Actions → Android app → Run workflow**. Each build
