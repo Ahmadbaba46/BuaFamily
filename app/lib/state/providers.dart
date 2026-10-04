@@ -196,6 +196,9 @@ final myLikesProvider = FutureProvider<Set<String>>((ref) {
 
 final albumsProvider = FutureProvider<List<Album>>((ref) => ref.watch(repositoryProvider).albums());
 
+final eventAttendanceProvider = FutureProvider.autoDispose
+    .family<List<String>, String>((ref, eventId) => ref.watch(repositoryProvider).attendance(eventId));
+
 final albumPhotosProvider = FutureProvider.family<List<Photo>, String>(
   (ref, albumId) => ref.watch(repositoryProvider).albumPhotos(albumId),
 );

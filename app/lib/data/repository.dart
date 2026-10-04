@@ -514,6 +514,26 @@ class FamilyRepository {
     return row['id'] as String;
   }
 
+  /// The event's album (made the first time someone adds photos to it).
+  Future<String> eventAlbum(String eventId) async =>
+      await _db.rpc('event_album', params: {'p_event': eventId}) as String;
+
+  /// Who came to an event: people in the tree.
+  Future<List<String>> attendance(String eventId) async {
+    final rows = await _db.from('event_attendance').select('person_id').eq('event_id', eventId);
+    return [for (final r in rows) r['person_id'] as String];
+  }
+
+  Future<void> setAttendance(String eventId, {Iterable<String> add = const [], Iterable<String> remove = const []}) async {
+    if (add.isNotEmpty) {
+      await _db.from('event_attendance').upsert([for (final p in add) {'event_id': eventId, 'person_id': p}],
+          onConflict: 'event_id,person_id', ignoreDuplicates: true);
+    }
+    if (remove.isNotEmpty) {
+      await _db.from('event_attendance').delete().eq('event_id', eventId).inFilter('person_id', remove.toList());
+    }
+  }
+
   Future<List<Photo>> albumPhotos(String albumId) async {
     final rows = await _db
         .from('photos')

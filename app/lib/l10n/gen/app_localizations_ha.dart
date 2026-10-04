@@ -4846,4 +4846,33 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get makingBook => 'Ana shirya littafin iyali…';
+
+  @override
+  String get whoCame => 'Waɗanda suka zo';
+
+  @override
+  String whoCameCount(int count) {
+    return 'Waɗanda suka zo ($count)';
+  }
+
+  @override
+  String get imHere => 'Ina nan';
+
+  @override
+  String get youCame => 'An rubuta kana nan.';
+
+  @override
+  String get undoLabel => 'Soke';
+
+  @override
+  String get markWhoCame => 'Rubuta waɗanda suka zo';
+
+  @override
+  String get noOneMarkedYet => 'Ba a rubuta kowa ba tukuna.';
+
+  @override
+  String get eventPhotosHint => 'Raba hotunan wannan rana.';
+
+  @override
+  String get eventPhotosTitle => 'Hotunan ranar';
 }

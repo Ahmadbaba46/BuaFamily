@@ -8004,6 +8004,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Making the family book…'**
   String get makingBook;
+
+  /// No description provided for @whoCame.
+  ///
+  /// In en, this message translates to:
+  /// **'Who came'**
+  String get whoCame;
+
+  /// No description provided for @whoCameCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Who came ({count})'**
+  String whoCameCount(int count);
+
+  /// No description provided for @imHere.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m here'**
+  String get imHere;
+
+  /// No description provided for @youCame.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re marked as here.'**
+  String get youCame;
+
+  /// No description provided for @undoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undoLabel;
+
+  /// No description provided for @markWhoCame.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark who came'**
+  String get markWhoCame;
+
+  /// No description provided for @noOneMarkedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No one marked yet.'**
+  String get noOneMarkedYet;
+
+  /// No description provided for @eventPhotosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the photos from this day.'**
+  String get eventPhotosHint;
+
+  /// No description provided for @eventPhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos from the day'**
+  String get eventPhotosTitle;
 }
 
 class _AppLocalizationsDelegate
