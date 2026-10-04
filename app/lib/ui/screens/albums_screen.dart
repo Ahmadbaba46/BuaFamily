@@ -90,7 +90,7 @@ class AlbumsScreen extends ConsumerWidget {
                           Text(l.photosOfYou,
                               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white)),
                           Text(l.photosTaggedIn(mine?.length ?? 0),
-                              style: const TextStyle(fontSize: 12, color: Bua.greenOnDark)),
+                              style: TextStyle(fontSize: 12, color: Bua.greenOnDark)),
                         ]),
                       ),
                       const Icon(Icons.chevron_right, color: Colors.white),
@@ -104,7 +104,7 @@ class AlbumsScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
                 child: Text(l.albumsEmpty,
-                    textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle, height: 1.5)),
+                    textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle, height: 1.5)),
               ),
             LayoutBuilder(builder: (context, c) {
               final cols = c.maxWidth >= 600 ? 3 : 2;
@@ -144,7 +144,7 @@ class _AlbumTile extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1,
             child: album.coverPath == null
-                ? const ColoredBox(
+                ? ColoredBox(
                     color: Bua.surfaceMuted,
                     child: Icon(Icons.photo_library_outlined, size: 36, color: Bua.inkSubtle),
                   )
@@ -160,7 +160,7 @@ class _AlbumTile extends StatelessWidget {
               Text([l.photoCount(album.photoCount), ?years].join(' · '),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
         ]),
@@ -223,7 +223,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 if (widget.albumId != null && list.isNotEmpty)
                   l.addedByRelatives(list.map((p) => p.uploadedBy).toSet().length),
               ].join(' · '),
-              style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
             ),
         ]),
       ),
@@ -293,13 +293,13 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
               if (shown.isEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 60),
-                  child: Center(child: Text(l.noPhotos, style: const TextStyle(color: Bua.inkSubtle))),
+                  child: Center(child: Text(l.noPhotos, style: TextStyle(color: Bua.inkSubtle))),
                 ),
               for (final d in decades) ...[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 14, 20, 8),
                   child: Text('${d}s',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
                 ),
                 GridView.count(
                   crossAxisCount: MediaQuery.sizeOf(context).width >= 600 ? 5 : 3,

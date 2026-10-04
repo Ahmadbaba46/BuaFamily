@@ -227,7 +227,7 @@ class _ReportBody extends StatelessWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(label, style: const TextStyle(fontSize: 14)),
-                if (sub != null) Text(sub, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                if (sub != null) Text(sub, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
             ),
             SizedBox(
@@ -238,14 +238,14 @@ class _ReportBody extends StatelessWidget {
             SizedBox(
               width: 96,
               child: Text(moneyOut == 0 ? '—' : '−${naira(moneyOut)}',
-                  textAlign: TextAlign.right, style: const TextStyle(fontSize: 13.5, color: Bua.inkMuted)),
+                  textAlign: TextAlign.right, style: TextStyle(fontSize: 13.5, color: Bua.inkMuted)),
             ),
           ]),
         );
 
     final empty = r.moneyIn == 0 && r.moneyOut == 0;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text('${l.shortDate(r.from)} – ${l.shortDate(r.to)}', style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+      Text('${l.shortDate(r.from)} – ${l.shortDate(r.to)}', style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
       const SizedBox(height: 8),
       for (final pair in [
         [tile(l.openingLabel, r.opening), tile(l.moneyIn, r.moneyIn)],
@@ -262,11 +262,11 @@ class _ReportBody extends StatelessWidget {
           ),
         ),
       const SizedBox(height: 8),
-      Text(l.paymentsFrom(r.payments, r.contributors), style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+      Text(l.paymentsFrom(r.payments, r.contributors), style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
       if (empty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Text(l.nothingInPeriod, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.nothingInPeriod, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
         ),
       if (r.sources.isNotEmpty)
         card(l.bySourceTitle, [
@@ -274,7 +274,7 @@ class _ReportBody extends StatelessWidget {
             rows: [for (final s in r.sources.where((s) => s.moneyIn > 0)) (sourceTitle(l, s), s.moneyIn)],
             format: naira,
           ),
-          const Divider(height: 20, color: Bua.line),
+          Divider(height: 20, color: Bua.line),
           for (final s in r.sources) moneyRow(sourceTitle(l, s), s.moneyIn, s.moneyOut),
         ]),
       if (r.months.length > 1 && !empty)
@@ -303,7 +303,7 @@ class _ReportBody extends StatelessWidget {
         ]),
       const SizedBox(height: 12),
       Text(r.transactions == null ? l.reportCommitteeNote : l.fundNote,
-          style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
+          style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
     ]);
   }
 }

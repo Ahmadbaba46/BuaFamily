@@ -79,7 +79,7 @@ class PersonAvatar extends ConsumerWidget {
     this.radius = 20,
     this.showPhoto = true,
     this.highlight,
-    this.gapColor = Bua.surface,
+    this.gapColor,
   });
 
   final Person person;
@@ -91,10 +91,11 @@ class PersonAvatar extends ConsumerWidget {
   final Color? highlight;
 
   /// Colour of the thin gap between avatar and ring (the background behind it).
-  final Color gapColor;
+  final Color? gapColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gapColor = this.gapColor ?? Bua.surface;
     final (bg, fg) = switch (person.sex) {
       Sex.male => (Bua.maleBg, Bua.maleFg),
       Sex.female => (Bua.femaleBg, Bua.femaleFg),
@@ -294,7 +295,7 @@ class SectionHeader extends StatelessWidget {
         Expanded(
           child: Text(
             title.toUpperCase(),
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.green),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.green),
           ),
         ),
         ?action,

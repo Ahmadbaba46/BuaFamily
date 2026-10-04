@@ -298,7 +298,7 @@ class _PhotoDetails extends ConsumerWidget {
 
     return Container(
       constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * 0.5),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Bua.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -358,19 +358,19 @@ class _PhotoDetails extends ConsumerWidget {
                                 onTap: () => context.push('/albums/${album.id}'),
                                 child: Text(
                                   album.title,
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green),
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green),
                                 ),
                               ),
                             ),
                           ],
                         ],
                       ),
-                      style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+                      style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       l.inThisPhoto.toUpperCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.4,

@@ -160,7 +160,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
           titleSpacing: 0,
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(l.activityTitle, style: Theme.of(context).textTheme.titleLarge),
-            Text(l.activitySub, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
+            Text(l.activitySub, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
           ]),
           bottom: TabBar(tabs: [
             Tab(text: online > 0 ? '${l.tabOnline} · $online' : l.tabOnline),
@@ -268,9 +268,9 @@ class _OnlineViewState extends ConsumerState<OnlineView> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Column(children: [
-                  const Icon(Icons.bedtime_outlined, size: 40, color: Bua.inkSubtle),
+                  Icon(Icons.bedtime_outlined, size: 40, color: Bua.inkSubtle),
                   const SizedBox(height: 8),
-                  Text(l.nobodyOnline, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                  Text(l.nobodyOnline, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                 ]),
               )
             else
@@ -459,13 +459,13 @@ class _ActivityLogViewState extends ConsumerState<ActivityLogView> {
                 Icon(Icons.person_outline, size: 16, color: who == null ? Bua.inkMuted : Bua.green),
                 const SizedBox(width: 6),
                 Text(who?.name ?? l.logAnyone, style: const TextStyle(fontSize: 13)),
-                const Icon(Icons.arrow_drop_down, size: 18, color: Bua.inkMuted),
+                Icon(Icons.arrow_drop_down, size: 18, color: Bua.inkMuted),
               ]),
             ),
           ),
         ]),
         const SizedBox(height: 8),
-        Text(l.logPrivacyNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+        Text(l.logPrivacyNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
         const SizedBox(height: 12),
         if (_error != null && _rows.isEmpty)
           Center(
@@ -478,7 +478,7 @@ class _ActivityLogViewState extends ConsumerState<ActivityLogView> {
         else if (_rows.isEmpty && !_loading)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Text(l.logEmpty, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+            child: Text(l.logEmpty, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
           ),
         for (final day in byDay.entries) ...[
           GroupHeading(l.weekdayDate(day.key)),
@@ -535,7 +535,7 @@ class _LogRow extends StatelessWidget {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: link == null ? null : const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+      trailing: link == null ? null : Icon(Icons.chevron_right, color: Bua.inkSubtle),
       onTap: link == null ? null : () => context.push(link),
     );
   }

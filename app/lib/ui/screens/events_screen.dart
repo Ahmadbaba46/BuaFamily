@@ -82,7 +82,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                   final past = all.where((e) => !e.isUpcoming(now)).toList().reversed.toList();
                   Widget empty(String text) => Padding(
                         padding: const EdgeInsets.only(top: 60),
-                        child: Center(child: Text(text, style: const TextStyle(color: Bua.inkSubtle))),
+                        child: Center(child: Text(text, style: TextStyle(color: Bua.inkSubtle))),
                       );
                   return ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: switch (_tab) {
                     _Tab.upcoming => [
@@ -137,7 +137,7 @@ class _AnnouncementRow extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const IconTile(Icons.campaign_outlined, background: Bua.goldTint, color: Bua.goldInk),
+          IconTile(Icons.campaign_outlined, background: Bua.goldTint, color: Bua.goldInk),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -146,7 +146,7 @@ class _AnnouncementRow extends ConsumerWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, height: 1.35)),
               Text([author.name, l.ago(post.createdAt), if (post.pinned) l.pinned].join(' · '),
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
         ]),
@@ -210,13 +210,13 @@ class EventCard extends ConsumerWidget {
                 Text(event.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 2),
                 Text([l.dayClock(event.startsAt), ?event.place].join(' · '),
-                    style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                    style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                 if (status != null || counts.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(spacing: 10, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
                     ?status,
                     if (counts.isNotEmpty)
-                      Text(counts, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                      Text(counts, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                   ]),
                 ],
               ]),

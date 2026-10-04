@@ -96,16 +96,18 @@ class EventScreen extends ConsumerWidget {
         ),
     ];
 
+    // The band grows with the text size, so the title always fits.
+    final band = 210 + (MediaQuery.textScalerOf(context).scale(24) - 24) * 3;
     return Scaffold(
       body: HeroPage(
         title: event.title,
         color: Bua.green,
-        bandHeight: 210,
+        bandHeight: band,
         onBack: back,
         actions: actions,
         child: ListView(padding: EdgeInsets.zero, children: [
         PatternBand(
-          height: 210,
+          height: band,
           child: SafeArea(
             bottom: false,
             child: Padding(
@@ -121,13 +123,15 @@ class EventScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(l.eventCategory(event.category.name).toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.goldOnDark)),
                     const SizedBox(height: 4),
                     Text(event.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white)),
                     if (host.name.isNotEmpty)
-                      Text(l.hostedBy(host.name), style: const TextStyle(fontSize: 13, color: Bua.greenOnDark)),
+                      Text(l.hostedBy(host.name), style: TextStyle(fontSize: 13, color: Bua.greenOnDark)),
                   ]),
                 ),
               ]),
@@ -216,10 +220,11 @@ class _InfoRow extends StatelessWidget {
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-            if (subtitle != null) Text(subtitle!, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+            if (subtitle != null) Text(subtitle!, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
           ]),
         ),
-        if (action != null) TextButton(onPressed: onAction, child: Text(action!)),
+        if (action != null)
+          Flexible(child: TextButton(onPressed: onAction, child: Text(action!, textAlign: TextAlign.center))),
       ]),
     );
   }
@@ -362,7 +367,7 @@ class _Attendees extends ConsumerWidget {
             child: Wrap(spacing: 2, runSpacing: 4, children: [
               for (final r in people.take(max))
                 Container(
-                  decoration: const BoxDecoration(color: Bua.surface, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: Bua.surface, shape: BoxShape.circle),
                   padding: const EdgeInsets.all(2),
                   child: AuthorAvatar(authorOf(ref, r.userId), radius: 18),
                 ),
@@ -371,7 +376,7 @@ class _Attendees extends ConsumerWidget {
                   radius: 20,
                   backgroundColor: Bua.surfaceMuted,
                   child: Text('+${people.length - max}',
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
                 ),
             ]),
           ),
@@ -443,12 +448,15 @@ class _WhoCame extends ConsumerWidget {
 
     return SectionCard(
       title: ids.isEmpty ? l.whoCame : l.whoCameCount(ids.length),
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 14),
+      padding: const EdgeInsets.fromLTRB(0, 6, 0, 14),
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (came.isLoading && !came.hasValue)
           const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator(minHeight: 2))
         else if (people.isEmpty)
-          Text(l.noOneMarkedYet, style: const TextStyle(fontSize: 14, color: Bua.inkSubtle))
+          Text(l.noOneMarkedYet, style: TextStyle(fontSize: 14, color: Bua.inkSubtle))
         else
           Wrap(spacing: 6, runSpacing: 6, children: [
             for (final p in people)
@@ -470,7 +478,7 @@ class _WhoCame extends ConsumerWidget {
               label: Text(l.imHere),
             ),
           if (iCame) ...[
-            Text(l.youCame, style: const TextStyle(fontSize: 14, color: Bua.greenDark)),
+            Text(l.youCame, style: TextStyle(fontSize: 14, color: Bua.greenDark)),
             TextButton(onPressed: () => _set(context, ref, remove: {me}), child: Text(l.undoLabel)),
           ],
           if (canMarkOthers)
@@ -480,6 +488,8 @@ class _WhoCame extends ConsumerWidget {
               label: Text(l.markWhoCame),
             ),
         ]),
+      ]),
+        ),
       ],
     );
   }
@@ -567,10 +577,13 @@ class _EventPhotos extends ConsumerWidget {
       trailing: album == null || photos.isEmpty
           ? null
           : TextButton(onPressed: () => context.push('/albums/${album.id}'), child: Text(l.seeAll)),
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 14),
+      padding: const EdgeInsets.fromLTRB(0, 6, 0, 14),
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (photos.isEmpty)
-          Text(l.eventPhotosHint, style: const TextStyle(fontSize: 14, color: Bua.inkSubtle))
+          Text(l.eventPhotosHint, style: TextStyle(fontSize: 14, color: Bua.inkSubtle))
         else
           SizedBox(
             height: 96,
@@ -598,6 +611,8 @@ class _EventPhotos extends ConsumerWidget {
             icon: const Icon(Icons.add_photo_alternate_outlined, size: 18),
             label: Text(l.addPhotos),
           ),
+        ),
+      ]),
         ),
       ],
     );

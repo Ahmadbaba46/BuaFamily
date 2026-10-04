@@ -126,7 +126,7 @@ class _PasswordResetBySmsState extends ConsumerState<PasswordResetBySms> {
             ),
           ),
           const SizedBox(height: 6),
-          Text(l.resetByTextHint, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+          Text(l.resetByTextHint, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
           const SizedBox(height: 16),
           FilledButton(
             style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
@@ -134,7 +134,7 @@ class _PasswordResetBySmsState extends ConsumerState<PasswordResetBySms> {
             child: Text(l.sendResetCode),
           ),
         ] else ...[
-          Text(l.resetCodeSentTo(formatPhone(_sentTo!)), style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+          Text(l.resetCodeSentTo(formatPhone(_sentTo!)), style: TextStyle(fontSize: 14, color: Bua.inkMuted)),
           const SizedBox(height: 12),
           LabeledField(
             label: l.enterCode,
@@ -171,7 +171,7 @@ class _PasswordResetBySmsState extends ConsumerState<PasswordResetBySms> {
         ],
         if (_error != null) ...[
           const SizedBox(height: 10),
-          Text(_error!, style: const TextStyle(color: Bua.danger, fontSize: 13)),
+          Text(_error!, style: TextStyle(color: Bua.danger, fontSize: 13)),
         ],
       ]),
     );

@@ -260,7 +260,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
             ],
             if (relative != null) ...[
               _card([
-                Text(l.addingTo, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+                Text(l.addingTo, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
                 Row(children: [
                   PersonAvatar(person: relative),
                   const SizedBox(width: 12),
@@ -268,13 +268,13 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(relative.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                       if (personSubtitle(context, relative).isNotEmpty)
-                        Text(personSubtitle(context, relative), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                        Text(personSubtitle(context, relative), style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                     ]),
                   ),
                 ]),
                 if (_original == null) ...[
                   Text(l.newPersonIs(relative.firstName),
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
                   _relationChips(l, relative),
                 ],
                 ..._relationFields(l, graph, relative),
@@ -570,7 +570,7 @@ class _PhotoField extends StatelessWidget {
                 ? Image.memory(Uint8List.fromList(picked!.bytes), fit: BoxFit.cover)
                 : currentPath != null
                     ? StoragePhoto(currentPath!)
-                    : const Icon(Icons.add_a_photo_outlined, color: Bua.green, size: 28),
+                    : Icon(Icons.add_a_photo_outlined, color: Bua.green, size: 28),
           ),
         ),
       ),

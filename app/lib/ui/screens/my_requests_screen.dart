@@ -35,7 +35,7 @@ class MyRequestsScreen extends ConsumerWidget {
             return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 12),
-                child: Text(l.myRequestsHelp, style: const TextStyle(fontSize: 13, height: 1.45, color: Bua.inkMuted)),
+                child: Text(l.myRequestsHelp, style: TextStyle(fontSize: 13, height: 1.45, color: Bua.inkMuted)),
               ),
               if (mine.isEmpty || graph == null)
                 Padding(padding: const EdgeInsets.only(top: 60), child: Center(child: Text(l.noRequests)))

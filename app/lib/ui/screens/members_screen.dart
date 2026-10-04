@@ -82,12 +82,12 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                     const SizedBox(height: 12),
                     TextField(
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search, color: Bua.inkMuted),
+                        prefixIcon: Icon(Icons.search, color: Bua.inkMuted),
                         hintText: l.searchHint,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(color: Bua.lineStrong),
+                          borderSide: BorderSide(color: Bua.lineStrong),
                         ),
                       ),
                       onChanged: (v) => setState(() => _query = v),
@@ -110,7 +110,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                             color: _filter == f ? Colors.white : Bua.ink,
                             fontWeight: _filter == f ? FontWeight.w600 : FontWeight.w500,
                           ),
-                          side: _filter == f ? BorderSide.none : const BorderSide(color: Bua.lineStrong),
+                          side: _filter == f ? BorderSide.none : BorderSide(color: Bua.lineStrong),
                           onSelected: (_) => setState(() => _filter = f),
                         ),
                         const SizedBox(width: 8),
@@ -118,10 +118,10 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                           ]),
                         ),
                       ),
-                      Text(l.peopleCount(people.length), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                      Text(l.peopleCount(people.length), style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                       PopupMenuButton<_Sort>(
                         tooltip: l.sortBy,
-                        icon: const Icon(Icons.sort, color: Bua.inkMuted),
+                        icon: Icon(Icons.sort, color: Bua.inkMuted),
                         initialValue: _sort,
                         onSelected: (s) => setState(() => _sort = s),
                         itemBuilder: (_) => [
@@ -157,7 +157,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                         color: Bua.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
-                          side: const BorderSide(color: Bua.green, width: 2),
+                          side: BorderSide(color: Bua.green, width: 2),
                         ),
                         clipBehavior: Clip.antiAlias,
                         child: PersonTile(
@@ -165,7 +165,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                           viewPhoto: true,
                           subtitle: [l.relSelf, if (me.branch?.isNotEmpty ?? false) me.branch!].join(' · '),
                           subtitleColor: Bua.green,
-                          trailing: const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+                          trailing: Icon(Icons.chevron_right, color: Bua.inkSubtle),
                           onTap: () => context.push('/person/${me.id}'),
                         ),
                       ),
@@ -185,7 +185,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                                 child: Text(
                                   _letter(p),
-                                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.green),
+                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.green),
                                 ),
                               ),
                             PersonTile(

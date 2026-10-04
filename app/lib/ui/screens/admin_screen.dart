@@ -166,7 +166,7 @@ class _SettingsTab extends ConsumerWidget {
     Widget check(String text) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Icon(Icons.check, size: 16, color: Bua.green),
+            Icon(Icons.check, size: 16, color: Bua.green),
             const SizedBox(width: 8),
             Expanded(child: Text(text, style: const TextStyle(fontSize: 13))),
           ]),
@@ -183,7 +183,7 @@ class _SettingsTab extends ConsumerWidget {
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Row(children: [
-                const IconTile(Icons.person_add_alt_1, background: Bua.greenTint),
+                IconTile(Icons.person_add_alt_1, background: Bua.greenTint),
                 const SizedBox(width: 14),
                 Expanded(
                   child: ToggleRow(
@@ -197,7 +197,7 @@ class _SettingsTab extends ConsumerWidget {
                 padding: const EdgeInsets.only(left: 54),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   Text(l.memberContributionsHelp,
-                      style: const TextStyle(fontSize: 13, height: 1.5, color: Bua.inkMuted)),
+                      style: TextStyle(fontSize: 13, height: 1.5, color: Bua.inkMuted)),
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -233,7 +233,7 @@ class _SettingsTab extends ConsumerWidget {
                     ? null
                     : IconButton(
                         tooltip: l.clear,
-                        icon: const Icon(Icons.clear, color: Bua.inkSubtle),
+                        icon: Icon(Icons.clear, color: Bua.inkSubtle),
                         onPressed: () => save({'root_person_id': null}),
                       ),
                 onTap: graph == null
@@ -295,15 +295,15 @@ class _SettingsTab extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Icon(Icons.lock_outline, size: 20, color: Bua.green),
+              Icon(Icons.lock_outline, size: 20, color: Bua.green),
               const SizedBox(width: 12),
               Expanded(
                 child: Text.rich(
                   TextSpan(children: [
-                    TextSpan(text: '${l.privacyTitle} ', style: const TextStyle(fontWeight: FontWeight.w600, color: Bua.ink)),
+                    TextSpan(text: '${l.privacyTitle} ', style: TextStyle(fontWeight: FontWeight.w600, color: Bua.ink)),
                     TextSpan(text: l.privacyNote),
                   ]),
-                  style: const TextStyle(fontSize: 13, height: 1.5, color: Bua.inkMuted),
+                  style: TextStyle(fontSize: 13, height: 1.5, color: Bua.inkMuted),
                 ),
               ),
             ]),
@@ -331,7 +331,7 @@ class _HijriCard extends StatelessWidget {
       decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const IconTile(Icons.nightlight_round, background: Bua.greenTint),
+          IconTile(Icons.nightlight_round, background: Bua.greenTint),
           const SizedBox(width: 14),
           Expanded(child: Text(l.hijriSettingsTitle, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
         ]),
@@ -359,8 +359,8 @@ class _HijriCard extends StatelessWidget {
             icon: const Icon(Icons.add, size: 18),
           ),
         ]),
-        Text(l.hijriAdjustHint, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
-        const Divider(height: 24, color: Bua.line),
+        Text(l.hijriAdjustHint, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
+        Divider(height: 24, color: Bua.line),
         ToggleRow(
           title: l.islamicGreetingsToggle,
           value: settings.islamicGreetings,
@@ -392,10 +392,10 @@ class _SettingRow extends StatelessWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text(value, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              Text(value, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
-          trailing ?? const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+          trailing ?? Icon(Icons.chevron_right, color: Bua.inkSubtle),
         ]),
       ),
     );
@@ -423,7 +423,7 @@ class _SmsCard extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Row(children: [
-            const IconTile(Icons.sms_outlined, background: Bua.greenTint),
+            IconTile(Icons.sms_outlined, background: Bua.greenTint),
             const SizedBox(width: 14),
             Expanded(
               child: ToggleRow(
@@ -448,14 +448,14 @@ class _SmsCard extends ConsumerWidget {
                 l.smsStats(status.subscribers, status.sent7d, status.failed7d),
                 if (status.queued > 0) l.smsQueued(status.queued),
               ].join(' · '),
-              style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
             ),
           ),
         if (status?.lastError != null && (status!.failed7d > 0 || status.queued > 0))
           Padding(
             padding: const EdgeInsets.fromLTRB(70, 0, 16, 8),
             child: Text(l.lastError(status.lastError!),
-                maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Bua.danger)),
+                maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Bua.danger)),
           ),
         const InsetDivider(indent: 70),
         _SettingRow(
@@ -561,7 +561,7 @@ class _PushCard extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
           child: Row(children: [
-            const IconTile(Icons.notifications_active_outlined, background: Bua.greenTint),
+            IconTile(Icons.notifications_active_outlined, background: Bua.greenTint),
             const SizedBox(width: 14),
             Expanded(
               child: ToggleRow(
@@ -581,13 +581,13 @@ class _PushCard extends ConsumerWidget {
         if (project != null)
           Padding(
             padding: const EdgeInsets.fromLTRB(70, 0, 16, 4),
-            child: Text(l.pushStats(members, devices, sent, received), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+            child: Text(l.pushStats(members, devices, sent, received), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
           ),
         if (recentError)
           Padding(
             padding: const EdgeInsets.fromLTRB(70, 0, 16, 8),
             child: Text(l.lastError(lastError),
-                maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Bua.danger)),
+                maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Bua.danger)),
           ),
         const InsetDivider(indent: 70),
         _SettingRow(
@@ -642,7 +642,7 @@ class AdminUpdatesCard extends StatelessWidget {
       decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const IconTile(Icons.insights_outlined, background: Bua.greenTint),
+          IconTile(Icons.insights_outlined, background: Bua.greenTint),
           const SizedBox(width: 14),
           Expanded(child: Text(l.adminUpdatesTitle, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
         ]),
@@ -653,7 +653,7 @@ class AdminUpdatesCard extends StatelessWidget {
           value: settings.weeklySummary,
           onChanged: (v) => save({'weekly_summary': v}),
         ),
-        const Divider(height: 20, color: Bua.line),
+        Divider(height: 20, color: Bua.line),
         InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () => _editThreshold(context),
@@ -662,14 +662,14 @@ class AdminUpdatesCard extends StatelessWidget {
             child: Row(children: [
               Expanded(child: Text(l.fundAlertBelow, style: const TextStyle(fontSize: 15))),
               Text(below == null ? l.offLabel : naira(below),
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.green)),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.green)),
               const SizedBox(width: 6),
-              const Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
+              Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
             ]),
           ),
         ),
         const SizedBox(height: 8),
-        Text(l.alertsAlwaysOn, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
+        Text(l.alertsAlwaysOn, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
       ]),
     );
   }

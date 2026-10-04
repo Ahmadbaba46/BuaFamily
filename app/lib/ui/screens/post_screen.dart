@@ -34,7 +34,7 @@ class PostScreen extends ConsumerWidget {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text(l.postGone, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                child: Text(l.postGone, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
               ),
             );
           }

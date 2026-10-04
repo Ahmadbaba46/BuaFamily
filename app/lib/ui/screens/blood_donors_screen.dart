@@ -97,7 +97,7 @@ class _BloodDonorsScreenState extends ConsumerState<BloodDonorsScreen> {
               if (matches.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
-                  child: Text(l.noDonors, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                  child: Text(l.noDonors, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                 )
               else
                 Container(
@@ -114,10 +114,10 @@ class _BloodDonorsScreenState extends ConsumerState<BloodDonorsScreen> {
               if (myPersonId != null) _MyDonorStatus(personId: myPersonId, health: myHealth),
               const SizedBox(height: 14),
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Icon(Icons.shield_outlined, size: 16, color: Bua.inkSubtle),
+                Icon(Icons.shield_outlined, size: 16, color: Bua.inkSubtle),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(l.donorPrivacy, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
+                  child: Text(l.donorPrivacy, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
                 ),
               ]),
             ]);
@@ -183,7 +183,7 @@ class _RequestCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Bua.dangerTint,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1C4BF)),
+        border: Border.all(color: Bua.dark ? const Color(0xFF5A2A26) : const Color(0xFFF1C4BF)),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -193,11 +193,11 @@ class _RequestCard extends ConsumerWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 [if (r.urgent) l.urgent, l.ago(r.createdAt)].join(' · ').toUpperCase(),
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.dangerInk),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.dangerInk),
               ),
               Text(l.pintsFor(r.units, patient), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
               Text([r.hospital, l.askedBy(asker.name)].join(' · '),
-                  style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                  style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
               if (r.note?.isNotEmpty ?? false) ...[
                 const SizedBox(height: 4),
                 Text(r.note!, style: const TextStyle(fontSize: 13, height: 1.4)),
@@ -244,7 +244,7 @@ class _RequestCard extends ConsumerWidget {
         const SizedBox(height: 8),
         Text(
           !compatible && !mine ? l.notCompatible(myGroup!) : l.offersSoFar(r.offers.length),
-          style: const TextStyle(fontSize: 12, color: Bua.dangerInk),
+          style: TextStyle(fontSize: 12, color: Bua.dangerInk),
         ),
       ]),
     );
@@ -277,7 +277,7 @@ class _DonorRow extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(p.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              if (sub.isNotEmpty) Text(sub, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              if (sub.isNotEmpty) Text(sub, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
           _BloodBadge(donor.bloodGroup, size: 38, light: true),
@@ -312,17 +312,17 @@ class _MyDonorStatus extends StatelessWidget {
             if (listed && health?.bloodGroup != null)
               _BloodBadge(health!.bloodGroup!, size: 40)
             else
-              const IconTile(Icons.bloodtype_outlined, background: Bua.dangerTint, color: Bua.danger),
+              IconTile(Icons.bloodtype_outlined, background: Bua.dangerTint, color: Bua.danger),
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(listed ? l.onDonorList : l.joinDonorList,
                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 Text(listed ? l.changeInHealth : l.joinDonorListSub,
-                    style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                    style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
             ),
-            const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+            Icon(Icons.chevron_right, color: Bua.inkSubtle),
           ]),
         ),
       ),
@@ -406,7 +406,7 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
         SectionCard(padding: const EdgeInsets.all(16), children: [
-          Text(l.bloodGroupNeeded, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
+          Text(l.bloodGroupNeeded, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
           const SizedBox(height: 8),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final g in Health.bloodGroups)

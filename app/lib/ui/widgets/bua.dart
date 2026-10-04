@@ -46,14 +46,15 @@ class ZanenGidaPainter extends CustomPainter {
 
 /// A coloured band with the zanen-gida pattern behind [child].
 class PatternBand extends StatelessWidget {
-  const PatternBand({super.key, required this.height, this.color = Bua.green, this.child});
+  const PatternBand({super.key, required this.height, this.color, this.child});
 
   final double height;
-  final Color color;
+  final Color? color;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? Bua.green;
     return SizedBox(
       height: height,
       child: ClipRect(
@@ -81,7 +82,7 @@ class SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.all(Radius.circular(20))),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.all(Radius.circular(20))),
       padding: padding ?? const EdgeInsets.only(top: 6, bottom: 10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (title != null)
@@ -106,7 +107,7 @@ class CardTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         text.toUpperCase(),
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.green),
+        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.green),
       );
 }
 
@@ -119,7 +120,7 @@ class SubLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 2),
-        child: Text(text, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.inkSubtle)),
+        child: Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.inkSubtle)),
       );
 }
 
@@ -132,7 +133,7 @@ class GroupHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-        child: Text(text, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
+        child: Text(text, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
       );
 }
 
@@ -150,7 +151,12 @@ class InfoBanner extends StatelessWidget {
     final (bg, border, fg, textColor) = switch (tone) {
       BannerTone.gold => (Bua.goldTint, Bua.goldLine, Bua.goldInk, Bua.goldInkDark),
       BannerTone.green => (Bua.greenTint, Bua.greenIndicator, Bua.green, Bua.greenDark),
-      BannerTone.danger => (Bua.dangerTint, const Color(0xFFF1C4BF), Bua.danger, const Color(0xFF6B2520)),
+      BannerTone.danger => (
+        Bua.dangerTint,
+        Bua.dark ? const Color(0xFF5A2A26) : const Color(0xFFF1C4BF),
+        Bua.danger,
+        Bua.dark ? Bua.dangerInk : const Color(0xFF6B2520),
+      ),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -170,33 +176,40 @@ class InfoBanner extends StatelessWidget {
 
 /// 40×40 rounded icon square used at the start of rows and cards.
 class IconTile extends StatelessWidget {
-  const IconTile(this.icon, {super.key, this.background = Bua.surfaceMuted, this.color = Bua.green, this.size = 40});
+  const IconTile(this.icon, {super.key, this.background, this.color, this.size = 40});
 
   final IconData icon;
-  final Color background;
-  final Color color;
+  final Color? background;
+  final Color? color;
   final double size;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    final background = this.background ?? Bua.surfaceMuted;
+    final color = this.color ?? Bua.green;
+    return Container(
         width: size,
         height: size,
         decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(size * 0.3)),
         child: Icon(icon, size: size / 2, color: color),
       );
+  }
 }
 
 /// Small rounded label, e.g. "PENDING" or "Shared with family".
 class Pill extends StatelessWidget {
-  const Pill(this.text, {super.key, this.background = Bua.greenTint, this.color = Bua.greenDark, this.icon});
+  const Pill(this.text, {super.key, this.background, this.color, this.icon});
 
   final String text;
-  final Color background;
-  final Color color;
+  final Color? background;
+  final Color? color;
   final IconData? icon;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) {
+    final background = this.background ?? Bua.greenTint;
+    final color = this.color ?? Bua.greenDark;
+    return Container(
         height: 26,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(13)),
@@ -212,6 +225,7 @@ class Pill extends StatelessWidget {
           ),
         ]),
       );
+  }
 }
 
 /// Grey track with a white selected segment (language, visibility, …).
@@ -238,7 +252,7 @@ class PillSegmented<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget wrap(Widget child) => expand ? Expanded(child: child) : child;
-    return Container(
+    final pill = Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(color: Bua.track, borderRadius: BorderRadius.circular(height)),
       child: Row(mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min, children: [
@@ -275,6 +289,8 @@ class PillSegmented<T> extends StatelessWidget {
             )),
       ]),
     );
+    // With larger text, a toggle that doesn't fill the row shrinks to fit it.
+    return expand ? pill : FittedBox(fit: BoxFit.scaleDown, alignment: AlignmentDirectional.centerStart, child: pill);
   }
 }
 
@@ -287,7 +303,7 @@ class LabeledField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
+        Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
         const SizedBox(height: 6),
         child,
       ]);
@@ -314,7 +330,7 @@ class ToggleRow extends StatelessWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                 Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 if (subtitle != null)
-                  Text(subtitle!, style: const TextStyle(fontSize: 12, height: 1.4, color: Bua.inkSubtle)),
+                  Text(subtitle!, style: TextStyle(fontSize: 12, height: 1.4, color: Bua.inkSubtle)),
               ]),
             ),
             const SizedBox(width: 12),
@@ -334,19 +350,21 @@ class NavRow extends StatelessWidget {
     required this.title,
     this.value,
     this.onTap,
-    this.color = Bua.ink,
-    this.iconColor = Bua.green,
+    this.color,
+    this.iconColor,
   });
 
   final IconData icon;
   final String title;
   final String? value;
   final VoidCallback? onTap;
-  final Color color;
-  final Color iconColor;
+  final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? Bua.ink;
+    final iconColor = this.iconColor ?? Bua.green;
     return InkWell(
       onTap: onTap,
       child: ConstrainedBox(
@@ -357,10 +375,10 @@ class NavRow extends StatelessWidget {
             Icon(icon, size: 20, color: iconColor),
             const SizedBox(width: 14),
             Expanded(child: Text(title, style: TextStyle(fontSize: 15, color: color))),
-            if (value != null) Text(value!, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+            if (value != null) Text(value!, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             if (onTap != null && color == Bua.ink) ...[
               const SizedBox(width: 4),
-              const Icon(Icons.chevron_right, size: 20, color: Bua.inkSubtle),
+              Icon(Icons.chevron_right, size: 20, color: Bua.inkSubtle),
             ],
           ]),
         ),
@@ -381,15 +399,16 @@ class InsetDivider extends StatelessWidget {
 
 /// A rounded box with a dashed outline, for "record" and "choose a file" areas.
 class DashedBox extends StatelessWidget {
-  const DashedBox({super.key, required this.child, this.onTap, this.color = Bua.lineStrong, this.fill});
+  const DashedBox({super.key, required this.child, this.onTap, this.color, this.fill});
 
   final Widget child;
   final VoidCallback? onTap;
-  final Color color;
+  final Color? color;
   final Color? fill;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? Bua.lineStrong;
     return CustomPaint(
       painter: _DashedBorderPainter(color),
       child: Material(

@@ -349,17 +349,17 @@ class _StartingFromBar extends StatelessWidget {
         border: Border.all(color: Bua.line),
       ),
       child: Row(children: [
-        const Icon(Icons.north, size: 18, color: Bua.green),
+        Icon(Icons.north, size: 18, color: Bua.green),
         const SizedBox(width: 10),
         Expanded(
           child: Text.rich(
             TextSpan(children: [
               TextSpan(text: '${l.startingFrom} '),
-              TextSpan(text: name, style: const TextStyle(fontWeight: FontWeight.w600, color: Bua.ink)),
+              TextSpan(text: name, style: TextStyle(fontWeight: FontWeight.w600, color: Bua.ink)),
             ]),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 13, color: Bua.inkMuted),
+            style: TextStyle(fontSize: 13, color: Bua.inkMuted),
           ),
         ),
         TextButton(
@@ -388,7 +388,7 @@ class _Legend extends StatelessWidget {
     Widget row(Widget mark, String label) => Row(mainAxisSize: MainAxisSize.min, children: [
           SizedBox(width: 16, child: Center(child: mark)),
           const SizedBox(width: 8),
-          Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkMuted)),
+          Text(label, style: TextStyle(fontSize: 12, color: Bua.inkMuted)),
         ]);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -434,10 +434,10 @@ class _ZoomControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    Widget button(IconData icon, String tip, VoidCallback? onTap, {Color color = Bua.ink}) => IconButton(
+    Widget button(IconData icon, String tip, VoidCallback? onTap, {Color? color}) => IconButton(
           tooltip: tip,
           onPressed: onTap,
-          icon: Icon(icon, color: color),
+          icon: Icon(icon, color: color ?? Bua.ink),
           style: IconButton.styleFrom(minimumSize: const Size(48, 48), shape: const RoundedRectangleBorder()),
         );
     return Container(
@@ -450,10 +450,10 @@ class _ZoomControls extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         button(Icons.add, l.zoomIn, onZoomIn),
-        const SizedBox(width: 48, child: Divider(color: Bua.line)),
+        SizedBox(width: 48, child: Divider(color: Bua.line)),
         button(Icons.remove, l.zoomOut, onZoomOut),
         if (onCentre != null) ...[
-          const SizedBox(width: 48, child: Divider(color: Bua.line)),
+          SizedBox(width: 48, child: Divider(color: Bua.line)),
           button(Icons.my_location, l.centreOnMe, onCentre, color: Bua.green),
         ],
       ]),
@@ -466,7 +466,7 @@ class _DotGridPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = const Color(0xFFD5DDD3);
+    final paint = Paint()..color = Bua.dark ? Bua.line : const Color(0xFFD5DDD3);
     for (var y = 10.0; y < size.height; y += 20) {
       for (var x = 10.0; x < size.width; x += 20) {
         canvas.drawCircle(Offset(x, y), 1, paint);
@@ -617,7 +617,7 @@ class _NodeCard extends StatelessWidget {
                       sub,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 10.5, color: Bua.inkSubtle),
+                      style: TextStyle(fontSize: 10.5, color: Bua.inkSubtle),
                     ),
                 ],
               ),
@@ -627,7 +627,9 @@ class _NodeCard extends StatelessWidget {
       ),
     );
 
-    return Stack(clipBehavior: Clip.none, children: [
+    // Cards have a fixed size on a canvas people can zoom, so their text keeps its size.
+    return MediaQuery.withNoTextScaling(
+      child: Stack(clipBehavior: Clip.none, children: [
       Positioned(
         left: 0,
         right: 0,
@@ -665,13 +667,14 @@ class _NodeCard extends StatelessWidget {
                   child: collapsed
                       ? Text(l.hiddenCount(node.hiddenDescendants),
                           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white))
-                      : const Icon(Icons.expand_less, size: 16, color: Bua.inkMuted),
+                      : Icon(Icons.expand_less, size: 16, color: Bua.inkMuted),
                 ),
               ),
             ),
           ),
         ),
-    ]);
+    ]),
+    );
   }
 }
 

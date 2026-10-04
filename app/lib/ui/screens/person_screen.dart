@@ -132,7 +132,7 @@ class _PersonView extends ConsumerWidget {
                 Hero(
                   tag: 'portrait-${person.id}',
                   child: Container(
-                    decoration: const BoxDecoration(color: Bua.ground, shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: Bua.ground, shape: BoxShape.circle),
                     padding: const EdgeInsets.all(4),
                     child: PersonAvatar(person: person, radius: 50, gapColor: Bua.ground),
                   ),
@@ -193,7 +193,7 @@ class _PersonView extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(facts.join(' · '),
-                    textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+                    textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Bua.inkMuted)),
               ),
             const SizedBox(height: 10),
             if (isMe || kinship != null)
@@ -214,12 +214,12 @@ class _PersonView extends ConsumerWidget {
                         Flexible(
                           child: Text(
                             isMe ? l.thisIsYou : l.kinshipToYou(kinship!),
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark),
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark),
                           ),
                         ),
                         if (!isMe) ...[
                           const SizedBox(width: 4),
-                          const Icon(Icons.chevron_right, size: 16, color: Bua.greenDark),
+                          Icon(Icons.chevron_right, size: 16, color: Bua.greenDark),
                         ],
                       ]),
                     ),
@@ -231,7 +231,7 @@ class _PersonView extends ConsumerWidget {
               child: Row(children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: const BorderSide(color: Bua.line)),
+                    style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: BorderSide(color: Bua.line)),
                     onPressed: () => context.go('/tree?focus=${person.id}'),
                     icon: const Icon(Icons.account_tree_outlined, size: 18),
                     label: Text(l.viewInTree),
@@ -253,7 +253,7 @@ class _PersonView extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                 child: OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: const BorderSide(color: Bua.line)),
+                  style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: BorderSide(color: Bua.line)),
                   onPressed: () => openDmWith(context, ref, messageTo),
                   icon: const Icon(Icons.forum_outlined, size: 18),
                   label: Text(l.sendMessage),
@@ -335,10 +335,10 @@ class _AboutSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(14)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+              Text(label, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               Text(d == null ? '—' : l.formatDate(d, approx: approx),
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              if (place?.isNotEmpty ?? false) Text(place!, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+              if (place?.isNotEmpty ?? false) Text(place!, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
             ]),
           ),
         );
@@ -373,7 +373,7 @@ class _AboutSection extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(r.$2, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  Text(r.$2, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                   Text(r.$3, style: const TextStyle(fontSize: 15)),
                 ]),
               ),
@@ -425,7 +425,7 @@ class _FamilySection extends ConsumerWidget {
         trailing: onRemove == null || !canChange
             ? null
             : PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert, size: 20, color: Bua.inkSubtle),
+                icon: Icon(Icons.more_vert, size: 20, color: Bua.inkSubtle),
                 tooltip: l.removeRelationship,
                 onSelected: (_) => onRemove(),
                 itemBuilder: (_) => [
@@ -433,7 +433,7 @@ class _FamilySection extends ConsumerWidget {
                     value: 'remove',
                     child: ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.link_off, color: Bua.danger),
+                      leading: Icon(Icons.link_off, color: Bua.danger),
                       title: Text(l.removeRelationship),
                     ),
                   ),
@@ -677,7 +677,7 @@ class _DetailsSections extends ConsumerWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
-                if (subtitle.isNotEmpty) Text(subtitle, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                if (subtitle.isNotEmpty) Text(subtitle, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
               ]),
             ),
             ?trailing,
@@ -690,7 +690,7 @@ class _DetailsSections extends ConsumerWidget {
 
     Widget addMenu() => PopupMenuButton<String>(
           tooltip: l.add,
-          icon: const Icon(Icons.add, color: Bua.green),
+          icon: Icon(Icons.add, color: Bua.green),
           onSelected: (v) => switch (v) {
             'edu' => run(() => _editEducation(context, repo().saveEducation)),
             'work' => run(() => _editOccupation(context, repo().saveOccupation)),
@@ -707,7 +707,7 @@ class _DetailsSections extends ConsumerWidget {
         );
 
     Widget editButton(VoidCallback onPressed) =>
-        IconButton(tooltip: l.edit, icon: const Icon(Icons.edit_outlined, size: 20, color: Bua.green), onPressed: onPressed);
+        IconButton(tooltip: l.edit, icon: Icon(Icons.edit_outlined, size: 20, color: Bua.green), onPressed: onPressed);
 
     final healthShared = health?.visibility == Audience.family;
 
@@ -780,7 +780,7 @@ class _DetailsSections extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(14)),
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                            Text(label, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                             Text(value ?? '—', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
                           ]),
                         ),
@@ -807,9 +807,9 @@ class _DetailsSections extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
                 child: Row(children: [
-                  const Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
+                  Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
                   const SizedBox(width: 6),
-                  Expanded(child: Text(l.healthPrivacyNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle))),
+                  Expanded(child: Text(l.healthPrivacyNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle))),
                 ]),
               ),
             ],

@@ -82,12 +82,12 @@ class ClaimCard extends ConsumerWidget {
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const IconTile(Icons.how_to_reg_outlined, background: Bua.greenTint),
+          IconTile(Icons.how_to_reg_outlined, background: Bua.greenTint),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text(l.claimTitle, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              Text(l.claimTitle, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
           Pill(l.filterClaims, background: Bua.greenTint, color: Bua.green),
@@ -106,10 +106,10 @@ class ClaimCard extends ConsumerWidget {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(person.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                    if (facts.isNotEmpty) Text(facts, style: const TextStyle(fontSize: 12.5, color: Bua.inkMuted)),
+                    if (facts.isNotEmpty) Text(facts, style: TextStyle(fontSize: 12.5, color: Bua.inkMuted)),
                   ]),
                 ),
-                const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+                Icon(Icons.chevron_right, color: Bua.inkSubtle),
               ]),
             ),
           ),
@@ -117,7 +117,7 @@ class ClaimCard extends ConsumerWidget {
         if (account.claimNote?.isNotEmpty ?? false) ...[
           const SizedBox(height: 10),
           Text('“${account.claimNote}”',
-              style: const TextStyle(fontSize: 14, height: 1.45, fontStyle: FontStyle.italic, color: Bua.inkBody)),
+              style: TextStyle(fontSize: 14, height: 1.45, fontStyle: FontStyle.italic, color: Bua.inkBody)),
         ],
         if (takenBy != null) ...[
           const SizedBox(height: 10),

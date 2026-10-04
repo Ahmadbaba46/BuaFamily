@@ -59,7 +59,7 @@ class MoreScreen extends ConsumerWidget {
                   if (me != null)
                     PersonAvatar(person: me, radius: 28)
                   else
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 28,
                       backgroundColor: Bua.track,
                       child: Icon(Icons.person_search, color: Bua.unknownFg),
@@ -86,7 +86,7 @@ class MoreScreen extends ConsumerWidget {
                       ),
                     ]),
                   ),
-                  const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+                  Icon(Icons.chevron_right, color: Bua.inkSubtle),
                 ]),
               ),
             ),
@@ -116,7 +116,7 @@ class MoreScreen extends ConsumerWidget {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
                         child: Text('$attention',
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.greenDark)),
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.onWhite)),
                       )
                     else
                       const Icon(Icons.chevron_right, color: Colors.white),
@@ -159,7 +159,7 @@ class MoreScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(l.family.toUpperCase(),
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
           ),
           const SizedBox(height: 8),
           Container(
@@ -227,7 +227,7 @@ class MoreScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(l.account.toUpperCase(),
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: Bua.inkMuted)),
           ),
           const SizedBox(height: 8),
           Container(
@@ -272,10 +272,13 @@ class MoreScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(children: [
-                  const Icon(Icons.translate, size: 20, color: Bua.green),
+                  Icon(Icons.translate, size: 20, color: Bua.green),
                   const SizedBox(width: 14),
                   Expanded(child: Text(l.language, style: const TextStyle(fontSize: 15))),
-                  const LanguageToggle(),
+                  const Flexible(
+                    flex: 2,
+                    child: Align(alignment: AlignmentDirectional.centerEnd, child: LanguageToggle()),
+                  ),
                 ]),
               ),
               const InsetDivider(),
@@ -346,7 +349,7 @@ Future<void> confirmDeleteAccount(BuildContext context, WidgetRef ref) async {
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(l.deleteAccountGone, style: const TextStyle(height: 1.4)),
             const SizedBox(height: 12),
-            Text(l.deleteAccountKept, style: const TextStyle(height: 1.4, color: Bua.inkMuted)),
+            Text(l.deleteAccountKept, style: TextStyle(height: 1.4, color: Bua.inkMuted)),
             const SizedBox(height: 8),
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,

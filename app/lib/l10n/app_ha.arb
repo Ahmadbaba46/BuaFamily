@@ -1327,5 +1327,15 @@
   "eventPhotosHint": "Raba hotunan wannan rana.",
   "eventPhotosTitle": "Hotunan ranar",
   "shareLabel": "Raba",
-  "shareHint": "Mahaɗin zai nuna kati a WhatsApp; ’yan uwa ne kawai ke iya buɗe abin da ke ciki."
+  "shareHint": "Mahaɗin zai nuna kati a WhatsApp; ’yan uwa ne kawai ke iya buɗe abin da ke ciki.",
+  "appearanceTitle": "Kamanni",
+  "themeLabel": "Launuka",
+  "themeSystem": "Atomatik",
+  "themeLight": "Haske",
+  "themeDark": "Duhu",
+  "textSizeLabel": "Girman rubutu",
+  "textNormal": "Daidai",
+  "textLarge": "Babba",
+  "textLarger": "Babba sosai",
+  "textSizeSample": "Haka rubutu zai kasance."
 }

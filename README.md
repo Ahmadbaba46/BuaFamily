@@ -44,6 +44,9 @@ share moments and photos, plan family events, and keep everyone's details
   the right page. Cards never show private content: an invite says who invited
   you; an event only that it's a family event. (`app/api/share.js`, a small
   Vercel function next to the website.)
+- **Dark mode and larger text:** Settings → Appearance: colours Auto (like the
+  phone), Light or Dark, and text Normal, Large or Larger (on top of the
+  phone's own text size). Kept on the phone.
 - **Messages:** private one-to-one conversations between family members, from
   Messages on Home or the Message button on a profile. Only the two people can
   read them: not admins, not backups.

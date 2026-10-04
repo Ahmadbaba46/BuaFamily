@@ -70,7 +70,7 @@ class MemorialScreen extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(24, 36, 24, 16),
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                     Text(l.inLovingMemory.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1.2, color: Bua.goldOnDark)),
                     const SizedBox(height: 14),
                     PersonAvatar(person: p, radius: 44, gapColor: Bua.memorial),
@@ -82,7 +82,7 @@ class MemorialScreen extends ConsumerWidget {
                       Text(dates, style: const TextStyle(fontSize: 14, color: Color(0xFFD7DED9))),
                     const SizedBox(height: 8),
                     Text(l.memorialPrayer(sex),
-                        style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Bua.goldOnDark)),
+                        style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Bua.goldOnDark)),
                   ]),
                 ),
               ),
@@ -214,7 +214,7 @@ class _MemoriesState extends ConsumerState<_Memories> {
             else if (rows.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(l.noMemoriesYet, style: const TextStyle(color: Bua.inkSubtle)),
+                child: Text(l.noMemoriesYet, style: TextStyle(color: Bua.inkSubtle)),
               ),
             for (final m in rows)
               _MemoryRow(memory: m, canDelete: m.authorId == me?.id || (me?.isAdmin ?? false)),
@@ -231,7 +231,7 @@ class _MemoriesState extends ConsumerState<_Memories> {
                 suffixIcon: IconButton(
                   tooltip: l.send,
                   onPressed: _sending ? null : _send,
-                  icon: const Icon(Icons.send, color: Bua.green),
+                  icon: Icon(Icons.send, color: Bua.green),
                 ),
               ),
             ),
@@ -268,14 +268,14 @@ class _MemoryRow extends ConsumerWidget {
               ]),
               style: const TextStyle(fontSize: 14, height: 1.45),
             ),
-            Text(when, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+            Text(when, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
           ]),
         ),
         if (canDelete)
           IconButton(
             tooltip: l.delete,
             visualDensity: VisualDensity.compact,
-            icon: const Icon(Icons.close, size: 18, color: Bua.inkSubtle),
+            icon: Icon(Icons.close, size: 18, color: Bua.inkSubtle),
             onPressed: () async {
               if (await guarded(context, () => ref.read(repositoryProvider).deleteMemory(memory.id))) {
                 ref.invalidate(memoriesProvider(memory.personId));

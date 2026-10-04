@@ -58,7 +58,7 @@ TextSpan highlight(String text, String query, TextStyle base) {
   if (at < 0) return TextSpan(text: text, style: base);
   return TextSpan(style: base, children: [
     TextSpan(text: text.substring(0, at)),
-    TextSpan(text: text.substring(at, at + q.length), style: const TextStyle(fontWeight: FontWeight.w700, color: Bua.ink)),
+    TextSpan(text: text.substring(at, at + q.length), style: TextStyle(fontWeight: FontWeight.w700, color: Bua.ink)),
     TextSpan(text: text.substring(at + q.length)),
   ]);
 }
@@ -140,7 +140,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     }
     final kinds = [if (people.isNotEmpty) 'people', for (final k in searchKinds) if (byKind.containsKey(k)) k];
     final showKinds = _kind == null ? kinds : kinds.where((k) => k == _kind).toList();
-    const subtle = TextStyle(fontSize: 13, color: Bua.inkSubtle, height: 1.35);
+    final subtle = TextStyle(fontSize: 13, color: Bua.inkSubtle, height: 1.35);
 
     Widget section(String kind, List<Widget> rows, int total) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
@@ -171,7 +171,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       ].join(' · ');
       return ListTile(
         leading: person != null ? PersonAvatar(person: person) : IconTile(searchKindIcon(h.kind), background: Bua.greenTint),
-        title: Text.rich(highlight(title, q, const TextStyle(fontSize: 15, color: Bua.ink)),
+        title: Text.rich(highlight(title, q, TextStyle(fontSize: 15, color: Bua.ink)),
             maxLines: 2, overflow: TextOverflow.ellipsis),
         subtitle: sub.isEmpty ? null : Text.rich(highlight(sub, q, subtle), maxLines: 2, overflow: TextOverflow.ellipsis),
         onTap: () => _open(h.link),
@@ -236,10 +236,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
             child: Column(children: [
-              const Icon(Icons.manage_search, size: 48, color: Bua.inkSubtle),
+              Icon(Icons.manage_search, size: 48, color: Bua.inkSubtle),
               const SizedBox(height: 10),
               Text(_box.text.trim().length == 1 ? l.searchTypeMore : l.searchTips,
-                  textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkMuted, height: 1.45)),
+                  textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted, height: 1.45)),
             ]),
           ),
         ] else ...[
@@ -285,7 +285,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               child: Text(
                 hits.hasError ? errorText(hits.error!) : l.searchNothing(q),
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Bua.inkMuted),
+                style: TextStyle(color: Bua.inkMuted),
               ),
             ),
         ],

@@ -4974,4 +4974,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get shareHint =>
       'The link shows a card on WhatsApp; only family members can open what\'s inside.';
+
+  @override
+  String get appearanceTitle => 'Appearance';
+
+  @override
+  String get themeLabel => 'Colours';
+
+  @override
+  String get themeSystem => 'Auto';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get textSizeLabel => 'Text size';
+
+  @override
+  String get textNormal => 'Normal';
+
+  @override
+  String get textLarge => 'Large';
+
+  @override
+  String get textLarger => 'Larger';
+
+  @override
+  String get textSizeSample => 'This is how text will look.';
 }

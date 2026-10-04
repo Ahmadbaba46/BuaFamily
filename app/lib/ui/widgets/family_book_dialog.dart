@@ -23,7 +23,7 @@ Future<void> makeFamilyBook(BuildContext context, WidgetRef ref) async {
       builder: (c, setState) => AlertDialog(
         title: Text(l.familyBookAction),
         content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(l.familyBookHint, style: const TextStyle(fontSize: 14, height: 1.45, color: Bua.inkMuted)),
+          Text(l.familyBookHint, style: TextStyle(fontSize: 14, height: 1.45, color: Bua.inkMuted)),
           const SizedBox(height: 8),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,

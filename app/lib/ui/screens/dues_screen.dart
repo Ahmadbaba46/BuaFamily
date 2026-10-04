@@ -113,9 +113,9 @@ class _DuesScreenState extends ConsumerState<DuesScreen> {
         builder: (list) {
           if (list.isEmpty) {
             return ListView(padding: const EdgeInsets.all(24), children: [
-              const Icon(Icons.event_repeat, size: 44, color: Bua.inkSubtle),
+              Icon(Icons.event_repeat, size: 44, color: Bua.inkSubtle),
               const SizedBox(height: 12),
-              Text(l.noDuesPlans, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkMuted, height: 1.45)),
+              Text(l.noDuesPlans, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted, height: 1.45)),
               const SizedBox(height: 16),
               Center(child: FilledButton.icon(onPressed: () => _editPlan(null), icon: const Icon(Icons.add), label: Text(l.newDuesPlan))),
             ]);
@@ -171,7 +171,7 @@ class _DuesScreenState extends ConsumerState<DuesScreen> {
                             l.monthYear(plan.startsOn),
                             if (!plan.active) l.closed,
                           ].join(' · '),
-                          style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                          style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
                         ),
                       ]),
                     ),
@@ -322,8 +322,8 @@ class _MemberSheetState extends ConsumerState<_MemberSheet> {
         Text(s.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
         Text(standingText(l, s), style: TextStyle(color: s.owed > 0 ? Bua.danger : Bua.inkMuted)),
         if (s.lastPaidAt != null)
-          Text('${naira(s.paid)} · ${l.ago(s.lastPaidAt!)}', style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
-        const Divider(height: 24, color: Bua.line),
+          Text('${naira(s.paid)} · ${l.ago(s.lastPaidAt!)}', style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+        Divider(height: 24, color: Bua.line),
         Text(l.recordPaymentFrom(s.name), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
         TextField(
@@ -343,7 +343,7 @@ class _MemberSheetState extends ConsumerState<_MemberSheet> {
           onPressed: _busy ? null : _record,
           child: Text(l.recordContributionButton),
         ),
-        const Divider(height: 24, color: Bua.line),
+        Divider(height: 24, color: Bua.line),
         ToggleRow(
           title: l.exemptToggle,
           value: _exempt,

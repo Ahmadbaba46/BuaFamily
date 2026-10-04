@@ -108,7 +108,7 @@ class _MentorConversationScreenState extends ConsumerState<MentorConversationScr
                         iAmMentor ? l.conversationWithStudent : l.conversationWithMentor(areas ?? ''),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Bua.inkSubtle),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Bua.inkSubtle),
                       ),
                     ]),
                   ),
@@ -126,18 +126,18 @@ class _MentorConversationScreenState extends ConsumerState<MentorConversationScr
         value: ask,
         onRetry: () => ref.invalidate(mentorAskProvider(widget.askId)),
         builder: (a) => a == null
-            ? Center(child: Text(l.conversationGone, style: const TextStyle(color: Bua.inkSubtle)))
+            ? Center(child: Text(l.conversationGone, style: TextStyle(color: Bua.inkSubtle)))
             : Column(children: [
                 Expanded(
                   child: ListView(controller: _scroll, padding: const EdgeInsets.fromLTRB(16, 8, 16, 16), children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        const Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
+                        Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
                         const SizedBox(width: 6),
                         Flexible(
                           child: Text(l.conversationPrivate,
-                              textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                              textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                         ),
                       ]),
                     ),
@@ -150,7 +150,7 @@ class _MentorConversationScreenState extends ConsumerState<MentorConversationScr
                   top: false,
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Bua.surface,
                       border: Border(top: BorderSide(color: Bua.line)),
                     ),

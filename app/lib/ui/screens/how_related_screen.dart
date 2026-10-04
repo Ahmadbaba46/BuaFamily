@@ -72,7 +72,7 @@ class _HowRelatedScreenState extends ConsumerState<HowRelatedScreen> {
                             _a = b;
                             _b = a;
                           }),
-                  icon: const Icon(Icons.swap_horiz, color: Bua.green),
+                  icon: Icon(Icons.swap_horiz, color: Bua.green),
                 ),
                 Expanded(
                   child: _PersonButton(person: pb, caption: l.change, onTap: () => _pick(graph, false)),
@@ -110,7 +110,7 @@ class _HowRelatedScreenState extends ConsumerState<HowRelatedScreen> {
         child: Column(children: [
           Text(
             pa.id == me ? l.relatedIsYour(pb.firstName) : l.relatedIsOf(pb.firstName, pa.firstName),
-            style: const TextStyle(fontSize: 14, color: Bua.greenOnDark),
+            style: TextStyle(fontSize: 14, color: Bua.greenOnDark),
           ),
           const SizedBox(height: 4),
           Text(label,
@@ -118,7 +118,7 @@ class _HowRelatedScreenState extends ConsumerState<HowRelatedScreen> {
               style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: Colors.white)),
           if (side != null) ...[
             const SizedBox(height: 4),
-            Text(side, style: const TextStyle(fontSize: 14, color: Bua.goldOnDark)),
+            Text(side, style: TextStyle(fontSize: 14, color: Bua.goldOnDark)),
           ],
         ]),
       ),
@@ -126,7 +126,7 @@ class _HowRelatedScreenState extends ConsumerState<HowRelatedScreen> {
       if (path == null)
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(l.notConnected, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.notConnected, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
         )
       else if (path.length > 1)
         Container(
@@ -173,7 +173,7 @@ class _PersonButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Bua.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: Bua.line)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: Bua.line)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -183,7 +183,7 @@ class _PersonButton extends StatelessWidget {
             if (person != null)
               PersonAvatar(person: person!, radius: 18, showPhoto: false)
             else
-              const CircleAvatar(radius: 18, backgroundColor: Bua.track, child: Icon(Icons.person_search, size: 18)),
+              CircleAvatar(radius: 18, backgroundColor: Bua.track, child: Icon(Icons.person_search, size: 18)),
             const SizedBox(width: 8),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -191,7 +191,7 @@ class _PersonButton extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                Text(caption, style: const TextStyle(fontSize: 12, color: Bua.green)),
+                Text(caption, style: TextStyle(fontSize: 12, color: Bua.green)),
               ]),
             ),
           ]),
@@ -224,7 +224,7 @@ class _PathNode extends StatelessWidget {
               Text(isMe ? l.youSuffix(person.displayName) : person.displayName,
                   style: TextStyle(fontSize: 15, fontWeight: highlight ? FontWeight.w700 : FontWeight.w500)),
               if (note != null)
-                Text(note!, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.goldInk)),
+                Text(note!, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.goldInk)),
             ]),
           ),
         ]),
@@ -245,7 +245,7 @@ class _PathLinkRow extends StatelessWidget {
       child: Row(children: [
         Container(width: 2, height: 26, color: Bua.connector),
         const SizedBox(width: 22),
-        Text(text, style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Bua.inkSubtle)),
+        Text(text, style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Bua.inkSubtle)),
       ]),
     );
   }

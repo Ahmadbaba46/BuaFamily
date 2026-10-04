@@ -37,7 +37,7 @@ class ChatBubble extends StatelessWidget {
               child: SelectableText(text, style: const TextStyle(fontSize: 15, height: 1.4)),
             ),
             const SizedBox(height: 2),
-            Text(l.ago(at), style: const TextStyle(fontSize: 11, color: Bua.inkSubtle)),
+            Text(l.ago(at), style: TextStyle(fontSize: 11, color: Bua.inkSubtle)),
           ]),
         ),
       ),

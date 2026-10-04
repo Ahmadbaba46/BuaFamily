@@ -140,7 +140,7 @@ class _MentorsTab extends ConsumerWidget {
       if (data.mentors.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(l.noMentorsYet, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.noMentorsYet, style: TextStyle(color: Bua.inkSubtle)),
         )
       else
         Container(
@@ -203,7 +203,7 @@ class _ConversationRow extends ConsumerWidget {
               decoration: BoxDecoration(color: Bua.green, borderRadius: BorderRadius.circular(10)),
               child: Text(l.newMessages, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white)),
             )
-          : const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+          : Icon(Icons.chevron_right, color: Bua.inkSubtle),
       onTap: () => context.push('/mentors/ask/${ask.id}'),
     );
   }
@@ -230,8 +230,8 @@ class _MentorRow extends ConsumerWidget {
             onTap: who.person == null ? null : () => context.push('/person/${who.person!.id}'),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(who.name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text(mentor.areas, style: const TextStyle(fontSize: 13, color: Bua.inkBody)),
-              if (rel != null) Text(rel, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
+              Text(mentor.areas, style: TextStyle(fontSize: 13, color: Bua.inkBody)),
+              if (rel != null) Text(rel, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
             ]),
           ),
         ),
@@ -286,7 +286,7 @@ class _StudentsTab extends ConsumerWidget {
       if (data.students.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(l.noStudentsYet, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.noStudentsYet, style: TextStyle(color: Bua.inkSubtle)),
         ),
       for (final s in data.students) ...[
         Builder(builder: (context) {
@@ -310,7 +310,7 @@ class _StudentsTab extends ConsumerWidget {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text([who.name, if (age != null) '$age'].join(' · '),
                           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                      Text(s.field, style: const TextStyle(fontSize: 13, color: Bua.green, fontWeight: FontWeight.w600)),
+                      Text(s.field, style: TextStyle(fontSize: 13, color: Bua.green, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 4),
                       Text('“${s.message}”', style: const TextStyle(fontSize: 14, height: 1.4, fontStyle: FontStyle.italic)),
                     ]),
@@ -423,7 +423,7 @@ class _OpportunitiesTab extends ConsumerWidget {
       if (data.opportunities.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(l.noOpportunitiesYet, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.noOpportunitiesYet, style: TextStyle(color: Bua.inkSubtle)),
         ),
       for (final o in data.opportunities) ...[
         Container(
@@ -436,7 +436,7 @@ class _OpportunitiesTab extends ConsumerWidget {
                 l.sharedBy(authorOf(ref, o.postedBy).name),
                 if (o.deadline != null) l.deadlineOn(l.formatDate(o.deadline!)),
               ].join(' · '),
-              style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
             ),
             if (o.details?.isNotEmpty ?? false) ...[
               const SizedBox(height: 6),
@@ -453,7 +453,7 @@ class _OpportunitiesTab extends ConsumerWidget {
               if (o.postedBy == me?.id || (me?.isAdmin ?? false))
                 IconButton(
                   tooltip: l.delete,
-                  icon: const Icon(Icons.delete_outline, color: Bua.inkSubtle),
+                  icon: Icon(Icons.delete_outline, color: Bua.inkSubtle),
                   onPressed: () async {
                     if (await guarded(context, () => ref.read(repositoryProvider).deleteOpportunity(o.id))) {
                       ref.invalidate(mentorshipProvider);

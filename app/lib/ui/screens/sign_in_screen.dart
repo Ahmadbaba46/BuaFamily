@@ -134,7 +134,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       ];
     }
     return [
-      Text(l.codeSent(formatPhone(_codeSentTo!)), style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+      Text(l.codeSent(formatPhone(_codeSentTo!)), style: TextStyle(fontSize: 14, color: Bua.inkMuted)),
       const SizedBox(height: 12),
       LabeledField(
         label: l.enterCode,
@@ -210,13 +210,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             child: Text(l.resetHowTitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           ),
           ListTile(
-            leading: const Icon(Icons.sms_outlined, color: Bua.green),
+            leading: Icon(Icons.sms_outlined, color: Bua.green),
             title: Text(l.resetByText),
             subtitle: Text(l.resetByTextHint),
             onTap: () => Navigator.pop(c, 'sms'),
           ),
           ListTile(
-            leading: const Icon(Icons.mail_outline, color: Bua.green),
+            leading: Icon(Icons.mail_outline, color: Bua.green),
             title: Text(l.resetByEmail),
             subtitle: _email.text.contains('@') ? Text(_email.text.trim()) : Text(l.resetByEmailHint),
             onTap: () => Navigator.pop(c, 'email'),
@@ -280,7 +280,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     Text(l.appTitle,
                         style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white)),
                     const SizedBox(height: 6),
-                    Text(l.welcomeTagline, style: const TextStyle(fontSize: 15, color: Bua.greenTint)),
+                    Text(l.welcomeTagline, style: TextStyle(fontSize: 15, color: Bua.greenTint)),
                     const SizedBox(height: 20),
                   ]),
                 ),
@@ -291,7 +291,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Bua.surface,
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: const [BoxShadow(color: Color(0x1A17231B), blurRadius: 24, offset: Offset(0, 6))],
                   ),
@@ -372,18 +372,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Row(children: [
-                            const Expanded(child: Divider(color: Bua.line)),
+                            Expanded(child: Divider(color: Bua.line)),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(l.orWord, style: const TextStyle(color: Bua.inkSubtle)),
+                              child: Text(l.orWord, style: TextStyle(color: Bua.inkSubtle)),
                             ),
-                            const Expanded(child: Divider(color: Bua.line)),
+                            Expanded(child: Divider(color: Bua.line)),
                           ]),
                         ),
                         OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
                           onPressed: _busy ? null : _google,
-                          icon: const Text('G', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Bua.green)),
+                          icon: Text('G', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Bua.green)),
                           label: Text(l.continueWithGoogle),
                         ),
                         const SizedBox(height: 8),
@@ -414,7 +414,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 child: Text(
                   l.privateSpaceNote,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+                  style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
                 ),
               ),
               const SizedBox(height: 32),

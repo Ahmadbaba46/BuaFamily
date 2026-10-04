@@ -67,7 +67,7 @@ class HomeScreen extends ConsumerWidget {
                     [l.weekdayDate(today), ?hijriFor(ref, l, today)].join(' · '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                    style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
                   ),
                   Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
                 ]),
@@ -163,7 +163,7 @@ class HomeScreen extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(32, 40, 32, 0),
                       child: Text(l.feedEmpty,
-                          textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle, height: 1.5)),
+                          textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle, height: 1.5)),
                     ),
                   for (final p in rest) ...[
                     Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: PostCard(post: p)),
@@ -227,13 +227,13 @@ class _OccasionBanner extends ConsumerWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 '${l.occasionName(g.occasion)} · ${l.hijriDate(g.hijri)}'.toUpperCase(),
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Bua.goldTint),
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Bua.goldTint),
               ),
               const SizedBox(height: 6),
               Text(text, style: const TextStyle(fontSize: 18, height: 1.3, fontWeight: FontWeight.w600, color: Colors.white)),
               if (!g.eve) ...[
                 const SizedBox(height: 4),
-                Text(l.greetingFrom(family), style: const TextStyle(fontSize: 13, color: Bua.greenTint)),
+                Text(l.greetingFrom(family), style: TextStyle(fontSize: 13, color: Bua.greenTint)),
                 const SizedBox(height: 10),
                 FilledButton.icon(
                   style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Bua.green),
@@ -276,7 +276,7 @@ class _TodayCard extends StatelessWidget {
         color: dark ? Bua.green : Bua.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
-          side: dark ? BorderSide.none : const BorderSide(color: Bua.line),
+          side: dark ? BorderSide.none : BorderSide(color: Bua.line),
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -309,10 +309,10 @@ class _TodayCard extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
                   child: Text(action,
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark)),
+                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.onWhite)),
                 )
               else
-                Text(action, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.green)),
+                Text(action, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.green)),
             ]),
           ),
         ),
@@ -333,7 +333,7 @@ class _Composer extends ConsumerWidget {
     final me = profile?.personId == null ? null : ref.watch(graphProvider).value?[profile!.personId!];
     return Material(
       color: Bua.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: Bua.line)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: Bua.line)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -345,9 +345,9 @@ class _Composer extends ConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(context.l10n.shareMomentPrompt,
-                  style: const TextStyle(fontSize: 15, color: Bua.inkSubtle), overflow: TextOverflow.ellipsis),
+                  style: TextStyle(fontSize: 15, color: Bua.inkSubtle), overflow: TextOverflow.ellipsis),
             ),
-            const IconTile(Icons.photo_outlined, background: Bua.greenTint),
+            IconTile(Icons.photo_outlined, background: Bua.greenTint),
             const SizedBox(width: 8),
           ]),
         ),

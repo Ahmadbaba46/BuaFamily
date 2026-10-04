@@ -114,7 +114,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
             Text(
               l.restoreSubtitle,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle),
             ),
           ],
         ),
@@ -158,7 +158,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
                           _fileName == null ? l.backupFile : l.backupFileChosen(_fileName!),
                           style: const TextStyle(fontSize: 15),
                         ),
-                        secondary: const Icon(Icons.upload_file_outlined, color: Bua.green),
+                        secondary: Icon(Icons.upload_file_outlined, color: Bua.green),
                       ),
                     ],
                   ),
@@ -194,11 +194,11 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
                           children: [
                             const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
                             const SizedBox(width: 12),
-                            Text(l.checkingBackup, style: const TextStyle(color: Bua.inkMuted)),
+                            Text(l.checkingBackup, style: TextStyle(color: Bua.inkMuted)),
                           ],
                         )
                       : _previewError != null
-                      ? Text(errorText(_previewError!), style: const TextStyle(color: Bua.danger))
+                      ? Text(errorText(_previewError!), style: TextStyle(color: Bua.danger))
                       : _preview == null
                       ? const SizedBox.shrink()
                       : _PreviewList(summary: _preview!),
@@ -211,7 +211,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Text(l.restoreLimits, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
+            child: Text(l.restoreLimits, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
           ),
           const SizedBox(height: 20),
           FilledButton.icon(
@@ -240,7 +240,7 @@ class _PreviewList extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     if (summary.nothingToDo) {
-      return Text(l.restoreUpToDate, style: const TextStyle(fontSize: 14, height: 1.4, color: Bua.inkMuted));
+      return Text(l.restoreUpToDate, style: TextStyle(fontSize: 14, height: 1.4, color: Bua.inkMuted));
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
