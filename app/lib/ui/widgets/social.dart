@@ -13,6 +13,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import 'bua.dart';
 import 'common.dart';
+import 'share_sheet.dart';
 
 /// Picks photos from the device, resized to save data unless [shrink] is off.
 Future<List<PickedImage>> pickImages({bool shrink = true}) async {
@@ -430,13 +431,15 @@ class PostCard extends ConsumerWidget {
                 Text.rich(TextSpan(children: meta), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
             ),
-            if (canDelete || isAdmin)
-              PopupMenuButton<String>(
+            PopupMenuButton<String>(
                 tooltip: l.postOptions,
                 icon: const Icon(Icons.more_horiz, color: Bua.inkMuted),
                 onSelected: (v) async {
                   final repo = ref.read(repositoryProvider);
-                  if (v == 'pin') {
+                  if (v == 'share') {
+                    await showShareSheet(context,
+                        link: shareLink('post', post.id, lang: Localizations.localeOf(context).languageCode));
+                  } else if (v == 'pin') {
                     if (await guarded(context, () => repo.setPinned(postId: post.id, pinned: !post.pinned))) {
                       ref.invalidate(feedProvider);
                     }
@@ -449,12 +452,11 @@ class PostCard extends ConsumerWidget {
                   }
                 },
                 itemBuilder: (_) => [
+                  PopupMenuItem(value: 'share', child: Text(l.shareLabel)),
                   if (isAdmin) PopupMenuItem(value: 'pin', child: Text(post.pinned ? l.unpin : l.pinToHome)),
                   if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deletePost)),
                 ],
-              )
-            else
-              const SizedBox(width: 10),
+              ),
           ]),
         ),
         if (post.kind == PostKind.announcement)

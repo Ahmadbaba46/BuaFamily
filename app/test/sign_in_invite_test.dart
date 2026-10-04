@@ -4,6 +4,7 @@ import 'package:bua_family/services/invites.dart';
 import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/screens/join_screen.dart';
 import 'package:bua_family/ui/screens/sign_in_screen.dart';
+import 'package:bua_family/ui/widgets/share_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -82,6 +83,8 @@ void main() {
   });
 
   test('invite links open the join page on the website', () {
-    expect(inviteLink('abc'), 'https://buafamily.vercel.app/#/join/abc');
+    expect(inviteLink('abc'), 'https://buafamily.vercel.app/s/join/abc?l=en');
+    expect(inviteLink('abc', lang: 'ha'), 'https://buafamily.vercel.app/s/join/abc?l=ha');
+    expect(shareLink('event', 'e1'), 'https://buafamily.vercel.app/s/event/e1?l=en');
   });
 }

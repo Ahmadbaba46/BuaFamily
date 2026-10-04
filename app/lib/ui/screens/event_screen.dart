@@ -12,6 +12,7 @@ import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/hijri.dart';
 import '../widgets/hero_page.dart';
+import '../widgets/share_sheet.dart';
 import '../widgets/social.dart';
 
 String _utc(DateTime d) {
@@ -62,6 +63,15 @@ class EventScreen extends ConsumerWidget {
 
     void back() => context.canPop() ? context.pop() : context.go('/events');
     final actions = <Widget>[
+      IconButton(
+        tooltip: l.shareLabel,
+        icon: const Icon(Icons.share_outlined, color: Colors.white),
+        onPressed: () => showShareSheet(
+          context,
+          link: shareLink('event', event.id, lang: Localizations.localeOf(context).languageCode),
+          text: '${event.title} · ${l.weekdayDate(event.startsAt)}',
+        ),
+      ),
       if (canDelete || isAdmin)
         PopupMenuButton<String>(
           iconColor: Colors.white,

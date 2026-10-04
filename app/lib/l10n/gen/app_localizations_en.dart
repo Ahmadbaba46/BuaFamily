@@ -4967,4 +4967,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventPhotosTitle => 'Photos from the day';
+
+  @override
+  String get shareLabel => 'Share';
+
+  @override
+  String get shareHint =>
+      'The link shows a card on WhatsApp; only family members can open what\'s inside.';
 }

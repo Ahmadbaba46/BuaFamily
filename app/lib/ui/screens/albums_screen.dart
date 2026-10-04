@@ -7,6 +7,7 @@ import '../../models/person.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/share_sheet.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
@@ -200,6 +201,18 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/albums')),
+        actions: [
+          if (widget.albumId != null)
+            IconButton(
+              tooltip: l.shareLabel,
+              icon: const Icon(Icons.share_outlined),
+              onPressed: () => showShareSheet(
+                context,
+                link: shareLink('album', widget.albumId!, lang: Localizations.localeOf(context).languageCode),
+                text: album?.title,
+              ),
+            ),
+        ],
         titleSpacing: 0,
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(title, style: Theme.of(context).textTheme.titleMedium),

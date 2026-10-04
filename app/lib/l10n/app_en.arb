@@ -3269,5 +3269,7 @@
   "markWhoCame": "Mark who came",
   "noOneMarkedYet": "No one marked yet.",
   "eventPhotosHint": "Share the photos from this day.",
-  "eventPhotosTitle": "Photos from the day"
+  "eventPhotosTitle": "Photos from the day",
+  "shareLabel": "Share",
+  "shareHint": "The link shows a card on WhatsApp; only family members can open what's inside."
 }

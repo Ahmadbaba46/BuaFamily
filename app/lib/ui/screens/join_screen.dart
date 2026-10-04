@@ -149,7 +149,7 @@ class _InviteSheetState extends ConsumerState<_InviteSheet> {
     if (!mounted) return;
     setState(() {
       _busy = false;
-      if (ok && code != null) _link = inviteLink(code!);
+      if (ok && code != null) _link = inviteLink(code!, lang: Localizations.localeOf(context).languageCode);
     });
   }
 
