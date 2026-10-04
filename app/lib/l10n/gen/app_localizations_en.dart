@@ -1468,7 +1468,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Phone number';
 
   @override
-  String get phoneHint => 'e.g. 0803 123 4567';
+  String get phoneHint => '0803 123 4567';
 
   @override
   String get phoneInvalid => 'Enter a valid phone number.';
@@ -3226,5 +3226,102 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String joinedOn(String date) {
     return 'Joined $date';
+  }
+
+  @override
+  String get emailTab => 'Email';
+
+  @override
+  String get phoneTab => 'Phone';
+
+  @override
+  String get yourNameNew => 'Your name (if you\'re new here)';
+
+  @override
+  String get sendCode => 'Send me a code';
+
+  @override
+  String codeSent(String phone) {
+    return 'We sent a 6-digit code to $phone.';
+  }
+
+  @override
+  String get enterCode => 'Code from the text message';
+
+  @override
+  String get resendCode => 'Send again';
+
+  @override
+  String resendIn(int seconds) {
+    return 'Send again in ${seconds}s';
+  }
+
+  @override
+  String get changeNumber => 'Change number';
+
+  @override
+  String get invalidPhone => 'Enter a valid phone number';
+
+  @override
+  String get inviteTitle => 'You\'re invited';
+
+  @override
+  String inviteBody(String inviter, String family) {
+    return '$inviter invited you to the $family family app.';
+  }
+
+  @override
+  String inviteBodyGeneric(String family) {
+    return 'You\'re invited to the $family family app.';
+  }
+
+  @override
+  String inviteFor(String person) {
+    return 'This invite is for $person.';
+  }
+
+  @override
+  String get inviteInvalid =>
+      'This invite link has already been used or has expired. Ask a family admin for a new one.';
+
+  @override
+  String get joinWithInvite => 'Join the family';
+
+  @override
+  String get acceptInvite => 'Accept the invite';
+
+  @override
+  String get inviteAccepted => 'Welcome to the family app!';
+
+  @override
+  String get inviteSomeone => 'Invite someone';
+
+  @override
+  String get inviteSomeoneHint =>
+      'Make a link to send on WhatsApp. Whoever joins with it is approved at once.';
+
+  @override
+  String get invitePerson => 'For a person in the tree (optional)';
+
+  @override
+  String get createInvite => 'Create the link';
+
+  @override
+  String get inviteReady => 'Link ready. It works once, for 30 days.';
+
+  @override
+  String get shareWhatsApp => 'Share on WhatsApp';
+
+  @override
+  String get copyLink => 'Copy link';
+
+  @override
+  String inviteMessage(String family, String link) {
+    return 'Assalamu alaikum! Join the $family family app: $link';
+  }
+
+  @override
+  String inviteMessageFor(String name, String family, String link) {
+    return 'Assalamu alaikum $name! Join the $family family app: $link';
   }
 }

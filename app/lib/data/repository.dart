@@ -44,6 +44,22 @@ class FamilyRepository {
     }).eq('id', userId!);
   }
 
+  // ---------------------------------------------------------------- invites
+
+  /// Admin: a one-time link that approves whoever joins with it.
+  Future<String> createInvite({String? personId}) async {
+    final row = await _db.from('invites').insert({'person_id': ?personId}).select('code').single();
+    return row['code'] as String;
+  }
+
+  /// Who an invite is for (works before signing in); null if the code is unknown.
+  Future<Map<String, dynamic>?> inviteInfo(String code) async {
+    final r = await _db.rpc('invite_info', params: {'p_code': code});
+    return r == null ? null : Map<String, dynamic>.from(r as Map);
+  }
+
+  Future<void> redeemInvite(String code) => _db.rpc('redeem_invite', params: {'p_code': code});
+
   /// Admin: every account with its person, devices and activity.
   Future<List<UserRow>> adminUsers() async =>
       [for (final r in (await _db.rpc('admin_users')) as List) UserRow.fromJson(Map<String, dynamic>.from(r as Map))];
