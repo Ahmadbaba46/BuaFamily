@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/fund.dart';
+import '../../models/hijri.dart';
 import '../../models/notification.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hijri.dart';
 import '../widgets/push_widgets.dart';
 import '../widgets/social.dart';
 
@@ -37,6 +39,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
           ? l.notifMentorRequest(n.str('body') ?? '')
           : l.notifMentorRequestFrom(n.str('name')!, n.str('body') ?? ''),
       NotificationKind.mentorReply => l.notifMentorReply(n.str('name') ?? '', n.str('body') ?? ''),
+      NotificationKind.occasion => _occasionText(l, n),
       NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
@@ -56,6 +59,17 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
           : l.notifRequestDeclined(n.str('person') ?? l.notifTheTree),
     };
 
+String _occasionText(AppLocalizations l, AppNotification n) {
+  final o = switch (n.str('occasion')) {
+    'ramadan' => Occasion.ramadan,
+    'eid_al_fitr' => Occasion.eidAlFitr,
+    'eid_al_adha' => Occasion.eidAlAdha,
+    _ => Occasion.islamicNewYear,
+  };
+  final year = (n.data['hijri_year'] as num?)?.toInt() ?? 0;
+  return (n.data['eve'] == true ? l.occasionEve(o) : l.occasionGreeting(o, year)) ?? l.occasionName(o);
+}
+
 IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.event => Icons.event,
       NotificationKind.announcement => Icons.campaign_outlined,
@@ -69,6 +83,7 @@ IconData _icon(NotificationKind k) => switch (k) {
         Icons.volunteer_activism_outlined,
       NotificationKind.mentorRequest || NotificationKind.opportunity => Icons.school_outlined,
       NotificationKind.mentorReply => Icons.forum_outlined,
+      NotificationKind.occasion => Icons.nightlight_round,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,
       NotificationKind.test => Icons.notifications_active_outlined,

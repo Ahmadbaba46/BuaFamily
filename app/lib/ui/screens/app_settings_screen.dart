@@ -16,6 +16,7 @@ const notificationGroups = {
   'birthdays': ['birthday', 'remembrance', 'memory'],
   'tagged': ['tagged'],
   'comments': ['comment'],
+  'occasions': ['occasion'],
 };
 
 /// Language, data saver and which notifications to receive.
@@ -91,6 +92,18 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           ),
         ]),
         const SizedBox(height: 12),
+        SectionCard(title: l.hijriSettingsTitle, padding: const EdgeInsets.fromLTRB(0, 6, 0, 6), children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ToggleRow(
+              title: l.showHijriDates,
+              subtitle: l.showHijriDatesHint,
+              value: prefs.showHijri,
+              onChanged: (v) => ref.read(devicePrefsProvider.notifier).set(showHijri: v),
+            ),
+          ),
+        ]),
+        const SizedBox(height: 12),
         SectionCard(title: l.notifyMeAbout, padding: const EdgeInsets.fromLTRB(0, 6, 0, 6), children: [
           toggle(l.notifEventsAnnouncements, 'events'),
           divider,
@@ -99,6 +112,8 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           toggle(l.notifTagged, 'tagged'),
           divider,
           toggle(l.notifCommentsMine, 'comments'),
+          divider,
+          toggle(l.islamicOccasions, 'occasions'),
           divider,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

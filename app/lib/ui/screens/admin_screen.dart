@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
+import '../../models/hijri.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
+import '../widgets/hijri.dart';
 import '../widgets/request_card.dart';
 import 'get_app_screen.dart';
 import 'users_screen.dart';
@@ -243,6 +245,8 @@ class _SettingsTab extends ConsumerWidget {
           const SizedBox(height: 12),
           _PushCard(settings: s, save: save),
           const SizedBox(height: 12),
+          _HijriCard(settings: s, save: save),
+          const SizedBox(height: 12),
           AndroidReleaseCard(pickApk: () async {
             final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['apk']);
             return f == null ? null : (f.name, await f.readAsBytes());
@@ -299,6 +303,63 @@ class _SettingsTab extends ConsumerWidget {
           ),
         ]);
       },
+    );
+  }
+}
+
+/// The Islamic calendar: match the moon sighting, and the family greetings.
+class _HijriCard extends StatelessWidget {
+  const _HijriCard({required this.settings, required this.save});
+
+  final AppSettings settings;
+  final Future<void> Function(Map<String, dynamic>) save;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final offset = settings.hijriOffset;
+    final today = HijriDate.fromDate(DateTime.now(), offset: offset);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(children: [
+          const IconTile(Icons.nightlight_round, background: Bua.greenTint),
+          const SizedBox(width: 14),
+          Expanded(child: Text(l.hijriSettingsTitle, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
+        ]),
+        const SizedBox(height: 12),
+        Text(l.hijriTodayIs(l.hijriDate(today)), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+        const SizedBox(height: 10),
+        Row(children: [
+          Expanded(child: Text(l.hijriAdjust, style: const TextStyle(fontSize: 14))),
+          IconButton.outlined(
+            tooltip: '−1',
+            onPressed: offset <= -2 ? null : () => save({'hijri_offset': offset - 1}),
+            icon: const Icon(Icons.remove, size: 18),
+          ),
+          SizedBox(
+            width: 92,
+            child: Text(
+              offset == 0 ? l.hijriNoAdjust : l.hijriDaysSigned(offset > 0 ? '+' : '−', offset.abs()),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+          ),
+          IconButton.outlined(
+            tooltip: '+1',
+            onPressed: offset >= 2 ? null : () => save({'hijri_offset': offset + 1}),
+            icon: const Icon(Icons.add, size: 18),
+          ),
+        ]),
+        Text(l.hijriAdjustHint, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
+        const Divider(height: 24, color: Bua.line),
+        ToggleRow(
+          title: l.islamicGreetingsToggle,
+          value: settings.islamicGreetings,
+          onChanged: (v) => save({'islamic_greetings': v}),
+        ),
+      ]),
     );
   }
 }

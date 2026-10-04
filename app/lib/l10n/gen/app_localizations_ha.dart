@@ -4016,4 +4016,119 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get resetExpired => 'Lambar ta ƙare. Nemi sabuwa.';
+
+  @override
+  String get occIslamicNewYear => 'Sabuwar Shekarar Musulunci';
+
+  @override
+  String get occAshura => 'Ranar Ashura';
+
+  @override
+  String get occMawlid => 'Mauludi';
+
+  @override
+  String get occRamadan => 'Farkon Azumin Ramadan';
+
+  @override
+  String get occLaylatAlQadr => 'Lailatul Qadri (dare na 27)';
+
+  @override
+  String get occEidAlFitr => 'Karamar Sallah';
+
+  @override
+  String get occArafah => 'Ranar Arafa';
+
+  @override
+  String get occEidAlAdha => 'Babbar Sallah';
+
+  @override
+  String get greetEidFitr => 'Barka da Sallah! Allah ya maimaita mana.';
+
+  @override
+  String get greetEidAdha => 'Barka da Babbar Sallah! Allah ya karɓi ibadunmu.';
+
+  @override
+  String get greetRamadan => 'Barka da azumi! Allah ya karɓi ibadunmu.';
+
+  @override
+  String greetNewYear(int year) {
+    return 'Barka da sabuwar shekara ta $year!';
+  }
+
+  @override
+  String get eveEidFitr => 'Ana sa ran Karamar Sallah gobe, idan an ga wata.';
+
+  @override
+  String get eveEidAdha => 'Ana sa ran Babbar Sallah gobe.';
+
+  @override
+  String get eveRamadan =>
+      'Ana sa ran fara azumin Ramadan gobe, idan an ga wata.';
+
+  @override
+  String greetingFrom(String family) {
+    return 'Daga dukkanmu a iyalin $family';
+  }
+
+  @override
+  String get shareGreeting => 'Aika gaisuwa';
+
+  @override
+  String get islamicOccasions => 'Lokutan Musulunci';
+
+  @override
+  String get moonNote =>
+      'Ranakun suna bin kalandar Musulunci kuma suna iya canzawa da kwana ɗaya idan an ga wata.';
+
+  @override
+  String inDaysCount(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'nan da kwana $n',
+      one: 'gobe',
+      zero: 'yau',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hijriSettingsTitle => 'Kalandar Musulunci';
+
+  @override
+  String get hijriAdjust => 'Daidaita ganin wata';
+
+  @override
+  String get hijriAdjustHint =>
+      'Idan an sanar da sabon wata kwana ɗaya kafin abin da manhajar ta nuna, ƙara kwana; idan bayan haka, rage kwana.';
+
+  @override
+  String hijriTodayIs(String date) {
+    return 'Yau a manhajar: $date';
+  }
+
+  @override
+  String get islamicGreetingsToggle =>
+      'Gaisar da iyali a Ramadan, Sallah da sabuwar shekara';
+
+  @override
+  String get showHijriDates => 'Nuna ranakun Musulunci';
+
+  @override
+  String get showHijriDatesHint =>
+      'Kusa da ranaku, misali 21 Rabi\'us Sani 1448';
+
+  @override
+  String get hijriNoAdjust => 'Babu gyara';
+
+  @override
+  String hijriDaysSigned(String sign, int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'kwana $n',
+      one: 'kwana 1',
+    );
+    return '$sign $_temp0';
+  }
 }

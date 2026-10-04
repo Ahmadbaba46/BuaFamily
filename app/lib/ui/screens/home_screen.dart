@@ -10,6 +10,7 @@ import '../theme.dart';
 import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hijri.dart';
 import '../widgets/social.dart';
 import 'get_app_screen.dart';
 import 'notifications_screen.dart';
@@ -61,7 +62,12 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(l.weekdayDate(today), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                  Text(
+                    [l.weekdayDate(today), ?hijriFor(ref, l, today)].join(' · '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                  ),
                   Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
                 ]),
               ),
@@ -82,6 +88,7 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 4),
                   const UpdateBanner(),
+                  _OccasionBanner(today: today),
                   if (birthdays.isNotEmpty || remembrances.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),
@@ -183,6 +190,55 @@ class _PinnedAnnouncement extends ConsumerWidget {
       title: post.body,
       meta: l.fromAuthor(admin ? '${author.name} (${l.roleAdmin.toLowerCase()})' : author.name, l.ago(post.createdAt)),
       onTap: () => showComments(context, Target.post(post.id)),
+    );
+  }
+}
+
+/// Ramadan, Eid and the new year: a greeting on the day, a notice the day before.
+class _OccasionBanner extends ConsumerWidget {
+  const _OccasionBanner({required this.today});
+
+  final DateTime today;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final g = greetingFor(today, ref.watch(hijriOffsetProvider));
+    if (g == null) return const SizedBox.shrink();
+    final family = ref.watch(settingsProvider).value?.familyName ?? 'Bua';
+    final greeting = l.occasionGreeting(g.occasion, g.hijri.year) ?? '';
+    final text = g.eve ? (l.occasionEve(g.occasion) ?? '') : greeting;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(color: Bua.green, borderRadius: BorderRadius.circular(20)),
+        child: Stack(children: [
+          const Positioned(right: -12, top: -10, child: Icon(Icons.nightlight_round, size: 96, color: Color(0x22FFFFFF))),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                '${l.occasionName(g.occasion)} · ${l.hijriDate(g.hijri)}'.toUpperCase(),
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Bua.goldTint),
+              ),
+              const SizedBox(height: 6),
+              Text(text, style: const TextStyle(fontSize: 18, height: 1.3, fontWeight: FontWeight.w600, color: Colors.white)),
+              if (!g.eve) ...[
+                const SizedBox(height: 4),
+                Text(l.greetingFrom(family), style: const TextStyle(fontSize: 13, color: Bua.greenTint)),
+                const SizedBox(height: 10),
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Bua.green),
+                  onPressed: () => context.push('/new-moment?text=${Uri.encodeQueryComponent(greeting)}'),
+                  icon: const Icon(Icons.favorite_outline, size: 18),
+                  label: Text(l.shareGreeting),
+                ),
+              ],
+            ]),
+          ),
+        ]),
+      ),
     );
   }
 }

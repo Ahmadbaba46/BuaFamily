@@ -2632,5 +2632,72 @@
   "resetSmsOff": "Text messages are not set up yet. Use your email instead.",
   "resetTooMany": "Please wait a little before asking for another code.",
   "resetWrongCode": "That code isn't right. Check the text message.",
-  "resetExpired": "That code has expired. Ask for a new one."
+  "resetExpired": "That code has expired. Ask for a new one.",
+  "occIslamicNewYear": "Islamic New Year",
+  "occAshura": "Ashura",
+  "occMawlid": "Mawlid",
+  "occRamadan": "Ramadan begins",
+  "occLaylatAlQadr": "Laylat al-Qadr (27th night)",
+  "occEidAlFitr": "Eid al-Fitr",
+  "occArafah": "Day of Arafah",
+  "occEidAlAdha": "Eid al-Adha",
+  "greetEidFitr": "Eid Mubarak! Barka da Sallah.",
+  "greetEidAdha": "Eid Mubarak! Barka da Babbar Sallah.",
+  "greetRamadan": "Ramadan Mubarak! May Allah accept our fasting.",
+  "greetNewYear": "Happy Islamic New Year {year}!",
+  "@greetNewYear": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "eveEidFitr": "Eid al-Fitr is expected tomorrow, if the moon is sighted.",
+  "eveEidAdha": "Eid al-Adha is expected tomorrow.",
+  "eveRamadan": "Ramadan is expected to begin tomorrow, if the moon is sighted.",
+  "greetingFrom": "From all of us in the {family} family",
+  "@greetingFrom": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "shareGreeting": "Share a greeting",
+  "islamicOccasions": "Islamic occasions",
+  "moonNote": "Dates follow the Islamic calendar and can move a day with the moon sighting.",
+  "inDaysCount": "{n, plural, =0{today} =1{tomorrow} other{in {n} days}}",
+  "@inDaysCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "hijriSettingsTitle": "Islamic calendar",
+  "hijriAdjust": "Moon sighting adjustment",
+  "hijriAdjustHint": "If the new month was announced a day earlier than the app shows, add a day; a day later, take one away.",
+  "hijriTodayIs": "Today in the app: {date}",
+  "@hijriTodayIs": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "islamicGreetingsToggle": "Greet the family on Ramadan, the Eids and the new year",
+  "showHijriDates": "Show Islamic dates",
+  "showHijriDatesHint": "Next to dates, e.g. 21 Rabiʻ al-Thani 1448",
+  "hijriNoAdjust": "No adjustment",
+  "hijriDaysSigned": "{sign}{n, plural, =1{1 day} other{{n} days}}",
+  "@hijriDaysSigned": {
+    "placeholders": {
+      "sign": {
+        "type": "String"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

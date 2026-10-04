@@ -1280,6 +1280,28 @@ select test.assert((select display_name = 'Zainab Bua' and status = 'pending' fr
   where id = '00000000-0000-0000-0000-0000000000ee'), 'Google sign-ups use their Google name');
 
 -- ---------------------------------------------------------------------------
+-- 28. Hijri dates and Islamic greetings.
+-- ---------------------------------------------------------------------------
+select test.assert((select (year, month, day) = (1448, 4, 21) from private.hijri('2026-10-04')), 'same Hijri date as the app');
+select test.assert((select (year, month, day) = (1447, 10, 1) from private.hijri('2026-03-19', 1)), 'offset follows the moon sighting');
+select count(*) as occ_before from public.notifications where kind = 'occasion' \gset
+select count(*) as active_members from public.profiles where status = 'active' \gset
+select test.assert((select private.islamic_greetings('2026-10-04') = 0), 'an ordinary day sends nothing');
+select test.assert((select private.islamic_greetings('2026-03-19') = :active_members), 'Eid is expected tomorrow');
+select test.assert((select private.islamic_greetings('2026-03-20') = :active_members), 'Eid Mubarak on the day');
+select test.assert((select private.islamic_greetings('2026-03-20') = 0), 'only once');
+select test.assert((select count(*) = :occ_before + 2 * :active_members from public.notifications where kind = 'occasion'),
+  'one notice and one greeting each');
+select test.assert((select data ->> 'occasion' = 'eid_al_fitr' and (data ->> 'eve')::boolean = false
+  and (data ->> 'hijri_year')::int = 1447 from public.notifications where kind = 'occasion' order by created_at desc, id limit 1),
+  'the greeting names the occasion');
+update public.app_settings set islamic_greetings = false;
+select test.assert((select private.islamic_greetings('2026-05-27') = 0), 'admins can turn greetings off');
+update public.app_settings set islamic_greetings = true, hijri_offset = 1;
+select test.assert((select private.islamic_greetings('2026-05-26') = :active_members), 'with the offset, Eid al-Adha a day earlier');
+update public.app_settings set hijri_offset = 0;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

@@ -50,6 +50,11 @@ Deno.test("texts follow the reader's language", () => {
     "Ibrahim: “Start with statics”");
   assertEquals(render("mentor_request", { name: "Aisha", body: "Courses?" }, "ha", "Bua").body,
     "Aisha ya nemi jagorarka: “Courses?”");
+  assertEquals(render("occasion", { occasion: "eid_al_fitr", eve: false }, "en", "Bua").body, "Eid Mubarak! Barka da Sallah.");
+  assertEquals(render("occasion", { occasion: "ramadan", eve: true }, "ha", "Bua").body,
+    "Ana sa ran fara azumin Ramadan gobe, idan an ga wata.");
+  assertEquals(render("occasion", { occasion: "islamic_new_year", hijri_year: 1448 }, "en", "Bua").body,
+    "Happy Islamic New Year 1448!");
   assertEquals(render("change_request", { name: "Aisha", request_kind: "create_person", person: "Fatima" }, "en", "Bua").body,
     "Aisha suggested adding Fatima to the tree");
   assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,

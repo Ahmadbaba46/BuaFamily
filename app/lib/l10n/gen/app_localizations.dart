@@ -6715,6 +6715,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'That code has expired. Ask for a new one.'**
   String get resetExpired;
+
+  /// No description provided for @occIslamicNewYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic New Year'**
+  String get occIslamicNewYear;
+
+  /// No description provided for @occAshura.
+  ///
+  /// In en, this message translates to:
+  /// **'Ashura'**
+  String get occAshura;
+
+  /// No description provided for @occMawlid.
+  ///
+  /// In en, this message translates to:
+  /// **'Mawlid'**
+  String get occMawlid;
+
+  /// No description provided for @occRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan begins'**
+  String get occRamadan;
+
+  /// No description provided for @occLaylatAlQadr.
+  ///
+  /// In en, this message translates to:
+  /// **'Laylat al-Qadr (27th night)'**
+  String get occLaylatAlQadr;
+
+  /// No description provided for @occEidAlFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr'**
+  String get occEidAlFitr;
+
+  /// No description provided for @occArafah.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Arafah'**
+  String get occArafah;
+
+  /// No description provided for @occEidAlAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha'**
+  String get occEidAlAdha;
+
+  /// No description provided for @greetEidFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid Mubarak! Barka da Sallah.'**
+  String get greetEidFitr;
+
+  /// No description provided for @greetEidAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid Mubarak! Barka da Babbar Sallah.'**
+  String get greetEidAdha;
+
+  /// No description provided for @greetRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Mubarak! May Allah accept our fasting.'**
+  String get greetRamadan;
+
+  /// No description provided for @greetNewYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Islamic New Year {year}!'**
+  String greetNewYear(int year);
+
+  /// No description provided for @eveEidFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr is expected tomorrow, if the moon is sighted.'**
+  String get eveEidFitr;
+
+  /// No description provided for @eveEidAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha is expected tomorrow.'**
+  String get eveEidAdha;
+
+  /// No description provided for @eveRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan is expected to begin tomorrow, if the moon is sighted.'**
+  String get eveRamadan;
+
+  /// No description provided for @greetingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From all of us in the {family} family'**
+  String greetingFrom(String family);
+
+  /// No description provided for @shareGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a greeting'**
+  String get shareGreeting;
+
+  /// No description provided for @islamicOccasions.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic occasions'**
+  String get islamicOccasions;
+
+  /// No description provided for @moonNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates follow the Islamic calendar and can move a day with the moon sighting.'**
+  String get moonNote;
+
+  /// No description provided for @inDaysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{today} =1{tomorrow} other{in {n} days}}'**
+  String inDaysCount(int n);
+
+  /// No description provided for @hijriSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic calendar'**
+  String get hijriSettingsTitle;
+
+  /// No description provided for @hijriAdjust.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon sighting adjustment'**
+  String get hijriAdjust;
+
+  /// No description provided for @hijriAdjustHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If the new month was announced a day earlier than the app shows, add a day; a day later, take one away.'**
+  String get hijriAdjustHint;
+
+  /// No description provided for @hijriTodayIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Today in the app: {date}'**
+  String hijriTodayIs(String date);
+
+  /// No description provided for @islamicGreetingsToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Greet the family on Ramadan, the Eids and the new year'**
+  String get islamicGreetingsToggle;
+
+  /// No description provided for @showHijriDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Islamic dates'**
+  String get showHijriDates;
+
+  /// No description provided for @showHijriDatesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Next to dates, e.g. 21 Rabiʻ al-Thani 1448'**
+  String get showHijriDatesHint;
+
+  /// No description provided for @hijriNoAdjust.
+  ///
+  /// In en, this message translates to:
+  /// **'No adjustment'**
+  String get hijriNoAdjust;
+
+  /// No description provided for @hijriDaysSigned.
+  ///
+  /// In en, this message translates to:
+  /// **'{sign}{n, plural, =1{1 day} other{{n} days}}'**
+  String hijriDaysSigned(String sign, int n);
 }
 
 class _AppLocalizationsDelegate

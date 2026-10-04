@@ -37,6 +37,23 @@ const en: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
+  occasion: (d) => {
+    const o = s(d, "occasion");
+    if (d.eve === true) {
+      return o === "ramadan"
+        ? "Ramadan is expected to begin tomorrow, if the moon is sighted."
+        : o === "eid_al_adha"
+        ? "Eid al-Adha is expected tomorrow."
+        : "Eid al-Fitr is expected tomorrow, if the moon is sighted.";
+    }
+    return o === "ramadan"
+      ? "Ramadan Mubarak! May Allah accept our fasting."
+      : o === "eid_al_fitr"
+      ? "Eid Mubarak! Barka da Sallah."
+      : o === "eid_al_adha"
+      ? "Eid Mubarak! Barka da Babbar Sallah."
+      : `Happy Islamic New Year ${n(d, "hijri_year")}!`;
+  },
   opportunity: (d) => `New opportunity: ${s(d, "title")}`,
   poll: (d) => `New poll: ${s(d, "question")}`,
   story: (d) => `New story from ${s(d, "speaker")}: ${s(d, "title")}`,
@@ -81,6 +98,23 @@ const ha: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
+  occasion: (d) => {
+    const o = s(d, "occasion");
+    if (d.eve === true) {
+      return o === "ramadan"
+        ? "Ana sa ran fara azumin Ramadan gobe, idan an ga wata."
+        : o === "eid_al_adha"
+        ? "Ana sa ran Babbar Sallah gobe."
+        : "Ana sa ran Karamar Sallah gobe, idan an ga wata.";
+    }
+    return o === "ramadan"
+      ? "Barka da azumi! Allah ya karɓi ibadunmu."
+      : o === "eid_al_fitr"
+      ? "Barka da Sallah! Allah ya maimaita mana."
+      : o === "eid_al_adha"
+      ? "Barka da Babbar Sallah! Allah ya karɓi ibadunmu."
+      : `Barka da sabuwar shekara ta ${n(d, "hijri_year")}!`;
+  },
   opportunity: (d) => `Sabuwar dama: ${s(d, "title")}`,
   poll: (d) => `Sabuwar ƙuri'a: ${s(d, "question")}`,
   story: (d) => `Sabon labari daga ${s(d, "speaker")}: ${s(d, "title")}`,

@@ -85,6 +85,12 @@ void main() {
     expect(find.text('Fatima Bua turns 24'), findsOneWidget);
     expect(find.textContaining('Your daughter'), findsOneWidget);
     expect(find.textContaining('Old'), findsNothing, reason: 'approximate dates are skipped');
+    // Islamic occasions, with both calendars and a countdown.
+    await tester.scrollUntilVisible(find.text('Islamic occasions'), 300);
+    expect(find.text('Ramadan begins'), findsOneWidget);
+    expect(find.textContaining('8 Ramadan'), findsNothing);
+    expect(find.textContaining('1 Ramadan 1448 AH'), findsOneWidget);
+    expect(find.text('in 128 days'), findsOneWidget);
   });
 
   testWidgets('settings reflect muted notifications', (tester) async {
