@@ -4661,4 +4661,73 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get familyMakeupHelp =>
       'Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside.';
+
+  @override
+  String get viewTree => 'Whole tree';
+
+  @override
+  String get viewFamilyLine => 'Family line';
+
+  @override
+  String childrenWithParent(String name) {
+    return 'With $name';
+  }
+
+  @override
+  String childCountShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count children',
+      one: '1 child',
+      zero: 'No children recorded',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String grandchildrenCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count grandchildren',
+      one: '1 grandchild',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String descendantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count descendants',
+      one: '1 descendant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get openProfile => 'Open profile';
+
+  @override
+  String upTo(String name) {
+    return 'Up to $name';
+  }
+
+  @override
+  String get familyLineHint => 'Tap a child to see their family.';
+
+  @override
+  String get noChildrenYet => 'No children recorded yet.';
+
+  @override
+  String childrenHeading(int count) {
+    return 'Children ($count)';
+  }
+
+  @override
+  String parentsNames(String names) {
+    return 'Parents: $names';
+  }
 }

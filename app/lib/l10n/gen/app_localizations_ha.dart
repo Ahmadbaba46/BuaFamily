@@ -4568,4 +4568,73 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get familyMakeupHelp =>
       '\'Yan uwa na jini: kakannin farko da duk wanda aka haifa ko aka ɗauka cikin zuriyar. Ta hanyar aure: mazaje da matan da suka shigo daga waje.';
+
+  @override
+  String get viewTree => 'Bishiya duka';
+
+  @override
+  String get viewFamilyLine => 'Zuriya';
+
+  @override
+  String childrenWithParent(String name) {
+    return 'Da $name';
+  }
+
+  @override
+  String childCountShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '\'Ya\'ya $count',
+      one: 'Ɗa 1',
+      zero: 'Ba a saka \'ya\'ya ba',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String grandchildrenCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Jikoki $count',
+      one: 'Jika 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String descendantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Zuriya $count',
+      one: 'Zuriya 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get openProfile => 'Buɗe bayanai';
+
+  @override
+  String upTo(String name) {
+    return 'Koma wurin $name';
+  }
+
+  @override
+  String get familyLineHint => 'Taɓa ɗa don ganin iyalinsa.';
+
+  @override
+  String get noChildrenYet => 'Ba a saka \'ya\'ya ba tukuna.';
+
+  @override
+  String childrenHeading(int count) {
+    return '\'Ya\'ya ($count)';
+  }
+
+  @override
+  String parentsNames(String names) {
+    return 'Iyaye: $names';
+  }
 }

@@ -8,10 +8,13 @@ import '../../domain/tree_layout.dart';
 import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
+import '../../state/prefs.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/app_sidebar.dart';
+import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import 'family_line_view.dart';
 
 const _metrics = TreeMetrics(nodeWidth: 136, nodeHeight: 58, siblingGap: 16, spouseGap: 14, levelGap: 64);
 const _initialDepth = 3;
@@ -35,6 +38,10 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
   Set<String> _collapsed = {};
   String? _pendingFocus;
   Size _viewport = Size.zero;
+  // The family line view: who it opens on, and a new number each time it's
+  // asked to open on someone (so asking twice for the same person works).
+  String? _lineFocus;
+  int _lineOpen = 0;
 
   @override
   void initState() {
@@ -59,10 +66,14 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
 
   String? _resolveRoot(FamilyGraph g) {
     final focus = _pendingFocus;
-    if (focus != null && g[focus] != null) {
-      _rootId = _eldestAncestor(g, focus);
-    }
     final settingsRoot = ref.read(settingsProvider).value?.rootPersonId;
+    if (focus != null && g[focus] != null) {
+      // The family line keeps its forefather when the person is in his line.
+      final current = [_rootId, settingsRoot, g.suggestedRoot()].firstWhere((c) => c != null && g[c] != null,
+          orElse: () => null);
+      final inLine = ref.read(devicePrefsProvider).familyLine && current != null && g.lineFrom(current, focus) != null;
+      if (!inLine) _rootId = _eldestAncestor(g, focus);
+    }
     for (final candidate in [_rootId, settingsRoot, g.suggestedRoot()]) {
       if (candidate != null && g[candidate] != null) return candidate;
     }
@@ -170,9 +181,16 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
     ref.watch(settingsProvider);
     final graph = graphAsync.value;
     final root = graph == null ? null : _resolveRoot(graph);
+    final familyLine = ref.watch(devicePrefsProvider.select((p) => p.familyLine));
+    final myPersonId = ref.watch(profileProvider)?.personId;
 
     TreeLayout? layout;
-    if (graph != null && root != null) {
+    if (familyLine && _pendingFocus != null) {
+      _lineFocus = _pendingFocus;
+      _lineOpen++;
+      _pendingFocus = null;
+    }
+    if (!familyLine && graph != null && root != null) {
       if (_layoutRoot != root) {
         _collapsed = collapseBeyondDepth(graph, root, _initialDepth);
         _layoutRoot = root;
@@ -191,7 +209,6 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
       });
     }
 
-    final myPersonId = ref.watch(profileProvider)?.personId;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -209,6 +226,12 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
                     final p = await pickPerson(context, graph);
                     if (p != null) _focusOn(p.id);
                   },
+                ),
+              if (familyLine && graph != null && graph.persons.isNotEmpty)
+                IconButton(
+                  tooltip: l.refresh,
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () => ref.invalidate(graphProvider),
                 ),
               if (layout != null)
                 PopupMenuButton<String>(
@@ -235,7 +258,19 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
           ),
           if (graph != null && root != null)
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+              child: PillSegmented<bool>(
+                values: const [false, true],
+                labelOf: (v) => v ? l.viewFamilyLine : l.viewTree,
+                selected: familyLine,
+                height: 34,
+                expand: true,
+                onChanged: (v) => ref.read(devicePrefsProvider.notifier).set(familyLine: v),
+              ),
+            ),
+          if (graph != null && root != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: _StartingFromBar(name: graph[root]!.displayName, onChange: () => _chooseRoot(graph)),
             ),
           Expanded(
@@ -243,6 +278,15 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
               value: graphAsync,
               onRetry: () => ref.invalidate(graphProvider),
               builder: (g) {
+                if (familyLine && root != null) {
+                  return FamilyLineView(
+                    key: ValueKey((root, _lineOpen)),
+                    graph: g,
+                    rootId: root,
+                    focusId: _lineFocus,
+                    myPersonId: myPersonId,
+                  );
+                }
                 if (layout == null) return _EmptyTree(canAdd: ref.watch(isAdminProvider));
                 return LayoutBuilder(builder: (context, constraints) {
                   _viewport = constraints.biggest;

@@ -1249,5 +1249,17 @@
   "marriedIn": "Ta hanyar aure",
   "notConnectedYet": "Ba a haɗa su ba tukuna",
   "livingMenWomen": "Masu rai: maza {men} · mata {women}",
-  "familyMakeupHelp": "'Yan uwa na jini: kakannin farko da duk wanda aka haifa ko aka ɗauka cikin zuriyar. Ta hanyar aure: mazaje da matan da suka shigo daga waje."
+  "familyMakeupHelp": "'Yan uwa na jini: kakannin farko da duk wanda aka haifa ko aka ɗauka cikin zuriyar. Ta hanyar aure: mazaje da matan da suka shigo daga waje.",
+  "viewTree": "Bishiya duka",
+  "viewFamilyLine": "Zuriya",
+  "childrenWithParent": "Da {name}",
+  "childCountShort": "{count, plural, =0{Ba a saka 'ya'ya ba} =1{Ɗa 1} other{'Ya'ya {count}}}",
+  "grandchildrenCount": "{count, plural, =1{Jika 1} other{Jikoki {count}}}",
+  "descendantsCount": "{count, plural, =1{Zuriya 1} other{Zuriya {count}}}",
+  "openProfile": "Buɗe bayanai",
+  "upTo": "Koma wurin {name}",
+  "familyLineHint": "Taɓa ɗa don ganin iyalinsa.",
+  "noChildrenYet": "Ba a saka 'ya'ya ba tukuna.",
+  "childrenHeading": "'Ya'ya ({count})",
+  "parentsNames": "Iyaye: {names}"
 }

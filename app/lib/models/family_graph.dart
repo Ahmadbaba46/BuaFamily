@@ -159,6 +159,36 @@ class FamilyGraph {
     return seen.length;
   }
 
+  /// The line from [rootId] down to [id]: [rootId], a child, a grandchild …
+  /// [id]. A spouse who married in is reached through their partner (the
+  /// partner, then them). Null when [id] isn't below [rootId].
+  List<String>? lineFrom(String rootId, String id) {
+    final cameFrom = <String, String?>{rootId: null};
+    final queue = [rootId];
+    for (var i = 0; i < queue.length; i++) {
+      final cur = queue[i];
+      for (final l in childLinksOf(cur)) {
+        if (!cameFrom.containsKey(l.childId)) {
+          cameFrom[l.childId] = cur;
+          queue.add(l.childId);
+        }
+      }
+    }
+    List<String> line(String to) {
+      final out = <String>[];
+      for (String? c = to; c != null; c = cameFrom[c]) {
+        out.add(c);
+      }
+      return out.reversed.toList();
+    }
+
+    if (cameFrom.containsKey(id)) return line(id);
+    for (final s in spousesOf(id)) {
+      if (cameFrom.containsKey(s.id)) return [...line(s.id), id];
+    }
+    return null;
+  }
+
   /// The best default root for the tree: the parentless person with the most
   /// descendants.
   String? suggestedRoot() {
