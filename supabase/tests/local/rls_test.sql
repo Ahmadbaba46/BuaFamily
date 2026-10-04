@@ -1028,6 +1028,46 @@ select test.assert((select (u ->> 'active_days_30')::int = 1 and u ->> 'person_n
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 23. Phone sign-in and invite links.
+-- ---------------------------------------------------------------------------
+\set phone_id '''00000000-0000-0000-0000-0000000000f1'''
+insert into auth.users (id, phone, raw_user_meta_data) values (:phone_id, '2348031112222', '{"locale": "ha"}');
+select test.assert((select display_name = '+2348031112222' and phone = '2348031112222' and status = 'pending'
+  from public.profiles where id = :phone_id), 'a phone sign-up gets its number as name and phone');
+
+update public.app_settings set sms_enabled = true, sms_sender_id = 'BuaFamily';
+select public.send_sms_hook('{"user": {"phone": "2348031112222", "user_metadata": {"locale": "ha"}}, "sms": {"otp": "123456"}}');
+select test.assert((select count(*) = 1 from private.sms_outbox where phone = '2348031112222' and message like '%123456%'
+  and message like 'Lambar shiga%'), 'the sign-in code is queued for Termii in the member''s language');
+update public.app_settings set sms_enabled = false;
+select test.assert((select public.send_sms_hook('{"user": {"phone": "2348031112222"}, "sms": {"otp": "1"}}') ? 'error'),
+  'without SMS set up the hook says so');
+
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into test.ids values ('zara', public.create_person_with_relation('{"first_name":"Zara","last_name":"Bua","sex":"female"}'));
+insert into public.invites (code, person_id) values ('welcome123', (select id from test.ids where name = 'zara'));
+insert into public.invites (code, expires_at) values ('oldlink123', now() - interval '1 day');
+reset role;
+set role anon;
+select test.assert((select (public.invite_info('welcome123') ->> 'valid')::boolean
+  and public.invite_info('welcome123') ->> 'person' = 'Zara Bua'), 'anyone can see who an invite is for');
+select test.assert((select count(*) = 0 from public.invites), 'invites themselves are private');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :phone_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.redeem_invite('oldlink123')$$, 'expired invites cannot be used');
+select test.expect_error($$insert into public.invites (code) values ('mine')$$, 'members cannot create invites');
+select public.redeem_invite('WELCOME123');
+reset role;
+select test.assert((select status = 'active' and person_id = (select id from test.ids where name = 'zara')
+  from public.profiles where id = :phone_id), 'an invite approves the account and links it to the person');
+select set_config('request.jwt.claims', json_build_object('sub', :pending_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.redeem_invite('welcome123')$$, 'an invite works once');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

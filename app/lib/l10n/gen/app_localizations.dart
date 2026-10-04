@@ -2369,7 +2369,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHint.
   ///
   /// In en, this message translates to:
-  /// **'e.g. 0803 123 4567'**
+  /// **'0803 123 4567'**
   String get phoneHint;
 
   /// No description provided for @phoneInvalid.
@@ -5119,6 +5119,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Joined {date}'**
   String joinedOn(String date);
+
+  /// No description provided for @emailTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailTab;
+
+  /// No description provided for @phoneTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneTab;
+
+  /// No description provided for @yourNameNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name (if you\'re new here)'**
+  String get yourNameNew;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send me a code'**
+  String get sendCode;
+
+  /// No description provided for @codeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {phone}.'**
+  String codeSent(String phone);
+
+  /// No description provided for @enterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Code from the text message'**
+  String get enterCode;
+
+  /// No description provided for @resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send again'**
+  String get resendCode;
+
+  /// No description provided for @resendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Send again in {seconds}s'**
+  String resendIn(int seconds);
+
+  /// No description provided for @changeNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change number'**
+  String get changeNumber;
+
+  /// No description provided for @invalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number'**
+  String get invalidPhone;
+
+  /// No description provided for @inviteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re invited'**
+  String get inviteTitle;
+
+  /// No description provided for @inviteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{inviter} invited you to the {family} family app.'**
+  String inviteBody(String inviter, String family);
+
+  /// No description provided for @inviteBodyGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re invited to the {family} family app.'**
+  String inviteBodyGeneric(String family);
+
+  /// No description provided for @inviteFor.
+  ///
+  /// In en, this message translates to:
+  /// **'This invite is for {person}.'**
+  String inviteFor(String person);
+
+  /// No description provided for @inviteInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'This invite link has already been used or has expired. Ask a family admin for a new one.'**
+  String get inviteInvalid;
+
+  /// No description provided for @joinWithInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the family'**
+  String get joinWithInvite;
+
+  /// No description provided for @acceptInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept the invite'**
+  String get acceptInvite;
+
+  /// No description provided for @inviteAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to the family app!'**
+  String get inviteAccepted;
+
+  /// No description provided for @inviteSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite someone'**
+  String get inviteSomeone;
+
+  /// No description provided for @inviteSomeoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a link to send on WhatsApp. Whoever joins with it is approved at once.'**
+  String get inviteSomeoneHint;
+
+  /// No description provided for @invitePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'For a person in the tree (optional)'**
+  String get invitePerson;
+
+  /// No description provided for @createInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Create the link'**
+  String get createInvite;
+
+  /// No description provided for @inviteReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Link ready. It works once, for 30 days.'**
+  String get inviteReady;
+
+  /// No description provided for @shareWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get shareWhatsApp;
+
+  /// No description provided for @copyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get copyLink;
+
+  /// No description provided for @inviteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Assalamu alaikum! Join the {family} family app: {link}'**
+  String inviteMessage(String family, String link);
+
+  /// No description provided for @inviteMessageFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Assalamu alaikum {name}! Join the {family} family app: {link}'**
+  String inviteMessageFor(String name, String family, String link);
 }
 
 class _AppLocalizationsDelegate

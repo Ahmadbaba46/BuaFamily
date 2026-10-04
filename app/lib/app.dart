@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'l10n/l10n.dart';
 import 'services/app_update.dart';
+import 'services/invites.dart';
 import 'services/push.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
@@ -18,6 +19,7 @@ import 'ui/screens/events_screen.dart';
 import 'ui/screens/fund_cause_screen.dart';
 import 'ui/screens/get_app_screen.dart';
 import 'ui/screens/home_screen.dart';
+import 'ui/screens/join_screen.dart';
 import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
@@ -57,7 +59,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final loc = state.matchedLocation;
       // The Android download page is open to everyone (shared on WhatsApp).
-      if (loc == '/get-app') return null;
+      if (loc == '/get-app' || loc.startsWith('/join/')) return null;
       if (auth.loading) return loc == '/splash' ? null : '/splash';
       if (!auth.signedIn) return loc == '/sign-in' ? null : '/sign-in';
       final profile = auth.profile;
@@ -71,6 +73,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       GoRoute(path: '/get-app', builder: (_, _) => const GetAppScreen()),
+      GoRoute(path: '/join/:code', builder: (_, s) => JoinScreen(code: s.pathParameters['code']!)),
       GoRoute(path: '/pending', builder: (_, _) => const PendingScreen()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => HomeShell(shell: shell),
@@ -239,6 +242,7 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   ProviderSubscription<String?>? _signedIn;
   ProviderSubscription<PushPlatform>? _platform;
   ProviderSubscription<String?>? _newest;
+  ProviderSubscription<String?>? _account;
   DateTime? _leftAt;
 
   // Back in the app after a while: the live inbox connection may have been
@@ -261,6 +265,13 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // An invite opened before signing up is accepted as soon as there is an account.
+    _account = ref.listenManual(profileProvider.select((p) => p?.id), (_, id) async {
+      if (id == null || !await redeemRememberedInvite(ref.read(repositoryProvider))) return;
+      await ref.read(authProvider).refresh();
+      final messenger = rootMessengerKey.currentState;
+      if (messenger != null) messenger.showSnackBar(SnackBar(content: Text(messenger.context.l10n.inviteAccepted)));
+    }, fireImmediately: true);
     // A new notification usually means new content (a comment, a post...).
     _newest = ref.listenManual(
       notificationsProvider.select((n) => n.value?.firstOrNull?.id),
@@ -299,6 +310,7 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _newest?.close();
+    _account?.close();
     _opens?.cancel();
     _foreground?.cancel();
     _signedIn?.close();

@@ -278,6 +278,24 @@ Each member decides whether they want texts. Admin texts for events and
 announcements are opt-in per post ("Also send SMS"). Hausa texts avoid the
 hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
 
+### 2b. Sign in with a phone number (optional, needs step 2)
+
+Members can sign in with their phone number and a 6-digit code by SMS,
+sent through the same Termii account. Turn it on once in Supabase:
+
+1. **Authentication → Sign In / Providers → Phone**: enable phone sign-in.
+2. **Authentication → Hooks → Add hook → Send SMS hook**: choose
+   **Postgres**, schema `public`, function `send_sms_hook`, and save.
+
+If codes don't reach some numbers, switch the SMS route to **DND** in
+**Admin → Settings → SMS**: Nigerian numbers with Do-Not-Disturb on only
+receive messages sent on that route.
+
+**Invite links:** admins open **Admin → Accounts** and tap the invite button
+to make a link (optionally for a person in the tree) and share it on
+WhatsApp. Whoever signs up with it is approved at once and linked to that
+person. Each link works once, for 30 days.
+
 ### 3. Turn on phone notifications (optional)
 
 Notifications go from the database to the `push` Edge Function

@@ -2127,5 +2127,95 @@
         "type": "String"
       }
     }
+  },
+  "emailTab": "Email",
+  "phoneTab": "Phone",
+  "phoneNumber": "Phone number",
+  "phoneHint": "0803 123 4567",
+  "yourNameNew": "Your name (if you're new here)",
+  "sendCode": "Send me a code",
+  "codeSent": "We sent a 6-digit code to {phone}.",
+  "@codeSent": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "enterCode": "Code from the text message",
+  "resendCode": "Send again",
+  "resendIn": "Send again in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "changeNumber": "Change number",
+  "invalidPhone": "Enter a valid phone number",
+  "inviteTitle": "You're invited",
+  "inviteBody": "{inviter} invited you to the {family} family app.",
+  "@inviteBody": {
+    "placeholders": {
+      "inviter": {
+        "type": "String"
+      },
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteBodyGeneric": "You're invited to the {family} family app.",
+  "@inviteBodyGeneric": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteFor": "This invite is for {person}.",
+  "@inviteFor": {
+    "placeholders": {
+      "person": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteInvalid": "This invite link has already been used or has expired. Ask a family admin for a new one.",
+  "joinWithInvite": "Join the family",
+  "acceptInvite": "Accept the invite",
+  "inviteAccepted": "Welcome to the family app!",
+  "inviteSomeone": "Invite someone",
+  "inviteSomeoneHint": "Make a link to send on WhatsApp. Whoever joins with it is approved at once.",
+  "invitePerson": "For a person in the tree (optional)",
+  "createInvite": "Create the link",
+  "inviteReady": "Link ready. It works once, for 30 days.",
+  "shareWhatsApp": "Share on WhatsApp",
+  "copyLink": "Copy link",
+  "inviteMessage": "Assalamu alaikum! Join the {family} family app: {link}",
+  "@inviteMessage": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      },
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteMessageFor": "Assalamu alaikum {name}! Join the {family} family app: {link}",
+  "@inviteMessageFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "family": {
+        "type": "String"
+      },
+      "link": {
+        "type": "String"
+      }
+    }
   }
 }

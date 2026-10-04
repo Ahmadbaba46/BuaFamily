@@ -1433,7 +1433,7 @@ class AppLocalizationsHa extends AppLocalizations {
   String get phoneNumber => 'Lambar waya';
 
   @override
-  String get phoneHint => 'misali 0803 123 4567';
+  String get phoneHint => '0803 123 4567';
 
   @override
   String get phoneInvalid => 'Saka lambar waya daidai.';
@@ -3135,5 +3135,103 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String joinedOn(String date) {
     return 'Ya shiga $date';
+  }
+
+  @override
+  String get emailTab => 'Imel';
+
+  @override
+  String get phoneTab => 'Waya';
+
+  @override
+  String get yourNameNew => 'Sunanka (idan sabo ne)';
+
+  @override
+  String get sendCode => 'Aiko mini lamba';
+
+  @override
+  String codeSent(String phone) {
+    return 'Mun aika lamba mai lambobi 6 zuwa $phone.';
+  }
+
+  @override
+  String get enterCode => 'Lambar da ke cikin saƙon';
+
+  @override
+  String get resendCode => 'Sake aikawa';
+
+  @override
+  String resendIn(int seconds) {
+    return 'Sake aikawa bayan daƙiƙa $seconds';
+  }
+
+  @override
+  String get changeNumber => 'Canja lamba';
+
+  @override
+  String get invalidPhone => 'Shigar da ingantacciyar lambar waya';
+
+  @override
+  String get inviteTitle => 'An gayyace ka';
+
+  @override
+  String inviteBody(String inviter, String family) {
+    return '$inviter ya gayyace ka zuwa manhajar iyalin $family.';
+  }
+
+  @override
+  String inviteBodyGeneric(String family) {
+    return 'An gayyace ka zuwa manhajar iyalin $family.';
+  }
+
+  @override
+  String inviteFor(String person) {
+    return 'Wannan gayyata ta $person ce.';
+  }
+
+  @override
+  String get inviteInvalid =>
+      'An riga an yi amfani da wannan hanyar gayyata ko ta ƙare. Nemi sabuwa daga admin na iyali.';
+
+  @override
+  String get joinWithInvite => 'Shiga iyali';
+
+  @override
+  String get acceptInvite => 'Karɓi gayyatar';
+
+  @override
+  String get inviteAccepted => 'Barka da zuwa manhajar iyali!';
+
+  @override
+  String get inviteSomeone => 'Gayyaci wani';
+
+  @override
+  String get inviteSomeoneHint =>
+      'Ƙirƙiri hanyar da za ka aika a WhatsApp. Duk wanda ya shiga da ita za a amince da shi nan take.';
+
+  @override
+  String get invitePerson => 'Ga wani a bishiyar iyali (ba dole ba)';
+
+  @override
+  String get createInvite => 'Ƙirƙiri hanyar';
+
+  @override
+  String get inviteReady =>
+      'Hanyar ta shirya. Sau ɗaya take aiki, na kwanaki 30.';
+
+  @override
+  String get shareWhatsApp => 'Raba a WhatsApp';
+
+  @override
+  String get copyLink => 'Kwafi hanyar';
+
+  @override
+  String inviteMessage(String family, String link) {
+    return 'Assalamu alaikum! Shiga manhajar iyalin $family: $link';
+  }
+
+  @override
+  String inviteMessageFor(String name, String family, String link) {
+    return 'Assalamu alaikum $name! Shiga manhajar iyalin $family: $link';
   }
 }

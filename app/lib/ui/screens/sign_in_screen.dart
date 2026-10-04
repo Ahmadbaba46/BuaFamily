@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show OtpType;
 
 import '../../l10n/l10n.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import 'notification_settings_screen.dart' show formatPhone, normalizePhone;
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -21,15 +25,150 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _name = TextEditingController();
+  final _phone = TextEditingController();
+  final _code = TextEditingController();
   bool _signUp = false;
   bool _busy = false;
+
+  /// Sign in with a phone number and a code by SMS instead of email.
+  bool _usePhone = false;
+
+  /// The number the code went to (international, without +).
+  String? _codeSentTo;
+  int _resendIn = 0;
+  Timer? _resendTimer;
 
   @override
   void dispose() {
     _email.dispose();
     _password.dispose();
     _name.dispose();
+    _phone.dispose();
+    _code.dispose();
+    _resendTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> _sendCode() async {
+    final l = context.l10n;
+    final phone = normalizePhone(_phone.text);
+    if (phone == null) {
+      showSnack(context, l.invalidPhone);
+      return;
+    }
+    setState(() => _busy = true);
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).auth.signInWithOtp(
+        phone: '+$phone',
+        data: {
+          if (_name.text.trim().isNotEmpty) 'display_name': _name.text.trim(),
+          'locale': l.localeName,
+        },
+      ),
+    );
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      if (ok) {
+        _codeSentTo = phone;
+        _code.clear();
+        _startResendTimer();
+      }
+    });
+  }
+
+  void _startResendTimer() {
+    _resendTimer?.cancel();
+    _resendIn = 60;
+    _resendTimer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) return t.cancel();
+      setState(() => _resendIn--);
+      if (_resendIn <= 0) t.cancel();
+    });
+  }
+
+  Future<void> _verifyCode() async {
+    final code = _code.text.trim();
+    if (_codeSentTo == null || code.length < 6) return;
+    setState(() => _busy = true);
+    await guarded(
+      context,
+      () => ref.read(repositoryProvider).auth.verifyOTP(type: OtpType.sms, phone: '+$_codeSentTo', token: code),
+    );
+    if (mounted) setState(() => _busy = false);
+  }
+
+  List<Widget> _phoneFields(AppLocalizations l) {
+    if (_codeSentTo == null) {
+      return [
+        LabeledField(
+          label: l.yourNameNew,
+          child: TextField(
+            controller: _name,
+            textCapitalization: TextCapitalization.words,
+            autofillHints: const [AutofillHints.name],
+          ),
+        ),
+        const SizedBox(height: 14),
+        LabeledField(
+          label: l.phoneNumber,
+          child: TextField(
+            controller: _phone,
+            keyboardType: TextInputType.phone,
+            autofillHints: const [AutofillHints.telephoneNumber],
+            decoration: InputDecoration(hintText: l.phoneHint, prefixIcon: const Icon(Icons.phone_outlined)),
+            onSubmitted: (_) => _sendCode(),
+          ),
+        ),
+        const SizedBox(height: 18),
+        FilledButton(
+          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+          onPressed: _busy ? null : _sendCode,
+          child: Text(l.sendCode),
+        ),
+        const SizedBox(height: 8),
+      ];
+    }
+    return [
+      Text(l.codeSent(formatPhone(_codeSentTo!)), style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+      const SizedBox(height: 12),
+      LabeledField(
+        label: l.enterCode,
+        child: TextField(
+          controller: _code,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          autofillHints: const [AutofillHints.oneTimeCode],
+          maxLength: 6,
+          style: const TextStyle(fontSize: 22, letterSpacing: 8, fontWeight: FontWeight.w600),
+          decoration: const InputDecoration(counterText: ''),
+          onChanged: (v) {
+            if (v.trim().length == 6) _verifyCode();
+          },
+        ),
+      ),
+      const SizedBox(height: 18),
+      FilledButton(
+        style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+        onPressed: _busy ? null : _verifyCode,
+        child: _busy
+            ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+            : Text(l.signIn),
+      ),
+      Wrap(alignment: WrapAlignment.spaceBetween, children: [
+        TextButton(
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: _busy ? null : () => setState(() => _codeSentTo = null),
+          child: Text(l.changeNumber),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: _busy || _resendIn > 0 ? null : _sendCode,
+          child: Text(_resendIn > 0 ? l.resendIn(_resendIn) : l.resendCode),
+        ),
+      ]),
+    ];
   }
 
   Future<void> _submit() async {
@@ -112,10 +251,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     key: _form,
                     child: AutofillGroup(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                        Text(_signUp ? l.createYourAccount : l.welcomeBack,
+                        Text(_signUp && !_usePhone ? l.createYourAccount : l.welcomeBack,
                             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 12),
+                        PillSegmented<bool>(
+                          values: const [false, true],
+                          labelOf: (phone) => phone ? l.phoneTab : l.emailTab,
+                          selected: _usePhone,
+                          height: 38,
+                          expand: true,
+                          onChanged: (v) => setState(() => _usePhone = v),
+                        ),
                         const SizedBox(height: 14),
-                        if (_signUp) ...[
+                        if (_usePhone) ..._phoneFields(l),
+                        if (!_usePhone && _signUp) ...[
                           LabeledField(
                             label: l.displayName,
                             child: TextFormField(
@@ -127,6 +276,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           ),
                           const SizedBox(height: 14),
                         ],
+                        if (!_usePhone) ...[
                         LabeledField(
                           label: l.email,
                           child: TextFormField(
@@ -157,20 +307,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                               : Text(_signUp ? l.signUp : l.signIn),
                         ),
                         const SizedBox(height: 4),
-                        Row(children: [
+                        Wrap(alignment: WrapAlignment.spaceBetween, children: [
                           if (!_signUp)
                             TextButton(
                               style: TextButton.styleFrom(padding: EdgeInsets.zero),
                               onPressed: _busy ? null : _forgot,
                               child: Text(l.forgotPassword, style: const TextStyle(fontWeight: FontWeight.w500)),
                             ),
-                          const Spacer(),
                           TextButton(
                             style: TextButton.styleFrom(padding: EdgeInsets.zero),
                             onPressed: _busy ? null : () => setState(() => _signUp = !_signUp),
                             child: Text(_signUp ? l.signIn : l.signUp),
                           ),
                         ]),
+                        ],
                       ]),
                     ),
                   ),

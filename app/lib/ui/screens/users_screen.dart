@@ -7,6 +7,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import 'join_screen.dart' show showInviteSheet;
 
 enum UserFilter { all, waiting, active, suspended, admins, treasurers, notLinked, noPush, inactive }
 
@@ -115,7 +116,8 @@ class _UsersViewState extends ConsumerState<UsersView> {
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: TextField(
+            child: Row(children: [
+              Expanded(child: TextField(
               controller: _search,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
@@ -129,7 +131,14 @@ class _UsersViewState extends ConsumerState<UsersView> {
                         onPressed: () => setState(_search.clear),
                       ),
               ),
-            ),
+            )),
+              const SizedBox(width: 8),
+              IconButton.filled(
+                tooltip: l.inviteSomeone,
+                onPressed: () => showInviteSheet(context),
+                icon: const Icon(Icons.person_add_alt_1),
+              ),
+            ]),
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
