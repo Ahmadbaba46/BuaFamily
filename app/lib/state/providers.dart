@@ -84,6 +84,18 @@ class AuthController extends ChangeNotifier {
     await OfflineCache.instance.clear();
   }
 
+  /// Deletes this account for good, then leaves nothing of it on the device.
+  Future<void> deleteAccount() async {
+    await _repo.deleteMyAccount();
+    try {
+      await beforeSignOut?.call();
+    } catch (_) {}
+    try {
+      await _repo.auth.signOut(scope: SignOutScope.local);
+    } catch (_) {}
+    await OfflineCache.instance.clear();
+  }
+
   @override
   void dispose() {
     _sub.cancel();

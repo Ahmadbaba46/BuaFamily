@@ -168,7 +168,7 @@ class Album {
     return Album(
       id: j['id'] as String,
       title: j['title'] as String,
-      createdBy: j['created_by'] as String,
+      createdBy: j['created_by'] as String? ?? '',
       createdAt: _ts(j['created_at']),
       description: j['description'] as String?,
       photoCount: _count(j['photo_count']),
@@ -234,7 +234,7 @@ class FamilyEvent {
         id: j['id'] as String,
         title: j['title'] as String,
         startsAt: _ts(j['starts_at']),
-        createdBy: j['created_by'] as String,
+        createdBy: j['created_by'] as String? ?? '',
         category: EventCategory.values.byName(j['category'] as String? ?? 'other'),
         details: j['details'] as String?,
         endsAt: j['ends_at'] == null ? null : _ts(j['ends_at']),

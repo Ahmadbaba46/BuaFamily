@@ -4730,4 +4730,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String parentsNames(String names) {
     return 'Parents: $names';
   }
+
+  @override
+  String get deleteMyAccount => 'Delete my account';
+
+  @override
+  String get deleteAccountTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountGone =>
+      'Removed for good: your sign-in, phone and email, and what you shared: moments, comments, likes, photos you uploaded, memories, messages and requests.';
+
+  @override
+  String get deleteAccountKept =>
+      'Kept for the family, without your name: your place in the family tree, albums and events you created, polls, elders\' stories you recorded, and welfare fund payments.';
+
+  @override
+  String get deleteAccountConfirm => 'I understand this can\'t be undone';
+
+  @override
+  String get deleteAccountOnlyAdmin =>
+      'You are the only admin. Make someone else an admin first.';
+
+  @override
+  String get accountDeleted => 'Your account was deleted.';
 }

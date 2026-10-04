@@ -4637,4 +4637,28 @@ class AppLocalizationsHa extends AppLocalizations {
   String parentsNames(String names) {
     return 'Iyaye: $names';
   }
+
+  @override
+  String get deleteMyAccount => 'Goge asusuna';
+
+  @override
+  String get deleteAccountTitle => 'A goge asusunka?';
+
+  @override
+  String get deleteAccountGone =>
+      'Za a cire su gaba ɗaya: shigarka, lambar waya da imel, da abin da ka raba: labarai, sharhi, so, hotunan da ka ɗora, tunawa, saƙonni da buƙatu.';
+
+  @override
+  String get deleteAccountKept =>
+      'Za a bar wa iyali, ba tare da sunanka ba: matsayinka a bishiyar iyali, kundin hotuna da taruka da ka ƙirƙira, ƙuri\'u, labaran dattawa da ka naɗa, da gudummawar asusun taimako.';
+
+  @override
+  String get deleteAccountConfirm => 'Na fahimci ba za a iya dawo da shi ba';
+
+  @override
+  String get deleteAccountOnlyAdmin =>
+      'Kai kaɗai ne shugaba. Ka mai da wani shugaba tukuna.';
+
+  @override
+  String get accountDeleted => 'An goge asusunka.';
 }

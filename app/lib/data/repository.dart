@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -472,6 +473,23 @@ class FamilyRepository {
     return path;
   }
 
+  /// Deletes this account for good (see delete_my_account): first checks it
+  /// can be done, then removes the photo files I uploaded (their rows go with
+  /// the account), then the account.
+  Future<void> deleteMyAccount() async {
+    await _db.rpc('delete_my_account', params: {'p_check_only': true});
+    try {
+      final rows = await _db.from('photos').select('storage_path').eq('uploaded_by', userId!);
+      final paths = [for (final r in rows) r['storage_path'] as String];
+      for (var i = 0; i < paths.length; i += 100) {
+        await _db.storage.from(photosBucket).remove(paths.sublist(i, math.min(i + 100, paths.length)));
+      }
+    } catch (_) {
+      // Files left behind are unreachable once the rows are gone.
+    }
+    await _db.rpc('delete_my_account');
+  }
+
   Future<void> deletePost(Post post) async {
     await _db.from('posts').delete().eq('id', post.id);
     final mine = post.photos.where((p) => p.uploadedBy == userId).map((p) => p.storagePath).toList();
@@ -891,7 +909,7 @@ class FamilyRepository {
         Poll(
           id: p['id'] as String,
           question: p['question'] as String,
-          createdBy: p['created_by'] as String,
+          createdBy: p['created_by'] as String? ?? '',
           createdAt: DateTime.parse(p['created_at'] as String).toLocal(),
           context: p['context'] as String?,
           closesAt: p['closes_at'] == null ? null : DateTime.parse(p['closes_at'] as String).toLocal(),

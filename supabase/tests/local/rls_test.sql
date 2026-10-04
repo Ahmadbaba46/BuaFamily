@@ -759,13 +759,13 @@ select test.assert((select sum((v ->> 'added')::int + (v ->> 'updated')::int) = 
 -- Rows from accounts that no longer exist: optional links are cleared, the rest skipped.
 select test.assert((
   select r -> 'persons' = '{"added": 1, "updated": 0, "skipped": 0}'::jsonb
-     and r -> 'stories' = '{"added": 0, "updated": 0, "skipped": 1}'::jsonb
+     and r -> 'posts' = '{"added": 0, "updated": 0, "skipped": 1}'::jsonb
   from public.admin_restore(jsonb_build_object(
     'format', 'bua-family-backup',
     'persons', jsonb_build_array(jsonb_build_object('id', gen_random_uuid(), 'first_name', 'Hadiza',
                                                     'created_by', gen_random_uuid())),
-    'stories', jsonb_build_array(jsonb_build_object('id', gen_random_uuid(), 'title', 'Old', 'speaker_name', 'X',
-                                                    'audio_path', 'x.m4a', 'added_by', gen_random_uuid()))
+    'posts', jsonb_build_array(jsonb_build_object('id', gen_random_uuid(), 'body', 'Old',
+                                                  'author_id', gen_random_uuid()))
   ), false, false) r), 'unknown accounts handled');
 select test.expect_error($$select public.admin_restore('{"persons": []}')$$, 'only Bua Family backups');
 reset role;
@@ -1513,6 +1513,58 @@ select test.assert((select (s -> 'composition' -> 'blood' ->> 'male')::int >= 2
 reset role;
 delete from public.persons where id in (select id from lin);
 drop table lin;
+
+-- ---------------------------------------------------------------------------
+-- 34. Deleting my account: my things go, the family's records stay.
+-- ---------------------------------------------------------------------------
+reset role;
+\set leaver_id '''00000000-0000-0000-0000-0000000000d1'''
+insert into auth.users (id, email, raw_user_meta_data) values (:leaver_id, 'leaver@example.com', '{"display_name": "Leaver"}');
+update public.profiles set status = 'active' where id = :leaver_id;
+select set_config('request.jwt.claims', json_build_object('sub', :leaver_id)::text, false);
+set role authenticated;
+insert into public.albums (title) values ('Leaver album');
+insert into public.events (title, starts_at) values ('Leaver event', now() + interval '9 days');
+insert into public.posts (body) values ('Leaver moment');
+insert into public.polls (question) values ('Leaver poll?');
+insert into public.fund_contributions (cause_id, amount, method, show_name)
+  values ((select id from public.fund_causes limit 1), 777, 'cash', true);
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.photos (storage_path, album_id) values
+  (format('uploads/%s/in-leaver-album.jpg', :admin_id), (select id from public.albums where title = 'Leaver album'));
+insert into public.event_rsvps (event_id, user_id, response)
+  values ((select id from public.events where title = 'Leaver event'), :admin_id, 'going');
+-- The only admin can't leave.
+select test.expect_error($$select public.delete_my_account()$$, 'the only admin cannot delete their account');
+select test.expect_error($$select public.delete_my_account(true)$$, 'the check says so too');
+reset role;
+create temp table leaver_notes as select clock_timestamp() as t;
+select set_config('request.jwt.claims', json_build_object('sub', :leaver_id)::text, false);
+set role authenticated;
+select public.delete_my_account(true);
+select test.assert((select count(*) = 1 from public.profiles where id = :leaver_id), 'checking first deletes nothing');
+select public.delete_my_account();
+reset role;
+select test.assert((select count(*) = 0 from auth.users where id = :leaver_id), 'the account is gone');
+select test.assert((select count(*) = 0 from public.profiles where id = :leaver_id), 'the profile is gone');
+select test.assert((select count(*) = 0 from public.posts where body = 'Leaver moment'), 'their moments are gone');
+select test.assert((select created_by is null from public.albums where title = 'Leaver album'), 'their album stays, unnamed');
+select test.assert((select count(*) = 1 from public.photos p join public.albums a on a.id = p.album_id
+  where a.title = 'Leaver album'), 'with everyone else''s photos');
+select test.assert((select count(*) = 1 from public.event_rsvps r join public.events e on e.id = r.event_id
+  where e.title = 'Leaver event'), 'their event stays with everyone''s replies');
+select test.assert((select count(*) = 1 from public.polls where question = 'Leaver poll?' and created_by is null), 'their poll stays');
+select test.assert((select count(*) = 1 from public.fund_contributions where amount = 777 and user_id is null),
+  'the fund keeps the payment');
+select test.assert((select detail ->> 'label' = 'Leaver' from public.activity_log
+  where entity = 'account' and action = 'delete' order by id desc limit 1), 'admins can see who left');
+select test.assert((select count(*) = 0 from public.activity_log where user_id is null and entity = 'posts'
+  and detail ->> 'label' = 'Leaver moment' and action = 'delete'), 'no log line for each removed row');
+select test.assert((select count(*) = 0 from public.notifications where created_at >= (select t from leaver_notes)),
+  'no notifications about removed rows');
+drop table leaver_notes;
 
 -- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.

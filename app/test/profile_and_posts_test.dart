@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bua_family/data/repository.dart';
 import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
 import 'package:bua_family/models/help.dart';
@@ -12,14 +13,31 @@ import 'package:bua_family/ui/screens/post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthClientOptions, SupabaseClient;
 
 import 'domain_test.dart' show buildFamily;
+
+class _FakeAuth extends AuthController {
+  _FakeAuth({this.fail})
+      : super(FamilyRepository(
+            SupabaseClient('http://localhost', 'test', authOptions: const AuthClientOptions(autoRefreshToken: false))));
+
+  final Object? fail;
+  int deleted = 0;
+
+  @override
+  Future<void> deleteAccount() async {
+    if (fail != null) throw fail!;
+    deleted++;
+  }
+}
 
 void main() {
   final now = DateTime(2026, 10, 3, 12);
 
-  Widget app(Widget home, {String? personId, String? requestedPersonId}) => ProviderScope(
+  Widget app(Widget home, {String? personId, String? requestedPersonId, AuthController? auth}) => ProviderScope(
         overrides: [
+          if (auth != null) authProvider.overrideWith((ref) => auth),
           profileProvider.overrideWithValue(Profile(
             id: 'u1',
             displayName: 'Aisha',
@@ -84,6 +102,41 @@ void main() {
     await tester.pumpWidget(app(const MoreScreen(), requestedPersonId: 'musa'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Waiting for an admin to link you to musa'), findsOneWidget);
+  });
+
+  testWidgets('members can delete their account, after reading what goes and what stays', (tester) async {
+    tall(tester);
+    final auth = _FakeAuth();
+    await tester.pumpWidget(app(const MoreScreen(), auth: auth));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Delete my account'), 200);
+    await tester.tap(find.text('Delete my account'));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete your account?'), findsOneWidget);
+    expect(find.textContaining('Kept for the family'), findsOneWidget);
+    // Not until they tick that they understand.
+    final delete = find.widgetWithText(FilledButton, 'Delete my account');
+    expect(tester.widget<FilledButton>(delete).onPressed, isNull);
+    await tester.tap(find.text("I understand this can't be undone"));
+    await tester.pump();
+    await tester.tap(delete);
+    await tester.pumpAndSettle();
+    expect(auth.deleted, 1);
+  });
+
+  testWidgets('the only admin is told to hand over first', (tester) async {
+    tall(tester);
+    final auth = _FakeAuth(fail: Exception('You are the only admin. Make someone else an admin first.'));
+    await tester.pumpWidget(app(const MoreScreen(), auth: auth));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Delete my account'), 200);
+    await tester.tap(find.text('Delete my account'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("I understand this can't be undone"));
+    await tester.pump();
+    await tester.tap(find.widgetWithText(FilledButton, 'Delete my account'));
+    await tester.pumpAndSettle();
+    expect(find.text('You are the only admin. Make someone else an admin first.'), findsOneWidget);
   });
 
   test('comment notifications say who commented', () async {

@@ -129,7 +129,7 @@ class Contribution {
 
   factory Contribution.fromJson(Map<String, dynamic> j) => Contribution(
         id: j['id'] as String,
-        userId: j['user_id'] as String,
+        userId: j['user_id'] as String? ?? '',
         amount: _num(j['amount']),
         method: PayMethod.values.byName(j['method'] as String),
         createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
