@@ -1068,6 +1068,41 @@ select test.expect_error($$select public.redeem_invite('welcome123')$$, 'an invi
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 24. Admin metrics.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_metrics(array['comments'], (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date)$$, 'members cannot see metrics');
+select test.expect_error($$select public.admin_snapshot()$$, 'members cannot see the snapshot');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select jsonb_array_length(m -> 'buckets') = 8
+    and jsonb_array_length(m -> 'series' -> 'comments') = 8
+    and (m -> 'totals' ->> 'comments')::int >= 2
+    and (m -> 'totals' ->> 'active_members')::int >= 1
+    and (m -> 'previous' ->> 'comments')::int = 0
+  from public.admin_metrics(array['comments', 'active_members', 'money_in'], (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date) m),
+  'daily series, totals and the previous period for any metrics');
+select test.assert((select jsonb_array_length(m -> 'buckets') between 1 and 2
+  from public.admin_metrics(array['comments'], (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date, 'month') m), 'monthly buckets');
+select test.assert((select (m -> 'totals' ->> 'active_members')::int >= 1
+  from public.admin_metrics(array['active_members'], (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date, 'day', 'android') m),
+  'filter by platform');
+select test.assert((select (m -> 'totals' ->> 'active_members')::int = 0
+  from public.admin_metrics(array['active_members'], (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date, 'day', 'web') m),
+  'platform filter excludes others');
+select test.assert((select jsonb_array_length(b) >= 1 and bool_and(e ->> 'label' <> '')
+  from public.admin_metric_breakdown('comments', (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date, 'member') b,
+       jsonb_array_elements(b) e group by b), 'every top member has a name, linked or not');
+select test.assert((select jsonb_array_length(b) >= 1 and b -> 0 ->> 'label' <> ''
+  from public.admin_metric_breakdown('comments', (now() at time zone 'Africa/Lagos')::date - 7, (now() at time zone 'Africa/Lagos')::date, 'member') b), 'top members for a metric');
+select test.assert((select (s ->> 'accounts')::int >= 3 and (s ->> 'people')::int >= 7 and s ? 'branches'
+  from public.admin_snapshot() s), 'snapshot of accounts and the tree');
+select test.expect_error($$select public.admin_metrics(array['comments'], (now() at time zone 'Africa/Lagos')::date, (now() at time zone 'Africa/Lagos')::date - 1)$$, 'the period must make sense');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

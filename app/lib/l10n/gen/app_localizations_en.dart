@@ -2574,7 +2574,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportGedcomSub => 'Opens in other genealogy apps';
 
   @override
-  String get exportCsv => 'Spreadsheet (CSV)';
+  String get exportCsv => 'Export CSV';
 
   @override
   String get exportCsvSub => 'Everyone, with dates and places';
@@ -3328,4 +3328,254 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offlineSaved =>
       'You\'re offline. Showing what was saved on this phone.';
+
+  @override
+  String get metricsTitle => 'Family metrics';
+
+  @override
+  String get metricsSub => 'How the family is using the app';
+
+  @override
+  String get period7 => '7 days';
+
+  @override
+  String get period30 => '30 days';
+
+  @override
+  String get period90 => '90 days';
+
+  @override
+  String get period365 => '12 months';
+
+  @override
+  String get periodCustom => 'Custom…';
+
+  @override
+  String get byDay => 'Daily';
+
+  @override
+  String get byWeek => 'Weekly';
+
+  @override
+  String get byMonth => 'Monthly';
+
+  @override
+  String get allPlatforms => 'All apps';
+
+  @override
+  String get allBranches => 'All branches';
+
+  @override
+  String get comparePrevious => 'Compare with the period before';
+
+  @override
+  String get previousPeriod => 'Period before';
+
+  @override
+  String vsPrevious(String change) {
+    return '$change vs period before';
+  }
+
+  @override
+  String get noChange => 'Same as period before';
+
+  @override
+  String get newThisPeriod => 'New this period';
+
+  @override
+  String get customiseTiles => 'Choose metrics';
+
+  @override
+  String get customiseTilesHint => 'Pick what shows on your dashboard.';
+
+  @override
+  String get showTable => 'Table';
+
+  @override
+  String get showChart => 'Chart';
+
+  @override
+  String get breakdownBy => 'Split by';
+
+  @override
+  String get byBranch => 'Branch';
+
+  @override
+  String get byPlatform => 'App';
+
+  @override
+  String get byMember => 'Member';
+
+  @override
+  String get noBranch => 'No branch';
+
+  @override
+  String get unknownLabel => 'Unknown';
+
+  @override
+  String get snapshotTitle => 'Right now';
+
+  @override
+  String get funnelAccounts => 'Accounts';
+
+  @override
+  String get funnelApproved => 'Approved';
+
+  @override
+  String get funnelLinked => 'In the tree';
+
+  @override
+  String get funnelActive30 => 'Active in 30 days';
+
+  @override
+  String get funnelPush => 'Notifications on';
+
+  @override
+  String get funnelAndroid => 'Android app';
+
+  @override
+  String get treeQuality => 'The tree';
+
+  @override
+  String treePeople(int count, int living) {
+    return '$count people · $living living';
+  }
+
+  @override
+  String withPhotoPct(int pct) {
+    return '$pct% have a photo';
+  }
+
+  @override
+  String withBirthPct(int pct) {
+    return '$pct% have a date of birth';
+  }
+
+  @override
+  String withAccountPct(int pct) {
+    return '$pct% have an account';
+  }
+
+  @override
+  String get fundBalanceLabel => 'Welfare fund balance';
+
+  @override
+  String get openBloodLabel => 'Open blood requests';
+
+  @override
+  String get pendingSuggestionsLabel => 'Suggestions waiting';
+
+  @override
+  String get noDataYet => 'Nothing in this period yet.';
+
+  @override
+  String get mgPeople => 'People';
+
+  @override
+  String get mgTree => 'The tree';
+
+  @override
+  String get mgSharing => 'Sharing';
+
+  @override
+  String get mgEvents => 'Events & polls';
+
+  @override
+  String get mgHelping => 'Helping each other';
+
+  @override
+  String get mgReach => 'Reaching people';
+
+  @override
+  String get m_signups => 'Sign-ups';
+
+  @override
+  String get m_active_members => 'Active members';
+
+  @override
+  String get m_active_android => 'Active on Android';
+
+  @override
+  String get m_active_web => 'Active on the website';
+
+  @override
+  String get m_people_added => 'People added';
+
+  @override
+  String get m_relationships_added => 'Relationships added';
+
+  @override
+  String get m_suggestions => 'Suggestions sent';
+
+  @override
+  String get m_suggestions_reviewed => 'Suggestions reviewed';
+
+  @override
+  String get m_moments => 'Moments posted';
+
+  @override
+  String get m_announcements => 'Announcements';
+
+  @override
+  String get m_posting_members => 'Members who posted';
+
+  @override
+  String get m_photos => 'Photos';
+
+  @override
+  String get m_comments => 'Comments';
+
+  @override
+  String get m_likes => 'Ma sha Allah';
+
+  @override
+  String get m_stories => 'Stories recorded';
+
+  @override
+  String get m_memories => 'Memories written';
+
+  @override
+  String get m_events => 'Events created';
+
+  @override
+  String get m_rsvps => 'RSVPs';
+
+  @override
+  String get m_polls => 'Polls';
+
+  @override
+  String get m_votes => 'Votes';
+
+  @override
+  String get m_blood_requests => 'Blood requests';
+
+  @override
+  String get m_blood_offers => 'Offers to donate';
+
+  @override
+  String get m_contributions => 'Contributions recorded';
+
+  @override
+  String get m_money_in => 'Money confirmed in';
+
+  @override
+  String get m_money_out => 'Money paid out';
+
+  @override
+  String get m_causes => 'Causes opened';
+
+  @override
+  String get m_mentor_asks => 'Mentor requests';
+
+  @override
+  String get m_opportunities => 'Opportunities shared';
+
+  @override
+  String get m_notifications => 'Notifications sent';
+
+  @override
+  String get m_notifications_received => 'Notifications received';
+
+  @override
+  String get m_sms_sent => 'Text messages sent';
 }

@@ -26,6 +26,7 @@ import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentorship_screen.dart';
 import 'ui/screens/members_screen.dart';
+import 'ui/screens/metrics_screen.dart';
 import 'ui/screens/more_screen.dart';
 import 'ui/screens/my_requests_screen.dart';
 import 'ui/screens/new_event_screen.dart';
@@ -157,6 +158,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/admin/data', builder: (_, _) => const ImportExportScreen()),
       GoRoute(path: '/admin/restore', builder: (_, _) => const RestoreScreen()),
       GoRoute(path: '/admin/tree-check', builder: (_, _) => const TreeCheckScreen()),
+      GoRoute(path: '/admin/metrics', builder: (_, _) => const MetricsScreen()),
       GoRoute(
         path: '/admin/import',
         redirect: (_, s) => s.extra is ImportPlan ? null : '/admin/data',

@@ -58,6 +58,13 @@ class AdminScreen extends ConsumerWidget {
         appBar: AppBar(
           leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/more')),
           title: Text(l.navAdmin, style: Theme.of(context).textTheme.titleLarge),
+          actions: [
+            IconButton(
+              tooltip: l.metricsTitle,
+              icon: const Icon(Icons.insights_outlined),
+              onPressed: () => context.push('/admin/metrics'),
+            ),
+          ],
           bottom: TabBar(tabs: [
             tab(l.requestsTitle, requests, true),
             tab(l.accountsTitle, accounts, true),

@@ -19,7 +19,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.birthday => l.notifBirthday(n.str('name') ?? '', (n.data['age'] as num?)?.toInt() ?? 0),
       NotificationKind.eventReminder => l.notifEventReminder(n.str('title') ?? ''),
       NotificationKind.tagged => n.data.containsKey('photo_id') ? l.notifTaggedPhoto : l.notifTaggedPost,
-      NotificationKind.comment => n.str('name') == null
+      NotificationKind.comment => (n.str('name') ?? '').isEmpty
           ? l.notifComment(n.str('body') ?? '')
           : n.data['also'] == true
               ? l.notifCommentAlso(n.str('name')!, n.str('body') ?? '')

@@ -8,6 +8,7 @@ import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
 import '../models/help.dart';
+import '../models/metrics.dart';
 import '../models/notification.dart';
 import '../models/person.dart';
 import '../models/social.dart';
@@ -66,6 +67,39 @@ class FamilyRepository {
   }
 
   Future<void> redeemInvite(String code) => _db.rpc('redeem_invite', params: {'p_code': code});
+
+  // ---------------------------------------------------------------- metrics
+
+  static String _day(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  /// Admin: series and totals for [metrics] over [q] (see admin_metrics).
+  Future<MetricsResult> adminMetrics(List<String> metrics, MetricsQuery q) async =>
+      MetricsResult.fromJson(Map<String, dynamic>.from(await _db.rpc('admin_metrics', params: {
+        'p_metrics': metrics,
+        'p_from': _day(q.from),
+        'p_to': _day(q.to),
+        'p_bucket': q.bucket.name,
+        'p_platform': q.platform,
+        'p_branch': q.branch,
+      }) as Map));
+
+  /// Admin: one metric split by 'branch', 'platform' or 'member'.
+  Future<List<BreakdownRow>> adminMetricBreakdown(String metric, MetricsQuery q, String by) async => [
+        for (final r in (await _db.rpc('admin_metric_breakdown', params: {
+          'p_metric': metric,
+          'p_from': _day(q.from),
+          'p_to': _day(q.to),
+          'p_by': by,
+          'p_platform': q.platform,
+          'p_branch': q.branch,
+        })) as List)
+          BreakdownRow.fromJson(Map<String, dynamic>.from(r as Map)),
+      ];
+
+  /// Admin: where the family stands today.
+  Future<Map<String, dynamic>> adminSnapshot() async =>
+      Map<String, dynamic>.from(await _db.rpc('admin_snapshot') as Map);
 
   /// Admin: every account with its person, devices and activity.
   Future<List<UserRow>> adminUsers() async =>

@@ -194,6 +194,7 @@ class AppSidebar extends ConsumerWidget {
               if (isAdmin) ...[
                 heading(l.navAdmin),
                 item(Icons.admin_panel_settings_outlined, l.navAdmin, '/admin', badge: attention, urgent: true),
+                item(Icons.insights_outlined, l.metricsTitle, '/admin/metrics'),
                 item(Icons.rule, l.checkTree, '/admin/tree-check'),
                 item(Icons.import_export, l.dataTitle, '/admin/data'),
               ],

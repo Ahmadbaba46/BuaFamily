@@ -2507,7 +2507,7 @@ class AppLocalizationsHa extends AppLocalizations {
   String get exportGedcomSub => 'Yana buɗewa a wasu manhajojin asalin iyali';
 
   @override
-  String get exportCsv => 'Tebur (CSV)';
+  String get exportCsv => 'Fitar da CSV';
 
   @override
   String get exportCsvSub => 'Kowa, tare da kwanaki da wurare';
@@ -3238,4 +3238,254 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get offlineSaved =>
       'Babu intanet. Ana nuna abin da aka ajiye a wannan wayar.';
+
+  @override
+  String get metricsTitle => 'Ƙididdigar iyali';
+
+  @override
+  String get metricsSub => 'Yadda iyali ke amfani da manhajar';
+
+  @override
+  String get period7 => 'Kwana 7';
+
+  @override
+  String get period30 => 'Kwana 30';
+
+  @override
+  String get period90 => 'Kwana 90';
+
+  @override
+  String get period365 => 'Wata 12';
+
+  @override
+  String get periodCustom => 'Zaɓi…';
+
+  @override
+  String get byDay => 'Kowace rana';
+
+  @override
+  String get byWeek => 'Kowane mako';
+
+  @override
+  String get byMonth => 'Kowane wata';
+
+  @override
+  String get allPlatforms => 'Duk manhajoji';
+
+  @override
+  String get allBranches => 'Duk rassa';
+
+  @override
+  String get comparePrevious => 'Kwatanta da lokacin da ya gabata';
+
+  @override
+  String get previousPeriod => 'Lokacin da ya gabata';
+
+  @override
+  String vsPrevious(String change) {
+    return '$change idan aka kwatanta da baya';
+  }
+
+  @override
+  String get noChange => 'Daidai da lokacin baya';
+
+  @override
+  String get newThisPeriod => 'Sabo a wannan lokacin';
+
+  @override
+  String get customiseTiles => 'Zaɓi ƙididdiga';
+
+  @override
+  String get customiseTilesHint => 'Zaɓi abin da zai bayyana a allonka.';
+
+  @override
+  String get showTable => 'Tebur';
+
+  @override
+  String get showChart => 'Zane';
+
+  @override
+  String get breakdownBy => 'Raba ta';
+
+  @override
+  String get byBranch => 'Reshe';
+
+  @override
+  String get byPlatform => 'Manhaja';
+
+  @override
+  String get byMember => 'Mutum';
+
+  @override
+  String get noBranch => 'Babu reshe';
+
+  @override
+  String get unknownLabel => 'Ba a sani ba';
+
+  @override
+  String get snapshotTitle => 'Yanzu';
+
+  @override
+  String get funnelAccounts => 'Asusu';
+
+  @override
+  String get funnelApproved => 'An amince';
+
+  @override
+  String get funnelLinked => 'A bishiya';
+
+  @override
+  String get funnelActive30 => 'Sun shigo cikin kwana 30';
+
+  @override
+  String get funnelPush => 'Sanarwa a kunne';
+
+  @override
+  String get funnelAndroid => 'Manhajar Android';
+
+  @override
+  String get treeQuality => 'Bishiyar iyali';
+
+  @override
+  String treePeople(int count, int living) {
+    return 'Mutum $count · $living a raye';
+  }
+
+  @override
+  String withPhotoPct(int pct) {
+    return '$pct% suna da hoto';
+  }
+
+  @override
+  String withBirthPct(int pct) {
+    return '$pct% suna da ranar haihuwa';
+  }
+
+  @override
+  String withAccountPct(int pct) {
+    return '$pct% suna da asusu';
+  }
+
+  @override
+  String get fundBalanceLabel => 'Kuɗin asusun taimako';
+
+  @override
+  String get openBloodLabel => 'Buƙatun jini a buɗe';
+
+  @override
+  String get pendingSuggestionsLabel => 'Shawarwari masu jira';
+
+  @override
+  String get noDataYet => 'Babu komai a wannan lokacin tukuna.';
+
+  @override
+  String get mgPeople => 'Mutane';
+
+  @override
+  String get mgTree => 'Bishiyar iyali';
+
+  @override
+  String get mgSharing => 'Rabawa';
+
+  @override
+  String get mgEvents => 'Taruka da ƙuri\'u';
+
+  @override
+  String get mgHelping => 'Taimakon juna';
+
+  @override
+  String get mgReach => 'Isar da saƙo';
+
+  @override
+  String get m_signups => 'Rajista';
+
+  @override
+  String get m_active_members => 'Masu shigowa';
+
+  @override
+  String get m_active_android => 'Masu shigowa ta Android';
+
+  @override
+  String get m_active_web => 'Masu shigowa ta yanar gizo';
+
+  @override
+  String get m_people_added => 'Mutanen da aka ƙara';
+
+  @override
+  String get m_relationships_added => 'Dangantakar da aka ƙara';
+
+  @override
+  String get m_suggestions => 'Shawarwarin da aka aika';
+
+  @override
+  String get m_suggestions_reviewed => 'Shawarwarin da aka duba';
+
+  @override
+  String get m_moments => 'Rubutun da aka saka';
+
+  @override
+  String get m_announcements => 'Sanarwa';
+
+  @override
+  String get m_posting_members => 'Masu saka rubutu';
+
+  @override
+  String get m_photos => 'Hotuna';
+
+  @override
+  String get m_comments => 'Sharhi';
+
+  @override
+  String get m_likes => 'Ma sha Allah';
+
+  @override
+  String get m_stories => 'Labaran da aka naɗa';
+
+  @override
+  String get m_memories => 'Tunawar da aka rubuta';
+
+  @override
+  String get m_events => 'Tarukan da aka ƙirƙira';
+
+  @override
+  String get m_rsvps => 'Amsoshin gayyata';
+
+  @override
+  String get m_polls => 'Ƙuri\'u';
+
+  @override
+  String get m_votes => 'Zaɓe';
+
+  @override
+  String get m_blood_requests => 'Buƙatun jini';
+
+  @override
+  String get m_blood_offers => 'Masu son ba da jini';
+
+  @override
+  String get m_contributions => 'Gudummawar da aka rubuta';
+
+  @override
+  String get m_money_in => 'Kuɗin da aka tabbatar';
+
+  @override
+  String get m_money_out => 'Kuɗin da aka biya';
+
+  @override
+  String get m_causes => 'Buƙatun da aka buɗe';
+
+  @override
+  String get m_mentor_asks => 'Buƙatun jagora';
+
+  @override
+  String get m_opportunities => 'Damarmakin da aka raba';
+
+  @override
+  String get m_notifications => 'Sanarwar da aka aika';
+
+  @override
+  String get m_notifications_received => 'Sanarwar da aka karɓa';
+
+  @override
+  String get m_sms_sent => 'Saƙonnin tes da aka aika';
 }

@@ -2218,5 +2218,124 @@
       }
     }
   },
-  "offlineSaved": "You're offline. Showing what was saved on this phone."
+  "offlineSaved": "You're offline. Showing what was saved on this phone.",
+  "metricsTitle": "Family metrics",
+  "metricsSub": "How the family is using the app",
+  "period7": "7 days",
+  "period30": "30 days",
+  "period90": "90 days",
+  "period365": "12 months",
+  "periodCustom": "Custom…",
+  "byDay": "Daily",
+  "byWeek": "Weekly",
+  "byMonth": "Monthly",
+  "allPlatforms": "All apps",
+  "allBranches": "All branches",
+  "comparePrevious": "Compare with the period before",
+  "previousPeriod": "Period before",
+  "vsPrevious": "{change} vs period before",
+  "@vsPrevious": {
+    "placeholders": {
+      "change": {
+        "type": "String"
+      }
+    }
+  },
+  "noChange": "Same as period before",
+  "newThisPeriod": "New this period",
+  "customiseTiles": "Choose metrics",
+  "customiseTilesHint": "Pick what shows on your dashboard.",
+  "showTable": "Table",
+  "showChart": "Chart",
+  "exportCsv": "Export CSV",
+  "breakdownBy": "Split by",
+  "byBranch": "Branch",
+  "byPlatform": "App",
+  "byMember": "Member",
+  "noBranch": "No branch",
+  "unknownLabel": "Unknown",
+  "snapshotTitle": "Right now",
+  "funnelAccounts": "Accounts",
+  "funnelApproved": "Approved",
+  "funnelLinked": "In the tree",
+  "funnelActive30": "Active in 30 days",
+  "funnelPush": "Notifications on",
+  "funnelAndroid": "Android app",
+  "treeQuality": "The tree",
+  "treePeople": "{count} people · {living} living",
+  "@treePeople": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "living": {
+        "type": "int"
+      }
+    }
+  },
+  "withPhotoPct": "{pct}% have a photo",
+  "@withPhotoPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "withBirthPct": "{pct}% have a date of birth",
+  "@withBirthPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "withAccountPct": "{pct}% have an account",
+  "@withAccountPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "fundBalanceLabel": "Welfare fund balance",
+  "openBloodLabel": "Open blood requests",
+  "pendingSuggestionsLabel": "Suggestions waiting",
+  "noDataYet": "Nothing in this period yet.",
+  "mgPeople": "People",
+  "mgTree": "The tree",
+  "mgSharing": "Sharing",
+  "mgEvents": "Events & polls",
+  "mgHelping": "Helping each other",
+  "mgReach": "Reaching people",
+  "m_signups": "Sign-ups",
+  "m_active_members": "Active members",
+  "m_active_android": "Active on Android",
+  "m_active_web": "Active on the website",
+  "m_people_added": "People added",
+  "m_relationships_added": "Relationships added",
+  "m_suggestions": "Suggestions sent",
+  "m_suggestions_reviewed": "Suggestions reviewed",
+  "m_moments": "Moments posted",
+  "m_announcements": "Announcements",
+  "m_posting_members": "Members who posted",
+  "m_photos": "Photos",
+  "m_comments": "Comments",
+  "m_likes": "Ma sha Allah",
+  "m_stories": "Stories recorded",
+  "m_memories": "Memories written",
+  "m_events": "Events created",
+  "m_rsvps": "RSVPs",
+  "m_polls": "Polls",
+  "m_votes": "Votes",
+  "m_blood_requests": "Blood requests",
+  "m_blood_offers": "Offers to donate",
+  "m_contributions": "Contributions recorded",
+  "m_money_in": "Money confirmed in",
+  "m_money_out": "Money paid out",
+  "m_causes": "Causes opened",
+  "m_mentor_asks": "Mentor requests",
+  "m_opportunities": "Opportunities shared",
+  "m_notifications": "Notifications sent",
+  "m_notifications_received": "Notifications received",
+  "m_sms_sent": "Text messages sent"
 }
