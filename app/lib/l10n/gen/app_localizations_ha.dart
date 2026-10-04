@@ -4875,4 +4875,11 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get eventPhotosTitle => 'Hotunan ranar';
+
+  @override
+  String get shareLabel => 'Raba';
+
+  @override
+  String get shareHint =>
+      'Mahaɗin zai nuna kati a WhatsApp; ’yan uwa ne kawai ke iya buɗe abin da ke ciki.';
 }

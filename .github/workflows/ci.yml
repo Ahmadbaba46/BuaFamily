@@ -20,6 +20,8 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
+      - name: Link cards (WhatsApp previews)
+        run: node --test tool/tests/share_test.js
 
   database:
     name: Database migrations & permission tests

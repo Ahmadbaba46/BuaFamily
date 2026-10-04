@@ -1325,5 +1325,7 @@
   "markWhoCame": "Rubuta waɗanda suka zo",
   "noOneMarkedYet": "Ba a rubuta kowa ba tukuna.",
   "eventPhotosHint": "Raba hotunan wannan rana.",
-  "eventPhotosTitle": "Hotunan ranar"
+  "eventPhotosTitle": "Hotunan ranar",
+  "shareLabel": "Raba",
+  "shareHint": "Mahaɗin zai nuna kati a WhatsApp; ’yan uwa ne kawai ke iya buɗe abin da ke ciki."
 }

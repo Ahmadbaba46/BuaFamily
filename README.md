@@ -39,6 +39,11 @@ share moments and photos, plan family events, and keep everyone's details
   generation, with photos, dates, parents, spouses, children and life stories,
   register numbers (1, 1.2, 1.2.3…) and an index of names. From the Tree page
   or Import/export. Contact and health details are left out.
+- **Share to WhatsApp:** events, moments, albums and invites share as links
+  that show a card in WhatsApp (the family's picture and what it is) and open
+  the right page. Cards never show private content: an invite says who invited
+  you; an event only that it's a family event. (`app/api/share.js`, a small
+  Vercel function next to the website.)
 - **Messages:** private one-to-one conversations between family members, from
   Messages on Home or the Message button on a profile. Only the two people can
   read them: not admins, not backups.

@@ -8058,6 +8058,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photos from the day'**
   String get eventPhotosTitle;
+
+  /// No description provided for @shareLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareLabel;
+
+  /// No description provided for @shareHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The link shows a card on WhatsApp; only family members can open what\'s inside.'**
+  String get shareHint;
 }
 
 class _AppLocalizationsDelegate

@@ -3,8 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/repository.dart';
 import 'app_update.dart' show siteUrl;
 
-/// The link an invite is shared as (the web app's pages are after the #).
-String inviteLink(String code) => '$siteUrl/#/join/$code';
+/// The link an invite is shared as: it shows a card on WhatsApp (who
+/// invited you) and opens the join page (see app/api/share.js).
+String inviteLink(String code, {String lang = 'en'}) => '$siteUrl/s/join/$code?l=$lang';
 
 const _key = 'pending_invite';
 
