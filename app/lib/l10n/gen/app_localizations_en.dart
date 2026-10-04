@@ -3125,4 +3125,106 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifAppUpdate(String version) {
     return 'A new version of the app is ready ($version). Tap to download.';
   }
+
+  @override
+  String get searchUsers => 'Search name, email, phone or person';
+
+  @override
+  String get filterWaiting => 'Waiting';
+
+  @override
+  String get filterActive => 'Active';
+
+  @override
+  String get filterSuspended => 'Suspended';
+
+  @override
+  String get filterAdmins => 'Admins';
+
+  @override
+  String get filterTreasurers => 'Treasurers';
+
+  @override
+  String get filterNotLinked => 'Not in the tree';
+
+  @override
+  String get filterNoPush => 'No notifications';
+
+  @override
+  String get filterInactive => 'Inactive 30 days';
+
+  @override
+  String usersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count accounts',
+      one: '1 account',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get platformFilter => 'App used';
+
+  @override
+  String get platformAny => 'Any app';
+
+  @override
+  String get platformAndroid => 'Android app';
+
+  @override
+  String get platformWeb => 'Website';
+
+  @override
+  String get sortNewest => 'Newest';
+
+  @override
+  String get sortLastActive => 'Last active';
+
+  @override
+  String get sortMostActive => 'Most active';
+
+  @override
+  String get neverSeen => 'Not seen yet';
+
+  @override
+  String lastSeen(String when) {
+    return 'Active $when';
+  }
+
+  @override
+  String activeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Active on $count of the last 30 days',
+      one: 'Active on 1 of the last 30 days',
+      zero: 'No activity in the last 30 days',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String postsAndComments(int posts, int comments) {
+    return '$posts posts · $comments comments';
+  }
+
+  @override
+  String get noPushDevices => 'Notifications not turned on';
+
+  @override
+  String pushOn(String devices) {
+    return 'Notifications on: $devices';
+  }
+
+  @override
+  String androidVersionOf(String version) {
+    return 'Android app $version';
+  }
+
+  @override
+  String joinedOn(String date) {
+    return 'Joined $date';
+  }
 }

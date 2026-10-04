@@ -14,6 +14,7 @@ import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
 import '../widgets/request_card.dart';
 import 'get_app_screen.dart';
+import 'users_screen.dart';
 
 class AdminScreen extends ConsumerWidget {
   const AdminScreen({super.key, this.initialTab = 0});
@@ -63,7 +64,7 @@ class AdminScreen extends ConsumerWidget {
             Tab(text: l.settingsTitle),
           ]),
         ),
-        body: const TabBarView(children: [_RequestsTab(), _AccountsTab(), _SettingsTab()]),
+        body: const TabBarView(children: [_RequestsTab(), UsersView(), _SettingsTab()]),
       ),
     );
   }
@@ -126,202 +127,6 @@ class _RequestsTab extends ConsumerWidget {
 }
 
 // ------------------------------------------------------------------ accounts
-
-class _AccountsTab extends ConsumerWidget {
-  const _AccountsTab();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l = context.l10n;
-    final profiles = ref.watch(profilesProvider);
-    final graph = ref.watch(graphProvider).value;
-    final me = ref.watch(profileProvider);
-
-    Future<void> update(Profile p, {AccountStatus? status, AppRole? role, String? personId}) async {
-      final ok = await guarded(
-        context,
-        () => ref.read(repositoryProvider).adminUpdateAccount(p.id, status: status, role: role, personId: personId),
-      );
-      if (ok) ref.invalidate(profilesProvider);
-    }
-
-    Future<void> link(Profile p, {bool approve = false}) async {
-      if (graph == null) return;
-      final person = await pickPerson(context, graph);
-      if (person != null) await update(p, personId: person.id, status: approve ? AccountStatus.active : null);
-    }
-
-    String initials(Profile p) {
-      final parts = (p.displayName.isEmpty ? (p.email ?? '?') : p.displayName).trim().split(RegExp(r'\s+'));
-      return parts.take(2).map((s) => s.isEmpty ? '' : s[0].toUpperCase()).join();
-    }
-
-    Widget avatar(Profile p, double size) => Container(
-          width: size,
-          height: size,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(color: Bua.track, shape: BoxShape.circle),
-          child: Text(initials(p),
-              style: TextStyle(fontSize: size * 0.32, fontWeight: FontWeight.w700, color: Bua.unknownFg)),
-        );
-
-    Widget pendingCard(Profile p) {
-      final wants = p.requestedPersonId == null ? null : graph?[p.requestedPersonId!];
-      final linked = p.personId == null ? null : graph?[p.personId!];
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Row(children: [
-            avatar(p, 44),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(p.displayName.isEmpty ? (p.email ?? '?') : p.displayName,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                if (p.email != null) Text(p.email!, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
-              ]),
-            ),
-          ]),
-          if (p.claimNote?.isNotEmpty ?? false) ...[
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(12)),
-              child: Text('“${p.claimNote}”',
-                  style: const TextStyle(fontSize: 14, height: 1.45, fontStyle: FontStyle.italic, color: Bua.inkBody)),
-            ),
-          ],
-          if (wants != null || linked != null) ...[
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Bua.connector),
-              ),
-              child: Row(children: [
-                const Icon(Icons.link, size: 18, color: Bua.green),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    linked != null ? l.linkedTo(linked.displayName) : l.wantsToBe(wants!.displayName),
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ),
-              ]),
-            ),
-          ],
-          const SizedBox(height: 12),
-          Row(children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () => link(p),
-                child: Text(wants != null || linked != null ? l.linkSomeoneElse : l.linkToPerson,
-                    textAlign: TextAlign.center),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: FilledButton(
-                onPressed: () => wants != null && linked == null
-                    ? update(p, personId: wants.id, status: AccountStatus.active)
-                    : update(p, status: AccountStatus.active),
-                child: Text(wants != null && linked == null ? l.approveAndLink : l.activate,
-                    textAlign: TextAlign.center),
-              ),
-            ),
-          ]),
-        ]),
-      );
-    }
-
-    Widget compactRow(Profile p) {
-      final linked = p.personId == null ? null : graph?[p.personId!];
-      final self = p.id == me?.id;
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(16, 6, 4, 6),
-        child: Row(children: [
-          avatar(p, 36),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(p.displayName.isEmpty ? (p.email ?? '?') : p.displayName,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-              Text(linked == null ? l.notLinked : l.linkedTo(linked.displayName),
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
-            ]),
-          ),
-          if (p.isTreasurer) ...[
-            Pill(l.treasurer, background: Bua.goldTint, color: Bua.goldInk),
-            const SizedBox(width: 6),
-          ],
-          p.role == AppRole.admin
-              ? Pill(l.roleAdmin, background: Bua.green, color: Colors.white)
-              : Pill(l.roleMember, background: Bua.track, color: Bua.ink),
-          if (self)
-            const SizedBox(width: 12)
-          else
-            PopupMenuButton<String>(
-              onSelected: (v) => switch (v) {
-                'link' => link(p),
-                'role' => update(p, role: p.role == AppRole.admin ? AppRole.member : AppRole.admin),
-                'suspend' => update(p, status: AccountStatus.suspended),
-                'treasurer' => guarded(context, () => ref.read(repositoryProvider).setTreasurer(p.id, !p.isTreasurer))
-                    .then((ok) => ok ? ref.invalidate(profilesProvider) : null),
-                _ => update(p, status: AccountStatus.active),
-              },
-              itemBuilder: (_) => [
-                PopupMenuItem(value: 'link', child: Text(l.linkToPerson)),
-                if (p.status == AccountStatus.active) ...[
-                  PopupMenuItem(value: 'role', child: Text(p.role == AppRole.admin ? l.makeMember : l.makeAdmin)),
-                  PopupMenuItem(value: 'treasurer', child: Text(p.isTreasurer ? l.removeTreasurer : l.makeTreasurer)),
-                  PopupMenuItem(value: 'suspend', child: Text(l.suspend)),
-                ] else
-                  PopupMenuItem(value: 'activate', child: Text(l.activate)),
-              ],
-            ),
-        ]),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: () => ref.refresh(profilesProvider.future),
-      child: AsyncBody(
-        value: profiles,
-        onRetry: () => ref.invalidate(profilesProvider),
-        builder: (list) {
-          final pending = list.where((p) => p.status == AccountStatus.pending).toList();
-          final active = list.where((p) => p.status == AccountStatus.active).toList();
-          final suspended = list.where((p) => p.status == AccountStatus.suspended).toList();
-          Widget compactCard(List<Profile> items) => Container(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
-                child: Column(children: [for (final p in items) compactRow(p)]),
-              );
-          return ListView(padding: const EdgeInsets.all(16), children: [
-            if (pending.isNotEmpty) ...[
-              GroupHeading('${l.pendingAccounts} · ${pending.length}'),
-              const SizedBox(height: 10),
-              for (final p in pending) ...[pendingCard(p), const SizedBox(height: 12)],
-            ],
-            if (active.isNotEmpty) ...[
-              GroupHeading('${l.activeAccounts} · ${active.length}'),
-              const SizedBox(height: 10),
-              compactCard(active),
-              const SizedBox(height: 12),
-            ],
-            if (suspended.isNotEmpty) ...[
-              GroupHeading('${l.suspendedAccounts} · ${suspended.length}'),
-              const SizedBox(height: 10),
-              compactCard(suspended),
-            ],
-          ]);
-        },
-      ),
-    );
-  }
-}
 
 // ------------------------------------------------------------------ settings
 

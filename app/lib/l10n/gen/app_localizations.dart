@@ -4969,6 +4969,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A new version of the app is ready ({version}). Tap to download.'**
   String notifAppUpdate(String version);
+
+  /// No description provided for @searchUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Search name, email, phone or person'**
+  String get searchUsers;
+
+  /// No description provided for @filterWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get filterWaiting;
+
+  /// No description provided for @filterActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get filterActive;
+
+  /// No description provided for @filterSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get filterSuspended;
+
+  /// No description provided for @filterAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins'**
+  String get filterAdmins;
+
+  /// No description provided for @filterTreasurers.
+  ///
+  /// In en, this message translates to:
+  /// **'Treasurers'**
+  String get filterTreasurers;
+
+  /// No description provided for @filterNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in the tree'**
+  String get filterNotLinked;
+
+  /// No description provided for @filterNoPush.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get filterNoPush;
+
+  /// No description provided for @filterInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive 30 days'**
+  String get filterInactive;
+
+  /// No description provided for @usersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 account} other{{count} accounts}}'**
+  String usersCount(int count);
+
+  /// No description provided for @platformFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'App used'**
+  String get platformFilter;
+
+  /// No description provided for @platformAny.
+  ///
+  /// In en, this message translates to:
+  /// **'Any app'**
+  String get platformAny;
+
+  /// No description provided for @platformAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Android app'**
+  String get platformAndroid;
+
+  /// No description provided for @platformWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get platformWeb;
+
+  /// No description provided for @sortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortNewest;
+
+  /// No description provided for @sortLastActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Last active'**
+  String get sortLastActive;
+
+  /// No description provided for @sortMostActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active'**
+  String get sortMostActive;
+
+  /// No description provided for @neverSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Not seen yet'**
+  String get neverSeen;
+
+  /// No description provided for @lastSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Active {when}'**
+  String lastSeen(String when);
+
+  /// No description provided for @activeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No activity in the last 30 days} =1{Active on 1 of the last 30 days} other{Active on {count} of the last 30 days}}'**
+  String activeDays(int count);
+
+  /// No description provided for @postsAndComments.
+  ///
+  /// In en, this message translates to:
+  /// **'{posts} posts · {comments} comments'**
+  String postsAndComments(int posts, int comments);
+
+  /// No description provided for @noPushDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications not turned on'**
+  String get noPushDevices;
+
+  /// No description provided for @pushOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications on: {devices}'**
+  String pushOn(String devices);
+
+  /// No description provided for @androidVersionOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Android app {version}'**
+  String androidVersionOf(String version);
+
+  /// No description provided for @joinedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {date}'**
+  String joinedOn(String date);
 }
 
 class _AppLocalizationsDelegate
