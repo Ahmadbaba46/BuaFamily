@@ -192,6 +192,7 @@ class BuaFamilyApp extends ConsumerWidget {
       localizationsDelegates: localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
+      scaffoldMessengerKey: rootMessengerKey,
       builder: (context, child) => _PushBinding(child: _AppFrame(child: child ?? const SizedBox.shrink())),
     );
   }
@@ -229,6 +230,7 @@ class _PushBinding extends ConsumerStatefulWidget {
 
 class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingObserver {
   StreamSubscription<String>? _opens;
+  StreamSubscription<ForegroundPush>? _foreground;
   ProviderSubscription<String?>? _signedIn;
   ProviderSubscription<PushPlatform>? _platform;
   ProviderSubscription<String?>? _newest;
@@ -271,6 +273,8 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
     _platform = ref.listenManual(pushPlatformProvider, (_, platform) {
       _opens?.cancel();
       _opens = platform.onOpen.listen((link) => ref.read(routerProvider).push(link));
+      _foreground?.cancel();
+      _foreground = platform.onForeground.listen(_showForeground);
       if (platform.available && activeId() != null) ref.read(pushControllerProvider.notifier).resume();
     }, fireImmediately: true);
     _signedIn = ref.listenManual(
@@ -286,9 +290,38 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
     WidgetsBinding.instance.removeObserver(this);
     _newest?.close();
     _opens?.cancel();
+    _foreground?.cancel();
     _signedIn?.close();
     _platform?.close();
     super.dispose();
+  }
+
+  /// The phone leaves notifications to the app while it is open: show them
+  /// as a banner (the bell updates too), with a button to open the page.
+  void _showForeground(ForegroundPush push) {
+    if (push.id != null) ref.read(repositoryProvider).pushAck(push.id!).catchError((_) {});
+    final messenger = rootMessengerKey.currentState;
+    if (messenger == null || (push.title.isEmpty && push.body.isEmpty)) return;
+    final l = messenger.context.l10n;
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 6),
+        content: Row(children: [
+          const Icon(Icons.notifications_active_outlined, color: Colors.white),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (push.title.isNotEmpty) Text(push.title, style: const TextStyle(fontWeight: FontWeight.w700)),
+              if (push.body.isNotEmpty) Text(push.body, maxLines: 3, overflow: TextOverflow.ellipsis),
+            ]),
+          ),
+        ]),
+        action: push.link == null
+            ? null
+            : SnackBarAction(label: l.open, onPressed: () => ref.read(routerProvider).push(push.link!)),
+      ));
   }
 
   @override

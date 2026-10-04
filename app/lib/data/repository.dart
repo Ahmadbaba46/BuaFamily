@@ -814,6 +814,9 @@ class FamilyRepository {
   Future<void> registerPushToken(String token, String platform) =>
       _db.rpc('register_push_token', params: {'p_token': token, 'p_platform': platform});
 
+  /// Counts a notification as delivered (for the admin's push status).
+  Future<void> pushAck(String notificationId) => _db.rpc('push_ack', params: {'p_id': notificationId});
+
   Future<void> unregisterPushToken(String token) => _db.from('push_tokens').delete().eq('token', token);
 
   Future<Map<String, dynamic>> pushStatus() async =>

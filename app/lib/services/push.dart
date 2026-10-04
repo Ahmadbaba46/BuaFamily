@@ -72,6 +72,17 @@ final firebaseReadyProvider = FutureProvider<bool>((ref) => initFirebase());
 
 enum PushPermission { granted, denied, notAsked }
 
+/// A notification that arrived while the app was open on screen. Phones only
+/// show notifications by themselves when the app is in the background.
+class ForegroundPush {
+  const ForegroundPush({required this.title, required this.body, this.id, this.link});
+
+  final String? id;
+  final String title;
+  final String body;
+  final String? link;
+}
+
 /// What the app needs from the phone or browser. Swapped out in tests.
 abstract class PushPlatform {
   bool get available;
@@ -84,6 +95,9 @@ abstract class PushPlatform {
 
   /// Pages to open: notifications tapped while the app was closed or in the background.
   Stream<String> get onOpen;
+
+  /// Notifications that arrive while the app is open (the app shows them itself).
+  Stream<ForegroundPush> get onForeground;
 }
 
 class NoPushPlatform implements PushPlatform {
@@ -104,6 +118,8 @@ class NoPushPlatform implements PushPlatform {
   Stream<String> get onTokenRefresh => const Stream.empty();
   @override
   Stream<String> get onOpen => const Stream.empty();
+  @override
+  Stream<ForegroundPush> get onForeground => const Stream.empty();
 }
 
 class FirebasePushPlatform implements PushPlatform {
@@ -147,6 +163,16 @@ class FirebasePushPlatform implements PushPlatform {
   Stream<String> get onTokenRefresh => _fcm.onTokenRefresh;
   @override
   Stream<String> get onOpen => _opens.stream;
+  @override
+  Stream<ForegroundPush> get onForeground => FirebaseMessaging.onMessage.map((m) {
+        final link = m.data['link'];
+        return ForegroundPush(
+          id: m.data['id'] as String?,
+          title: m.notification?.title ?? '',
+          body: m.notification?.body ?? '',
+          link: link is String && link.startsWith('/') ? link : null,
+        );
+      });
 }
 
 /// The real platform once Firebase is up; until then (or without it) none.

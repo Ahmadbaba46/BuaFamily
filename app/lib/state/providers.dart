@@ -20,6 +20,10 @@ final repositoryProvider = Provider<FamilyRepository>(
   (ref) => FamilyRepository(Supabase.instance.client),
 );
 
+/// Shows messages above every page (e.g. notifications that arrive while the
+/// app is open).
+final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 /// Tracks the signed-in session and the account profile. Drives navigation.
 class AuthController extends ChangeNotifier {
   AuthController(this._repo) {
