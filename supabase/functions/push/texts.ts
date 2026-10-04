@@ -37,6 +37,7 @@ const en: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
+  direct_message: (d) => `${s(d, "name") || "New message"}: “${s(d, "body")}”`,
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {
@@ -116,6 +117,7 @@ const ha: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
+  direct_message: (d) => `${s(d, "name") || "Sabon saƙo"}: “${s(d, "body")}”`,
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {

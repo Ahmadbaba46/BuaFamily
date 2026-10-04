@@ -6,6 +6,7 @@ import '../../l10n/l10n.dart';
 import '../../models/community.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/chat_bubble.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
 
@@ -140,9 +141,9 @@ class _MentorConversationScreenState extends ConsumerState<MentorConversationScr
                         ),
                       ]),
                     ),
-                    _Bubble(text: a.message, at: a.createdAt, mine: a.fromUserId == me),
+                    ChatBubble(text: a.message, at: a.createdAt, mine: a.fromUserId == me),
                     for (final m in messages.value ?? const <MentorMessage>[])
-                      _Bubble(text: m.body, at: m.createdAt, mine: m.authorId == me),
+                      ChatBubble(text: m.body, at: m.createdAt, mine: m.authorId == me),
                   ]),
                 ),
                 SafeArea(
@@ -180,47 +181,6 @@ class _MentorConversationScreenState extends ConsumerState<MentorConversationScr
                   ),
                 ),
               ]),
-      ),
-    );
-  }
-}
-
-class _Bubble extends StatelessWidget {
-  const _Bubble({required this.text, required this.at, required this.mine});
-
-  final String text;
-  final DateTime at;
-  final bool mine;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return Align(
-      alignment: mine ? Alignment.centerRight : Alignment.centerLeft,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.78),
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          padding: const EdgeInsets.fromLTRB(14, 9, 14, 7),
-          decoration: BoxDecoration(
-            color: mine ? Bua.greenTint : Bua.surface,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(18),
-              topRight: const Radius.circular(18),
-              bottomLeft: Radius.circular(mine ? 18 : 4),
-              bottomRight: Radius.circular(mine ? 4 : 18),
-            ),
-            border: Border.all(color: mine ? Bua.greenIndicator : Bua.line),
-          ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: SelectableText(text, style: const TextStyle(fontSize: 15, height: 1.4)),
-            ),
-            const SizedBox(height: 2),
-            Text(l.ago(at), style: const TextStyle(fontSize: 11, color: Bua.inkSubtle)),
-          ]),
-        ),
       ),
     );
   }

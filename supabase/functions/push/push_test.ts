@@ -75,6 +75,8 @@ Deno.test("texts follow the reader's language", () => {
     "Asusun taimako ya ragu zuwa ₦4,000, ƙasa da ₦10,000.");
   assertEquals(render("admin_alert", { alert: "waiting", suggestions: 2, accounts: 0 }, "en", "Bua").body,
     "Waiting over 3 days: 2 suggestions, 0 new accounts.");
+  assertEquals(render("direct_message", { name: "Musa Bua", body: "Salam!" }, "en", "Bua").body, "Musa Bua: “Salam!”");
+  assertEquals(render("direct_message", { body: "Salam!" }, "ha", "Bua").body, "Sabon saƙo: “Salam!”");
   assertEquals(render("announcement", { body: "x".repeat(400) }, "en", "Bua").body.length, 298);
   assertEquals(naira(1240000.5), "₦1,240,000.5");
 });

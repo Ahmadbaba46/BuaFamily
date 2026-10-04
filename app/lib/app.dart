@@ -30,6 +30,7 @@ import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
+import 'ui/screens/messages_screen.dart';
 import 'ui/screens/mentorship_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/metrics_screen.dart';
@@ -152,6 +153,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/blood/request', builder: (_, _) => const NewBloodRequestScreen()),
       GoRoute(path: '/mentors', builder: (_, s) => MentorshipScreen(initialTab: s.uri.queryParameters['tab'])),
       GoRoute(path: '/mentors/ask/:id', builder: (_, s) => MentorConversationScreen(askId: s.pathParameters['id']!)),
+      GoRoute(path: '/messages', builder: (_, _) => const MessagesScreen()),
+      GoRoute(path: '/messages/:id', builder: (_, s) => DmScreen(threadId: s.pathParameters['id']!)),
       GoRoute(path: '/polls', builder: (_, _) => const PollsScreen()),
       GoRoute(path: '/polls/new', builder: (_, _) => const NewPollScreen()),
       GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),

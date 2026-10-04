@@ -1473,10 +1473,10 @@ reset role;
 -- ---------------------------------------------------------------------------
 -- 32. Backups include votes, likes, conversations and invites.
 -- ---------------------------------------------------------------------------
-select test.assert((select private.backup_data() ?& array['poll_votes', 'likes', 'mentor_asks', 'mentor_messages', 'invites']),
-  'backups include votes, likes, conversations and invites');
-select test.assert((select jsonb_array_length(private.backup_data() -> 'mentor_messages') =
-  (select count(*) from public.mentor_messages)), 'every message is in the backup');
+select test.assert((select private.backup_data() ?& array['poll_votes', 'likes', 'invites']),
+  'backups include votes, likes and invites');
+select test.assert((select not (private.backup_data() ?| array['mentor_asks', 'mentor_messages'])),
+  'private mentorship conversations are not in backups');
 
 -- ---------------------------------------------------------------------------
 -- 33. Blood family, married in, men and women.
@@ -1629,6 +1629,49 @@ select private.admin_alerts(date_trunc('day', now() at time zone 'Africa/Lagos')
 select test.assert((select (data ->> 'suggestions')::int >= 1 from public.notifications where kind = 'admin_alert'
   and user_id = :admin_id and data ->> 'alert' = 'waiting'), 'admins hear about suggestions waiting three days');
 delete from public.change_requests where payload ->> 'first_name' = 'Waiting';
+
+-- ---------------------------------------------------------------------------
+-- 37. Direct messages: only the two people in a conversation.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.dm_open(%L)$$, :member_id), 'not with yourself');
+select test.expect_error($$select public.dm_open(gen_random_uuid())$$, 'only with a family member');
+insert into test.ids values ('dm', public.dm_open(:member2_id));
+select test.assert((select public.dm_open(:member2_id) = (select id from test.ids where name = 'dm')),
+  'one conversation per pair');
+insert into public.dm_messages (thread_id, body) values ((select id from test.ids where name = 'dm'), 'Salam, how is Kano?');
+select test.expect_error(format($$insert into public.dm_messages (thread_id, author_id, body) values (%L, %L, 'fake')$$,
+  (select id from test.ids where name = 'dm'), :member2_id), 'cannot write as someone else');
+select test.expect_error($$insert into public.dm_threads (user_a, user_b) values (gen_random_uuid(), gen_random_uuid())$$,
+  'conversations only start through dm_open');
+reset role;
+select test.assert((select last_message = 'Salam, how is Kano?' and last_message_by = :member_id
+  from public.dm_threads where id = (select id from test.ids where name = 'dm')), 'the conversation shows the last message');
+select test.assert((select count(*) = 1 from public.notifications where user_id = :member2_id and kind = 'direct_message'
+  and data ->> 'body' = 'Salam, how is Kano?' and link = '/messages/' || (select id from test.ids where name = 'dm')),
+  'the other person is told');
+
+-- The other person reads and replies.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.dm_messages), 'they can read it');
+select public.dm_mark_read((select id from test.ids where name = 'dm'));
+insert into public.dm_messages (thread_id, body) values ((select id from test.ids where name = 'dm'), 'Lafiya lau!');
+select test.expect_error(format($$update public.dm_messages set body = 'edited' where thread_id = %L$$,
+  (select id from test.ids where name = 'dm')), 'messages are not changed afterwards');
+reset role;
+
+-- Nobody else, admins included.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.dm_messages), 'admins cannot read other people''s messages');
+select test.assert((select count(*) = 0 from public.dm_threads), 'or see the conversation');
+select test.expect_error(format($$insert into public.dm_messages (thread_id, body) values (%L, 'hi')$$,
+  (select id from test.ids where name = 'dm')), 'or write into it');
+reset role;
+select test.assert((select not (private.backup_data() ? 'dm_messages')), 'private messages are not in backups');
 
 -- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.

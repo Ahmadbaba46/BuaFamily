@@ -13,6 +13,7 @@ import '../widgets/common.dart';
 import '../widgets/hijri.dart';
 import '../widgets/social.dart';
 import 'get_app_screen.dart';
+import 'messages_screen.dart' show MessagesButton;
 import 'notifications_screen.dart';
 
 /// Family feed: today's birthdays and remembrances, pinned notices, moments.
@@ -76,6 +77,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: const Icon(Icons.search),
                 onPressed: () => context.push('/search'),
               ),
+              const MessagesButton(),
               const NotificationBell(),
             ]),
           ),

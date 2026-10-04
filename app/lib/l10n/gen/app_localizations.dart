@@ -7842,6 +7842,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weekly summary (admins)'**
   String get notifWeeklyForAdmins;
+
+  /// No description provided for @messagesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get messagesTitle;
+
+  /// No description provided for @newMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get newMessage;
+
+  /// No description provided for @noMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet. Start a conversation with someone in the family.'**
+  String get noMessagesYet;
+
+  /// No description provided for @sendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get sendMessage;
+
+  /// No description provided for @dmPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the two of you can see these messages.'**
+  String get dmPrivate;
+
+  /// No description provided for @startConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the conversation.'**
+  String get startConversation;
+
+  /// No description provided for @notifDirectMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: “{body}”'**
+  String notifDirectMessage(String name, String body);
+
+  /// No description provided for @noOtherMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'No other family members have accounts yet.'**
+  String get noOtherMembers;
+
+  /// No description provided for @messageWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Message who?'**
+  String get messageWho;
+
+  /// No description provided for @conversationNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This conversation isn\'t available.'**
+  String get conversationNotFound;
 }
 
 class _AppLocalizationsDelegate

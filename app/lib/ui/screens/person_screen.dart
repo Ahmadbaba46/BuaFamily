@@ -12,6 +12,7 @@ import '../../models/family_graph.dart';
 import '../../models/person.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import 'messages_screen.dart' show openDmWith;
 import '../widgets/claim_card.dart';
 import '../widgets/portrait_viewer.dart';
 import '../widgets/bua.dart';
@@ -61,6 +62,10 @@ class _PersonView extends ConsumerWidget {
     final myId = profile?.personId;
     final kinship = myId != null && !isMe && graph[myId] != null ? kinshipOf(graph, myId, person.id) : null;
     final band = person.isLiving ? Bua.green : Bua.memorial;
+    // Their account, to write to them (not to yourself).
+    final messageTo = isMe || !person.isLiving
+        ? null
+        : ref.watch(membersProvider).value?.values.where((m) => m.personId == person.id).firstOrNull?.userId;
 
     final facts = [
       if (person.nickname?.isNotEmpty ?? false) '“${person.nickname}”',
@@ -244,6 +249,16 @@ class _PersonView extends ConsumerWidget {
                 ],
               ]),
             ),
+            if (messageTo != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(backgroundColor: Bua.surface, side: const BorderSide(color: Bua.line)),
+                  onPressed: () => openDmWith(context, ref, messageTo),
+                  icon: const Icon(Icons.forum_outlined, size: 18),
+                  label: Text(l.sendMessage),
+                ),
+              ),
             if (!person.isLiving)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),

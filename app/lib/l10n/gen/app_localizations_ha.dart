@@ -4744,4 +4744,37 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get notifWeeklyForAdmins => 'Taƙaitaccen mako (shugabanni)';
+
+  @override
+  String get messagesTitle => 'Saƙonni';
+
+  @override
+  String get newMessage => 'Sabon saƙo';
+
+  @override
+  String get noMessagesYet =>
+      'Babu saƙonni tukuna. Fara tattaunawa da wani a cikin iyali.';
+
+  @override
+  String get sendMessage => 'Aika saƙo';
+
+  @override
+  String get dmPrivate => 'Ku biyu ne kawai ke ganin waɗannan saƙonni.';
+
+  @override
+  String get startConversation => 'Fara tattaunawar.';
+
+  @override
+  String notifDirectMessage(String name, String body) {
+    return '$name: “$body”';
+  }
+
+  @override
+  String get noOtherMembers => 'Babu sauran ’yan uwa da ke da asusu tukuna.';
+
+  @override
+  String get messageWho => 'Aika wa wa?';
+
+  @override
+  String get conversationNotFound => 'Babu wannan tattaunawar.';
 }
