@@ -2413,5 +2413,53 @@
   "aboutSettingsHint": "Shown on the About page to everyone in the family.",
   "developerName": "Developer's name",
   "developerCompany": "Company",
-  "developerWebsite": "Website (https://…)"
+  "developerWebsite": "Website (https://…)",
+  "notifMentorRequestFrom": "{name} asked for your guidance: “{body}”",
+  "@notifMentorRequestFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "notifMentorReply": "{name}: “{body}”",
+  "@notifMentorReply": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "yourAsks": "Your asks",
+  "conversationTitle": "Mentorship",
+  "conversationWithMentor": "Your mentor · {areas}",
+  "@conversationWithMentor": {
+    "placeholders": {
+      "areas": {
+        "type": "String"
+      }
+    }
+  },
+  "conversationWithStudent": "Asked you for guidance",
+  "conversationPrivate": "Only the two of you can see this conversation.",
+  "writeMessage": "Write a message…",
+  "replyAction": "Reply",
+  "conversationGone": "This conversation was removed.",
+  "deleteConversation": "Delete conversation",
+  "deleteConversationConfirm": "Delete this conversation for both of you?",
+  "youPrefix": "You: {text}",
+  "@youPrefix": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "newMessages": "New"
 }

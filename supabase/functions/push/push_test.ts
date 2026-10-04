@@ -46,6 +46,10 @@ Deno.test("texts follow the reader's language", () => {
   assertEquals(render("comment", { name: "Aisha", body: "Lovely", also: true }, "en", "Bua").body,
     "Aisha also commented: “Lovely”");
   assertEquals(render("comment", { body: "Lovely" }, "en", "Bua").body, "New comment: “Lovely”");
+  assertEquals(render("mentor_reply", { name: "Ibrahim", body: "Start with statics" }, "en", "Bua").body,
+    "Ibrahim: “Start with statics”");
+  assertEquals(render("mentor_request", { name: "Aisha", body: "Courses?" }, "ha", "Bua").body,
+    "Aisha ya nemi jagorarka: “Courses?”");
   assertEquals(render("change_request", { name: "Aisha", request_kind: "create_person", person: "Fatima" }, "en", "Bua").body,
     "Aisha suggested adding Fatima to the tree");
   assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,

@@ -698,7 +698,7 @@ class FamilyRepository {
     final r = await Future.wait([
       _db.from('mentors').select().order('created_at'),
       _db.from('mentee_requests').select().order('created_at', ascending: false),
-      _db.from('mentor_asks').select().order('created_at', ascending: false).limit(100),
+      _db.from('mentor_asks').select().order('last_message_at', ascending: false, nullsFirst: false).limit(100),
       _db.from('opportunities').select().order('created_at', ascending: false).limit(100),
     ]);
     return Mentorship(
@@ -719,10 +719,30 @@ class FamilyRepository {
 
   Future<void> removeMenteeRequest() => _db.from('mentee_requests').delete().eq('user_id', userId!);
 
-  Future<void> askMentor(String mentorUserId, String message) =>
-      _db.from('mentor_asks').insert({'mentor_user_id': mentorUserId, 'message': message.trim()});
+  /// Returns the new conversation's id.
+  Future<String> askMentor(String mentorUserId, String message) async =>
+      (await _db.from('mentor_asks').insert({'mentor_user_id': mentorUserId, 'message': message.trim()}).select('id').single())['id']
+          as String;
 
   Future<void> deleteAsk(String id) => _db.from('mentor_asks').delete().eq('id', id);
+
+  Future<MentorAsk?> mentorAsk(String id) async {
+    final row = await _db.from('mentor_asks').select().eq('id', id).maybeSingle();
+    return row == null ? null : MentorAsk.fromJson(row);
+  }
+
+  /// A mentorship conversation, kept up to date as messages arrive.
+  Stream<List<MentorMessage>> mentorMessages(String askId) => _db
+      .from('mentor_messages')
+      .stream(primaryKey: ['id'])
+      .eq('ask_id', askId)
+      .order('created_at', ascending: true)
+      .map((rows) => rows.map(MentorMessage.fromJson).toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+
+  Future<void> sendMentorMessage(String askId, String body) =>
+      _db.from('mentor_messages').insert({'ask_id': askId, 'body': body.trim()});
+
+  Future<void> markMentorAskRead(String askId) => _db.rpc('mark_mentor_ask_read', params: {'p_ask': askId});
 
   Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
       _db.from('opportunities').insert({

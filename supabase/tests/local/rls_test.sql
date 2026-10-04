@@ -1111,6 +1111,58 @@ select test.expect_error($$select public.admin_metrics(array['comments'], (now()
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 25. Mentorship conversations.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.mentors (areas) values ('Civil engineering') on conflict (user_id) do nothing;
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.mentor_asks (mentor_user_id, message) values (:member2_id, 'Which courses should I take?');
+reset role;
+select id as convo_ask from public.mentor_asks where message = 'Which courses should I take?' \gset
+select test.assert((select last_message = 'Which courses should I take?' and asker_read_at is not null and mentor_read_at is null
+  from public.mentor_asks where id = :'convo_ask'), 'a new ask starts the conversation');
+select test.assert((select link = '/mentors/ask/' || :'convo_ask' from public.notifications
+  where kind = 'mentor_request' and data ->> 'ask_id' = :'convo_ask'), 'the mentor is linked to the conversation');
+
+-- Ibrahim (the mentor) replies; Aisha is told who wrote.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.mentor_messages (ask_id, body) values (:'convo_ask', 'Start with statics and surveying.');
+select public.mark_mentor_ask_read(:'convo_ask');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications
+  where kind = 'mentor_reply' and user_id = :member_id and (data ->> 'from_mentor')::boolean
+    and link = '/mentors/ask/' || :'convo_ask'), 'the asker is told about the reply');
+select test.assert((select last_message_by = :member2_id and mentor_read_at is not null
+  and asker_read_at < last_message_at from public.mentor_asks where id = :'convo_ask'), 'unread for the asker');
+
+-- Aisha answers and reads it.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.mentor_messages where ask_id = :'convo_ask'), 'the asker reads the reply');
+insert into public.mentor_messages (ask_id, body) values (:'convo_ask', 'Thank you!');
+select test.expect_error(format($$insert into public.mentor_messages (ask_id, body, author_id) values (%L, 'x', %L)$$,
+  :'convo_ask', :member2_id), 'cannot write as someone else');
+select test.expect_error(format($$insert into public.mentor_messages (ask_id, body) values (%L, '   ')$$, :'convo_ask'),
+  'no empty messages');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications
+  where kind = 'mentor_reply' and user_id = :member2_id and not (data ->> 'from_mentor')::boolean), 'the mentor is told');
+
+-- Nobody else can read or write.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.mentor_messages), 'conversations are private, even from admins');
+select test.expect_error(format($$insert into public.mentor_messages (ask_id, body) values (%L, 'Hello')$$, :'convo_ask'),
+  'outsiders cannot write');
+select public.mark_mentor_ask_read(:'convo_ask');
+reset role;
+select test.assert((select count(*) = 2 from public.mentor_messages where ask_id = :'convo_ask'), 'both messages kept');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

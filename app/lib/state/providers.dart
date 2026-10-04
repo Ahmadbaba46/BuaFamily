@@ -266,6 +266,12 @@ void refreshFund(WidgetRef ref) {
 
 final mentorshipProvider = FutureProvider<Mentorship>((ref) => ref.watch(repositoryProvider).mentorship());
 
+final mentorAskProvider =
+    FutureProvider.autoDispose.family<MentorAsk?, String>((ref, id) => ref.watch(repositoryProvider).mentorAsk(id));
+
+final mentorMessagesProvider = StreamProvider.autoDispose
+    .family<List<MentorMessage>, String>((ref, id) => ref.watch(repositoryProvider).mentorMessages(id));
+
 final pollsProvider = FutureProvider<List<Poll>>((ref) => ref.watch(repositoryProvider).polls());
 
 // ---------------------------------------------------------------- stories & backups
