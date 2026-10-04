@@ -375,9 +375,9 @@ class _FamilySection extends ConsumerWidget {
           Sex.unknown => 'other',
         };
 
-    // Admins only for now: approving a member's removal suggestion needs
-    // migration 20261010000002 on the live database.
-    final canChange = ref.watch(isAdminProvider);
+    // Admins remove links directly; members suggest it when suggestions are on.
+    final canChange =
+        ref.watch(isAdminProvider) || (ref.watch(settingsProvider).value?.memberContributionsEnabled ?? false);
 
     Widget tile(Person p, String? relation, {VoidCallback? onRemove}) {
       final base = personSubtitle(context, p);
@@ -411,6 +411,8 @@ class _FamilySection extends ConsumerWidget {
           ref,
           question: l.confirmRemoveParent(parent.displayName, child.displayName),
           remove: (repo) => repo.removeParentChild(parent.id, child.id),
+          kind: RequestKind.removeParentChild,
+          payload: {'parent_id': parent.id, 'child_id': child.id},
         );
 
     String parentLabel(Person parent) {
@@ -450,6 +452,8 @@ class _FamilySection extends ConsumerWidget {
                   ref,
                   question: l.confirmRemoveUnion(person.displayName, s.displayName),
                   remove: (repo) => repo.removeUnion(u.id),
+                  kind: RequestKind.removeUnion,
+                  payload: {'partner1_id': u.partner1Id, 'partner2_id': u.partner2Id},
                 ),
               ),
         ],
@@ -474,19 +478,32 @@ class _FamilySection extends ConsumerWidget {
     );
   }
 
-  /// Admin: removes a relationship, never the people.
+  /// Removes a relationship (never the people): directly for admins, as a
+  /// suggestion for members.
   Future<void> _removeLink(
     BuildContext context,
     WidgetRef ref, {
     required String question,
     required Future<void> Function(FamilyRepository repo) remove,
+    required RequestKind kind,
+    required Map<String, dynamic> payload,
   }) async {
     final l = context.l10n;
     if (!await confirm(context, question) || !context.mounted) return;
-    final ok = await guarded(context, () => remove(ref.read(repositoryProvider)));
+    final repo = ref.read(repositoryProvider);
+    final isAdmin = ref.read(isAdminProvider);
+    final ok = await guarded(
+      context,
+      () => isAdmin ? remove(repo) : repo.submitRequest(kind, payload, targetPersonId: person.id),
+    );
     if (!ok || !context.mounted) return;
-    ref.invalidate(graphProvider);
-    showSnack(context, l.relationshipRemoved);
+    if (isAdmin) {
+      ref.invalidate(graphProvider);
+      showSnack(context, l.relationshipRemoved);
+    } else {
+      ref.invalidate(requestsProvider);
+      showSnack(context, l.sentForApproval);
+    }
   }
 
   static Future<void> addRelative(BuildContext context, WidgetRef ref, FamilyGraph graph, Person person) =>

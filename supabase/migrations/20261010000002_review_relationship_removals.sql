@@ -5,8 +5,8 @@
 -- request kinds (added in 20261010000001_tree_rules.sql). Only the link is
 -- removed; both people stay in the tree.
 --
--- The app offers removal to admins only for now; member suggestions can be
--- switched on in the app once this is applied.
+-- Admins remove links directly; members suggest it (when member suggestions
+-- are switched on) and an admin approves it here.
 -- =============================================================================
 
 create or replace function public.review_change_request(p_request_id uuid, p_approve boolean, p_note text default null)
