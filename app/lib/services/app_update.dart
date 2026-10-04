@@ -37,6 +37,15 @@ final androidReleaseProvider =
 bool get isAndroidApp =>
     !kIsWeb && defaultTargetPlatform == TargetPlatform.android && !Platform.environment.containsKey('FLUTTER_TEST');
 
+/// 'android', 'ios' or 'web', for activity reports.
+String get activityPlatform => kIsWeb
+    ? 'web'
+    : switch (defaultTargetPlatform) {
+        TargetPlatform.android => 'android',
+        TargetPlatform.iOS => 'ios',
+        _ => 'web',
+      };
+
 /// This app's own build number; null outside the Android app.
 final installedBuildProvider = FutureProvider<int?>((ref) async {
   if (!isAndroidApp) return null;

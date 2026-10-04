@@ -1006,6 +1006,28 @@ select test.assert((select count(*) = 0 from public.notifications n where kind =
   'people without the Android app are not told');
 
 -- ---------------------------------------------------------------------------
+-- 22. Activity and the admin's users list.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.touch_activity('android', 250);
+select public.touch_activity('android', 250);
+select test.expect_error($$select public.admin_users()$$, 'members cannot list accounts');
+select test.assert((select count(*) = 0 from public.activity_days), 'members cannot read activity');
+reset role;
+select test.assert((select count(*) = 1 from public.activity_days where user_id = :member_id and platform = 'android'),
+  'one activity row per day and platform');
+select test.assert((select last_platform = 'android' and app_build = 250 and last_seen_at is not null
+  from public.profiles where id = :member_id), 'last seen, platform and app build recorded');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select (u ->> 'active_days_30')::int = 1 and u ->> 'person_name' like 'Aisha%'
+    and (u -> 'devices' ->> 'android')::int >= 1 and (u ->> 'comments')::int >= 1
+  from jsonb_array_elements(public.admin_users()) u where u ->> 'id' = :member_id),
+  'admins see each account with its person, devices and activity');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'l10n/l10n.dart';
+import 'services/app_update.dart';
 import 'services/push.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
@@ -252,6 +253,7 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
       if (away > const Duration(seconds: 10) && ref.read(profileProvider)?.isActive == true) {
         refreshSharedContent(ref, inbox: true);
       }
+      if (away > const Duration(minutes: 30)) _reportActivity();
     }
   }
 
@@ -284,8 +286,12 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
     _signedIn = ref.listenManual(
       profileProvider.select((p) => p?.isActive ?? false ? p!.id : null),
       (_, id) {
-        if (id != null) ref.read(pushControllerProvider.notifier).resume();
+        if (id != null) {
+          ref.read(pushControllerProvider.notifier).resume();
+          _reportActivity();
+        }
       },
+      fireImmediately: true,
     );
   }
 
@@ -298,6 +304,15 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
     _signedIn?.close();
     _platform?.close();
     super.dispose();
+  }
+
+  /// Tells the server the member is here (last seen, active days, app version).
+  Future<void> _reportActivity() async {
+    if (ref.read(profileProvider) == null) return;
+    try {
+      final build = await ref.read(installedBuildProvider.future);
+      await ref.read(repositoryProvider).touchActivity(activityPlatform, build: build);
+    } catch (_) {}
   }
 
   /// The phone leaves notifications to the app while it is open: show them

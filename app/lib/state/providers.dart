@@ -108,6 +108,8 @@ final requestsProvider = FutureProvider.family<List<ChangeRequest>, RequestStatu
   (ref, status) => ref.watch(repositoryProvider).requests(status: status),
 );
 
+final adminUsersProvider = FutureProvider<List<UserRow>>((ref) => ref.watch(repositoryProvider).adminUsers());
+
 final profilesProvider = FutureProvider<List<Profile>>(
   (ref) => ref.watch(repositoryProvider).allProfiles(),
 );

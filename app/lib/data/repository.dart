@@ -44,6 +44,14 @@ class FamilyRepository {
     }).eq('id', userId!);
   }
 
+  /// Admin: every account with its person, devices and activity.
+  Future<List<UserRow>> adminUsers() async =>
+      [for (final r in (await _db.rpc('admin_users')) as List) UserRow.fromJson(Map<String, dynamic>.from(r as Map))];
+
+  /// "I'm here": last seen, and a day of activity for the metrics.
+  Future<void> touchActivity(String platform, {int? build}) =>
+      _db.rpc('touch_activity', params: {'p_platform': platform, 'p_build': ?build});
+
   Future<List<Profile>> allProfiles() async {
     final rows = await _db.from('profiles').select().order('created_at');
     return rows.map(Profile.fromJson).toList();

@@ -2050,5 +2050,82 @@
         "type": "String"
       }
     }
+  },
+  "searchUsers": "Search name, email, phone or person",
+  "filterWaiting": "Waiting",
+  "filterActive": "Active",
+  "filterSuspended": "Suspended",
+  "filterAdmins": "Admins",
+  "filterTreasurers": "Treasurers",
+  "filterNotLinked": "Not in the tree",
+  "filterNoPush": "No notifications",
+  "filterInactive": "Inactive 30 days",
+  "usersCount": "{count, plural, =1{1 account} other{{count} accounts}}",
+  "@usersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "platformFilter": "App used",
+  "platformAny": "Any app",
+  "platformAndroid": "Android app",
+  "platformWeb": "Website",
+  "sortNewest": "Newest",
+  "sortLastActive": "Last active",
+  "sortMostActive": "Most active",
+  "neverSeen": "Not seen yet",
+  "lastSeen": "Active {when}",
+  "@lastSeen": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "activeDays": "{count, plural, =0{No activity in the last 30 days} =1{Active on 1 of the last 30 days} other{Active on {count} of the last 30 days}}",
+  "@activeDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "postsAndComments": "{posts} posts · {comments} comments",
+  "@postsAndComments": {
+    "placeholders": {
+      "posts": {
+        "type": "int"
+      },
+      "comments": {
+        "type": "int"
+      }
+    }
+  },
+  "noPushDevices": "Notifications not turned on",
+  "pushOn": "Notifications on: {devices}",
+  "@pushOn": {
+    "placeholders": {
+      "devices": {
+        "type": "String"
+      }
+    }
+  },
+  "androidVersionOf": "Android app {version}",
+  "@androidVersionOf": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "joinedOn": "Joined {date}",
+  "@joinedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

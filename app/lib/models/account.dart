@@ -21,6 +21,9 @@ class Profile {
     this.smsEvents = true,
     this.mutedNotifications = const [],
     this.isTreasurer = false,
+    this.lastSeenAt,
+    this.lastPlatform,
+    this.appBuild,
   });
 
   final String id;
@@ -46,6 +49,12 @@ class Profile {
   /// Treasurers confirm welfare fund contributions with the admins.
   final bool isTreasurer;
 
+  /// When the member last opened the app, from which platform ('android',
+  /// 'web'), and for the Android app which build.
+  final DateTime? lastSeenAt;
+  final String? lastPlatform;
+  final int? appBuild;
+
   /// Admins and treasurers manage the welfare fund.
   bool get isCommittee => isActive && (isAdmin || isTreasurer);
 
@@ -69,6 +78,44 @@ class Profile {
         smsEvents: j['sms_events'] as bool? ?? true,
         mutedNotifications: [for (final k in (j['muted_notifications'] as List? ?? const [])) k as String],
         isTreasurer: j['is_treasurer'] as bool? ?? false,
+        lastSeenAt: DateTime.tryParse(j['last_seen_at'] as String? ?? '')?.toLocal(),
+        lastPlatform: j['last_platform'] as String?,
+        appBuild: (j['app_build'] as num?)?.toInt(),
+      );
+}
+
+/// An account as the admin's users list shows it.
+class UserRow {
+  const UserRow({
+    required this.profile,
+    this.personName,
+    this.devices = const {},
+    this.activeDays30 = 0,
+    this.posts = 0,
+    this.comments = 0,
+  });
+
+  final Profile profile;
+
+  /// The person in the tree the account is linked to.
+  final String? personName;
+
+  /// Devices with notifications on, by platform ('android', 'web').
+  final Map<String, int> devices;
+  final int activeDays30;
+  final int posts;
+  final int comments;
+
+  String get name => profile.displayName.isNotEmpty ? profile.displayName : (profile.email ?? '?');
+  bool get hasPush => devices.values.any((n) => n > 0);
+
+  factory UserRow.fromJson(Map<String, dynamic> j) => UserRow(
+        profile: Profile.fromJson(j),
+        personName: j['person_name'] as String?,
+        devices: {for (final e in (j['devices'] as Map? ?? const {}).entries) e.key as String: (e.value as num).toInt()},
+        activeDays30: (j['active_days_30'] as num?)?.toInt() ?? 0,
+        posts: (j['posts'] as num?)?.toInt() ?? 0,
+        comments: (j['comments'] as num?)?.toInt() ?? 0,
       );
 }
 

@@ -3034,4 +3034,106 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifAppUpdate(String version) {
     return 'Sabon salo na manhajar ya fito ($version). Taɓa don saukewa.';
   }
+
+  @override
+  String get searchUsers => 'Nemi suna, imel, waya ko mutum';
+
+  @override
+  String get filterWaiting => 'Ana jira';
+
+  @override
+  String get filterActive => 'Masu aiki';
+
+  @override
+  String get filterSuspended => 'An dakatar';
+
+  @override
+  String get filterAdmins => 'Admins';
+
+  @override
+  String get filterTreasurers => 'Ma\'aji';
+
+  @override
+  String get filterNotLinked => 'Ba a bishiya ba';
+
+  @override
+  String get filterNoPush => 'Babu sanarwa';
+
+  @override
+  String get filterInactive => 'Ba su shigo kwana 30 ba';
+
+  @override
+  String usersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Asusu $count',
+      one: 'Asusu 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get platformFilter => 'Manhajar da ake amfani da ita';
+
+  @override
+  String get platformAny => 'Kowace';
+
+  @override
+  String get platformAndroid => 'Manhajar Android';
+
+  @override
+  String get platformWeb => 'Shafin yanar gizo';
+
+  @override
+  String get sortNewest => 'Sababbi';
+
+  @override
+  String get sortLastActive => 'Shigowa ta ƙarshe';
+
+  @override
+  String get sortMostActive => 'Masu yawan shigowa';
+
+  @override
+  String get neverSeen => 'Bai shigo ba tukuna';
+
+  @override
+  String lastSeen(String when) {
+    return 'Ya shigo $when';
+  }
+
+  @override
+  String activeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ya shigo kwanaki $count cikin 30',
+      one: 'Ya shigo rana 1 cikin kwanaki 30',
+      zero: 'Bai shigo ba a kwanaki 30 da suka wuce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String postsAndComments(int posts, int comments) {
+    return 'Rubutu $posts · sharhi $comments';
+  }
+
+  @override
+  String get noPushDevices => 'Ba a kunna sanarwa ba';
+
+  @override
+  String pushOn(String devices) {
+    return 'Sanarwa a: $devices';
+  }
+
+  @override
+  String androidVersionOf(String version) {
+    return 'Manhajar Android $version';
+  }
+
+  @override
+  String joinedOn(String date) {
+    return 'Ya shiga $date';
+  }
 }
