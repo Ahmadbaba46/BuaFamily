@@ -287,6 +287,9 @@ class FamilyRepository {
   Future<String> photoUrl(String path) =>
       _db.storage.from(photosBucket).createSignedUrl(path, 60 * 60);
 
+  /// A photo's bytes (for the family book).
+  Future<Uint8List> photoBytes(String path) => _db.storage.from(photosBucket).download(path);
+
   /// Many photo links in a few requests (for the tree, where everyone shows).
   Future<Map<String, String>> photoUrls(List<String> paths) async {
     final result = <String, String>{};

@@ -4870,4 +4870,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get conversationNotFound => 'This conversation isn\'t available.';
+
+  @override
+  String get familyBookSubtitle => 'Family book';
+
+  @override
+  String familyBookCover(String founder, int people, int generations) {
+    return 'From $founder · $people people · $generations generations';
+  }
+
+  @override
+  String generationHeading(int n) {
+    return 'Generation $n';
+  }
+
+  @override
+  String bookMarriedTo(String names) {
+    return 'Married to $names';
+  }
+
+  @override
+  String bookChildren(String names) {
+    return 'Children: $names';
+  }
+
+  @override
+  String bookBornIn(String place) {
+    return 'Born in $place';
+  }
+
+  @override
+  String bookBuriedIn(String place) {
+    return 'Buried in $place';
+  }
+
+  @override
+  String get bookAlsoInTree => 'Also in the family tree';
+
+  @override
+  String get bookIndex => 'Index of names';
+
+  @override
+  String bookMadeOn(String date) {
+    return 'Made with the Bua Family app on $date';
+  }
+
+  @override
+  String bookHowToRead(String founder) {
+    return 'Everyone in the line of $founder, generation by generation. Each person has a number: their children add a number to it (1.2 is the second child of 1, 1.2.3 the third child of 1.2).';
+  }
+
+  @override
+  String get familyBookAction => 'Family book (PDF)';
+
+  @override
+  String get familyBookHint =>
+      'Everyone from the forefather down, generation by generation, with photos and life stories. Contact and health details are left out.';
+
+  @override
+  String get includePhotos => 'Include photos';
+
+  @override
+  String get includePhotosHint => 'Slower, and a bigger file.';
+
+  @override
+  String get makeBook => 'Make the book';
+
+  @override
+  String get makingBook => 'Making the family book…';
 }

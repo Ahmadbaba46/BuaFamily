@@ -4777,4 +4777,73 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get conversationNotFound => 'Babu wannan tattaunawar.';
+
+  @override
+  String get familyBookSubtitle => 'Littafin iyali';
+
+  @override
+  String familyBookCover(String founder, int people, int generations) {
+    return 'Daga $founder · mutum $people · tsararraki $generations';
+  }
+
+  @override
+  String generationHeading(int n) {
+    return 'Tsara ta $n';
+  }
+
+  @override
+  String bookMarriedTo(String names) {
+    return 'Aure: $names';
+  }
+
+  @override
+  String bookChildren(String names) {
+    return '’Ya’ya: $names';
+  }
+
+  @override
+  String bookBornIn(String place) {
+    return 'Wurin haihuwa: $place';
+  }
+
+  @override
+  String bookBuriedIn(String place) {
+    return 'Wurin binnewa: $place';
+  }
+
+  @override
+  String get bookAlsoInTree => 'Sauran mutane a bishiyar iyali';
+
+  @override
+  String get bookIndex => 'Jerin sunaye';
+
+  @override
+  String bookMadeOn(String date) {
+    return 'An yi shi da manhajar Bua Family ranar $date';
+  }
+
+  @override
+  String bookHowToRead(String founder) {
+    return 'Kowa a zuriyar $founder, tsara bayan tsara. Kowane mutum na da lamba: ’ya’yansa suna ƙara lamba a kanta (1.2 shi ne ɗa na biyu na 1, 1.2.3 ɗa na uku na 1.2).';
+  }
+
+  @override
+  String get familyBookAction => 'Littafin iyali (PDF)';
+
+  @override
+  String get familyBookHint =>
+      'Kowa tun daga kakan farko, tsara bayan tsara, tare da hotuna da tarihin rayuwa. Ba a saka lambobin waya ko bayanan lafiya ba.';
+
+  @override
+  String get includePhotos => 'Haɗa da hotuna';
+
+  @override
+  String get includePhotosHint =>
+      'Zai ɗauki lokaci, kuma fayil ɗin zai yi girma.';
+
+  @override
+  String get makeBook => 'Shirya littafin';
+
+  @override
+  String get makingBook => 'Ana shirya littafin iyali…';
 }

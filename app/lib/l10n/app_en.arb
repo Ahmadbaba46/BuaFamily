@@ -3174,5 +3174,84 @@
   },
   "noOtherMembers": "No other family members have accounts yet.",
   "messageWho": "Message who?",
-  "conversationNotFound": "This conversation isn't available."
+  "conversationNotFound": "This conversation isn't available.",
+  "familyBookSubtitle": "Family book",
+  "familyBookCover": "From {founder} · {people} people · {generations} generations",
+  "@familyBookCover": {
+    "placeholders": {
+      "founder": {
+        "type": "String"
+      },
+      "people": {
+        "type": "int"
+      },
+      "generations": {
+        "type": "int"
+      }
+    }
+  },
+  "generationHeading": "Generation {n}",
+  "@generationHeading": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "bookMarriedTo": "Married to {names}",
+  "@bookMarriedTo": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "bookChildren": "Children: {names}",
+  "@bookChildren": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "bookBornIn": "Born in {place}",
+  "@bookBornIn": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "bookBuriedIn": "Buried in {place}",
+  "@bookBuriedIn": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "bookAlsoInTree": "Also in the family tree",
+  "bookIndex": "Index of names",
+  "bookMadeOn": "Made with the Bua Family app on {date}",
+  "@bookMadeOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "bookHowToRead": "Everyone in the line of {founder}, generation by generation. Each person has a number: their children add a number to it (1.2 is the second child of 1, 1.2.3 the third child of 1.2).",
+  "@bookHowToRead": {
+    "placeholders": {
+      "founder": {
+        "type": "String"
+      }
+    }
+  },
+  "familyBookAction": "Family book (PDF)",
+  "familyBookHint": "Everyone from the forefather down, generation by generation, with photos and life stories. Contact and health details are left out.",
+  "includePhotos": "Include photos",
+  "includePhotosHint": "Slower, and a bigger file.",
+  "makeBook": "Make the book",
+  "makingBook": "Making the family book…"
 }

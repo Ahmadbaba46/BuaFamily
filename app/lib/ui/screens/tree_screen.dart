@@ -14,6 +14,7 @@ import '../theme.dart';
 import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/family_book_dialog.dart';
 import 'family_line_view.dart';
 
 const _metrics = TreeMetrics(nodeWidth: 136, nodeHeight: 58, siblingGap: 16, spouseGap: 14, levelGap: 64);
@@ -226,6 +227,12 @@ class _TreeScreenState extends ConsumerState<TreeScreen> {
                     final p = await pickPerson(context, graph);
                     if (p != null) _focusOn(p.id);
                   },
+                ),
+              if (graph != null && graph.persons.isNotEmpty)
+                IconButton(
+                  tooltip: l.familyBookAction,
+                  icon: const Icon(Icons.menu_book_outlined),
+                  onPressed: () => makeFamilyBook(context, ref),
                 ),
               if (familyLine && graph != null && graph.persons.isNotEmpty)
                 IconButton(
