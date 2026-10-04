@@ -4133,7 +4133,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportCsv.
   ///
   /// In en, this message translates to:
-  /// **'Spreadsheet (CSV)'**
+  /// **'Export CSV'**
   String get exportCsv;
 
   /// No description provided for @exportCsvSub.
@@ -5287,6 +5287,486 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'re offline. Showing what was saved on this phone.'**
   String get offlineSaved;
+
+  /// No description provided for @metricsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family metrics'**
+  String get metricsTitle;
+
+  /// No description provided for @metricsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'How the family is using the app'**
+  String get metricsSub;
+
+  /// No description provided for @period7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get period7;
+
+  /// No description provided for @period30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get period30;
+
+  /// No description provided for @period90.
+  ///
+  /// In en, this message translates to:
+  /// **'90 days'**
+  String get period90;
+
+  /// No description provided for @period365.
+  ///
+  /// In en, this message translates to:
+  /// **'12 months'**
+  String get period365;
+
+  /// No description provided for @periodCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom…'**
+  String get periodCustom;
+
+  /// No description provided for @byDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get byDay;
+
+  /// No description provided for @byWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get byWeek;
+
+  /// No description provided for @byMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get byMonth;
+
+  /// No description provided for @allPlatforms.
+  ///
+  /// In en, this message translates to:
+  /// **'All apps'**
+  String get allPlatforms;
+
+  /// No description provided for @allBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'All branches'**
+  String get allBranches;
+
+  /// No description provided for @comparePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare with the period before'**
+  String get comparePrevious;
+
+  /// No description provided for @previousPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period before'**
+  String get previousPeriod;
+
+  /// No description provided for @vsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'{change} vs period before'**
+  String vsPrevious(String change);
+
+  /// No description provided for @noChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as period before'**
+  String get noChange;
+
+  /// No description provided for @newThisPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'New this period'**
+  String get newThisPeriod;
+
+  /// No description provided for @customiseTiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose metrics'**
+  String get customiseTiles;
+
+  /// No description provided for @customiseTilesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick what shows on your dashboard.'**
+  String get customiseTilesHint;
+
+  /// No description provided for @showTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Table'**
+  String get showTable;
+
+  /// No description provided for @showChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart'**
+  String get showChart;
+
+  /// No description provided for @breakdownBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Split by'**
+  String get breakdownBy;
+
+  /// No description provided for @byBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get byBranch;
+
+  /// No description provided for @byPlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'App'**
+  String get byPlatform;
+
+  /// No description provided for @byMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get byMember;
+
+  /// No description provided for @noBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'No branch'**
+  String get noBranch;
+
+  /// No description provided for @unknownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownLabel;
+
+  /// No description provided for @snapshotTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Right now'**
+  String get snapshotTitle;
+
+  /// No description provided for @funnelAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get funnelAccounts;
+
+  /// No description provided for @funnelApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get funnelApproved;
+
+  /// No description provided for @funnelLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'In the tree'**
+  String get funnelLinked;
+
+  /// No description provided for @funnelActive30.
+  ///
+  /// In en, this message translates to:
+  /// **'Active in 30 days'**
+  String get funnelActive30;
+
+  /// No description provided for @funnelPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications on'**
+  String get funnelPush;
+
+  /// No description provided for @funnelAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Android app'**
+  String get funnelAndroid;
+
+  /// No description provided for @treeQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'The tree'**
+  String get treeQuality;
+
+  /// No description provided for @treePeople.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} people · {living} living'**
+  String treePeople(int count, int living);
+
+  /// No description provided for @withPhotoPct.
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% have a photo'**
+  String withPhotoPct(int pct);
+
+  /// No description provided for @withBirthPct.
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% have a date of birth'**
+  String withBirthPct(int pct);
+
+  /// No description provided for @withAccountPct.
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% have an account'**
+  String withAccountPct(int pct);
+
+  /// No description provided for @fundBalanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Welfare fund balance'**
+  String get fundBalanceLabel;
+
+  /// No description provided for @openBloodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open blood requests'**
+  String get openBloodLabel;
+
+  /// No description provided for @pendingSuggestionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions waiting'**
+  String get pendingSuggestionsLabel;
+
+  /// No description provided for @noDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in this period yet.'**
+  String get noDataYet;
+
+  /// No description provided for @mgPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get mgPeople;
+
+  /// No description provided for @mgTree.
+  ///
+  /// In en, this message translates to:
+  /// **'The tree'**
+  String get mgTree;
+
+  /// No description provided for @mgSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing'**
+  String get mgSharing;
+
+  /// No description provided for @mgEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events & polls'**
+  String get mgEvents;
+
+  /// No description provided for @mgHelping.
+  ///
+  /// In en, this message translates to:
+  /// **'Helping each other'**
+  String get mgHelping;
+
+  /// No description provided for @mgReach.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaching people'**
+  String get mgReach;
+
+  /// No description provided for @m_signups.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-ups'**
+  String get m_signups;
+
+  /// No description provided for @m_active_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Active members'**
+  String get m_active_members;
+
+  /// No description provided for @m_active_android.
+  ///
+  /// In en, this message translates to:
+  /// **'Active on Android'**
+  String get m_active_android;
+
+  /// No description provided for @m_active_web.
+  ///
+  /// In en, this message translates to:
+  /// **'Active on the website'**
+  String get m_active_web;
+
+  /// No description provided for @m_people_added.
+  ///
+  /// In en, this message translates to:
+  /// **'People added'**
+  String get m_people_added;
+
+  /// No description provided for @m_relationships_added.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationships added'**
+  String get m_relationships_added;
+
+  /// No description provided for @m_suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions sent'**
+  String get m_suggestions;
+
+  /// No description provided for @m_suggestions_reviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions reviewed'**
+  String get m_suggestions_reviewed;
+
+  /// No description provided for @m_moments.
+  ///
+  /// In en, this message translates to:
+  /// **'Moments posted'**
+  String get m_moments;
+
+  /// No description provided for @m_announcements.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get m_announcements;
+
+  /// No description provided for @m_posting_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Members who posted'**
+  String get m_posting_members;
+
+  /// No description provided for @m_photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get m_photos;
+
+  /// No description provided for @m_comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get m_comments;
+
+  /// No description provided for @m_likes.
+  ///
+  /// In en, this message translates to:
+  /// **'Ma sha Allah'**
+  String get m_likes;
+
+  /// No description provided for @m_stories.
+  ///
+  /// In en, this message translates to:
+  /// **'Stories recorded'**
+  String get m_stories;
+
+  /// No description provided for @m_memories.
+  ///
+  /// In en, this message translates to:
+  /// **'Memories written'**
+  String get m_memories;
+
+  /// No description provided for @m_events.
+  ///
+  /// In en, this message translates to:
+  /// **'Events created'**
+  String get m_events;
+
+  /// No description provided for @m_rsvps.
+  ///
+  /// In en, this message translates to:
+  /// **'RSVPs'**
+  String get m_rsvps;
+
+  /// No description provided for @m_polls.
+  ///
+  /// In en, this message translates to:
+  /// **'Polls'**
+  String get m_polls;
+
+  /// No description provided for @m_votes.
+  ///
+  /// In en, this message translates to:
+  /// **'Votes'**
+  String get m_votes;
+
+  /// No description provided for @m_blood_requests.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood requests'**
+  String get m_blood_requests;
+
+  /// No description provided for @m_blood_offers.
+  ///
+  /// In en, this message translates to:
+  /// **'Offers to donate'**
+  String get m_blood_offers;
+
+  /// No description provided for @m_contributions.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions recorded'**
+  String get m_contributions;
+
+  /// No description provided for @m_money_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Money confirmed in'**
+  String get m_money_in;
+
+  /// No description provided for @m_money_out.
+  ///
+  /// In en, this message translates to:
+  /// **'Money paid out'**
+  String get m_money_out;
+
+  /// No description provided for @m_causes.
+  ///
+  /// In en, this message translates to:
+  /// **'Causes opened'**
+  String get m_causes;
+
+  /// No description provided for @m_mentor_asks.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentor requests'**
+  String get m_mentor_asks;
+
+  /// No description provided for @m_opportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunities shared'**
+  String get m_opportunities;
+
+  /// No description provided for @m_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications sent'**
+  String get m_notifications;
+
+  /// No description provided for @m_notifications_received.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications received'**
+  String get m_notifications_received;
+
+  /// No description provided for @m_sms_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Text messages sent'**
+  String get m_sms_sent;
 }
 
 class _AppLocalizationsDelegate

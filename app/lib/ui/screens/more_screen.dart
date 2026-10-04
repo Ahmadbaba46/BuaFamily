@@ -130,6 +130,12 @@ class MoreScreen extends ConsumerWidget {
               decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
               child: Column(children: [
                 NavRow(
+                  icon: Icons.insights_outlined,
+                  title: l.metricsTitle,
+                  onTap: () => context.push('/admin/metrics'),
+                ),
+                const InsetDivider(),
+                NavRow(
                   icon: Icons.import_export,
                   title: l.dataTitle,
                   onTap: () => context.push('/admin/data'),
