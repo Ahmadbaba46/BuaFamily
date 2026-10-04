@@ -4882,4 +4882,34 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get shareHint =>
       'Mahaɗin zai nuna kati a WhatsApp; ’yan uwa ne kawai ke iya buɗe abin da ke ciki.';
+
+  @override
+  String get appearanceTitle => 'Kamanni';
+
+  @override
+  String get themeLabel => 'Launuka';
+
+  @override
+  String get themeSystem => 'Atomatik';
+
+  @override
+  String get themeLight => 'Haske';
+
+  @override
+  String get themeDark => 'Duhu';
+
+  @override
+  String get textSizeLabel => 'Girman rubutu';
+
+  @override
+  String get textNormal => 'Daidai';
+
+  @override
+  String get textLarge => 'Babba';
+
+  @override
+  String get textLarger => 'Babba sosai';
+
+  @override
+  String get textSizeSample => 'Haka rubutu zai kasance.';
 }

@@ -145,7 +145,7 @@ class RequestCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    SizedBox(width: 110, child: Text(k, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))),
+                    SizedBox(width: 110, child: Text(k, style: TextStyle(fontSize: 13, color: Bua.inkSubtle))),
                     Expanded(child: Text(v, style: const TextStyle(fontSize: 13))),
                   ]),
                 ),
@@ -155,7 +155,7 @@ class RequestCard extends StatelessWidget {
         if ((request.payload['person'] as Map<String, dynamic>?)?['photo_path'] case final String path) ...[
           const SizedBox(height: 10),
           Row(children: [
-            SizedBox(width: 110, child: Text(l.photoLabel, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))),
+            SizedBox(width: 110, child: Text(l.photoLabel, style: TextStyle(fontSize: 13, color: Bua.inkSubtle))),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(width: 72, height: 72, child: StoragePhoto(path)),
@@ -168,7 +168,7 @@ class RequestCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(12)),
             child: Text('“${request.reviewNote}”',
-                style: const TextStyle(fontSize: 13, fontStyle: FontStyle.italic, color: Bua.inkBody)),
+                style: TextStyle(fontSize: 13, fontStyle: FontStyle.italic, color: Bua.inkBody)),
           ),
         ],
         if (actions.isNotEmpty) ...[
@@ -181,7 +181,7 @@ class RequestCard extends StatelessWidget {
     );
   }
 
-  static const _meta = TextStyle(fontSize: 13, color: Bua.inkSubtle);
+  static TextStyle get _meta => TextStyle(fontSize: 13, color: Bua.inkSubtle);
 
   Widget _statusPill(AppLocalizations l) => switch (request.status) {
         RequestStatus.pending => Pill(l.statusPending.toUpperCase(), background: Bua.goldTint, color: Bua.goldInk),

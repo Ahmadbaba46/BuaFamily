@@ -121,11 +121,11 @@ class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
               Text(me?.displayName ?? profile?.displayName ?? '',
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
               Row(children: [
-                const Icon(Icons.lock_outline, size: 13, color: Bua.inkSubtle),
+                Icon(Icons.lock_outline, size: 13, color: Bua.inkSubtle),
                 const SizedBox(width: 4),
                 Flexible(
                   child: Text(l.onlyFamilyCanSee(familyName),
-                      style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                      style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                 ),
               ]),
             ]),
@@ -156,7 +156,7 @@ class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
               style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                side: const BorderSide(color: Bua.lineStrong),
+                side: BorderSide(color: Bua.lineStrong),
               ),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Icon(Icons.add_photo_alternate_outlined),
@@ -167,7 +167,7 @@ class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
           ),
         ]),
         const SizedBox(height: 18),
-        Text(l.whosInIt, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+        Text(l.whosInIt, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
         const SizedBox(height: 8),
         Wrap(spacing: 8, runSpacing: 8, children: [
           for (final id in _people)
@@ -191,9 +191,9 @@ class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
         ],
         const SizedBox(height: 18),
         Row(children: [
-          const Icon(Icons.data_saver_on_outlined, size: 16, color: Bua.inkSubtle),
+          Icon(Icons.data_saver_on_outlined, size: 16, color: Bua.inkSubtle),
           const SizedBox(width: 8),
-          Expanded(child: Text(l.dataSaverNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle))),
+          Expanded(child: Text(l.dataSaverNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle))),
         ]),
       ]),
     );

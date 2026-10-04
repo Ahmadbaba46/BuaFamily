@@ -54,7 +54,7 @@ class _StoragePhotoState extends ConsumerState<StoragePhoto> {
           onTap: () => setState(() => _requested = true),
           child: ColoredBox(
             color: widget.placeholder,
-            child: const Center(child: Icon(Icons.download_for_offline_outlined, color: Bua.inkMuted)),
+            child: Center(child: Icon(Icons.download_for_offline_outlined, color: Bua.inkMuted)),
           ),
         ),
       );
@@ -70,7 +70,7 @@ class _StoragePhotoState extends ConsumerState<StoragePhoto> {
               fit: widget.fit,
               width: double.infinity,
               height: double.infinity,
-              errorBuilder: (_, _, _) => const Center(child: Icon(Icons.broken_image_outlined, color: Bua.inkSubtle)),
+              errorBuilder: (_, _, _) => Center(child: Icon(Icons.broken_image_outlined, color: Bua.inkSubtle)),
             ),
     );
   }
@@ -301,7 +301,7 @@ class _CommentThreadState extends ConsumerState<CommentThread> {
       else if (rows.isEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Text(l.noCommentsYet, style: const TextStyle(color: Bua.inkSubtle)),
+          child: Text(l.noCommentsYet, style: TextStyle(color: Bua.inkSubtle)),
         ),
       for (final c in rows) _CommentRow(comment: c, canDelete: c.authorId == me?.id || (me?.isAdmin ?? false)),
     ];
@@ -318,7 +318,7 @@ class _CommentThreadState extends ConsumerState<CommentThread> {
           suffixIcon: IconButton(
             tooltip: l.send,
             onPressed: _sending ? null : _send,
-            icon: const Icon(Icons.send, color: Bua.green),
+            icon: Icon(Icons.send, color: Bua.green),
           ),
         ),
       ),
@@ -354,7 +354,7 @@ class _CommentRow extends ConsumerWidget {
                 Expanded(
                   child: Text(author.name, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                 ),
-                Text(l.ago(comment.createdAt), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                Text(l.ago(comment.createdAt), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
               const SizedBox(height: 2),
               Text(comment.body, style: const TextStyle(fontSize: 14, height: 1.4)),
@@ -365,7 +365,7 @@ class _CommentRow extends ConsumerWidget {
           IconButton(
             tooltip: l.delete,
             visualDensity: VisualDensity.compact,
-            icon: const Icon(Icons.close, size: 18, color: Bua.inkSubtle),
+            icon: Icon(Icons.close, size: 18, color: Bua.inkSubtle),
             onPressed: () async {
               final ok = await guarded(context, () => ref.read(repositoryProvider).deleteComment(comment.id));
               if (ok) {
@@ -405,7 +405,7 @@ class PostCard extends ConsumerWidget {
           child: GestureDetector(
             onTap: () => context.push('/albums/${post.albumId}'),
             child: Text(post.albumTitle ?? '',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
           ),
         ),
         TextSpan(text: ' · ${l.ago(post.createdAt)}'),
@@ -428,12 +428,12 @@ class PostCard extends ConsumerWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(author.name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                Text.rich(TextSpan(children: meta), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                Text.rich(TextSpan(children: meta), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
             ),
             PopupMenuButton<String>(
                 tooltip: l.postOptions,
-                icon: const Icon(Icons.more_horiz, color: Bua.inkMuted),
+                icon: Icon(Icons.more_horiz, color: Bua.inkMuted),
                 onSelected: (v) async {
                   final repo = ref.read(repositoryProvider);
                   if (v == 'share') {
@@ -588,7 +588,7 @@ class PersonChip extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
                 iconSize: 16,
                 onPressed: onRemove,
-                icon: const Icon(Icons.close, color: Bua.inkMuted),
+                icon: Icon(Icons.close, color: Bua.inkMuted),
               ),
           ]),
         ),
@@ -615,7 +615,7 @@ class AddChip extends StatelessWidget {
         minimumSize: const Size(0, 40),
         padding: const EdgeInsets.symmetric(horizontal: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        side: const BorderSide(color: Bua.lineStrong),
+        side: BorderSide(color: Bua.lineStrong),
       ),
     );
   }
@@ -644,7 +644,7 @@ class PinnedCard extends StatelessWidget {
       color: Bua.goldTint,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: Bua.goldLine),
+        side: BorderSide(color: Bua.goldLine),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -657,11 +657,11 @@ class PinnedCard extends StatelessWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(label.toUpperCase(),
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.goldInk)),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.goldInk)),
                 const SizedBox(height: 2),
                 Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, height: 1.35)),
                 const SizedBox(height: 2),
-                Text(meta, style: const TextStyle(fontSize: 12, color: Bua.goldInkDark)),
+                Text(meta, style: TextStyle(fontSize: 12, color: Bua.goldInkDark)),
               ]),
             ),
           ]),

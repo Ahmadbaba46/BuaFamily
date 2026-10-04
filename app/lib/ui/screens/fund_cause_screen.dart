@@ -70,11 +70,11 @@ class FundCauseScreen extends ConsumerWidget {
               TextSpan(children: [
                 TextSpan(
                   text: naira(cause.raised),
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: Bua.ink),
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: Bua.ink),
                 ),
                 if (cause.target != null) TextSpan(text: ' ${l.raisedOf('', naira(cause.target!)).trim()}'),
               ]),
-              style: const TextStyle(fontSize: 15, color: Bua.inkMuted),
+              style: TextStyle(fontSize: 15, color: Bua.inkMuted),
             ),
             if (cause.target != null) ...[
               const SizedBox(height: 10),
@@ -90,7 +90,7 @@ class FundCauseScreen extends ConsumerWidget {
                 if (cause.closesOn != null) l.closesOn(l.formatDate(cause.closesOn!)),
                 if (!open) l.closed,
               ].join(' · '),
-              style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
             ),
             if (cause.description?.isNotEmpty ?? false) ...[
               const SizedBox(height: 10),
@@ -98,7 +98,7 @@ class FundCauseScreen extends ConsumerWidget {
             ],
             if (cause.names.isNotEmpty) ...[
               const SizedBox(height: 10),
-              Text(cause.names.join(', '), style: const TextStyle(fontSize: 13, color: Bua.inkMuted, height: 1.4)),
+              Text(cause.names.join(', '), style: TextStyle(fontSize: 13, color: Bua.inkMuted, height: 1.4)),
             ],
           ]),
           const SizedBox(height: 12),
@@ -125,7 +125,7 @@ class _HowToPay extends StatelessWidget {
     Widget row(String label, String? value) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(children: [
-            SizedBox(width: 90, child: Text(label, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))),
+            SizedBox(width: 90, child: Text(label, style: TextStyle(fontSize: 13, color: Bua.inkSubtle))),
             Expanded(child: Text(value ?? '—', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
           ]),
         );
@@ -133,7 +133,7 @@ class _HowToPay extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
         child: o == null || !o.hasAccount
-            ? Text(l.noAccountYet, style: const TextStyle(fontSize: 13, color: Bua.inkMuted))
+            ? Text(l.noAccountYet, style: TextStyle(fontSize: 13, color: Bua.inkMuted))
             : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 row(l.bank, o.bankName),
                 row(l.accountNumber, o.accountNumber),
@@ -251,7 +251,7 @@ class _RecordFormState extends ConsumerState<_RecordForm> {
                 : Text(l.recordContributionButton),
           ),
           const SizedBox(height: 10),
-          Text(l.contributionNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
+          Text(l.contributionNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
         ]),
       ),
     ]);

@@ -135,7 +135,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
               controller: _search,
               onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, color: Bua.inkMuted),
+                prefixIcon: Icon(Icons.search, color: Bua.inkMuted),
                 hintText: l.searchUsers,
                 suffixIcon: _search.text.isEmpty
                     ? null
@@ -170,7 +170,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
                           color: _filter == f ? Colors.white : Bua.ink,
                           fontWeight: _filter == f ? FontWeight.w600 : FontWeight.w500,
                         ),
-                        side: _filter == f ? BorderSide.none : const BorderSide(color: Bua.lineStrong),
+                        side: _filter == f ? BorderSide.none : BorderSide(color: Bua.lineStrong),
                         onSelected: (_) => setState(() => _filter = f),
                       ),
                     ),
@@ -181,7 +181,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
             padding: const EdgeInsets.fromLTRB(16, 4, 4, 0),
             child: Row(children: [
               Expanded(
-                child: Text(l.usersCount(shown.length), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                child: Text(l.usersCount(shown.length), style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
               ),
               PopupMenuButton<UserPlatform>(
                 tooltip: l.platformFilter,
@@ -232,7 +232,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
                       }),
                     ),
                 ],
-                child: const Padding(padding: EdgeInsets.all(8), child: Icon(Icons.sort, color: Bua.inkMuted)),
+                child: Padding(padding: EdgeInsets.all(8), child: Icon(Icons.sort, color: Bua.inkMuted)),
               ),
             ]),
           ),
@@ -243,7 +243,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
                 if (shown.isEmpty)
                   Padding(
                     padding: const EdgeInsets.all(32),
-                    child: Text(l.noResults, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                    child: Text(l.noResults, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                   ),
                 for (final u in waiting) ...[_PendingCard(user: u), const SizedBox(height: 12)],
                 for (final (u, person) in claims) ...[
@@ -288,7 +288,7 @@ class _UserAvatar extends ConsumerWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: const BoxDecoration(color: Bua.track, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: Bua.track, shape: BoxShape.circle),
       child: Text(initials,
           style: TextStyle(fontSize: size * 0.32, fontWeight: FontWeight.w700, color: Bua.unknownFg)),
     );
@@ -337,7 +337,7 @@ class _UserRowTile extends StatelessWidget {
             const SizedBox(width: 6),
           ],
           if (!user.hasPush && p.isActive) ...[
-            const Icon(Icons.notifications_off_outlined, size: 16, color: Bua.inkSubtle),
+            Icon(Icons.notifications_off_outlined, size: 16, color: Bua.inkSubtle),
             const SizedBox(width: 6),
           ],
           if (p.status == AccountStatus.suspended)
@@ -380,7 +380,7 @@ class _PendingCard extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(user.name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              if (p.email != null) Text(p.email!, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              if (p.email != null) Text(p.email!, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
           Pill(l.filterWaiting, background: Bua.goldTint, color: Bua.goldInk),
@@ -391,13 +391,13 @@ class _PendingCard extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(color: Bua.ground, borderRadius: BorderRadius.circular(12)),
             child: Text('“${p.claimNote}”',
-                style: const TextStyle(fontSize: 14, height: 1.45, fontStyle: FontStyle.italic, color: Bua.inkBody)),
+                style: TextStyle(fontSize: 14, height: 1.45, fontStyle: FontStyle.italic, color: Bua.inkBody)),
           ),
         ],
         if (wants != null || linked != null) ...[
           const SizedBox(height: 10),
           Row(children: [
-            const Icon(Icons.link, size: 18, color: Bua.green),
+            Icon(Icons.link, size: 18, color: Bua.green),
             const SizedBox(width: 8),
             Expanded(
               child: Text(linked != null ? l.linkedTo(linked.displayName) : l.wantsToBe(wants!.displayName),
@@ -520,7 +520,7 @@ class _UserSheet extends ConsumerWidget {
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(user.name, style: Theme.of(context).textTheme.titleMedium),
-                if (p.email != null) SelectableText(p.email!, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                if (p.email != null) SelectableText(p.email!, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
               ]),
             ),
           ]),

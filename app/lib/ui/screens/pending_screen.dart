@@ -80,13 +80,13 @@ class _PendingScreenState extends ConsumerState<PendingScreen> {
                 Text(
                   suspended ? l.suspendedBody : l.pendingGreeting(firstName),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 15, height: 1.5, color: Bua.inkMuted),
+                  style: TextStyle(fontSize: 15, height: 1.5, color: Bua.inkMuted),
                 ),
                 if (!suspended) ...[
                   const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       Text(l.claimNoteLabel, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 12),
@@ -96,7 +96,7 @@ class _PendingScreenState extends ConsumerState<PendingScreen> {
                         decoration: InputDecoration(hintText: l.claimNoteHint),
                       ),
                       const SizedBox(height: 10),
-                      Text(l.claimHelp, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                      Text(l.claimHelp, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                       const SizedBox(height: 12),
                       FilledButton(onPressed: _busy ? null : _save, child: Text(l.save)),
                     ]),
@@ -106,11 +106,11 @@ class _PendingScreenState extends ConsumerState<PendingScreen> {
                     const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.fromLTRB(20, 8, 12, 16),
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                         const PushDeviceToggle(),
                         const SizedBox(height: 4),
-                        Text(l.pendingPushHint, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                        Text(l.pendingPushHint, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                       ]),
                     ),
                   ],
@@ -123,7 +123,7 @@ class _PendingScreenState extends ConsumerState<PendingScreen> {
                 ],
                 const SizedBox(height: 28),
                 OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Bua.green)),
+                  style: OutlinedButton.styleFrom(side: BorderSide(color: Bua.green)),
                   onPressed: auth.refresh,
                   icon: const Icon(Icons.refresh),
                   label: Text(l.checkAgain),
@@ -153,7 +153,7 @@ class _Step extends StatelessWidget {
       _StepState.done => Container(
           width: 28,
           height: 28,
-          decoration: const BoxDecoration(color: Bua.green, shape: BoxShape.circle),
+          decoration: BoxDecoration(color: Bua.green, shape: BoxShape.circle),
           child: const Icon(Icons.check, size: 16, color: Colors.white),
         ),
       _StepState.current => Container(
@@ -162,7 +162,7 @@ class _Step extends StatelessWidget {
           decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Bua.green, width: 2)),
           child: Center(
             child: Container(
-                width: 10, height: 10, decoration: const BoxDecoration(color: Bua.green, shape: BoxShape.circle)),
+                width: 10, height: 10, decoration: BoxDecoration(color: Bua.green, shape: BoxShape.circle)),
           ),
         ),
       _StepState.todo => Container(

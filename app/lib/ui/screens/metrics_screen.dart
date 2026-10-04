@@ -157,7 +157,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                       child: Text(l.metricGroup(g).toUpperCase(),
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
                     ),
                     for (final m in metricCatalog.where((m) => m.group == g))
                       CheckboxListTile(
@@ -206,7 +206,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
         titleSpacing: 0,
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(l.metricsTitle, style: Theme.of(context).textTheme.titleLarge),
-          Text(l.metricsSub, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
+          Text(l.metricsSub, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
         ]),
         actions: [
           IconButton(tooltip: l.customiseTiles, icon: const Icon(Icons.tune), onPressed: _chooseTiles),
@@ -324,7 +324,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
             Icon(icon, size: 16, color: value == null ? Bua.inkMuted : Bua.green),
             const SizedBox(width: 6),
             Text(options[value] ?? '', style: const TextStyle(fontSize: 13)),
-            const Icon(Icons.arrow_drop_down, size: 18, color: Bua.inkMuted),
+            Icon(Icons.arrow_drop_down, size: 18, color: Bua.inkMuted),
           ]),
         ),
       );
@@ -359,7 +359,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
                   padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(l.metric(m),
-                        maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12.5, color: Bua.inkMuted)),
+                        maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12.5, color: Bua.inkMuted)),
                     const SizedBox(height: 2),
                     Text(_format(m, r.totals[m] ?? 0), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                     Row(children: [
@@ -367,7 +367,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
                         Icon(r.change(m)! > 0 ? Icons.arrow_upward : Icons.arrow_downward, size: 12, color: Bua.inkSubtle),
                       Expanded(
                         child: Text(_change(l, r, m),
-                            maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11, color: Bua.inkSubtle)),
+                            maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: Bua.inkSubtle)),
                       ),
                     ]),
                     const SizedBox(height: 6),
@@ -402,7 +402,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(l.metric(m), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               Text('${_format(m, r.totals[m] ?? 0)} · ${_change(l, r, m)}',
-                  style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                  style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
           PillSegmented<bool>(
@@ -421,7 +421,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
         if (values.every((v) => v == 0))
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Text(l.noDataYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+            child: Text(l.noDataYet, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
           )
         else if (_table)
           _table_(l, m, labels, values, prevAligned)
@@ -460,7 +460,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
               : Container(height: 2, color: color),
         ),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkMuted)),
+        Text(label, style: TextStyle(fontSize: 12, color: Bua.inkMuted)),
       ]);
 
   Widget _table_(AppLocalizations l, String m, List<String> labels, List<double> values, List<double>? prev) => Column(
@@ -474,7 +474,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
                   SizedBox(
                     width: 90,
                     child: Text(_format(m, prev[i]),
-                        textAlign: TextAlign.right, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                        textAlign: TextAlign.right, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                   ),
                 SizedBox(
                   width: 90,
@@ -514,7 +514,7 @@ class _MetricsScreenState extends ConsumerState<MetricsScreen> {
           builder: (list) => list.isEmpty
               ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Text(l.noDataYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                  child: Text(l.noDataYet, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                 )
               : BreakdownBars(rows: [for (final r in list) (label(r), r.value)], format: (v) => _format(_selected, v)),
         ),
@@ -555,8 +555,8 @@ class _SnapshotCard extends StatelessWidget {
           rows: [for (final f in funnel) (f.$1, f.$2.toDouble())],
           format: (v) => accounts == 0 ? '${v.round()}' : '${v.round()} · ${pct(v.round(), accounts)}%',
         ),
-        const Divider(height: 24, color: Bua.line),
-        Text(l.treeQuality, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+        Divider(height: 24, color: Bua.line),
+        Text(l.treeQuality, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
         const SizedBox(height: 4),
         Text(l.treePeople(people, n('living')), style: const TextStyle(fontSize: 14)),
         Text(
@@ -565,13 +565,13 @@ class _SnapshotCard extends StatelessWidget {
             l.withBirthPct(pct(n('with_birth_date'), people)),
             l.withAccountPct(pct(n('with_account'), people)),
           ].join(' · '),
-          style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+          style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
         ),
         if (snapshot['composition'] is Map) ...[
-          const Divider(height: 24, color: Bua.line),
+          Divider(height: 24, color: Bua.line),
           FamilyMakeup(composition: (snapshot['composition'] as Map).cast<String, dynamic>()),
         ],
-        const Divider(height: 24, color: Bua.line),
+        Divider(height: 24, color: Bua.line),
         Wrap(spacing: 20, runSpacing: 8, children: [
           _fact(l.fundBalanceLabel, naira((snapshot['fund_balance'] as num?) ?? 0)),
           _fact(l.openBloodLabel, '${n('open_blood_requests')}'),
@@ -583,7 +583,7 @@ class _SnapshotCard extends StatelessWidget {
 
   Widget _fact(String label, String value) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-        Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+        Text(label, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
       ]);
 }
 
@@ -605,7 +605,7 @@ class FamilyMakeup extends StatelessWidget {
       if (n('other', 'male') + n('other', 'female') + n('other', 'unknown') > 0) ('other', l.notConnectedYet),
     ];
     final showUnknown = all('unknown') > 0;
-    const head = TextStyle(fontSize: 12, color: Bua.inkSubtle);
+    final head = TextStyle(fontSize: 12, color: Bua.inkSubtle);
     const cell = TextStyle(fontSize: 14, fontFeatures: [FontFeature.tabularFigures()]);
     const bold = TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFeatures: [FontFeature.tabularFigures()]);
     Widget figure(int v, [TextStyle style = cell]) =>
@@ -614,7 +614,7 @@ class FamilyMakeup extends StatelessWidget {
       final style = total ? bold : cell;
       final sum = count('male') + count('female') + count('unknown');
       return TableRow(
-        decoration: total ? const BoxDecoration(border: Border(top: BorderSide(color: Bua.line))) : null,
+        decoration: total ? BoxDecoration(border: Border(top: BorderSide(color: Bua.line))) : null,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -629,7 +629,7 @@ class FamilyMakeup extends StatelessWidget {
     }
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text(l.familyMakeup, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+      Text(l.familyMakeup, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
       const SizedBox(height: 4),
       Table(
         columnWidths: {
@@ -652,7 +652,7 @@ class FamilyMakeup extends StatelessWidget {
       const SizedBox(height: 6),
       Text(l.livingMenWomen(all('living_male'), all('living_female')), style: const TextStyle(fontSize: 13)),
       const SizedBox(height: 4),
-      Text(l.familyMakeupHelp, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
+      Text(l.familyMakeupHelp, style: TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
     ]);
   }
 }

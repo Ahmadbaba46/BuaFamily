@@ -96,19 +96,19 @@ class WelfareFundScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(color: Bua.green, borderRadius: BorderRadius.circular(22)),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(l.fundBalance, style: const TextStyle(fontSize: 13, color: Bua.greenOnDark)),
+                Text(l.fundBalance, style: TextStyle(fontSize: 13, color: Bua.greenOnDark)),
                 Text(naira(o.balance),
                     style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: Colors.white)),
                 if (o.treasurers.isNotEmpty)
                   Text(
                     l.treasurerLine(o.treasurers.join(', '), o.updatedAt == null ? '—' : l.ago(o.updatedAt!).toLowerCase()),
-                    style: const TextStyle(fontSize: 12, color: Bua.greenOnDark),
+                    style: TextStyle(fontSize: 12, color: Bua.greenOnDark),
                   ),
                 const SizedBox(height: 14),
                 Row(children: [
                   Expanded(
                     child: FilledButton(
-                      style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Bua.greenDark),
+                      style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Bua.onWhite),
                       onPressed: () => context.push('/fund/give'),
                       child: Text(l.contribute),
                     ),
@@ -155,7 +155,7 @@ class WelfareFundScreen extends ConsumerWidget {
             if (open.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Text(l.nothingYet, style: const TextStyle(color: Bua.inkSubtle)),
+                child: Text(l.nothingYet, style: TextStyle(color: Bua.inkSubtle)),
               ),
             if (mine.isNotEmpty) ...[
               const SizedBox(height: 8),
@@ -173,7 +173,7 @@ class WelfareFundScreen extends ConsumerWidget {
                         Text(
                           [causeTitles[c.causeId] ?? duesTitles[c.duesPlanId] ?? l.generalFund, payMethodLabel(l, c.method), l.formatDate(c.createdAt)]
                               .join(' · '),
-                          style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                          style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
                         ),
                         const SizedBox(height: 6),
                         _StatusPill(c.status),
@@ -191,9 +191,9 @@ class WelfareFundScreen extends ConsumerWidget {
             ],
             const SizedBox(height: 8),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Icon(Icons.shield_outlined, size: 16, color: Bua.inkSubtle),
+              Icon(Icons.shield_outlined, size: 16, color: Bua.inkSubtle),
               const SizedBox(width: 8),
-              Expanded(child: Text(l.fundNote, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle))),
+              Expanded(child: Text(l.fundNote, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle))),
             ]),
           ]),
         ),
@@ -342,7 +342,7 @@ class _MyDues extends ConsumerWidget {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(plan.title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                     Text(l.duesEvery(naira(plan.amount), duesPer(l, plan.period)),
-                        style: const TextStyle(fontSize: 12.5, color: Bua.inkSubtle)),
+                        style: TextStyle(fontSize: 12.5, color: Bua.inkSubtle)),
                   ]),
                 ),
               ]),
@@ -350,7 +350,7 @@ class _MyDues extends ConsumerWidget {
               Text(standingText(l, s),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: s.owed > 0 ? Bua.danger : Bua.ink)),
               if (s.pending > 0)
-                Text(l.waitingConfirmation(naira(s.pending)), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                Text(l.waitingConfirmation(naira(s.pending)), style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
               const SizedBox(height: 10),
               Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
                 if (!s.exempt)
@@ -429,11 +429,11 @@ class _CauseCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text.rich(
               TextSpan(children: [
-                TextSpan(text: naira(c.raised), style: const TextStyle(fontWeight: FontWeight.w700, color: Bua.ink)),
+                TextSpan(text: naira(c.raised), style: TextStyle(fontWeight: FontWeight.w700, color: Bua.ink)),
                 if (c.target != null) TextSpan(text: ' ${l.raisedOf('', naira(c.target!)).trim()}'),
                 TextSpan(text: ' · ${l.contributorsCount(c.contributors)}'),
               ]),
-              style: const TextStyle(fontSize: 13, color: Bua.inkMuted),
+              style: TextStyle(fontSize: 13, color: Bua.inkMuted),
             ),
           ]),
         ),
@@ -469,7 +469,7 @@ class _ProposalCard extends ConsumerWidget {
         Text(c.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
         Text(
           [if (c.target != null) naira(c.target!), if (asker != null) asker.name, l.ago(c.createdAt)].join(' · '),
-          style: const TextStyle(fontSize: 12, color: Bua.goldInkDark),
+          style: TextStyle(fontSize: 12, color: Bua.goldInkDark),
         ),
         if (c.description?.isNotEmpty ?? false) ...[
           const SizedBox(height: 6),
@@ -511,7 +511,7 @@ class _ConfirmRow extends ConsumerWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('${who.name} · ${naira(c.amount)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
               Text([causeTitle ?? l.generalFund, payMethodLabel(l, c.method), l.ago(c.createdAt)].join(' · '),
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
           if (c.receiptPath != null)

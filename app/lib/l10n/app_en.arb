@@ -3271,5 +3271,15 @@
   "eventPhotosHint": "Share the photos from this day.",
   "eventPhotosTitle": "Photos from the day",
   "shareLabel": "Share",
-  "shareHint": "The link shows a card on WhatsApp; only family members can open what's inside."
+  "shareHint": "The link shows a card on WhatsApp; only family members can open what's inside.",
+  "appearanceTitle": "Appearance",
+  "themeLabel": "Colours",
+  "themeSystem": "Auto",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "textSizeLabel": "Text size",
+  "textNormal": "Normal",
+  "textLarge": "Large",
+  "textLarger": "Larger",
+  "textSizeSample": "This is how text will look."
 }

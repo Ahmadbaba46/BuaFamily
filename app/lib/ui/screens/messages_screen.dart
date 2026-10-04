@@ -53,9 +53,9 @@ class MessagesScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.forum_outlined, size: 48, color: Bua.inkSubtle),
+                  Icon(Icons.forum_outlined, size: 48, color: Bua.inkSubtle),
                   const SizedBox(height: 12),
-                  Text(l.noMessagesYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkMuted)),
+                  Text(l.noMessagesYet, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
                 ]),
               ),
             );
@@ -109,7 +109,7 @@ class _ThreadRow extends ConsumerWidget {
                       style: TextStyle(fontSize: 15, fontWeight: unread ? FontWeight.w700 : FontWeight.w500)),
                 ),
                 const SizedBox(width: 8),
-                Text(l.ago(thread.activeAt), style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                Text(l.ago(thread.activeAt), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
               const SizedBox(height: 2),
               Row(children: [
@@ -127,7 +127,7 @@ class _ThreadRow extends ConsumerWidget {
                     margin: const EdgeInsets.only(left: 8),
                     width: 10,
                     height: 10,
-                    decoration: const BoxDecoration(color: Bua.green, shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: Bua.green, shape: BoxShape.circle),
                   ),
               ]),
             ]),
@@ -191,7 +191,7 @@ class _MemberPickerState extends ConsumerState<_MemberPicker> {
               if (people.isEmpty) {
                 return Center(
                   child: Text(map.length <= 1 ? l.noOtherMembers : l.searchNothing(_query),
-                      textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkMuted)),
+                      textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
                 );
               }
               return ListView.builder(
@@ -300,14 +300,14 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                         Text(relation,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
                     ]),
                   ),
                 ]),
               ),
       ),
       body: threads.hasValue && thread == null
-          ? Center(child: Text(l.conversationNotFound, style: const TextStyle(color: Bua.inkSubtle)))
+          ? Center(child: Text(l.conversationNotFound, style: TextStyle(color: Bua.inkSubtle)))
           : Column(children: [
               Expanded(
                 child: AsyncBody(
@@ -320,11 +320,11 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          const Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
+                          Icon(Icons.lock_outline, size: 14, color: Bua.inkSubtle),
                           const SizedBox(width: 6),
                           Flexible(
                             child: Text(l.dmPrivate,
-                                textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                                textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                           ),
                         ]),
                       ),
@@ -332,7 +332,7 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 24),
                           child: Text(l.startConversation,
-                              textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkMuted)),
+                              textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
                         ),
                       for (final m in list) ChatBubble(text: m.body, at: m.createdAt, mine: m.authorId == me),
                     ],
@@ -343,7 +343,7 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                 top: false,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-                  decoration: const BoxDecoration(color: Bua.surface, border: Border(top: BorderSide(color: Bua.line))),
+                  decoration: BoxDecoration(color: Bua.surface, border: Border(top: BorderSide(color: Bua.line))),
                   child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                     Expanded(
                       child: TextField(

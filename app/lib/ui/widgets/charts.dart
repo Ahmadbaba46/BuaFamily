@@ -7,10 +7,10 @@ import '../theme.dart';
 /// Colours for charts: one hue for the data, a neutral for comparisons, and
 /// recessive grid and axes (checked with the dataviz palette validator).
 abstract final class ChartColors {
-  static const series = Bua.green;
+  static Color get series => Bua.green;
   static const previous = Color(0xFF9AA59E);
-  static const grid = Bua.line;
-  static const axisText = Bua.inkSubtle;
+  static Color get grid => Bua.line;
+  static Color get axisText => Bua.inkSubtle;
 }
 
 /// A metric over time: bars for counts, a line for "how many members". The
@@ -159,7 +159,7 @@ class _TrendPainter extends CustomPainter {
 
   void _text(Canvas canvas, String s, Offset at, {TextAlign align = TextAlign.left, double maxWidth = 80}) {
     final tp = TextPainter(
-      text: TextSpan(text: s, style: const TextStyle(fontSize: 10.5, color: ChartColors.axisText)),
+      text: TextSpan(text: s, style: TextStyle(fontSize: 10.5, color: ChartColors.axisText)),
       textDirection: TextDirection.ltr,
       textAlign: align,
       maxLines: 1,

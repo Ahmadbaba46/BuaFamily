@@ -201,12 +201,12 @@ class _NewStoryScreenState extends ConsumerState<NewStoryScreen> {
                 )),
             const SizedBox(height: 4),
             if (_recording)
-              Text(l.tapToStop, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle))
+              Text(l.tapToStop, style: TextStyle(fontSize: 13, color: Bua.inkSubtle))
             else if (_audio != null)
               TextButton.icon(onPressed: _start, icon: const Icon(Icons.refresh, size: 18), label: Text(l.recordAgain))
             else
               Text(l.recordHint,
-                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
             const Divider(height: 28),
             TextButton.icon(
               onPressed: _recording || _saving ? null : _chooseFile,

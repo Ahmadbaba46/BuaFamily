@@ -22,7 +22,7 @@ Future<void> showShareSheet(BuildContext context, {required String link, String?
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-          child: Text(l.shareHint, style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
+          child: Text(l.shareHint, style: TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
         ),
         ListTile(
           leading: const Icon(Icons.chat, color: Color(0xFF1FA855)),

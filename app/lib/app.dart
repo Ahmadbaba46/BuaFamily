@@ -10,6 +10,7 @@ import 'services/invites.dart';
 import 'services/offline_cache.dart';
 import 'services/presence.dart';
 import 'services/push.dart';
+import 'state/prefs.dart';
 import 'state/providers.dart';
 import 'ui/screens/about_screen.dart';
 import 'ui/screens/activity_screen.dart';
@@ -222,7 +223,16 @@ class BuaFamilyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final prefs = ref.watch(devicePrefsProvider);
+    final dark = switch (prefs.appearance) {
+      Appearance.dark => true,
+      Appearance.light => false,
+      Appearance.system => MediaQuery.maybePlatformBrightnessOf(context) == Brightness.dark,
+    };
+    // The colours are read everywhere as Bua.*; a new key rebuilds every page in them.
+    Bua.dark = dark;
     return MaterialApp.router(
+      key: ValueKey(dark),
       onGenerateTitle: (c) => c.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
@@ -231,8 +241,14 @@ class BuaFamilyApp extends ConsumerWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
       scaffoldMessengerKey: rootMessengerKey,
-      builder: (context, child) =>
-          _PushBinding(child: _AppFrame(child: _OfflineFrame(child: child ?? const SizedBox.shrink()))),
+      builder: (context, child) {
+        // Larger text, on top of the phone's own setting.
+        final mq = MediaQuery.of(context);
+        return MediaQuery(
+          data: mq.copyWith(textScaler: TextScaler.linear(mq.textScaler.scale(1) * prefs.textScale)),
+          child: _PushBinding(child: _AppFrame(child: _OfflineFrame(child: child ?? const SizedBox.shrink()))),
+        );
+      },
     );
   }
 }
@@ -295,9 +311,9 @@ class _OfflineBarState extends ConsumerState<_OfflineBar> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 8, 4),
           child: Row(children: [
-            const Icon(Icons.cloud_off, size: 18, color: Bua.goldInk),
+            Icon(Icons.cloud_off, size: 18, color: Bua.goldInk),
             const SizedBox(width: 10),
-            Expanded(child: Text(l.offlineSaved, style: const TextStyle(fontSize: 13, color: Bua.goldInk))),
+            Expanded(child: Text(l.offlineSaved, style: TextStyle(fontSize: 13, color: Bua.goldInk))),
             TextButton(onPressed: _reconnect, child: Text(l.retry)),
           ]),
         ),
@@ -319,7 +335,7 @@ class _AppFrame extends ConsumerWidget {
     if (!active || !sidebarAlwaysOpen(context)) return child;
     return Row(children: [
       SizedBox(width: 272, child: AppSidebar(router: ref.watch(routerProvider))),
-      const VerticalDivider(width: 1, thickness: 1, color: Bua.line),
+      VerticalDivider(width: 1, thickness: 1, color: Bua.line),
       Expanded(child: child),
     ]);
   }

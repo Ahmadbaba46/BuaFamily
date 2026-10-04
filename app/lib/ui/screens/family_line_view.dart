@@ -98,7 +98,7 @@ class _Breadcrumb extends StatelessWidget {
       child: Row(children: [
         IconButton(
           tooltip: l.upTo(parent.displayName),
-          icon: const Icon(Icons.arrow_upward, color: Bua.green),
+          icon: Icon(Icons.arrow_upward, color: Bua.green),
           onPressed: () => onTap(line.length - 2),
         ),
         Expanded(
@@ -107,7 +107,7 @@ class _Breadcrumb extends StatelessWidget {
             reverse: true,
             child: Row(children: [
               for (final (i, id) in line.indexed) ...[
-                if (i > 0) const Icon(Icons.chevron_right, size: 18, color: Bua.inkSubtle),
+                if (i > 0) Icon(Icons.chevron_right, size: 18, color: Bua.inkSubtle),
                 if (i == line.length - 1)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -164,7 +164,7 @@ class _Generation extends StatelessWidget {
         viewPhoto: true,
         highlight: c.id == myPersonId ? Bua.green : null,
         subtitle: [if (base.isNotEmpty) base, l.childCountShort(n)].join(' · '),
-        trailing: const Icon(Icons.chevron_right, color: Bua.inkSubtle),
+        trailing: Icon(Icons.chevron_right, color: Bua.inkSubtle),
         onTap: () => onChild(c.id),
       );
     }
@@ -187,7 +187,7 @@ class _Generation extends StatelessWidget {
       if (kids.isEmpty)
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-          child: Text(l.noChildrenYet, style: const TextStyle(color: Bua.inkMuted)),
+          child: Text(l.noChildrenYet, style: TextStyle(color: Bua.inkMuted)),
         )
       else ...[
         for (final MapEntry(key: other, value: people) in groups.entries) ...[
@@ -198,7 +198,7 @@ class _Generation extends StatelessWidget {
                 other == null
                     ? '${l.otherParent}: ${l.otherParentUnknown}'
                     : l.childrenWithParent(g[other]?.displayName ?? ''),
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted),
               ),
             ),
           group(people),
@@ -207,7 +207,7 @@ class _Generation extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(l.familyLineHint,
-              textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
         ),
       ],
     ]);
@@ -236,7 +236,7 @@ class _PersonCard extends StatelessWidget {
     Widget fact(String text) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(color: Bua.greenTint, borderRadius: BorderRadius.circular(10)),
-          child: Text(text, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark)),
+          child: Text(text, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.greenDark)),
         );
 
     return Container(
@@ -259,7 +259,7 @@ class _PersonCard extends StatelessWidget {
               if (sub.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 3),
-                  child: Text(sub, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                  child: Text(sub, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                 ),
             ]),
           ),
@@ -267,11 +267,11 @@ class _PersonCard extends StatelessWidget {
         if (parents.isNotEmpty) ...[
           const SizedBox(height: 12),
           Text(l.parentsNames(parents.map((p) => p.displayName).join(' & ')),
-              style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+              style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
         ],
         if (spouses.isNotEmpty) ...[
           const SizedBox(height: 10),
-          Text(l.spouses, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+          Text(l.spouses, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
           const SizedBox(height: 6),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final s in spouses)

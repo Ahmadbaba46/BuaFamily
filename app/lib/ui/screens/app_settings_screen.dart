@@ -72,6 +72,42 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           ),
         ]),
         const SizedBox(height: 12),
+        SectionCard(title: l.appearanceTitle, padding: const EdgeInsets.fromLTRB(0, 6, 0, 16), children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          const SizedBox(height: 8),
+          Text(l.themeLabel, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
+          const SizedBox(height: 6),
+          PillSegmented<Appearance>(
+            values: Appearance.values,
+            expand: true,
+            height: 36,
+            labelOf: (a) => switch (a) {
+              Appearance.system => l.themeSystem,
+              Appearance.light => l.themeLight,
+              Appearance.dark => l.themeDark,
+            },
+            selected: prefs.appearance,
+            onChanged: (a) => ref.read(devicePrefsProvider.notifier).set(appearance: a),
+          ),
+          const SizedBox(height: 14),
+          Text(l.textSizeLabel, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Bua.inkMuted)),
+          const SizedBox(height: 6),
+          PillSegmented<double>(
+            values: textScales,
+            expand: true,
+            height: 36,
+            labelOf: (v) => v == textScales[0] ? l.textNormal : (v == textScales[1] ? l.textLarge : l.textLarger),
+            selected: prefs.textScale,
+            onChanged: (v) => ref.read(devicePrefsProvider.notifier).set(textScale: v),
+          ),
+          const SizedBox(height: 10),
+          Text(l.textSizeSample, style: const TextStyle(fontSize: 15)),
+        ]),
+        ),
+      ]),
+        const SizedBox(height: 12),
         SectionCard(title: l.dataSaver, padding: const EdgeInsets.fromLTRB(0, 6, 0, 6), children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -43,7 +43,7 @@ class _WhoCanHelpScreenState extends ConsumerState<WhoCanHelpScreen> {
         titleSpacing: 0,
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(l.whoCanHelp, style: Theme.of(context).textTheme.titleLarge),
-          Text(l.whoCanHelpSub, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
+          Text(l.whoCanHelpSub, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
         ]),
       ),
       body: RefreshIndicator(
@@ -92,7 +92,7 @@ class _WhoCanHelpScreenState extends ConsumerState<WhoCanHelpScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
                   child: Text(l.helpEmptyNote,
-                      textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle, height: 1.5)),
+                      textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle, height: 1.5)),
                 )
               else
                 Container(
@@ -111,7 +111,7 @@ class _WhoCanHelpScreenState extends ConsumerState<WhoCanHelpScreen> {
               const SizedBox(height: 14),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(l.contactNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                child: Text(l.contactNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ),
             ]);
           },
@@ -145,9 +145,9 @@ class _HelpRow extends StatelessWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(p.displayName, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
               if (headline.isNotEmpty)
-                Text(headline, style: const TextStyle(fontSize: 13, color: Bua.inkBody)),
+                Text(headline, style: TextStyle(fontSize: 13, color: Bua.inkBody)),
               if (relation != null)
-                Text(relation!, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                Text(relation!, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
           if (profile.phone?.isNotEmpty ?? false)
@@ -161,7 +161,7 @@ class _HelpRow extends StatelessWidget {
               onPressed: () => context.push('/person/${p.id}'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: Bua.ink,
-                side: const BorderSide(color: Bua.lineStrong),
+                side: BorderSide(color: Bua.lineStrong),
                 padding: const EdgeInsets.symmetric(horizontal: 14),
               ),
               child: Text(l.profile),

@@ -135,7 +135,7 @@ class AppSidebar extends ConsumerWidget {
         Widget heading(String text) => Padding(
               padding: const EdgeInsets.fromLTRB(22, 18, 16, 6),
               child: Text(text.toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 11.5, fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Bua.inkSubtle)),
             );
 
@@ -153,7 +153,7 @@ class AppSidebar extends ConsumerWidget {
                     if (me != null)
                       PersonAvatar(person: me, radius: 22)
                     else
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 22,
                         backgroundColor: Bua.track,
                         child: Icon(Icons.person_search, color: Bua.unknownFg),
@@ -166,13 +166,13 @@ class AppSidebar extends ConsumerWidget {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700)),
                         Text(me == null ? l.findMeInTree : l.viewMyProfile,
-                            style: const TextStyle(fontSize: 12.5, color: Bua.green, fontWeight: FontWeight.w600)),
+                            style: TextStyle(fontSize: 12.5, color: Bua.green, fontWeight: FontWeight.w600)),
                       ]),
                     ),
                   ]),
                 ),
               ),
-              const Divider(height: 1, color: Bua.line),
+              Divider(height: 1, color: Bua.line),
               heading(l.family),
               item(Icons.home_outlined, l.navHome, '/home'),
               item(Icons.search, l.searchTitle, '/search'),

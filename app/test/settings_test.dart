@@ -115,6 +115,26 @@ void main() {
     expect(container.read(devicePrefsProvider).tapToLoadPhotos, isTrue);
   });
 
+  testWidgets('dark colours and larger text are chosen on this phone', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    tester.view.physicalSize = const Size(390, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(app(const AppSettingsScreen()));
+    await tester.pumpAndSettle();
+    final container = ProviderScope.containerOf(tester.element(find.byType(AppSettingsScreen)));
+    expect(container.read(devicePrefsProvider).appearance, Appearance.system);
+
+    await tester.tap(find.text('Dark'));
+    await tester.tap(find.text('Large'));
+    await tester.pumpAndSettle();
+    expect(container.read(devicePrefsProvider).appearance, Appearance.dark);
+    expect(container.read(devicePrefsProvider).textScale, 1.15);
+    final saved = await SharedPreferences.getInstance();
+    expect(saved.getString('appearance'), 'dark');
+    expect(saved.getDouble('text_scale'), 1.15);
+  });
+
   test('notification groups cover every mutable kind', () {
     final all = notificationGroups.values.expand((k) => k).toSet();
     expect(all, containsAll(['event', 'announcement', 'event_reminder', 'birthday', 'remembrance', 'memory', 'tagged', 'comment']));

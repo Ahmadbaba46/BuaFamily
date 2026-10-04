@@ -163,9 +163,9 @@ class NotificationsScreen extends ConsumerWidget {
             return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
               const PushPrompt(),
               const SizedBox(height: 80),
-              const Icon(Icons.notifications_none, size: 48, color: Bua.inkSubtle),
+              Icon(Icons.notifications_none, size: 48, color: Bua.inkSubtle),
               const SizedBox(height: 12),
-              Text(l.noNotifications, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+              Text(l.noNotifications, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
             ]);
           }
           final todays = list.where((n) => isToday(n.createdAt)).toList();
@@ -222,7 +222,7 @@ class _NotificationRow extends ConsumerWidget {
         if (n.link != null) context.push(n.link!);
       },
       child: Container(
-        color: n.isRead ? null : const Color(0xFFF2F8F4),
+        color: n.isRead ? null : (Bua.dark ? Bua.greenTint : const Color(0xFFF2F8F4)),
         padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           if (actor?.person != null &&
@@ -246,7 +246,7 @@ class _NotificationRow extends ConsumerWidget {
                 style: TextStyle(fontSize: 15, height: 1.35, fontWeight: n.isRead ? FontWeight.w400 : FontWeight.w600),
               ),
               const SizedBox(height: 2),
-              Text(meta, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+              Text(meta, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
           if (!n.isRead)
@@ -255,7 +255,7 @@ class _NotificationRow extends ConsumerWidget {
               child: Container(
                 width: 10,
                 height: 10,
-                decoration: const BoxDecoration(color: Bua.green, shape: BoxShape.circle),
+                decoration: BoxDecoration(color: Bua.green, shape: BoxShape.circle),
               ),
             ),
         ]),
@@ -276,7 +276,7 @@ class NotificationBell extends ConsumerWidget {
       button: true,
       child: Material(
         color: Bua.surface,
-        shape: const CircleBorder(side: BorderSide(color: Bua.line)),
+        shape: CircleBorder(side: BorderSide(color: Bua.line)),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: () => context.push('/notifications'),
@@ -284,7 +284,7 @@ class NotificationBell extends ConsumerWidget {
             width: 44,
             height: 44,
             child: Stack(alignment: Alignment.center, children: [
-              const Icon(Icons.notifications_none, size: 22, color: Bua.ink),
+              Icon(Icons.notifications_none, size: 22, color: Bua.ink),
               if (unread > 0)
                 Positioned(
                   top: 8,

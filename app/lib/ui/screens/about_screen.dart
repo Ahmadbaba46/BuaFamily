@@ -83,18 +83,18 @@ class AboutScreen extends ConsumerWidget {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('${settings.familyName} Family', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 2),
-                Text(kIsWeb ? l.aboutOnWeb : l.aboutOnAndroid, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                Text(kIsWeb ? l.aboutOnWeb : l.aboutOnAndroid, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
                 if (info != null)
-                  Text(l.aboutVersion(info.$1, info.$2), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                  Text(l.aboutVersion(info.$1, info.$2), style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
               ]),
             ),
           ]),
           const SizedBox(height: 12),
           Text(l.aboutTagline, style: const TextStyle(fontSize: 14, height: 1.5)),
           if (release != null) ...[
-            const Divider(height: 24, color: Bua.line),
+            Divider(height: 24, color: Bua.line),
             Row(children: [
-              const Icon(Icons.android, size: 20, color: Bua.green),
+              Icon(Icons.android, size: 20, color: Bua.green),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -107,7 +107,7 @@ class AboutScreen extends ConsumerWidget {
             ]),
             if ((release.notes ?? '').trim().isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text(l.whatsNew, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+              Text(l.whatsNew, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
               const SizedBox(height: 2),
               Text(release.notes!.trim(), style: const TextStyle(fontSize: 13, height: 1.5)),
             ],
@@ -125,7 +125,7 @@ class AboutScreen extends ConsumerWidget {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(f.$2, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                  Text(f.$3, style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
+                  Text(f.$3, style: TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
                 ]),
               ),
             ]),
@@ -135,11 +135,11 @@ class AboutScreen extends ConsumerWidget {
         GroupHeading(l.developerTitle),
         const SizedBox(height: 8),
         card([
-          Text(l.developedBy, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+          Text(l.developedBy, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
           const SizedBox(height: 4),
           if (name.isNotEmpty) Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
           if (company.isNotEmpty)
-            Text(company, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Bua.green)),
+            Text(company, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Bua.green)),
           if (phone != null || email.isNotEmpty || website.isNotEmpty) ...[
             const SizedBox(height: 12),
             Wrap(spacing: 8, runSpacing: 8, children: [
@@ -179,7 +179,7 @@ class AboutScreen extends ConsumerWidget {
           Text(
             l.copyrightLine('${DateTime.now().year}', company),
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+            style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
           ),
       ]),
     );

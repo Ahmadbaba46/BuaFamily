@@ -111,14 +111,14 @@ class _PushPromptState extends ConsumerState<PushPrompt> {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Icon(Icons.notifications_active_outlined, color: Bua.green),
+            Icon(Icons.notifications_active_outlined, color: Bua.green),
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(l.pushPromptTitle,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
                 const SizedBox(height: 2),
-                Text(l.pushPromptBody, style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.greenDark)),
+                Text(l.pushPromptBody, style: TextStyle(fontSize: 13, height: 1.4, color: Bua.greenDark)),
               ]),
             ),
           ]),

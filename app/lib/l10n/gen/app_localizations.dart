@@ -8070,6 +8070,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The link shows a card on WhatsApp; only family members can open what\'s inside.'**
   String get shareHint;
+
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// No description provided for @themeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Colours'**
+  String get themeLabel;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @textSizeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get textSizeLabel;
+
+  /// No description provided for @textNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get textNormal;
+
+  /// No description provided for @textLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get textLarge;
+
+  /// No description provided for @textLarger.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger'**
+  String get textLarger;
+
+  /// No description provided for @textSizeSample.
+  ///
+  /// In en, this message translates to:
+  /// **'This is how text will look.'**
+  String get textSizeSample;
 }
 
 class _AppLocalizationsDelegate

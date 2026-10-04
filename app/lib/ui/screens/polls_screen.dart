@@ -48,13 +48,13 @@ class PollsScreen extends ConsumerWidget {
               if (all.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Text(l.noPollsYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                  child: Text(l.noPollsYet, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                 ),
               for (final p in open) ...[_OpenPoll(poll: p, key: ValueKey(p.id)), const SizedBox(height: 12)],
               if (all.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(4, 0, 4, 12),
-                  child: Text(l.secretBallot, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  child: Text(l.secretBallot, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                 ),
               if (decided.isNotEmpty) ...[
                 const SizedBox(height: 4),
@@ -89,7 +89,7 @@ class _PollMenu extends ConsumerWidget {
     final me = ref.watch(profileProvider);
     if (me == null || (poll.createdBy != me.id && !me.isAdmin)) return const SizedBox.shrink();
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_horiz, color: Bua.inkSubtle),
+      icon: Icon(Icons.more_horiz, color: Bua.inkSubtle),
       onSelected: (v) async {
         final repo = ref.read(repositoryProvider);
         final ok = await guarded(context, () => v == 'close' ? repo.closePoll(poll.id) : repo.deletePoll(poll.id));
@@ -173,7 +173,7 @@ class _OpenPollState extends ConsumerState<_OpenPoll> {
                   Row(children: [
                     Expanded(
                       child: Text(l.votedOf(p.total, p.eligible),
-                          style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                          style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                     ),
                     TextButton(onPressed: () => setState(() => _changing = true), child: Text(l.changeVote)),
                   ]),
@@ -234,7 +234,7 @@ class _ResultBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Row(children: [
-              if (mine) ...[const Icon(Icons.check_circle, size: 16, color: Bua.green), const SizedBox(width: 6)],
+              if (mine) ...[Icon(Icons.check_circle, size: 16, color: Bua.green), const SizedBox(width: 6)],
               Expanded(
                 child: Text(option.label,
                     style: TextStyle(fontSize: 15, fontWeight: mine ? FontWeight.w600 : FontWeight.w400)),
@@ -264,8 +264,8 @@ class _DecidedPoll extends StatelessWidget {
         Container(
           width: 36,
           height: 36,
-          decoration: const BoxDecoration(color: Bua.greenTint, shape: BoxShape.circle),
-          child: const Icon(Icons.how_to_vote_outlined, size: 18, color: Bua.green),
+          decoration: BoxDecoration(color: Bua.greenTint, shape: BoxShape.circle),
+          child: Icon(Icons.how_to_vote_outlined, size: 18, color: Bua.green),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -276,7 +276,7 @@ class _DecidedPoll extends StatelessWidget {
               lead == null
                   ? l.votedOf(poll.total, poll.eligible)
                   : l.decidedLine(poll.percent(lead), l.dayMonth(poll.decidedAt(now))),
-              style: const TextStyle(fontSize: 12, color: Bua.inkSubtle),
+              style: TextStyle(fontSize: 12, color: Bua.inkSubtle),
             ),
           ]),
         ),
@@ -363,7 +363,7 @@ class _NewPollScreenState extends ConsumerState<NewPollScreen> {
         ]),
         const SizedBox(height: 16),
         SectionCard(padding: const EdgeInsets.all(16), children: [
-          Text(l.choices, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkBody)),
+          Text(l.choices, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkBody)),
           const SizedBox(height: 8),
           for (final (i, c) in _choices.indexed)
             Padding(
@@ -409,7 +409,7 @@ class _NewPollScreenState extends ConsumerState<NewPollScreen> {
                 if (d != null) setState(() => _closes = d);
               },
               child: InputDecorator(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   suffixIcon: Icon(Icons.calendar_today_outlined, size: 18, color: Bua.inkSubtle),
                 ),
                 child: Text(l.weekdayDate(_closes), style: const TextStyle(fontSize: 15)),
@@ -417,7 +417,7 @@ class _NewPollScreenState extends ConsumerState<NewPollScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(l.secretBallot, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+          Text(l.secretBallot, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
         ]),
         const SizedBox(height: 20),
         FilledButton(onPressed: _saving ? null : _submit, child: Text(l.post)),

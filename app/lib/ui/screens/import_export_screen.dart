@@ -141,7 +141,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-            child: Text(l.backupsKept, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+            child: Text(l.backupsKept, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
           ),
           for (final b in all)
             ListTile(
@@ -179,13 +179,13 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                  Text(subtitle, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                  Text(subtitle, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
                 ]),
               ),
               if (_busy == kind)
                 const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
               else
-                const Icon(Icons.download_outlined, color: Bua.inkSubtle, size: 20),
+                Icon(Icons.download_outlined, color: Bua.inkSubtle, size: 20),
             ]),
           ),
         );
@@ -193,7 +193,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
     Widget heading(String text) => Padding(
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
           child: Text(text.toUpperCase(),
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: Bua.green)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: Bua.green)),
         );
 
     return Scaffold(
@@ -203,7 +203,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
         toolbarHeight: 68,
         title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(l.dataTitle, style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis),
-          Text(l.dataSubtitle, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle), overflow: TextOverflow.ellipsis),
+          Text(l.dataSubtitle, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle), overflow: TextOverflow.ellipsis),
         ]),
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
@@ -217,15 +217,15 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(children: [
-                const IconTile(Icons.menu_book_outlined, background: Bua.greenTint),
+                IconTile(Icons.menu_book_outlined, background: Bua.greenTint),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(l.familyBookAction, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                    Text(l.familyBookHint, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                    Text(l.familyBookHint, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
                   ]),
                 ),
-                const Icon(Icons.download_outlined, color: Bua.inkSubtle, size: 20),
+                Icon(Icons.download_outlined, color: Bua.inkSubtle, size: 20),
               ]),
             ),
           ),
@@ -249,13 +249,13 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
                   if (_reading)
                     const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
                   else
-                    const Icon(Icons.upload_outlined, color: Bua.green, size: 26),
+                    Icon(Icons.upload_outlined, color: Bua.green, size: 26),
                   const SizedBox(height: 8),
                   Text(l.chooseImportFile,
                       textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 4),
                   Text(l.importReviewNote,
-                      textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                      textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                 ]),
               ),
             ),
@@ -283,7 +283,7 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
                 Text(weekly ? l.weeklyBackupOn : l.weeklyBackupOff,
                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 Text(latest == null ? l.noBackupYet : l.lastBackup(l.weekdayDate(latest.takenAt)),
-                    style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                    style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
               ]),
             ),
             if (latest != null) OutlinedButton(onPressed: () => _downloadBackup(latest), child: Text(l.download)),
@@ -374,7 +374,7 @@ class _ImportReviewScreenState extends ConsumerState<ImportReviewScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
           child: Text(l.importSummary(plan.newCount, plan.matchCount, plan.linkCount),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Bua.inkBody)),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Bua.inkBody)),
         ),
         Expanded(
           child: ListView.separated(
@@ -402,10 +402,10 @@ class _ImportReviewScreenState extends ConsumerState<ImportReviewScreen> {
                             )),
                         if (r.isNew)
                           Text(l.importNew,
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.goldInk))
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.goldInk))
                         else
                           Text(l.sameAs(r.match!.displayName),
-                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Bua.green)),
                       ]),
                     ),
                     if (r.isNew)

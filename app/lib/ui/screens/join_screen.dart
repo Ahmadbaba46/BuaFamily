@@ -84,13 +84,13 @@ class _JoinScreenState extends ConsumerState<JoinScreen> {
                     Text(
                       inviter == null ? l.inviteBodyGeneric(family) : l.inviteBody(inviter, family),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16, height: 1.45, color: Bua.inkMuted),
+                      style: TextStyle(fontSize: 16, height: 1.45, color: Bua.inkMuted),
                     ),
                     if (person != null) ...[
                       const SizedBox(height: 6),
                       Text(l.inviteFor(person),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
                     ],
                     const SizedBox(height: 24),
                     FilledButton(
@@ -170,7 +170,7 @@ class _InviteSheetState extends ConsumerState<_InviteSheet> {
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Text(l.inviteSomeone, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 4),
-          Text(l.inviteSomeoneHint, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+          Text(l.inviteSomeoneHint, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
           const SizedBox(height: 16),
           if (_link == null) ...[
             Material(
@@ -178,7 +178,7 @@ class _InviteSheetState extends ConsumerState<_InviteSheet> {
               borderRadius: BorderRadius.circular(14),
               child: ListTile(
                 leading: person == null
-                    ? const Icon(Icons.person_search, color: Bua.green)
+                    ? Icon(Icons.person_search, color: Bua.green)
                     : PersonAvatar(person: person, radius: 18),
                 title: Text(person?.displayName ?? l.invitePerson),
                 trailing: person == null

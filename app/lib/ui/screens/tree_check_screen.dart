@@ -32,16 +32,16 @@ class TreeCheckScreen extends ConsumerWidget {
         builder: (list) => RefreshIndicator(
           onRefresh: () => ref.refresh(treeProblemsProvider.future),
           child: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 32), children: [
-            Text(l.checkTreeHint, style: const TextStyle(fontSize: 14, color: Bua.inkMuted)),
+            Text(l.checkTreeHint, style: TextStyle(fontSize: 14, color: Bua.inkMuted)),
             const SizedBox(height: 16),
             if (list.isEmpty)
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(color: Bua.greenTint, borderRadius: BorderRadius.circular(20)),
                 child: Row(children: [
-                  const Icon(Icons.check_circle_outline, color: Bua.green),
+                  Icon(Icons.check_circle_outline, color: Bua.green),
                   const SizedBox(width: 12),
-                  Expanded(child: Text(l.treeLooksRight, style: const TextStyle(fontSize: 15, color: Bua.greenDark))),
+                  Expanded(child: Text(l.treeLooksRight, style: TextStyle(fontSize: 15, color: Bua.greenDark))),
                 ]),
               )
             else
@@ -97,7 +97,7 @@ class _ProblemCard extends ConsumerWidget {
       decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Icon(Icons.warning_amber_rounded, color: Bua.goldInk),
+          Icon(Icons.warning_amber_rounded, color: Bua.goldInk),
           const SizedBox(width: 12),
           Expanded(child: Text(text, style: const TextStyle(fontSize: 15, height: 1.4))),
         ]),

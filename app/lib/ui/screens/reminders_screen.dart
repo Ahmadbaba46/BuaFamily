@@ -175,12 +175,12 @@ class RemindersScreen extends ConsumerWidget {
         if (items.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 48),
-            child: Text(l.nothingComingUp, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+            child: Text(l.nothingComingUp, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
           ),
         _IslamicOccasions(today: today),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Text(l.remindersNote, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
+          child: Text(l.remindersNote, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
         ),
       ]),
     );
@@ -204,7 +204,7 @@ class _IslamicOccasions extends ConsumerWidget {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Text(l.hijriDate(HijriDate.fromDate(today, offset: offset)),
-            style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+            style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
       ),
       const SizedBox(height: 8),
       Container(
@@ -237,7 +237,7 @@ class _IslamicOccasions extends ConsumerWidget {
       const SizedBox(height: 6),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Text(l.moonNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+        child: Text(l.moonNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
       ),
       const SizedBox(height: 16),
     ]);
@@ -282,7 +282,7 @@ class _ItemRow extends StatelessWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(item.title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text(item.subtitle, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+              Text(item.subtitle, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
           if (item.action != null)

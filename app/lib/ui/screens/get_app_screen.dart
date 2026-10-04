@@ -60,7 +60,7 @@ class GetAppScreen extends ConsumerWidget {
               const SizedBox(height: 16),
               Text(l.getAppTitle, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: 6),
-              Text(l.getAppSub, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Bua.inkMuted)),
+              Text(l.getAppSub, textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: Bua.inkMuted)),
               const SizedBox(height: 24),
               if (onPlay) ...[
                 FilledButton.icon(
@@ -79,7 +79,7 @@ class GetAppScreen extends ConsumerWidget {
                 Text(
                   l.getAppVersion(r.version, r.publishedAt == null ? '' : l.formatDate(r.publishedAt!)),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
+                  style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
                 ),
                 const SizedBox(height: 12),
                 if (installed != null && installed >= r.build)
@@ -93,7 +93,7 @@ class GetAppScreen extends ConsumerWidget {
                   ),
                 if (r.notes != null) ...[
                   const SizedBox(height: 20),
-                  Text(l.whatsNew, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
+                  Text(l.whatsNew, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
                   const SizedBox(height: 4),
                   Text(r.notes!, style: const TextStyle(fontSize: 15, height: 1.45)),
                 ],
@@ -105,7 +105,7 @@ class GetAppScreen extends ConsumerWidget {
                 ),
               ],
               const SizedBox(height: 14),
-              Text(l.getAppIphone, textAlign: TextAlign.center, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              Text(l.getAppIphone, textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             ]),
           ),
         ),
@@ -134,14 +134,14 @@ class UpdateBanner extends ConsumerWidget {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Icon(Icons.system_update, color: Bua.green),
+            Icon(Icons.system_update, color: Bua.green),
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(l.updateAvailableTitle,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.greenDark)),
                 Text(l.updateAvailableBody(update.version),
-                    style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.greenDark)),
+                    style: TextStyle(fontSize: 13, height: 1.4, color: Bua.greenDark)),
               ]),
             ),
           ]),
@@ -188,7 +188,7 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
         title: Text(l.publishVersion),
         content: SingleChildScrollView(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text(file.$1, style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+            Text(file.$1, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             const SizedBox(height: 12),
             TextField(controller: version, decoration: InputDecoration(labelText: l.versionLabel)),
             const SizedBox(height: 8),
@@ -250,7 +250,7 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
       decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const IconTile(Icons.android, background: Bua.greenTint),
+          IconTile(Icons.android, background: Bua.greenTint),
           const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -260,7 +260,7 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
                     ? l.androidNotPublished
                     : l.androidPublished(
                         current.version, current.publishedAt == null ? '' : l.formatDate(current.publishedAt!)),
-                style: const TextStyle(fontSize: 12, height: 1.4, color: Bua.inkSubtle),
+                style: TextStyle(fontSize: 12, height: 1.4, color: Bua.inkSubtle),
               ),
             ]),
           ),
@@ -277,9 +277,9 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
         _PlayStoreLink(url: ref.watch(settingsProvider).value?.playStoreUrl),
         if (current != null) ...[
           const SizedBox(height: 12),
-          Text(l.shareAppLink, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+          Text(l.shareAppLink, style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
           Row(children: [
-            Expanded(child: SelectableText(link, style: const TextStyle(fontSize: 14, color: Bua.green))),
+            Expanded(child: SelectableText(link, style: TextStyle(fontSize: 14, color: Bua.green))),
             IconButton(
               tooltip: l.copied,
               icon: const Icon(Icons.copy, size: 18),
@@ -330,7 +330,7 @@ class _PlayStoreLink extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(children: [
-          const Icon(Icons.shop, size: 20, color: Bua.green),
+          Icon(Icons.shop, size: 20, color: Bua.green),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -338,10 +338,10 @@ class _PlayStoreLink extends ConsumerWidget {
               Text(url ?? l.notSet,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                  style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),
-          const Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
+          Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
         ]),
       ),
     );

@@ -114,7 +114,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
           Text(l.storiesSubtitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Bua.inkSubtle)),
         ]),
       ),
       body: RefreshIndicator(
@@ -156,7 +156,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
               if (all.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(l.noStoriesYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
+                  child: Text(l.noStoriesYet, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkSubtle)),
                 ),
               if (ref.watch(isAdminProvider))
               DashedBox(
@@ -179,7 +179,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                     const SizedBox(height: 6),
                     Text(l.recordHint,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
+                        style: TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
                   ]),
                 ),
               )
@@ -230,7 +230,7 @@ class _NowPlaying extends ConsumerWidget {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Text(
           '${(playing ? l.nowPlaying : l.listen).toUpperCase()} · ${languageName(l, story.language).toUpperCase()}',
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1, color: Bua.goldOnDark),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1, color: Bua.goldOnDark),
         ),
         const SizedBox(height: 10),
         Text(story.title,
@@ -260,7 +260,7 @@ class _NowPlaying extends ConsumerWidget {
                 width: 52,
                 height: 52,
                 child: loading
-                    ? const Padding(
+                    ? Padding(
                         padding: EdgeInsets.all(15),
                         child: CircularProgressIndicator(strokeWidth: 2.5, color: Bua.memorial),
                       )
@@ -400,14 +400,14 @@ class _StoryRow extends ConsumerWidget {
           Container(
             width: 42,
             height: 42,
-            decoration: const BoxDecoration(color: Bua.greenTint, shape: BoxShape.circle),
-            child: const Icon(Icons.play_arrow, color: Bua.green),
+            decoration: BoxDecoration(color: Bua.greenTint, shape: BoxShape.circle),
+            child: Icon(Icons.play_arrow, color: Bua.green),
           ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(story.title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text(meta, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+              Text(meta, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
             ]),
           ),
         ]),

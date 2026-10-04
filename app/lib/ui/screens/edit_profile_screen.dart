@@ -230,11 +230,11 @@ class _EditFormState extends ConsumerState<_EditForm> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(p.displayName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
               Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-                Text('${l.nameDatesNote} ', style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+                Text('${l.nameDatesNote} ', style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
                 InkWell(
                   onTap: () => context.push('/person/${p.id}/edit'),
                   child: Text(l.askAnAdmin,
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.green)),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.green)),
                 ),
               ]),
             ]),
@@ -271,7 +271,7 @@ class _EditFormState extends ConsumerState<_EditForm> {
               const SizedBox(height: 14),
               LabeledField(label: l.city, child: TextField(controller: _city)),
               const SizedBox(height: 14),
-              Text(l.whoSeesContact, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+              Text(l.whoSeesContact, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
               const SizedBox(height: 6),
               audience(_contactVis, (a) => setState(() => _contactVis = a)),
             ]),
@@ -315,7 +315,7 @@ class _EditFormState extends ConsumerState<_EditForm> {
                 ),
               ]),
               const SizedBox(height: 14),
-              Text(l.whoSeesHealth, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+              Text(l.whoSeesHealth, style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
               const SizedBox(height: 6),
               audience(_healthVis, (a) => setState(() => _healthVis = a)),
               const SizedBox(height: 6),

@@ -74,7 +74,7 @@ class HomeShell extends ConsumerWidget {
                 ),
             ],
           ),
-          const VerticalDivider(width: 1, color: Bua.line),
+          VerticalDivider(width: 1, color: Bua.line),
           Expanded(child: shell),
         ]),
       );
@@ -84,7 +84,7 @@ class HomeShell extends ConsumerWidget {
       drawer: drawer,
       body: shell,
       bottomNavigationBar: DecoratedBox(
-        decoration: const BoxDecoration(border: Border(top: BorderSide(color: Bua.line))),
+        decoration: BoxDecoration(border: Border(top: BorderSide(color: Bua.line))),
         child: NavigationBar(
           selectedIndex: shell.currentIndex,
           onDestinationSelected: go,
