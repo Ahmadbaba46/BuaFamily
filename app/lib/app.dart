@@ -8,9 +8,11 @@ import 'l10n/l10n.dart';
 import 'services/app_update.dart';
 import 'services/invites.dart';
 import 'services/offline_cache.dart';
+import 'services/presence.dart';
 import 'services/push.dart';
 import 'state/providers.dart';
 import 'ui/screens/about_screen.dart';
+import 'ui/screens/activity_screen.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
 import 'ui/screens/app_settings_screen.dart';
@@ -165,6 +167,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/admin/restore', builder: (_, _) => const RestoreScreen()),
       GoRoute(path: '/admin/tree-check', builder: (_, _) => const TreeCheckScreen()),
       GoRoute(path: '/admin/metrics', builder: (_, _) => const MetricsScreen()),
+      GoRoute(path: '/admin/activity', builder: (_, _) => const ActivityScreen()),
       GoRoute(
         path: '/admin/import',
         redirect: (_, s) => s.extra is ImportPlan ? null : '/admin/data',
@@ -323,6 +326,21 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   ProviderSubscription<String?>? _newest;
   ProviderSubscription<String?>? _account;
   DateTime? _leftAt;
+  PresenceTracker? _presence;
+
+  // Online while an active member has the app in front.
+  void _trackPresence(bool on) {
+    if (!on) {
+      _presence?.stop();
+      return;
+    }
+    _presence ??= PresenceTracker(
+      repo: ref.read(repositoryProvider),
+      router: ref.read(routerProvider),
+      platform: activityPlatform,
+    );
+    _presence!.start();
+  }
 
   // Back in the app after a while: the live inbox connection may have been
   // dropped while in the background, and relatives may have posted meanwhile.
@@ -330,7 +348,9 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
       _leftAt ??= DateTime.now();
+      _trackPresence(false);
     } else if (state == AppLifecycleState.resumed) {
+      _trackPresence(ref.read(profileProvider)?.isActive == true);
       final away = _leftAt == null ? Duration.zero : DateTime.now().difference(_leftAt!);
       _leftAt = null;
       if (away > const Duration(seconds: 10) && ref.read(profileProvider)?.isActive == true) {
@@ -380,6 +400,9 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
           ref.read(pushControllerProvider.notifier).resume();
           _reportActivity();
         }
+        // Signing out already tells the server (log_session).
+        if (id == null) _presence?.stop(leave: false);
+        if (id != null) _trackPresence(true);
       },
       fireImmediately: true,
     );
@@ -394,6 +417,7 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
     _foreground?.cancel();
     _signedIn?.close();
     _platform?.close();
+    _presence?.stop();
     super.dispose();
   }
 

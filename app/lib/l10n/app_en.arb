@@ -2461,5 +2461,153 @@
       }
     }
   },
-  "newMessages": "New"
+  "newMessages": "New",
+  "activityTitle": "Activity",
+  "activitySub": "Who is online and what they did",
+  "tabOnline": "Online",
+  "tabActivityLog": "Activity log",
+  "onlineNow": "Online now",
+  "earlierToday": "Earlier",
+  "nobodyOnline": "Nobody has the app open right now.",
+  "onlineFor": "for {time}",
+  "@onlineFor": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "seenAgo": "last seen {time}",
+  "@seenAgo": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesShort": "{n} min",
+  "@minutesShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{h} h {m} min",
+  "@hoursShort": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "onPage": "on {page}",
+  "@onPage": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      }
+    }
+  },
+  "platformAndroidShort": "Android",
+  "platformWebShort": "Web",
+  "logAll": "All",
+  "logChanges": "Changes",
+  "logPages": "Pages",
+  "logSessions": "Sign-ins",
+  "logAnyone": "Anyone",
+  "logToday": "Today",
+  "log7": "7 days",
+  "log30": "30 days",
+  "logAnyTime": "Any time",
+  "logSearch": "Search names, pages, titles…",
+  "logEmpty": "Nothing here yet.",
+  "loadMore": "Show more",
+  "logPrivacyNote": "Only admins see this. Private conversations are logged without their content.",
+  "actOpenedApp": "opened the app",
+  "actSignedIn": "signed in",
+  "actSignedOut": "signed out",
+  "actViewed": "opened {page}",
+  "@actViewed": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      }
+    }
+  },
+  "actAdded": "added {thing}",
+  "@actAdded": {
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "actChanged": "changed {thing}",
+  "@actChanged": {
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "actRemoved": "removed {thing}",
+  "@actRemoved": {
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "actLiked": "liked something",
+  "actUnliked": "took back a like",
+  "actRsvp": "answered an invitation",
+  "actVoted": "voted in a poll",
+  "actReviewed": "reviewed a suggestion",
+  "actAccount": "changed an account",
+  "actSettings": "changed the app settings",
+  "actMentorAsk": "asked a mentor for guidance",
+  "actMentorMessage": "sent a mentorship message",
+  "actConfirmed": "confirmed a contribution",
+  "entPerson": "a person",
+  "entRelationship": "a relationship",
+  "entSuggestion": "a suggestion",
+  "entAlbum": "an album",
+  "entPost": "a moment",
+  "entAnnouncement": "an announcement",
+  "entPhoto": "a photo",
+  "entEvent": "an event",
+  "entComment": "a comment",
+  "entBloodRequest": "a blood request",
+  "entBloodOffer": "an offer to donate blood",
+  "entMemory": "a memory",
+  "entCause": "a fund cause",
+  "entContribution": "a contribution",
+  "entPayout": "a payout",
+  "entMentor": "an offer to mentor",
+  "entStudent": "a request for guidance",
+  "entOpportunity": "an opportunity",
+  "entPoll": "a poll",
+  "entStory": "an elder's story",
+  "entInvite": "an invite link",
+  "entOther": "something",
+  "pageHome": "Home",
+  "pagePerson": "{name}'s page",
+  "@pagePerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pageAPerson": "a person's page",
+  "pageAnEvent": "an event",
+  "pageAMoment": "a moment",
+  "pageAnAlbum": "an album",
+  "pageAPhoto": "a photo",
+  "pageAConversation": "a mentorship conversation",
+  "pageSignIn": "sign-in"
 }

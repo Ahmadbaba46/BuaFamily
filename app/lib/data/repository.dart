@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/account.dart';
+import '../models/activity.dart';
 import '../models/community.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
@@ -104,6 +105,36 @@ class FamilyRepository {
   /// Admin: every account with its person, devices and activity.
   Future<List<UserRow>> adminUsers() async =>
       [for (final r in (await _db.rpc('admin_users')) as List) UserRow.fromJson(Map<String, dynamic>.from(r as Map))];
+
+  /// Online now, on this page (see PresenceTracker).
+  Future<void> touchPresence(String page, String platform) =>
+      _db.rpc('touch_presence', params: {'p_page': page, 'p_platform': platform});
+
+  Future<void> leavePresence() => _db.rpc('leave_presence');
+
+  /// 'sign_in' or 'sign_out', for the activity log.
+  Future<void> logSession(String action, String platform) =>
+      _db.rpc('log_session', params: {'p_action': action, 'p_platform': platform});
+
+  /// Admin: members seen within [minutes]; `online` when seen in the last two.
+  Future<List<OnlineEntry>> adminOnline({int minutes = 1440}) async => [
+        for (final r in (await _db.rpc('admin_online', params: {'p_minutes': minutes})) as List)
+          OnlineEntry.fromJson(Map<String, dynamic>.from(r as Map)),
+      ];
+
+  /// Admin: the activity log, newest first.
+  Future<List<ActivityEntry>> adminActivity(ActivityQuery q, {int? before, int limit = 50}) async => [
+        for (final r in (await _db.rpc('admin_activity', params: {
+          'p_user': q.userId,
+          'p_entities': q.entities,
+          'p_actions': q.actions,
+          'p_from': q.from?.toUtc().toIso8601String(),
+          'p_search': (q.search ?? '').trim().isEmpty ? null : q.search!.trim(),
+          'p_before': before,
+          'p_limit': limit,
+        })) as List)
+          ActivityEntry.fromJson(Map<String, dynamic>.from(r as Map)),
+      ];
 
   /// "I'm here": last seen, and a day of activity for the metrics.
   Future<void> touchActivity(String platform, {int? build}) =>

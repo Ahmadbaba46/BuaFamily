@@ -136,6 +136,12 @@ class MoreScreen extends ConsumerWidget {
                 ),
                 const InsetDivider(),
                 NavRow(
+                  icon: Icons.sensors,
+                  title: l.activityTitle,
+                  onTap: () => context.push('/admin/activity'),
+                ),
+                const InsetDivider(),
+                NavRow(
                   icon: Icons.import_export,
                   title: l.dataTitle,
                   onTap: () => context.push('/admin/data'),

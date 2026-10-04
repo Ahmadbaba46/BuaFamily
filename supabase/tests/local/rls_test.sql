@@ -1163,6 +1163,61 @@ reset role;
 select test.assert((select count(*) = 2 from public.mentor_messages where ask_id = :'convo_ask'), 'both messages kept');
 
 -- ---------------------------------------------------------------------------
+-- 26. Who is online, and the activity log.
+-- ---------------------------------------------------------------------------
+-- Aisha opens the app on the tree page, then a person's page.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.log_session('sign_in', 'android');
+select public.touch_presence('/tree', 'android');
+select public.touch_presence('/tree', 'android');
+select public.touch_presence('/person/x', 'android');
+select test.expect_error($$select public.admin_online()$$, 'members cannot see who is online');
+select test.expect_error($$select public.admin_activity()$$, 'members cannot see the log');
+select test.expect_error($$select count(*) from public.activity_log$$, 'members cannot read the log directly');
+select test.assert((select count(*) = 0 from public.presence), 'members cannot see presence');
+-- A change she makes is logged with what it was.
+insert into public.posts (body) values ('Activity log test moment');
+reset role;
+select test.assert((select count(*) = 1 from public.activity_log
+  where user_id = :member_id and action = 'open' and entity = 'session' and platform = 'android'), 'one visit, not one per beat');
+select test.assert((select array_agg(target order by id) = array['/tree', '/person/x'] from public.activity_log
+  where user_id = :member_id and action = 'view'), 'each page change is logged once');
+select test.assert((select count(*) = 1 from public.activity_log
+  where user_id = :member_id and action = 'sign_in'), 'sign-in logged');
+select test.assert((select detail ->> 'label' = 'Activity log test moment' and platform = 'android'
+  from public.activity_log where entity = 'posts' and action = 'insert' and user_id = :member_id
+  order by id desc limit 1), 'changes are logged with a label and platform');
+
+-- The admin sees her online, on the person page, and the log.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select (e ->> 'online')::boolean and e ->> 'page' = '/person/x' and e ->> 'platform' = 'android'
+  from jsonb_array_elements(public.admin_online()) e where e ->> 'user_id' = :member_id), 'admin sees who is online');
+select test.assert((select jsonb_array_length(public.admin_activity(p_user => :member_id, p_actions => array['view'])) = 2),
+  'filter by member and action');
+select test.assert((select public.admin_activity(p_search => 'log test') -> 0 ->> 'entity' = 'posts'), 'search by label');
+select test.assert((select jsonb_array_length(public.admin_activity(p_limit => 1)) = 1), 'paged');
+reset role;
+
+-- Private conversations are logged without content; quiet updates are not logged.
+select test.assert((select bool_and(detail = '{}'::jsonb) from public.activity_log
+  where entity in ('mentor_asks', 'mentor_messages')), 'mentorship content is not logged');
+select count(*) as log_before from public.activity_log \gset
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.touch_activity('android', 5);
+select public.leave_presence();
+reset role;
+select test.assert((select count(*) = :log_before from public.activity_log), 'last-seen updates are not logged');
+select test.assert((select seen_at < now() - interval '2 minutes' from public.presence where user_id = :member_id),
+  'leaving takes her offline');
+-- System changes (no one signed in) are not logged.
+select set_config('request.jwt.claims', '{}', false);
+update public.persons set biography = 'Updated by the system' where id = (select id from public.persons limit 1);
+select test.assert((select count(*) = :log_before from public.activity_log), 'system changes are not logged');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
