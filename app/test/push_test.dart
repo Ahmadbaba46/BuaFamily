@@ -44,6 +44,9 @@ class FakePlatform implements PushPlatform {
   Stream<String> get onTokenRefresh => refreshes.stream;
   @override
   Stream<String> get onOpen => const Stream.empty();
+  final foreground = StreamController<ForegroundPush>.broadcast();
+  @override
+  Stream<ForegroundPush> get onForeground => foreground.stream;
 }
 
 class FakeRepo extends FamilyRepository {
