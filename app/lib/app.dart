@@ -112,6 +112,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => NewMomentScreen(
           albumId: s.uri.queryParameters['album'],
           tagPersonId: s.uri.queryParameters['tag'],
+          text: s.uri.queryParameters['text'],
         ),
       ),
       GoRoute(

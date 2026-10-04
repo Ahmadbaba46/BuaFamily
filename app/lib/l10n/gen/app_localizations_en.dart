@@ -4108,4 +4108,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetExpired => 'That code has expired. Ask for a new one.';
+
+  @override
+  String get occIslamicNewYear => 'Islamic New Year';
+
+  @override
+  String get occAshura => 'Ashura';
+
+  @override
+  String get occMawlid => 'Mawlid';
+
+  @override
+  String get occRamadan => 'Ramadan begins';
+
+  @override
+  String get occLaylatAlQadr => 'Laylat al-Qadr (27th night)';
+
+  @override
+  String get occEidAlFitr => 'Eid al-Fitr';
+
+  @override
+  String get occArafah => 'Day of Arafah';
+
+  @override
+  String get occEidAlAdha => 'Eid al-Adha';
+
+  @override
+  String get greetEidFitr => 'Eid Mubarak! Barka da Sallah.';
+
+  @override
+  String get greetEidAdha => 'Eid Mubarak! Barka da Babbar Sallah.';
+
+  @override
+  String get greetRamadan => 'Ramadan Mubarak! May Allah accept our fasting.';
+
+  @override
+  String greetNewYear(int year) {
+    return 'Happy Islamic New Year $year!';
+  }
+
+  @override
+  String get eveEidFitr =>
+      'Eid al-Fitr is expected tomorrow, if the moon is sighted.';
+
+  @override
+  String get eveEidAdha => 'Eid al-Adha is expected tomorrow.';
+
+  @override
+  String get eveRamadan =>
+      'Ramadan is expected to begin tomorrow, if the moon is sighted.';
+
+  @override
+  String greetingFrom(String family) {
+    return 'From all of us in the $family family';
+  }
+
+  @override
+  String get shareGreeting => 'Share a greeting';
+
+  @override
+  String get islamicOccasions => 'Islamic occasions';
+
+  @override
+  String get moonNote =>
+      'Dates follow the Islamic calendar and can move a day with the moon sighting.';
+
+  @override
+  String inDaysCount(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'in $n days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get hijriSettingsTitle => 'Islamic calendar';
+
+  @override
+  String get hijriAdjust => 'Moon sighting adjustment';
+
+  @override
+  String get hijriAdjustHint =>
+      'If the new month was announced a day earlier than the app shows, add a day; a day later, take one away.';
+
+  @override
+  String hijriTodayIs(String date) {
+    return 'Today in the app: $date';
+  }
+
+  @override
+  String get islamicGreetingsToggle =>
+      'Greet the family on Ramadan, the Eids and the new year';
+
+  @override
+  String get showHijriDates => 'Show Islamic dates';
+
+  @override
+  String get showHijriDatesHint => 'Next to dates, e.g. 21 Rabiʻ al-Thani 1448';
+
+  @override
+  String get hijriNoAdjust => 'No adjustment';
+
+  @override
+  String hijriDaysSigned(String sign, int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n days',
+      one: '1 day',
+    );
+    return '$sign$_temp0';
+  }
 }

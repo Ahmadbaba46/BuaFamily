@@ -15,17 +15,20 @@ import '../widgets/social.dart';
 
 /// Share a moment: text, photos, tagged relatives and an optional album.
 class NewMomentScreen extends ConsumerStatefulWidget {
-  const NewMomentScreen({super.key, this.albumId, this.tagPersonId});
+  const NewMomentScreen({super.key, this.albumId, this.tagPersonId, this.text});
 
   final String? albumId;
   final String? tagPersonId;
+
+  /// Starting words, e.g. an Eid greeting.
+  final String? text;
 
   @override
   ConsumerState<NewMomentScreen> createState() => _NewMomentScreenState();
 }
 
 class _NewMomentScreenState extends ConsumerState<NewMomentScreen> {
-  final _body = TextEditingController();
+  late final _body = TextEditingController(text: widget.text);
   final _images = <PickedImage>[];
   late final List<String> _people = [?widget.tagPersonId];
   late String? _albumId = widget.albumId;

@@ -5,12 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../../domain/kinship.dart';
 import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
+import '../../models/hijri.dart';
 import '../../models/person.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hijri.dart';
 
 enum _Kind { birthday, remembrance, wedding, event }
 
@@ -175,12 +177,70 @@ class RemindersScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 48),
             child: Text(l.nothingComingUp, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
           ),
+        _IslamicOccasions(today: today),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(l.remindersNote, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkSubtle)),
         ),
       ]),
     );
+  }
+}
+
+/// The coming Islamic occasions, with both dates and a countdown.
+class _IslamicOccasions extends ConsumerWidget {
+  const _IslamicOccasions({required this.today});
+
+  final DateTime today;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final offset = ref.watch(hijriOffsetProvider);
+    final list = Occasion.upcoming(today, offset: offset);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      GroupHeading(l.islamicOccasions),
+      const SizedBox(height: 4),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Text(l.hijriDate(HijriDate.fromDate(today, offset: offset)),
+            style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+      ),
+      const SizedBox(height: 8),
+      Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+        child: Column(children: [
+          for (final (i, (o, date)) in list.indexed) ...[
+            if (i > 0) const InsetDivider(indent: 66),
+            ListTile(
+              leading: IconTile(
+                o.greet ? Icons.nightlight_round : Icons.brightness_3_outlined,
+                background: o.greet ? Bua.greenTint : Bua.ground,
+              ),
+              title: Text(l.occasionName(o), style: const TextStyle(fontWeight: FontWeight.w600)),
+              subtitle: Text(
+                '${l.weekdayDate(date)} · ${l.hijriDate(HijriDate.fromDate(date, offset: offset))}',
+              ),
+              trailing: Text(
+                l.inDaysCount(date.difference(today).inDays),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: date.difference(today).inDays <= 7 ? Bua.green : Bua.inkSubtle,
+                ),
+              ),
+            ),
+          ],
+        ]),
+      ),
+      const SizedBox(height: 6),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Text(l.moonNote, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+      ),
+      const SizedBox(height: 16),
+    ]);
   }
 }
 

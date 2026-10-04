@@ -123,7 +123,7 @@ void main() {
     await tester.pumpWidget(app(HomeScreen(now: now)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Thursday, 1 January'), findsOneWidget);
+    expect(find.textContaining('Thursday, 1 January · '), findsOneWidget);
     expect(find.text('Salamu alaikum, aisha'), findsOneWidget);
     // Everyone in the test family is born on 1 January; the first card is the eldest.
     expect(find.text('ahmadu turns 106'), findsOneWidget);

@@ -134,6 +134,8 @@ class AppSettings {
     this.developerPhone,
     this.developerEmail,
     this.developerWebsite,
+    this.hijriOffset = 0,
+    this.islamicGreetings = true,
   });
 
   final String familyName;
@@ -158,6 +160,12 @@ class AppSettings {
   final String? developerEmail;
   final String? developerWebsite;
 
+  /// Days added to the calculated Islamic calendar to match the moon sighting.
+  final int hijriOffset;
+
+  /// Ramadan, Eid and new year greetings to everyone.
+  final bool islamicGreetings;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -172,6 +180,8 @@ class AppSettings {
         developerPhone: j['developer_phone'] as String?,
         developerEmail: j['developer_email'] as String?,
         developerWebsite: j['developer_website'] as String?,
+        hijriOffset: (j['hijri_offset'] as num?)?.toInt() ?? 0,
+        islamicGreetings: j['islamic_greetings'] as bool? ?? true,
       );
 }
 

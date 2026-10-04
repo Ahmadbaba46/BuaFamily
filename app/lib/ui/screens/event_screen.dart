@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/hijri.dart';
 import '../widgets/hero_page.dart';
 import '../widgets/social.dart';
 
@@ -129,7 +130,7 @@ class EventScreen extends ConsumerWidget {
               _InfoRow(
                 icon: Icons.calendar_today_outlined,
                 title: l.weekdayDate(event.startsAt),
-                subtitle: timeRange,
+                subtitle: [timeRange, ?hijriFor(ref, l, event.startsAt)].join('\n'),
                 action: upcoming ? l.addToCalendar : null,
                 onAction: () => launchUrl(calendarLink(event)),
               ),
