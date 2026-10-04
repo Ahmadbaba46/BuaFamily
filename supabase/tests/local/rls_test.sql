@@ -1471,6 +1471,14 @@ select test.expect_error($$select * from public.search_all('sallah')$$, 'not for
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 32. Backups include votes, likes, conversations and invites.
+-- ---------------------------------------------------------------------------
+select test.assert((select private.backup_data() ?& array['poll_votes', 'likes', 'mentor_asks', 'mentor_messages', 'invites']),
+  'backups include votes, likes, conversations and invites');
+select test.assert((select jsonb_array_length(private.backup_data() -> 'mentor_messages') =
+  (select count(*) from public.mentor_messages)), 'every message is in the backup');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

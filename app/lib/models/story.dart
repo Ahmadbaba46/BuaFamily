@@ -96,10 +96,12 @@ class RestoreSummary {
   static String groupOf(String table) => switch (table) {
         'persons' || 'unions' || 'parent_child' => 'tree',
         'person_education' || 'person_occupations' || 'person_skills' || 'person_contacts' || 'person_health' => 'details',
-        'albums' || 'posts' || 'post_people' || 'photos' || 'photo_people' || 'comments' => 'sharing',
+        'albums' || 'posts' || 'post_people' || 'photos' || 'photo_people' || 'comments' || 'likes' => 'sharing',
         'events' || 'event_rsvps' => 'events',
         'memories' || 'stories' => 'memories',
-        'blood_requests' || 'fund_settings' || 'fund_causes' || 'fund_contributions' || 'fund_payouts' => 'support',
+        'blood_requests' || 'fund_settings' || 'fund_causes' || 'fund_dues_plans' || 'fund_dues_members' ||
+        'fund_contributions' || 'fund_payouts' =>
+          'support',
         _ => 'community',
       };
 
