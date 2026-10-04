@@ -327,6 +327,30 @@ flutter build apk --dart-define-from-file=config.json   # Android
 flutter build web --dart-define-from-file=config.json   # website (upload build/web to any static host)
 ```
 
+**Android app (built on GitHub):** the *Android app* workflow
+(`.github/workflows/android.yml`) builds the APK whenever the app changes on
+`master`, or by hand from **Actions → Android app → Run workflow**. Each build
+is published as a GitHub release; family members install it from
+
+> https://github.com/Ahmadbaba46/BuaFamily/releases/latest/download/bua-family.apk
+
+(open it on the phone and allow installing from this source when asked).
+
+Updates install over the old app only when every build is signed with the
+same key. Create the family's key once and keep a copy somewhere safe:
+
+```sh
+keytool -genkeypair -v -keystore bua-family.jks -alias bua -keyalg RSA -keysize 2048 -validity 36500
+base64 -w0 bua-family.jks   # paste the output into ANDROID_KEYSTORE_BASE64
+```
+
+then add four repository secrets under **Settings → Secrets and variables →
+Actions**: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+`ANDROID_KEY_ALIAS` (`bua`) and `ANDROID_KEY_PASSWORD` (the same password if
+keytool didn't ask for a separate one). Without them, builds are signed with a
+temporary test key, marked as pre-releases, and not offered at the link above.
+The same key is the "upload key" if the app later goes to the Play Store.
+
 **iPhone:** there is no iPhone app planned. Family members on iPhones use the
 website; added to the Home Screen (Safari → Share → Add to Home Screen, iOS
 16.4 or later) it opens like an app and can receive notifications.
