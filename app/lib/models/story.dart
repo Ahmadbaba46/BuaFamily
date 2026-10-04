@@ -38,7 +38,7 @@ class Story {
         id: j['id'] as String,
         title: j['title'] as String,
         audioPath: j['audio_path'] as String,
-        addedBy: j['added_by'] as String,
+        addedBy: j['added_by'] as String? ?? '',
         createdAt: _ts(j['created_at']),
         speakerId: j['speaker_id'] as String?,
         speakerName: j['speaker_name'] as String?,

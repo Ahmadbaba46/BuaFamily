@@ -292,6 +292,14 @@ class MoreScreen extends ConsumerWidget {
                 iconColor: Bua.danger,
                 onTap: () => ref.read(authProvider).signOut(),
               ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.person_remove_outlined,
+                title: l.deleteMyAccount,
+                color: Bua.danger,
+                iconColor: Bua.danger,
+                onTap: () => confirmDeleteAccount(context, ref),
+              ),
             ]),
           ),
           ]),
@@ -322,4 +330,50 @@ Future<void> findMeInTree(BuildContext context, WidgetRef ref) async {
   if (!ok || !context.mounted) return;
   await ref.read(authProvider).refresh();
   if (context.mounted) showSnack(context, profile.isAdmin ? l.linkedNow : l.thisIsMeSent);
+}
+
+/// Explains what goes and what stays, then deletes the account for good.
+Future<void> confirmDeleteAccount(BuildContext context, WidgetRef ref) async {
+  final l = context.l10n;
+  final messenger = ScaffoldMessenger.of(context);
+  var understood = false;
+  final ok = await showDialog<bool>(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        title: Text(l.deleteAccountTitle),
+        content: SingleChildScrollView(
+          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(l.deleteAccountGone, style: const TextStyle(height: 1.4)),
+            const SizedBox(height: 12),
+            Text(l.deleteAccountKept, style: const TextStyle(height: 1.4, color: Bua.inkMuted)),
+            const SizedBox(height: 8),
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              controlAffinity: ListTileControlAffinity.leading,
+              value: understood,
+              onChanged: (v) => setState(() => understood = v ?? false),
+              title: Text(l.deleteAccountConfirm, style: const TextStyle(fontSize: 14)),
+            ),
+          ]),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l.cancel)),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Bua.danger),
+            onPressed: understood ? () => Navigator.pop(context, true) : null,
+            child: Text(l.deleteMyAccount),
+          ),
+        ],
+      ),
+    ),
+  );
+  if (ok != true) return;
+  try {
+    await ref.read(authProvider).deleteAccount();
+    messenger.showSnackBar(SnackBar(content: Text(l.accountDeleted)));
+  } catch (e) {
+    final onlyAdmin = e.toString().contains('only admin');
+    messenger.showSnackBar(SnackBar(content: Text(onlyAdmin ? l.deleteAccountOnlyAdmin : errorText(e))));
+  }
 }

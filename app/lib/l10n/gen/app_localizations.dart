@@ -7669,6 +7669,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Parents: {names}'**
   String parentsNames(String names);
+
+  /// No description provided for @deleteMyAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get deleteMyAccount;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountGone.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed for good: your sign-in, phone and email, and what you shared: moments, comments, likes, photos you uploaded, memories, messages and requests.'**
+  String get deleteAccountGone;
+
+  /// No description provided for @deleteAccountKept.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept for the family, without your name: your place in the family tree, albums and events you created, polls, elders\' stories you recorded, and welfare fund payments.'**
+  String get deleteAccountKept;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand this can\'t be undone'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountOnlyAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'You are the only admin. Make someone else an admin first.'**
+  String get deleteAccountOnlyAdmin;
+
+  /// No description provided for @accountDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was deleted.'**
+  String get accountDeleted;
 }
 
 class _AppLocalizationsDelegate

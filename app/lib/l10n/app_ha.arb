@@ -1261,5 +1261,12 @@
   "familyLineHint": "Taɓa ɗa don ganin iyalinsa.",
   "noChildrenYet": "Ba a saka 'ya'ya ba tukuna.",
   "childrenHeading": "'Ya'ya ({count})",
-  "parentsNames": "Iyaye: {names}"
+  "parentsNames": "Iyaye: {names}",
+  "deleteMyAccount": "Goge asusuna",
+  "deleteAccountTitle": "A goge asusunka?",
+  "deleteAccountGone": "Za a cire su gaba ɗaya: shigarka, lambar waya da imel, da abin da ka raba: labarai, sharhi, so, hotunan da ka ɗora, tunawa, saƙonni da buƙatu.",
+  "deleteAccountKept": "Za a bar wa iyali, ba tare da sunanka ba: matsayinka a bishiyar iyali, kundin hotuna da taruka da ka ƙirƙira, ƙuri'u, labaran dattawa da ka naɗa, da gudummawar asusun taimako.",
+  "deleteAccountConfirm": "Na fahimci ba za a iya dawo da shi ba",
+  "deleteAccountOnlyAdmin": "Kai kaɗai ne shugaba. Ka mai da wani shugaba tukuna.",
+  "accountDeleted": "An goge asusunka."
 }

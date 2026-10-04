@@ -3070,5 +3070,12 @@
         "type": "String"
       }
     }
-  }
+  },
+  "deleteMyAccount": "Delete my account",
+  "deleteAccountTitle": "Delete your account?",
+  "deleteAccountGone": "Removed for good: your sign-in, phone and email, and what you shared: moments, comments, likes, photos you uploaded, memories, messages and requests.",
+  "deleteAccountKept": "Kept for the family, without your name: your place in the family tree, albums and events you created, polls, elders' stories you recorded, and welfare fund payments.",
+  "deleteAccountConfirm": "I understand this can't be undone",
+  "deleteAccountOnlyAdmin": "You are the only admin. Make someone else an admin first.",
+  "accountDeleted": "Your account was deleted."
 }
