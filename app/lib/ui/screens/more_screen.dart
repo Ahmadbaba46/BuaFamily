@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
 import '../../models/social.dart' show Member;
+import '../../services/app_update.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/app_sidebar.dart';
@@ -225,6 +226,13 @@ class MoreScreen extends ConsumerWidget {
                 icon: Icons.settings_outlined,
                 title: l.settingsScreen,
                 onTap: () => context.push('/settings'),
+              ),
+              const InsetDivider(),
+              NavRow(
+                icon: Icons.android,
+                title: l.getTheApp,
+                value: ref.watch(updateAvailableProvider) != null ? l.updateAvailableTitle : null,
+                onTap: () => context.push('/get-app'),
               ),
               const InsetDivider(),
               if (me != null) ...[

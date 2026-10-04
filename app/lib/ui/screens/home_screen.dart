@@ -11,6 +11,7 @@ import '../widgets/app_sidebar.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/social.dart';
+import 'get_app_screen.dart';
 import 'notifications_screen.dart';
 
 /// Family feed: today's birthdays and remembrances, pinned notices, moments.
@@ -80,6 +81,7 @@ class HomeScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 24),
                 children: [
                   const SizedBox(height: 4),
+                  const UpdateBanner(),
                   if (birthdays.isNotEmpty || remembrances.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 8, 4),

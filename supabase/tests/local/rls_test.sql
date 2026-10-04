@@ -980,6 +980,32 @@ select test.assert((select count(*) = 1 from public.notifications where kind = '
   'the member hears the removal was approved');
 
 -- ---------------------------------------------------------------------------
+-- 21. Publishing an Android update.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_publish_android(5, '1.0.5', 'bua-family.apk')$$, 'members cannot publish the app');
+select test.expect_error($$insert into storage.objects (bucket_id, name) values ('releases', 'bua-family.apk')$$, 'members cannot upload releases');
+select test.assert((select public.android_release() is null), 'nothing published yet');
+select public.register_push_token('aisha-android-token-0123456789', 'android');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into storage.objects (bucket_id, name) values ('releases', 'bua-family.apk');
+select public.admin_publish_android(5, '1.0.5', 'bua-family.apk', 'Photos in the tree');
+select test.expect_error($$select public.admin_publish_android(4, '1.0.4', 'bua-family.apk')$$, 'cannot publish an older build');
+reset role;
+set role anon;
+select test.assert((select (public.android_release() ->> 'build')::int = 5 and public.android_release() ->> 'path' = 'bua-family.apk'),
+  'anyone can see the latest build');
+reset role;
+select test.assert((select count(*) = 1 from public.notifications where kind = 'app_update' and user_id = :member_id
+  and link = '/get-app' and data ->> 'version' = '1.0.5'), 'Android users hear about the update');
+select test.assert((select count(*) = 0 from public.notifications n where kind = 'app_update'
+  and not exists (select 1 from public.push_tokens t where t.user_id = n.user_id and t.platform = 'android')),
+  'people without the Android app are not told');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

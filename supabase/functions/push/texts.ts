@@ -50,6 +50,7 @@ const en: Texts = {
       ? `${s(d, "name")} suggested adding ${s(d, "person") || "someone"} to the tree`
       : `${s(d, "name")} suggested a change to ${s(d, "person") || "the tree"}`,
   account_approved: () => "Welcome! Your account has been approved.",
+  app_update: (d) => `A new version of the app is ready (${s(d, "version")}). Tap to download.`,
   request_reviewed: (d) =>
     d.approved === true
       ? `Your suggestion about ${s(d, "person") || "the tree"} was approved`
@@ -91,6 +92,7 @@ const ha: Texts = {
       ? `Shawara daga ${s(d, "name")}: a ƙara ${s(d, "person") || "wani"} a bishiyar iyali`
       : `Shawara daga ${s(d, "name")}: gyara bayanin ${s(d, "person") || "bishiyar iyali"}`,
   account_approved: () => "Barka da zuwa! An amince da asusunka.",
+  app_update: (d) => `Sabon salo na manhajar ya fito (${s(d, "version")}). Taɓa don saukewa.`,
   request_reviewed: (d) =>
     d.approved === true
       ? `An amince da shawararka game da ${s(d, "person") || "bishiyar iyali"}`

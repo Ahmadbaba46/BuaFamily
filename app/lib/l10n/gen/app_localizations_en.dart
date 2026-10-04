@@ -3050,4 +3050,79 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openMenu => 'Open menu';
+
+  @override
+  String get updateAvailableTitle => 'A new version of the app is ready';
+
+  @override
+  String updateAvailableBody(String version) {
+    return 'Version $version. Download it, then open the file to update.';
+  }
+
+  @override
+  String get getAppTitle => 'Bua Family for Android';
+
+  @override
+  String get getAppSub => 'Install the family app on your Android phone.';
+
+  @override
+  String getAppVersion(String version, String date) {
+    return 'Version $version · $date';
+  }
+
+  @override
+  String get getAppSteps =>
+      '1. Tap Download.\n2. Open the downloaded file.\n3. If your phone asks, allow installing apps from this source, then tap Install (or Update).';
+
+  @override
+  String get getAppLatest => 'You have the latest version.';
+
+  @override
+  String get getAppNone => 'The Android app hasn\'t been published yet.';
+
+  @override
+  String get getAppIphone =>
+      'On an iPhone, use the website instead: open it in Safari, tap Share, then Add to Home Screen.';
+
+  @override
+  String get getTheApp => 'Get the Android app';
+
+  @override
+  String get whatsNew => 'What\'s new';
+
+  @override
+  String get androidAppAdmin => 'Android app';
+
+  @override
+  String androidPublished(String version, String date) {
+    return 'Published $version · $date';
+  }
+
+  @override
+  String get androidNotPublished =>
+      'Not published yet. Build the APK on your computer, then publish it here.';
+
+  @override
+  String get publishVersion => 'Publish a new version';
+
+  @override
+  String get buildNumber => 'Build number';
+
+  @override
+  String get versionLabel => 'Version';
+
+  @override
+  String get whatsNewOptional => 'What\'s new (optional)';
+
+  @override
+  String get appPublished =>
+      'Published. Members with the Android app have been notified.';
+
+  @override
+  String get shareAppLink => 'Download link to share';
+
+  @override
+  String notifAppUpdate(String version) {
+    return 'A new version of the app is ready ($version). Tap to download.';
+  }
 }

@@ -1994,5 +1994,61 @@
   "sortYoungest": "Youngest first",
   "sortFamily": "Family order",
   "helpEachOther": "Help each other",
-  "openMenu": "Open menu"
+  "openMenu": "Open menu",
+  "updateAvailableTitle": "A new version of the app is ready",
+  "updateAvailableBody": "Version {version}. Download it, then open the file to update.",
+  "@updateAvailableBody": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "getAppTitle": "Bua Family for Android",
+  "getAppSub": "Install the family app on your Android phone.",
+  "getAppVersion": "Version {version} · {date}",
+  "@getAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "getAppSteps": "1. Tap Download.\n2. Open the downloaded file.\n3. If your phone asks, allow installing apps from this source, then tap Install (or Update).",
+  "getAppLatest": "You have the latest version.",
+  "getAppNone": "The Android app hasn't been published yet.",
+  "getAppIphone": "On an iPhone, use the website instead: open it in Safari, tap Share, then Add to Home Screen.",
+  "getTheApp": "Get the Android app",
+  "whatsNew": "What's new",
+  "androidAppAdmin": "Android app",
+  "androidPublished": "Published {version} · {date}",
+  "@androidPublished": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "androidNotPublished": "Not published yet. Build the APK on your computer, then publish it here.",
+  "publishVersion": "Publish a new version",
+  "buildNumber": "Build number",
+  "versionLabel": "Version",
+  "whatsNewOptional": "What's new (optional)",
+  "uploading": "Uploading…",
+  "appPublished": "Published. Members with the Android app have been notified.",
+  "shareAppLink": "Download link to share",
+  "notifAppUpdate": "A new version of the app is ready ({version}). Tap to download.",
+  "@notifAppUpdate": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  }
 }
