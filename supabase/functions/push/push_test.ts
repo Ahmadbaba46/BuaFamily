@@ -65,6 +65,16 @@ Deno.test("texts follow the reader's language", () => {
     "Aisha suggested adding Fatima to the tree");
   assertEquals(render("request_reviewed", { approved: false, person: "Musa Bua" }, "ha", "Bua").body,
     "Ba a karɓi shawararka game da Musa Bua ba");
+  assertEquals(render("weekly_summary", { active: 12, moments: 5, photos: 30, money_in: 25000, waiting_suggestions: 2,
+    waiting_accounts: 1 }, "en", "Bua").body, "This week: 12 active, 5 moments, 30 photos, ₦25,000 in. 3 waiting for you.");
+  assertEquals(render("weekly_summary", { active: 4, moments: 0, photos: 0, money_in: 0 }, "ha", "Bua").body,
+    "Wannan mako: mutum 4 sun shiga, labarai 0, hotuna 0, ₦0 sun shigo.");
+  assertEquals(render("admin_alert", { alert: "blood_no_offer", blood_group: "O-", patient: "Hauwa", hours: 2 }, "en", "Bua").body,
+    "No donor yet for O- blood for Hauwa (2 h). Please call around.");
+  assertEquals(render("admin_alert", { alert: "fund_low", balance: 4000, threshold: 10000 }, "ha", "Bua").body,
+    "Asusun taimako ya ragu zuwa ₦4,000, ƙasa da ₦10,000.");
+  assertEquals(render("admin_alert", { alert: "waiting", suggestions: 2, accounts: 0 }, "en", "Bua").body,
+    "Waiting over 3 days: 2 suggestions, 0 new accounts.");
   assertEquals(render("announcement", { body: "x".repeat(400) }, "en", "Bua").body.length, 298);
   assertEquals(naira(1240000.5), "₦1,240,000.5");
 });

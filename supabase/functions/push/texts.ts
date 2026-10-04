@@ -55,6 +55,17 @@ const en: Texts = {
       : `Happy Islamic New Year ${n(d, "hijri_year")}!`;
   },
   dues_reminder: (d) => `${s(d, "title")}: you owe ${naira(n(d, "owed"))}. Tap to pay.`,
+  weekly_summary: (d) => {
+    const waiting = n(d, "waiting_suggestions") + n(d, "waiting_accounts");
+    return `This week: ${n(d, "active")} active, ${n(d, "moments")} moments, ${n(d, "photos")} photos, ` +
+      `${naira(n(d, "money_in"))} in.` + (waiting > 0 ? ` ${waiting} waiting for you.` : "");
+  },
+  admin_alert: (d) =>
+    s(d, "alert") === "blood_no_offer"
+      ? `No donor yet for ${s(d, "blood_group")} blood for ${s(d, "patient")} (${n(d, "hours")} h). Please call around.`
+      : s(d, "alert") === "fund_low"
+      ? `The welfare fund is down to ${naira(n(d, "balance"))}, below ${naira(n(d, "threshold"))}.`
+      : `Waiting over 3 days: ${n(d, "suggestions")} suggestions, ${n(d, "accounts")} new accounts.`,
   claim_reviewed: (d) =>
     d.approved === true
       ? `You're now linked to ${s(d, "person")} in the family tree.`
@@ -123,6 +134,17 @@ const ha: Texts = {
       : `Barka da sabuwar shekara ta ${n(d, "hijri_year")}!`;
   },
   dues_reminder: (d) => `${s(d, "title")}: ana binka ${naira(n(d, "owed"))}. Taɓa don biya.`,
+  weekly_summary: (d) => {
+    const waiting = n(d, "waiting_suggestions") + n(d, "waiting_accounts");
+    return `Wannan mako: mutum ${n(d, "active")} sun shiga, labarai ${n(d, "moments")}, hotuna ${n(d, "photos")}, ` +
+      `${naira(n(d, "money_in"))} sun shigo.` + (waiting > 0 ? ` ${waiting} na jiran ka.` : "");
+  },
+  admin_alert: (d) =>
+    s(d, "alert") === "blood_no_offer"
+      ? `Har yanzu babu mai ba da jinin ${s(d, "blood_group")} ga ${s(d, "patient")} (awa ${n(d, "hours")}). Don Allah a tuntuɓi mutane.`
+      : s(d, "alert") === "fund_low"
+      ? `Asusun taimako ya ragu zuwa ${naira(n(d, "balance"))}, ƙasa da ${naira(n(d, "threshold"))}.`
+      : `Sun jira fiye da kwana 3: shawarwari ${n(d, "suggestions")}, sababbin asusu ${n(d, "accounts")}.`,
   claim_reviewed: (d) =>
     d.approved === true
       ? `An haɗa ka da ${s(d, "person")} a bishiyar iyali.`

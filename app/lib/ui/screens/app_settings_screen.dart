@@ -17,6 +17,7 @@ const notificationGroups = {
   'tagged': ['tagged'],
   'comments': ['comment'],
   'occasions': ['occasion'],
+  'weekly': ['weekly_summary'],
 };
 
 /// Language, data saver and which notifications to receive.
@@ -115,6 +116,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           divider,
           toggle(l.islamicOccasions, 'occasions'),
           divider,
+          if (ref.watch(isAdminProvider)) ...[toggle(l.notifWeeklyForAdmins, 'weekly'), divider],
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ToggleRow(title: l.urgentBlood, subtitle: l.alwaysOn, value: true, onChanged: null),

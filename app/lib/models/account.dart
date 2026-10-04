@@ -137,6 +137,8 @@ class AppSettings {
     this.hijriOffset = 0,
     this.islamicGreetings = true,
     this.playStoreUrl,
+    this.weeklySummary = true,
+    this.fundAlertBelow,
   });
 
   final String familyName;
@@ -170,6 +172,12 @@ class AppSettings {
   /// The app's page on Google Play, once it's there.
   final String? playStoreUrl;
 
+  /// Admins get a summary every Monday.
+  final bool weeklySummary;
+
+  /// Admins and treasurers are warned when the fund drops below this (null: off).
+  final double? fundAlertBelow;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -187,6 +195,8 @@ class AppSettings {
         hijriOffset: (j['hijri_offset'] as num?)?.toInt() ?? 0,
         islamicGreetings: j['islamic_greetings'] as bool? ?? true,
         playStoreUrl: j['play_store_url'] as String?,
+        weeklySummary: j['weekly_summary'] as bool? ?? true,
+        fundAlertBelow: (j['fund_alert_below'] as num?)?.toDouble(),
       );
 }
 

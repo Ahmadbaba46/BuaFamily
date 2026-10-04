@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../models/account.dart';
+import '../../models/fund.dart' show naira;
 import '../../models/hijri.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
@@ -250,6 +251,8 @@ class _SettingsTab extends ConsumerWidget {
           _PushCard(settings: s, save: save),
           const SizedBox(height: 12),
           _HijriCard(settings: s, save: save),
+          const SizedBox(height: 12),
+          AdminUpdatesCard(settings: s, save: save),
           const SizedBox(height: 12),
           AndroidReleaseCard(pickApk: () async {
             final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['apk']);
@@ -609,6 +612,64 @@ class _PushCard extends ConsumerWidget {
             ),
           ),
         ],
+      ]),
+    );
+  }
+}
+
+/// The Monday summary for admins, and the fund level that sets off an alert.
+class AdminUpdatesCard extends StatelessWidget {
+  const AdminUpdatesCard({super.key, required this.settings, required this.save});
+
+  final AppSettings settings;
+  final Future<void> Function(Map<String, dynamic>) save;
+
+  Future<void> _editThreshold(BuildContext context) async {
+    final l = context.l10n;
+    final r = await showFormDialog(context, title: l.fundAlertBelow, note: l.fundAlertHint, fields: [
+      TextSpec('amount', l.amountNaira, initial: settings.fundAlertBelow?.round(), number: true, hint: l.offLabel),
+    ]);
+    if (r == null) return;
+    await save({'fund_alert_below': r['amount']});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final below = settings.fundAlertBelow;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(children: [
+          const IconTile(Icons.insights_outlined, background: Bua.greenTint),
+          const SizedBox(width: 14),
+          Expanded(child: Text(l.adminUpdatesTitle, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600))),
+        ]),
+        const SizedBox(height: 8),
+        ToggleRow(
+          title: l.weeklySummaryToggle,
+          subtitle: l.weeklySummaryHint,
+          value: settings.weeklySummary,
+          onChanged: (v) => save({'weekly_summary': v}),
+        ),
+        const Divider(height: 20, color: Bua.line),
+        InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _editThreshold(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(children: [
+              Expanded(child: Text(l.fundAlertBelow, style: const TextStyle(fontSize: 15))),
+              Text(below == null ? l.offLabel : naira(below),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Bua.green)),
+              const SizedBox(width: 6),
+              const Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
+            ]),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(l.alertsAlwaysOn, style: const TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
       ]),
     );
   }
