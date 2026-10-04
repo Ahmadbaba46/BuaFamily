@@ -40,6 +40,8 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
           : l.notifMentorRequestFrom(n.str('name')!, n.str('body') ?? ''),
       NotificationKind.mentorReply => l.notifMentorReply(n.str('name') ?? '', n.str('body') ?? ''),
       NotificationKind.occasion => _occasionText(l, n),
+      NotificationKind.duesReminder =>
+        l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.opportunity => l.notifOpportunity(n.str('title') ?? ''),
       NotificationKind.poll => l.notifPoll(n.str('question') ?? ''),
       NotificationKind.story => l.notifStory(n.str('speaker') ?? '', n.str('title') ?? ''),
@@ -84,6 +86,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.mentorRequest || NotificationKind.opportunity => Icons.school_outlined,
       NotificationKind.mentorReply => Icons.forum_outlined,
       NotificationKind.occasion => Icons.nightlight_round,
+      NotificationKind.duesReminder => Icons.event_repeat,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,
       NotificationKind.test => Icons.notifications_active_outlined,

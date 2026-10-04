@@ -4131,4 +4131,263 @@ class AppLocalizationsHa extends AppLocalizations {
     );
     return '$sign $_temp0';
   }
+
+  @override
+  String get duesTitle => 'Gudummawar dole';
+
+  @override
+  String get myDues => 'Gudummawata ta dole';
+
+  @override
+  String duesEvery(String amount, String per) {
+    return '$amount $per';
+  }
+
+  @override
+  String get perMonth => 'a wata';
+
+  @override
+  String get perQuarter => 'a kowane wata uku';
+
+  @override
+  String get perYear => 'a shekara';
+
+  @override
+  String youOwe(String amount) {
+    return 'Ana binka $amount';
+  }
+
+  @override
+  String owesAmount(String amount) {
+    return 'Ana binsa $amount';
+  }
+
+  @override
+  String unpaidPeriods(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'lokuta $n ba a biya ba',
+      one: 'lokaci 1 ba a biya ba',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String paidUpTo(String date) {
+    return 'An biya har zuwa $date';
+  }
+
+  @override
+  String get paidUpNothingYet => 'An biya duka';
+
+  @override
+  String get duesExempt => 'An kebe';
+
+  @override
+  String waitingConfirmation(String amount) {
+    return '$amount na jiran tabbatarwa';
+  }
+
+  @override
+  String get payDues => 'Biya';
+
+  @override
+  String payDuesTitle(String title) {
+    return 'Biya: $title';
+  }
+
+  @override
+  String get myStatement => 'Bayanin asusuna (PDF)';
+
+  @override
+  String get fundReports => 'Rahotanni';
+
+  @override
+  String get recordForMember => 'Rubuta biya a madadin ɗan uwa';
+
+  @override
+  String get newDuesPlan => 'Sabon tsarin gudummawa';
+
+  @override
+  String get editDuesPlan => 'Gyara tsari';
+
+  @override
+  String get planTitleLabel => 'Suna (misali Gudummawar wata)';
+
+  @override
+  String get planPeriod => 'Sau nawa';
+
+  @override
+  String get periodMonthly => 'Kowane wata';
+
+  @override
+  String get periodQuarterly => 'Kowane wata uku';
+
+  @override
+  String get periodYearly => 'Kowace shekara';
+
+  @override
+  String get planStarts => 'Farawa';
+
+  @override
+  String get planActive => 'Yana aiki';
+
+  @override
+  String get planAutoRemind => 'Tunatar da masu bashi a farkon kowane lokaci';
+
+  @override
+  String get noDuesPlans =>
+      'Babu gudummawar dole tukuna. Ƙirƙiri tsari, misali ₦2,000 a wata.';
+
+  @override
+  String get duesFilterAll => 'Duka';
+
+  @override
+  String get duesFilterOwing => 'Masu bashi';
+
+  @override
+  String get duesFilterPaidUp => 'Sun biya';
+
+  @override
+  String get duesFilterExempt => 'An kebe';
+
+  @override
+  String duesSummaryLine(int owing, int total, String owed) {
+    return '$owing cikin $total na da bashi · $owed ba a biya ba';
+  }
+
+  @override
+  String get remindOwing => 'Tunatar da masu bashi';
+
+  @override
+  String remindedCount(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'An aika tunatarwa $n',
+      one: 'An aika tunatarwa 1',
+      zero: 'Babu wanda za a tunatar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get duesStartLabel => 'Farkon gudummawa';
+
+  @override
+  String get exemptToggle => 'Kebe daga wannan tsari';
+
+  @override
+  String recordPaymentFrom(String name) {
+    return 'Rubuta biya daga $name';
+  }
+
+  @override
+  String get paymentRecorded => 'An rubuta biya.';
+
+  @override
+  String get chooseMember => 'Wa ya biya?';
+
+  @override
+  String get forWhat => 'Domin';
+
+  @override
+  String notifDuesReminder(String title, String owed) {
+    return '$title: ana binka $owed. Taɓa don biya.';
+  }
+
+  @override
+  String get reportTitle => 'Rahoton asusu';
+
+  @override
+  String get periodThisMonth => 'Wannan wata';
+
+  @override
+  String get periodLastMonth => 'Watan jiya';
+
+  @override
+  String get periodThisYear => 'Wannan shekara';
+
+  @override
+  String get periodLastYear => 'Bara';
+
+  @override
+  String get openingLabel => 'Kuɗin farko';
+
+  @override
+  String get moneyIn => 'Kuɗin shiga';
+
+  @override
+  String get moneyOut => 'Kuɗin fita';
+
+  @override
+  String get closingLabel => 'Ragowar kuɗi';
+
+  @override
+  String get bySourceTitle => 'Ta buƙata da gudummawa';
+
+  @override
+  String get monthByMonth => 'Wata-wata';
+
+  @override
+  String get transactionsTitle => 'Duk mu\'amaloli';
+
+  @override
+  String get duesStandingTitle => 'Matsayin gudummawa';
+
+  @override
+  String paymentsFrom(int p, int c) {
+    String _temp0 = intl.Intl.pluralLogic(
+      p,
+      locale: localeName,
+      other: 'biya $p',
+      one: 'biya 1',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      c,
+      locale: localeName,
+      other: '\'yan uwa $c',
+      one: 'ɗan uwa 1',
+    );
+    return '$_temp0 daga $_temp1';
+  }
+
+  @override
+  String reportGenerated(String date) {
+    return 'An samar $date';
+  }
+
+  @override
+  String get reportCommitteeNote =>
+      '\'Yan uwa suna ganin jimilla. Sunaye da adadi na kwamiti ne kaɗai.';
+
+  @override
+  String get downloadPdf => 'PDF';
+
+  @override
+  String statementFor(String name) {
+    return 'Bayanin asusu na $name';
+  }
+
+  @override
+  String get contributionsLabel => 'Gudummawa';
+
+  @override
+  String get statusConfirmedLabel => 'An tabbatar';
+
+  @override
+  String get inOut => 'Shiga';
+
+  @override
+  String get outLabel => 'Fita';
+
+  @override
+  String get nothingInPeriod => 'Babu kuɗin shiga ko fita a wannan lokaci.';
+
+  @override
+  String get searchByName => 'Nemi da suna';
+
+  @override
+  String get paymentMethod => 'Yadda aka biya';
 }

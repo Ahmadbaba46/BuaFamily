@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../domain/fund_pdf.dart';
 import '../../l10n/l10n.dart';
 import '../../models/fund.dart';
 import '../../state/providers.dart';
@@ -11,6 +14,8 @@ import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
 import '../widgets/social.dart';
+import 'dues_screen.dart' show standingText;
+import 'import_export_screen.dart' show saveBytes;
 
 String contributionStatusLabel(AppLocalizations l, ContributionStatus s) => switch (s) {
       ContributionStatus.pending => l.contribPending,
@@ -45,6 +50,7 @@ class WelfareFundScreen extends ConsumerWidget {
     final mine = contributions.where((c) => c.userId == me?.id).toList();
     final toConfirm = committee ? contributions.where((c) => c.status == ContributionStatus.pending).toList() : const [];
     final causeTitles = {for (final c in causes) c.id: c.title};
+    final duesTitles = {for (final p in ref.watch(duesPlansProvider).value ?? const <DuesPlan>[]) p.id: p.title};
 
     Future<void> refresh() async {
       refreshFund(ref);
@@ -56,14 +62,23 @@ class WelfareFundScreen extends ConsumerWidget {
         leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/more')),
         title: Text(l.welfareFund, style: Theme.of(context).textTheme.titleLarge),
         actions: [
+          IconButton(
+            tooltip: l.fundReports,
+            icon: const Icon(Icons.assessment_outlined),
+            onPressed: () => context.push('/fund/reports'),
+          ),
           if (committee)
             PopupMenuButton<String>(
               onSelected: (v) => switch (v) {
                 'cause' => context.push('/fund/new'),
                 'payout' => _recordPayout(context, ref, open),
+                'dues' => context.push('/fund/dues'),
+                'record' => _recordFor(context, ref, open),
                 _ => _editAccount(context, ref, overview.value),
               },
               itemBuilder: (_) => [
+                PopupMenuItem(value: 'dues', child: Text(l.duesTitle)),
+                PopupMenuItem(value: 'record', child: Text(l.recordForMember)),
                 PopupMenuItem(value: 'cause', child: Text(l.newCause)),
                 PopupMenuItem(value: 'payout', child: Text(l.recordPayout)),
                 PopupMenuItem(value: 'account', child: Text(l.editAccount)),
@@ -112,6 +127,7 @@ class WelfareFundScreen extends ConsumerWidget {
                 ]),
               ]),
             ),
+            const _MyDues(),
             if (toConfirm.isNotEmpty) ...[
               const SizedBox(height: 16),
               GroupHeading(l.toConfirm(toConfirm.length)),
@@ -155,7 +171,7 @@ class WelfareFundScreen extends ConsumerWidget {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(naira(c.amount), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                         Text(
-                          [causeTitles[c.causeId] ?? l.generalFund, payMethodLabel(l, c.method), l.formatDate(c.createdAt)]
+                          [causeTitles[c.causeId] ?? duesTitles[c.duesPlanId] ?? l.generalFund, payMethodLabel(l, c.method), l.formatDate(c.createdAt)]
                               .join(' · '),
                           style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
                         ),
@@ -204,6 +220,43 @@ class WelfareFundScreen extends ConsumerWidget {
     if (ok) refreshFund(ref);
   }
 
+  /// Committee: money collected for someone (cash at a meeting, a transfer seen).
+  Future<void> _recordFor(BuildContext context, WidgetRef ref, List<FundCause> open) async {
+    final l = context.l10n;
+    final members = (await ref.read(membersProvider.future)).values.toList()
+      ..sort((a, b) => a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
+    final plans = (await ref.read(duesPlansProvider.future)).where((p) => p.active).toList();
+    if (!context.mounted) return;
+    final v = await showFormDialog(context, title: l.recordForMember, fields: [
+      ChoiceSpec<String>('who', l.chooseMember, options: {for (final m in members) m.userId: m.displayName}),
+      TextSpec('amount', l.amountNaira, number: true, required: true),
+      ChoiceSpec<String?>('for', l.forWhat, initial: plans.isEmpty ? null : 'dues:${plans.first.id}', options: {
+        null: l.generalFund,
+        for (final p in plans) 'dues:${p.id}': p.title,
+        for (final c in open) 'cause:${c.id}': c.title,
+      }),
+      ChoiceSpec<PayMethod>('method', l.paymentMethod, initial: PayMethod.cash, options: {
+        for (final m in PayMethod.values) m: payMethodLabel(l, m),
+      }),
+    ]);
+    if (v == null || v['who'] == null || !context.mounted) return;
+    final target = v['for'] as String?;
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).recordFor(
+            userId: v['who'] as String,
+            amount: (v['amount'] as int).toDouble(),
+            method: v['method'] as PayMethod? ?? PayMethod.cash,
+            causeId: target != null && target.startsWith('cause:') ? target.substring(6) : null,
+            duesPlanId: target != null && target.startsWith('dues:') ? target.substring(5) : null,
+          ),
+    );
+    if (ok) {
+      refreshFund(ref);
+      if (context.mounted) showSnack(context, l.paymentRecorded);
+    }
+  }
+
   Future<void> _editAccount(BuildContext context, WidgetRef ref, FundOverview? o) async {
     final l = context.l10n;
     final v = await showFormDialog(context, title: l.editAccount, fields: [
@@ -223,6 +276,102 @@ class WelfareFundScreen extends ConsumerWidget {
       }),
     );
     if (ok) refreshFund(ref);
+  }
+}
+
+/// The member's own dues: what's owed or paid up to, a button to pay, and a
+/// PDF statement of everything they've given.
+class _MyDues extends ConsumerWidget {
+  const _MyDues();
+
+  Future<void> _statement(BuildContext context, WidgetRef ref, List<(DuesPlan, DuesStanding)> dues) async {
+    final l = context.l10n;
+    try {
+      final me = ref.read(profileProvider);
+      final mine = (await ref.read(contributionsProvider.future)).where((c) => c.userId == me?.id).toList();
+      final causes = await ref.read(fundCausesProvider.future);
+      final plans = await ref.read(duesPlansProvider.future);
+      final bytes = await memberStatementPdf(
+        l: l,
+        family: ref.read(settingsProvider).value?.familyName ?? 'Bua',
+        name: me?.displayName ?? '',
+        dues: dues,
+        contributions: mine,
+        titles: {for (final c in causes) c.id: c.title, for (final p in plans) p.id: p.title},
+        regular: pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Regular.ttf')),
+        bold: pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Bold.ttf')),
+        generatedAt: DateTime.now(),
+      );
+      if (context.mounted) await saveBytes(context, 'bua-fund-statement.pdf', bytes, 'application/pdf');
+    } catch (e) {
+      if (context.mounted) showError(context, e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final plans = {for (final p in ref.watch(duesPlansProvider).value ?? const <DuesPlan>[]) p.id: p};
+    final standings = ref.watch(myDuesProvider).value ?? const <DuesStanding>[];
+    final dues = [
+      for (final s in standings)
+        if (plans[s.planId] case final plan?) (plan, s),
+    ];
+    if (dues.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        GroupHeading(l.myDues),
+        const SizedBox(height: 8),
+        for (final (plan, s) in dues) ...[
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+            decoration: BoxDecoration(
+              color: Bua.surface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: s.owed > 0 ? Bua.dangerTint : Bua.line),
+            ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Row(children: [
+                Icon(
+                  s.exempt ? Icons.remove_circle_outline : (s.owed > 0 ? Icons.error_outline : Icons.check_circle),
+                  color: s.exempt ? Bua.inkSubtle : (s.owed > 0 ? Bua.danger : Bua.green),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(plan.title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                    Text(l.duesEvery(naira(plan.amount), duesPer(l, plan.period)),
+                        style: const TextStyle(fontSize: 12.5, color: Bua.inkSubtle)),
+                  ]),
+                ),
+              ]),
+              const SizedBox(height: 8),
+              Text(standingText(l, s),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: s.owed > 0 ? Bua.danger : Bua.ink)),
+              if (s.pending > 0)
+                Text(l.waitingConfirmation(naira(s.pending)), style: const TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+              const SizedBox(height: 10),
+              Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                if (!s.exempt)
+                  FilledButton(
+                    style: FilledButton.styleFrom(minimumSize: const Size(0, 44)),
+                    onPressed: () => context.push(
+                        '/fund/give?dues=${plan.id}&amount=${(s.owed > 0 ? s.owed : plan.amount).round()}'),
+                    child: Text(l.payDues),
+                  ),
+                TextButton.icon(
+                  onPressed: () => _statement(context, ref, dues),
+                  icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
+                  label: Text(l.myStatement),
+                ),
+              ]),
+            ]),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ]),
+    );
   }
 }
 

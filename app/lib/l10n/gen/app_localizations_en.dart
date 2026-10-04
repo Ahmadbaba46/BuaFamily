@@ -4223,4 +4223,264 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$sign$_temp0';
   }
+
+  @override
+  String get duesTitle => 'Dues';
+
+  @override
+  String get myDues => 'My dues';
+
+  @override
+  String duesEvery(String amount, String per) {
+    return '$amount $per';
+  }
+
+  @override
+  String get perMonth => 'a month';
+
+  @override
+  String get perQuarter => 'every 3 months';
+
+  @override
+  String get perYear => 'a year';
+
+  @override
+  String youOwe(String amount) {
+    return 'You owe $amount';
+  }
+
+  @override
+  String owesAmount(String amount) {
+    return 'Owes $amount';
+  }
+
+  @override
+  String unpaidPeriods(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n periods unpaid',
+      one: '1 period unpaid',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String paidUpTo(String date) {
+    return 'Paid up to $date';
+  }
+
+  @override
+  String get paidUpNothingYet => 'Paid up';
+
+  @override
+  String get duesExempt => 'Exempt';
+
+  @override
+  String waitingConfirmation(String amount) {
+    return '$amount waiting for confirmation';
+  }
+
+  @override
+  String get payDues => 'Pay dues';
+
+  @override
+  String payDuesTitle(String title) {
+    return 'Pay: $title';
+  }
+
+  @override
+  String get myStatement => 'My statement (PDF)';
+
+  @override
+  String get fundReports => 'Reports';
+
+  @override
+  String get recordForMember => 'Record a payment for a member';
+
+  @override
+  String get newDuesPlan => 'New dues plan';
+
+  @override
+  String get editDuesPlan => 'Edit plan';
+
+  @override
+  String get planTitleLabel => 'Name (e.g. Monthly dues)';
+
+  @override
+  String get planPeriod => 'How often';
+
+  @override
+  String get periodMonthly => 'Monthly';
+
+  @override
+  String get periodQuarterly => 'Every 3 months';
+
+  @override
+  String get periodYearly => 'Yearly';
+
+  @override
+  String get planStarts => 'Starts';
+
+  @override
+  String get planActive => 'Active';
+
+  @override
+  String get planAutoRemind =>
+      'Remind those who owe at the start of each period';
+
+  @override
+  String get noDuesPlans =>
+      'No dues yet. Create a plan for regular contributions, e.g. ₦2,000 a month.';
+
+  @override
+  String get duesFilterAll => 'All';
+
+  @override
+  String get duesFilterOwing => 'Owing';
+
+  @override
+  String get duesFilterPaidUp => 'Paid up';
+
+  @override
+  String get duesFilterExempt => 'Exempt';
+
+  @override
+  String duesSummaryLine(int owing, int total, String owed) {
+    return '$owing of $total owe · $owed outstanding';
+  }
+
+  @override
+  String get remindOwing => 'Remind those who owe';
+
+  @override
+  String remindedCount(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n reminders sent',
+      one: '1 reminder sent',
+      zero: 'Nobody to remind',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get duesStartLabel => 'Dues start';
+
+  @override
+  String get exemptToggle => 'Exempt from this plan';
+
+  @override
+  String recordPaymentFrom(String name) {
+    return 'Record a payment from $name';
+  }
+
+  @override
+  String get paymentRecorded => 'Payment recorded.';
+
+  @override
+  String get chooseMember => 'Who paid?';
+
+  @override
+  String get forWhat => 'For';
+
+  @override
+  String notifDuesReminder(String title, String owed) {
+    return '$title: you owe $owed. Tap to pay.';
+  }
+
+  @override
+  String get reportTitle => 'Fund report';
+
+  @override
+  String get periodThisMonth => 'This month';
+
+  @override
+  String get periodLastMonth => 'Last month';
+
+  @override
+  String get periodThisYear => 'This year';
+
+  @override
+  String get periodLastYear => 'Last year';
+
+  @override
+  String get openingLabel => 'Opening balance';
+
+  @override
+  String get moneyIn => 'Money in';
+
+  @override
+  String get moneyOut => 'Money out';
+
+  @override
+  String get closingLabel => 'Closing balance';
+
+  @override
+  String get bySourceTitle => 'By cause and dues';
+
+  @override
+  String get monthByMonth => 'Month by month';
+
+  @override
+  String get transactionsTitle => 'All transactions';
+
+  @override
+  String get duesStandingTitle => 'Dues standing';
+
+  @override
+  String paymentsFrom(int p, int c) {
+    String _temp0 = intl.Intl.pluralLogic(
+      p,
+      locale: localeName,
+      other: '$p payments',
+      one: '1 payment',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      c,
+      locale: localeName,
+      other: '$c members',
+      one: '1 member',
+    );
+    return '$_temp0 from $_temp1';
+  }
+
+  @override
+  String reportGenerated(String date) {
+    return 'Generated $date';
+  }
+
+  @override
+  String get reportCommitteeNote =>
+      'Members see the totals. Names and amounts are shown to the committee only.';
+
+  @override
+  String get downloadPdf => 'PDF';
+
+  @override
+  String statementFor(String name) {
+    return 'Statement for $name';
+  }
+
+  @override
+  String get contributionsLabel => 'Contributions';
+
+  @override
+  String get statusConfirmedLabel => 'Confirmed';
+
+  @override
+  String get inOut => 'In';
+
+  @override
+  String get outLabel => 'Out';
+
+  @override
+  String get nothingInPeriod => 'No money in or out in this period.';
+
+  @override
+  String get searchByName => 'Search by name';
+
+  @override
+  String get paymentMethod => 'How it was paid';
 }

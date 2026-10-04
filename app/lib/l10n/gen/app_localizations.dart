@@ -6889,6 +6889,414 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{sign}{n, plural, =1{1 day} other{{n} days}}'**
   String hijriDaysSigned(String sign, int n);
+
+  /// No description provided for @duesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues'**
+  String get duesTitle;
+
+  /// No description provided for @myDues.
+  ///
+  /// In en, this message translates to:
+  /// **'My dues'**
+  String get myDues;
+
+  /// No description provided for @duesEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} {per}'**
+  String duesEvery(String amount, String per);
+
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'a month'**
+  String get perMonth;
+
+  /// No description provided for @perQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'every 3 months'**
+  String get perQuarter;
+
+  /// No description provided for @perYear.
+  ///
+  /// In en, this message translates to:
+  /// **'a year'**
+  String get perYear;
+
+  /// No description provided for @youOwe.
+  ///
+  /// In en, this message translates to:
+  /// **'You owe {amount}'**
+  String youOwe(String amount);
+
+  /// No description provided for @owesAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Owes {amount}'**
+  String owesAmount(String amount);
+
+  /// No description provided for @unpaidPeriods.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 period unpaid} other{{n} periods unpaid}}'**
+  String unpaidPeriods(int n);
+
+  /// No description provided for @paidUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid up to {date}'**
+  String paidUpTo(String date);
+
+  /// No description provided for @paidUpNothingYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid up'**
+  String get paidUpNothingYet;
+
+  /// No description provided for @duesExempt.
+  ///
+  /// In en, this message translates to:
+  /// **'Exempt'**
+  String get duesExempt;
+
+  /// No description provided for @waitingConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} waiting for confirmation'**
+  String waitingConfirmation(String amount);
+
+  /// No description provided for @payDues.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay dues'**
+  String get payDues;
+
+  /// No description provided for @payDuesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay: {title}'**
+  String payDuesTitle(String title);
+
+  /// No description provided for @myStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'My statement (PDF)'**
+  String get myStatement;
+
+  /// No description provided for @fundReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get fundReports;
+
+  /// No description provided for @recordForMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a payment for a member'**
+  String get recordForMember;
+
+  /// No description provided for @newDuesPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'New dues plan'**
+  String get newDuesPlan;
+
+  /// No description provided for @editDuesPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit plan'**
+  String get editDuesPlan;
+
+  /// No description provided for @planTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (e.g. Monthly dues)'**
+  String get planTitleLabel;
+
+  /// No description provided for @planPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'How often'**
+  String get planPeriod;
+
+  /// No description provided for @periodMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get periodMonthly;
+
+  /// No description provided for @periodQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 3 months'**
+  String get periodQuarterly;
+
+  /// No description provided for @periodYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get periodYearly;
+
+  /// No description provided for @planStarts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get planStarts;
+
+  /// No description provided for @planActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get planActive;
+
+  /// No description provided for @planAutoRemind.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind those who owe at the start of each period'**
+  String get planAutoRemind;
+
+  /// No description provided for @noDuesPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'No dues yet. Create a plan for regular contributions, e.g. ₦2,000 a month.'**
+  String get noDuesPlans;
+
+  /// No description provided for @duesFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get duesFilterAll;
+
+  /// No description provided for @duesFilterOwing.
+  ///
+  /// In en, this message translates to:
+  /// **'Owing'**
+  String get duesFilterOwing;
+
+  /// No description provided for @duesFilterPaidUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid up'**
+  String get duesFilterPaidUp;
+
+  /// No description provided for @duesFilterExempt.
+  ///
+  /// In en, this message translates to:
+  /// **'Exempt'**
+  String get duesFilterExempt;
+
+  /// No description provided for @duesSummaryLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{owing} of {total} owe · {owed} outstanding'**
+  String duesSummaryLine(int owing, int total, String owed);
+
+  /// No description provided for @remindOwing.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind those who owe'**
+  String get remindOwing;
+
+  /// No description provided for @remindedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{Nobody to remind} =1{1 reminder sent} other{{n} reminders sent}}'**
+  String remindedCount(int n);
+
+  /// No description provided for @duesStartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues start'**
+  String get duesStartLabel;
+
+  /// No description provided for @exemptToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exempt from this plan'**
+  String get exemptToggle;
+
+  /// No description provided for @recordPaymentFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a payment from {name}'**
+  String recordPaymentFrom(String name);
+
+  /// No description provided for @paymentRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment recorded.'**
+  String get paymentRecorded;
+
+  /// No description provided for @chooseMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Who paid?'**
+  String get chooseMember;
+
+  /// No description provided for @forWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'For'**
+  String get forWhat;
+
+  /// No description provided for @notifDuesReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}: you owe {owed}. Tap to pay.'**
+  String notifDuesReminder(String title, String owed);
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fund report'**
+  String get reportTitle;
+
+  /// No description provided for @periodThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get periodThisMonth;
+
+  /// No description provided for @periodLastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get periodLastMonth;
+
+  /// No description provided for @periodThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get periodThisYear;
+
+  /// No description provided for @periodLastYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Last year'**
+  String get periodLastYear;
+
+  /// No description provided for @openingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening balance'**
+  String get openingLabel;
+
+  /// No description provided for @moneyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Money in'**
+  String get moneyIn;
+
+  /// No description provided for @moneyOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Money out'**
+  String get moneyOut;
+
+  /// No description provided for @closingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing balance'**
+  String get closingLabel;
+
+  /// No description provided for @bySourceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'By cause and dues'**
+  String get bySourceTitle;
+
+  /// No description provided for @monthByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month by month'**
+  String get monthByMonth;
+
+  /// No description provided for @transactionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All transactions'**
+  String get transactionsTitle;
+
+  /// No description provided for @duesStandingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues standing'**
+  String get duesStandingTitle;
+
+  /// No description provided for @paymentsFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{p, plural, =1{1 payment} other{{p} payments}} from {c, plural, =1{1 member} other{{c} members}}'**
+  String paymentsFrom(int p, int c);
+
+  /// No description provided for @reportGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated {date}'**
+  String reportGenerated(String date);
+
+  /// No description provided for @reportCommitteeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Members see the totals. Names and amounts are shown to the committee only.'**
+  String get reportCommitteeNote;
+
+  /// No description provided for @downloadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get downloadPdf;
+
+  /// No description provided for @statementFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Statement for {name}'**
+  String statementFor(String name);
+
+  /// No description provided for @contributionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions'**
+  String get contributionsLabel;
+
+  /// No description provided for @statusConfirmedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmedLabel;
+
+  /// No description provided for @inOut.
+  ///
+  /// In en, this message translates to:
+  /// **'In'**
+  String get inOut;
+
+  /// No description provided for @outLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get outLabel;
+
+  /// No description provided for @nothingInPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'No money in or out in this period.'**
+  String get nothingInPeriod;
+
+  /// No description provided for @searchByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get searchByName;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'How it was paid'**
+  String get paymentMethod;
 }
 
 class _AppLocalizationsDelegate
