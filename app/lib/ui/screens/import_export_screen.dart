@@ -16,6 +16,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/family_book_dialog.dart';
 
 String _stamp(DateTime d) =>
     '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
@@ -211,6 +212,23 @@ class _ImportExportScreenState extends ConsumerState<ImportExportScreen> {
           exportRow(_Export.gedcom, Icons.account_tree_outlined, l.exportGedcom, l.exportGedcomSub),
           exportRow(_Export.csv, Icons.table_chart_outlined, l.exportCsv, l.exportCsvSub),
           exportRow(_Export.pdf, Icons.print_outlined, l.exportPdf, l.exportPdfSub),
+          InkWell(
+            onTap: _busy == null ? () => makeFamilyBook(context, ref) : null,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Row(children: [
+                const IconTile(Icons.menu_book_outlined, background: Bua.greenTint),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(l.familyBookAction, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                    Text(l.familyBookHint, style: const TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                  ]),
+                ),
+                const Icon(Icons.download_outlined, color: Bua.inkSubtle, size: 20),
+              ]),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ToggleRow(title: l.includeDetails, value: _details, onChanged: (v) => setState(() => _details = v)),

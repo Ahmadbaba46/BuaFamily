@@ -1299,5 +1299,22 @@
   "notifDirectMessage": "{name}: “{body}”",
   "noOtherMembers": "Babu sauran ’yan uwa da ke da asusu tukuna.",
   "messageWho": "Aika wa wa?",
-  "conversationNotFound": "Babu wannan tattaunawar."
+  "conversationNotFound": "Babu wannan tattaunawar.",
+  "familyBookSubtitle": "Littafin iyali",
+  "familyBookCover": "Daga {founder} · mutum {people} · tsararraki {generations}",
+  "generationHeading": "Tsara ta {n}",
+  "bookMarriedTo": "Aure: {names}",
+  "bookChildren": "’Ya’ya: {names}",
+  "bookBornIn": "Wurin haihuwa: {place}",
+  "bookBuriedIn": "Wurin binnewa: {place}",
+  "bookAlsoInTree": "Sauran mutane a bishiyar iyali",
+  "bookIndex": "Jerin sunaye",
+  "bookMadeOn": "An yi shi da manhajar Bua Family ranar {date}",
+  "bookHowToRead": "Kowa a zuriyar {founder}, tsara bayan tsara. Kowane mutum na da lamba: ’ya’yansa suna ƙara lamba a kanta (1.2 shi ne ɗa na biyu na 1, 1.2.3 ɗa na uku na 1.2).",
+  "familyBookAction": "Littafin iyali (PDF)",
+  "familyBookHint": "Kowa tun daga kakan farko, tsara bayan tsara, tare da hotuna da tarihin rayuwa. Ba a saka lambobin waya ko bayanan lafiya ba.",
+  "includePhotos": "Haɗa da hotuna",
+  "includePhotosHint": "Zai ɗauki lokaci, kuma fayil ɗin zai yi girma.",
+  "makeBook": "Shirya littafin",
+  "makingBook": "Ana shirya littafin iyali…"
 }

@@ -7902,6 +7902,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This conversation isn\'t available.'**
   String get conversationNotFound;
+
+  /// No description provided for @familyBookSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family book'**
+  String get familyBookSubtitle;
+
+  /// No description provided for @familyBookCover.
+  ///
+  /// In en, this message translates to:
+  /// **'From {founder} · {people} people · {generations} generations'**
+  String familyBookCover(String founder, int people, int generations);
+
+  /// No description provided for @generationHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Generation {n}'**
+  String generationHeading(int n);
+
+  /// No description provided for @bookMarriedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Married to {names}'**
+  String bookMarriedTo(String names);
+
+  /// No description provided for @bookChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Children: {names}'**
+  String bookChildren(String names);
+
+  /// No description provided for @bookBornIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Born in {place}'**
+  String bookBornIn(String place);
+
+  /// No description provided for @bookBuriedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Buried in {place}'**
+  String bookBuriedIn(String place);
+
+  /// No description provided for @bookAlsoInTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Also in the family tree'**
+  String get bookAlsoInTree;
+
+  /// No description provided for @bookIndex.
+  ///
+  /// In en, this message translates to:
+  /// **'Index of names'**
+  String get bookIndex;
+
+  /// No description provided for @bookMadeOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with the Bua Family app on {date}'**
+  String bookMadeOn(String date);
+
+  /// No description provided for @bookHowToRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone in the line of {founder}, generation by generation. Each person has a number: their children add a number to it (1.2 is the second child of 1, 1.2.3 the third child of 1.2).'**
+  String bookHowToRead(String founder);
+
+  /// No description provided for @familyBookAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Family book (PDF)'**
+  String get familyBookAction;
+
+  /// No description provided for @familyBookHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone from the forefather down, generation by generation, with photos and life stories. Contact and health details are left out.'**
+  String get familyBookHint;
+
+  /// No description provided for @includePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Include photos'**
+  String get includePhotos;
+
+  /// No description provided for @includePhotosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Slower, and a bigger file.'**
+  String get includePhotosHint;
+
+  /// No description provided for @makeBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Make the book'**
+  String get makeBook;
+
+  /// No description provided for @makingBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Making the family book…'**
+  String get makingBook;
 }
 
 class _AppLocalizationsDelegate

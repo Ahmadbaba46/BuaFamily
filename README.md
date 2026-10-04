@@ -35,6 +35,10 @@ share moments and photos, plan family events, and keep everyone's details
     dates or life status still go to an admin.
 - **Accounts are separate from people in the tree.** New sign-ups wait for an
   admin, who links them to their place in the tree.
+- **Family book (PDF):** everyone from the forefather down, generation by
+  generation, with photos, dates, parents, spouses, children and life stories,
+  register numbers (1, 1.2, 1.2.3…) and an index of names. From the Tree page
+  or Import/export. Contact and health details are left out.
 - **Messages:** private one-to-one conversations between family members, from
   Messages on Home or the Message button on a profile. Only the two people can
   read them: not admins, not backups.
