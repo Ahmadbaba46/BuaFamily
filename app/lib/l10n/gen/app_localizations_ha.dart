@@ -4390,4 +4390,69 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get paymentMethod => 'Yadda aka biya';
+
+  @override
+  String get filterClaims => 'Masu cewa ni ne';
+
+  @override
+  String get claimTitle => 'Ya ce shi ne wannan a bishiyar iyali';
+
+  @override
+  String get claimConfirm => 'Tabbatar ka haɗa';
+
+  @override
+  String get claimDecline => 'Ƙi';
+
+  @override
+  String get claimDeclineTitle => 'A ƙi wannan buƙata?';
+
+  @override
+  String get claimDeclineReason => 'Dalili gare su (ba dole ba)';
+
+  @override
+  String claimAlreadyLinked(String name) {
+    return 'Asusun $name an riga an haɗa shi da wannan mutum. Cire shi da farko idan wannan buƙata daidai ce.';
+  }
+
+  @override
+  String get claimConfirmed => 'An haɗa. Za a sanar da su.';
+
+  @override
+  String get claimDeclined => 'An ƙi. Za a sanar da su.';
+
+  @override
+  String claimsOnPerson(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Mutane $n sun ce su ne wannan',
+      one: 'Wani ya ce shi ne wannan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String personFacts(String born, String parents) {
+    return 'An haife shi $born · $parents';
+  }
+
+  @override
+  String childOf(String names) {
+    return 'ɗan $names';
+  }
+
+  @override
+  String notifClaimApproved(String person) {
+    return 'An haɗa ka da $person a bishiyar iyali.';
+  }
+
+  @override
+  String notifClaimDeclined(String person) {
+    return 'Ba a karɓi buƙatarka ta zama $person ba.';
+  }
+
+  @override
+  String notifClaimDeclinedWhy(String person, String reason) {
+    return 'Ba a karɓi buƙatarka ta zama $person ba: “$reason”';
+  }
 }

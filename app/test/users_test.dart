@@ -22,6 +22,8 @@ void main() {
           int days = 0,
           bool treasurer = false,
           String? phone,
+          String? requested,
+          String? note,
           DateTime? created}) =>
       UserRow(
         profile: Profile(
@@ -35,6 +37,8 @@ void main() {
           lastPlatform: platform,
           isTreasurer: treasurer,
           phone: phone,
+          requestedPersonId: requested,
+          claimNote: note,
           createdAt: created ?? DateTime(2026, 10, 1),
         ),
         personName: personName,
@@ -51,6 +55,7 @@ void main() {
     user('d', 'Dije', status: AccountStatus.pending, created: DateTime(2026, 10, 3)),
     user('e', 'Ese', status: AccountStatus.suspended, personId: 'sani', personName: 'Sani Bua'),
   ];
+  final claimant = user('f', 'Fati', requested: 'fatima', note: 'I am Aisha\'s daughter', seen: now, platform: 'web');
 
   test('search covers name, email, phone and the linked person', () {
     expect(users.where((u) => userMatches(u, 'aisha')).map((u) => u.profile.id), ['b']);
@@ -119,5 +124,37 @@ void main() {
     expect(find.text('Linked to Aisha Bua'), findsWidgets);
     expect(find.text('Active on 5 of the last 30 days'), findsOneWidget);
     expect(find.text('Remove as treasurer'), findsOneWidget);
+  });
+
+  testWidgets('claims show at the top with confirm, link someone else and decline', (tester) async {
+    tester.view.physicalSize = const Size(420, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        adminUsersProvider.overrideWith((ref) async => [...users, claimant]),
+        graphProvider.overrideWith((ref) async => buildFamily()),
+        profileProvider.overrideWithValue(users.first.profile),
+        profilesProvider.overrideWith((ref) async => [for (final u in [...users, claimant]) u.profile]),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: UsersView(now: now, initialFilter: UserFilter.claims)),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Claims 1'), findsOneWidget);
+    expect(find.text('Fati'), findsOneWidget);
+    expect(find.text('Says this is them in the tree'), findsOneWidget);
+    expect(find.textContaining(RegExp('fatima', caseSensitive: false)), findsWidgets);
+    expect(find.textContaining('child of'), findsOneWidget);
+    expect(find.text('“I am Aisha\'s daughter”'), findsOneWidget);
+    expect(find.text('Confirm & link'), findsOneWidget);
+    expect(find.text('Link someone else'), findsOneWidget);
+    expect(find.text('Decline'), findsOneWidget);
+    // Only open claims of approved, unlinked members count.
+    expect(userInFilter(claimant, UserFilter.claims, now), isTrue);
+    expect(users.where((u) => userInFilter(u, UserFilter.claims, now)), isEmpty);
   });
 }

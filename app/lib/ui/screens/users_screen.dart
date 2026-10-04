@@ -7,9 +7,10 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/claim_card.dart';
 import 'join_screen.dart' show showInviteSheet;
 
-enum UserFilter { all, waiting, active, suspended, admins, treasurers, notLinked, noPush, inactive }
+enum UserFilter { all, waiting, claims, active, suspended, admins, treasurers, notLinked, noPush, inactive }
 
 enum UserPlatform { any, android, web }
 
@@ -31,6 +32,7 @@ bool userInFilter(UserRow u, UserFilter f, DateTime now) {
   return switch (f) {
     UserFilter.all => true,
     UserFilter.waiting => p.status == AccountStatus.pending,
+    UserFilter.claims => hasOpenClaim(p),
     UserFilter.active => p.status == AccountStatus.active,
     UserFilter.suspended => p.status == AccountStatus.suspended,
     UserFilter.admins => p.role == AppRole.admin,
@@ -62,10 +64,13 @@ int compareUsers(UserRow a, UserRow b, UserSort sort) {
 /// Admin → Accounts: every account, searchable, filterable and sortable,
 /// with the actions in a sheet.
 class UsersView extends ConsumerStatefulWidget {
-  const UsersView({super.key, this.now});
+  const UsersView({super.key, this.now, this.initialFilter = UserFilter.all});
 
   /// For tests.
   final DateTime? now;
+
+  /// E.g. claims, when opened from a claim notification.
+  final UserFilter initialFilter;
 
   @override
   ConsumerState<UsersView> createState() => _UsersViewState();
@@ -73,7 +78,7 @@ class UsersView extends ConsumerStatefulWidget {
 
 class _UsersViewState extends ConsumerState<UsersView> {
   final _search = TextEditingController();
-  UserFilter _filter = UserFilter.all;
+  late UserFilter _filter = widget.initialFilter;
   UserPlatform _platform = UserPlatform.any;
   UserSort _sort = UserSort.newest;
 
@@ -86,6 +91,7 @@ class _UsersViewState extends ConsumerState<UsersView> {
   String _filterLabel(AppLocalizations l, UserFilter f) => switch (f) {
         UserFilter.all => l.filterAll,
         UserFilter.waiting => l.filterWaiting,
+        UserFilter.claims => l.filterClaims,
         UserFilter.active => l.filterActive,
         UserFilter.suspended => l.filterSuspended,
         UserFilter.admins => l.filterAdmins,
@@ -111,7 +117,15 @@ class _UsersViewState extends ConsumerState<UsersView> {
           ..sort((a, b) => compareUsers(a, b, _sort));
         // People waiting for approval come first: they need an answer.
         final waiting = shown.where((u) => u.profile.status == AccountStatus.pending).toList();
-        final others = shown.where((u) => u.profile.status != AccountStatus.pending).toList();
+        // Then members who say "this is me" about someone in the tree.
+        final graph = ref.watch(graphProvider).value;
+        final claims = [
+          for (final u in shown)
+            if (hasOpenClaim(u.profile) && graph?[u.profile.requestedPersonId!] != null) (u, graph![u.profile.requestedPersonId!]!),
+        ];
+        final others = shown
+            .where((u) => u.profile.status != AccountStatus.pending && !claims.any((c) => c.$1.profile.id == u.profile.id))
+            .toList();
 
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
@@ -232,6 +246,10 @@ class _UsersViewState extends ConsumerState<UsersView> {
                     child: Text(l.noResults, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
                   ),
                 for (final u in waiting) ...[_PendingCard(user: u), const SizedBox(height: 12)],
+                for (final (u, person) in claims) ...[
+                  ClaimCard(account: u.profile, person: person),
+                  const SizedBox(height: 12),
+                ],
                 if (others.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),

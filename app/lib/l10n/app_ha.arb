@@ -1199,5 +1199,20 @@
   "outLabel": "Fita",
   "nothingInPeriod": "Babu kuɗin shiga ko fita a wannan lokaci.",
   "searchByName": "Nemi da suna",
-  "paymentMethod": "Yadda aka biya"
+  "paymentMethod": "Yadda aka biya",
+  "filterClaims": "Masu cewa ni ne",
+  "claimTitle": "Ya ce shi ne wannan a bishiyar iyali",
+  "claimConfirm": "Tabbatar ka haɗa",
+  "claimDecline": "Ƙi",
+  "claimDeclineTitle": "A ƙi wannan buƙata?",
+  "claimDeclineReason": "Dalili gare su (ba dole ba)",
+  "claimAlreadyLinked": "Asusun {name} an riga an haɗa shi da wannan mutum. Cire shi da farko idan wannan buƙata daidai ce.",
+  "claimConfirmed": "An haɗa. Za a sanar da su.",
+  "claimDeclined": "An ƙi. Za a sanar da su.",
+  "claimsOnPerson": "{n, plural, =1{Wani ya ce shi ne wannan} other{Mutane {n} sun ce su ne wannan}}",
+  "personFacts": "An haife shi {born} · {parents}",
+  "childOf": "ɗan {names}",
+  "notifClaimApproved": "An haɗa ka da {person} a bishiyar iyali.",
+  "notifClaimDeclined": "Ba a karɓi buƙatarka ta zama {person} ba.",
+  "notifClaimDeclinedWhy": "Ba a karɓi buƙatarka ta zama {person} ba: “{reason}”"
 }

@@ -7,13 +7,14 @@ import '../../models/account.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import 'app_sidebar.dart';
+import 'claim_card.dart' show hasOpenClaim;
 
 /// Number of things waiting for an admin (requests + new accounts); 0 for members.
 final adminAttentionProvider = Provider<int>((ref) {
   if (!ref.watch(isAdminProvider)) return 0;
   final requests = ref.watch(requestsProvider(RequestStatus.pending)).value?.length ?? 0;
   final accounts =
-      ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending).length ?? 0;
+      ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending || hasOpenClaim(p)).length ?? 0;
   return requests + accounts;
 });
 

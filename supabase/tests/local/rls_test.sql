@@ -1396,6 +1396,49 @@ reset role;
 select test.assert((select private.backup_data() ? 'fund_dues_plans'), 'backups include dues plans');
 
 -- ---------------------------------------------------------------------------
+-- 30. Reviewing "This is me" claims.
+-- ---------------------------------------------------------------------------
+-- Ibrahim (active, not linked) says he is Ahmadu Bua; then someone else.
+update public.profiles set person_id = null, requested_person_id = null where id = :member2_id;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.profiles set requested_person_id = (select id from test.ids where name = 'grandpa') where id = :member2_id;
+reset role;
+select test.assert((select link = '/admin?tab=accounts&filter=claims' from public.notifications
+  where kind = 'account_request' and user_id = :admin_id and actor_id = :member2_id order by created_at desc limit 1),
+  'admins are taken to the claims');
+
+-- Declined, with a reason: the request is cleared and he is told.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_decline_claim(%L)$$, :member2_id), 'only admins review claims');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_decline_claim(:member2_id, 'Ahmadu passed in 1990; please pick your own name');
+reset role;
+select test.assert((select requested_person_id is null from public.profiles where id = :member2_id), 'claim cleared');
+select test.assert((select (data ->> 'approved')::boolean = false and data ->> 'person' = 'Ahmadu Bua'
+  and data ->> 'reason' like 'Ahmadu passed%' from public.notifications
+  where kind = 'claim_reviewed' and user_id = :member2_id order by created_at desc limit 1), 'told it was declined, and why');
+
+-- He claims again and the admin confirms by linking: he is told.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.profiles set requested_person_id = (select id from test.ids where name = 'grandpa') where id = :member2_id;
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_update_account(:member2_id, p_person_id => (select id from test.ids where name = 'grandpa'));
+reset role;
+select test.assert((select person_id = (select id from test.ids where name = 'grandpa') and requested_person_id is null
+  from public.profiles where id = :member2_id), 'linked and the request cleared');
+select test.assert((select (data ->> 'approved')::boolean and link like '/person/%' from public.notifications
+  where kind = 'claim_reviewed' and user_id = :member2_id order by created_at desc limit 1), 'told he is linked');
+-- Put things back for the sections after.
+update public.profiles set person_id = null where id = :member2_id;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
