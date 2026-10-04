@@ -5281,6 +5281,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Assalamu alaikum {name}! Join the {family} family app: {link}'**
   String inviteMessageFor(String name, String family, String link);
+
+  /// No description provided for @offlineSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Showing what was saved on this phone.'**
+  String get offlineSaved;
 }
 
 class _AppLocalizationsDelegate

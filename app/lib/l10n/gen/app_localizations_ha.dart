@@ -3234,4 +3234,8 @@ class AppLocalizationsHa extends AppLocalizations {
   String inviteMessageFor(String name, String family, String link) {
     return 'Assalamu alaikum $name! Shiga manhajar iyalin $family: $link';
   }
+
+  @override
+  String get offlineSaved =>
+      'Babu intanet. Ana nuna abin da aka ajiye a wannan wayar.';
 }
