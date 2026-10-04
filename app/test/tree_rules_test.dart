@@ -126,9 +126,25 @@ void main() {
     expect(repo.removedLinks, [('musa', 'aisha')]);
   });
 
-  testWidgets('members do not get the remove option', (tester) async {
+  testWidgets('members suggest removing one instead', (tester) async {
     tall(tester);
-    await tester.pumpWidget(app(const PersonScreen(personId: 'aisha'), role: AppRole.member));
+    final repo = FakeRepo();
+    await tester.pumpWidget(app(const PersonScreen(personId: 'aisha'), role: AppRole.member, repo: repo));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Remove relationship').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Remove relationship'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(FilledButton).last);
+    await tester.pumpAndSettle();
+    expect(repo.removedLinks, isEmpty);
+    expect(repo.submitted.single.$1, RequestKind.removeParentChild);
+    expect(repo.submitted.single.$2, {'parent_id': 'musa', 'child_id': 'aisha'});
+  });
+
+  testWidgets('no remove option when member suggestions are off', (tester) async {
+    tall(tester);
+    await tester.pumpWidget(app(const PersonScreen(personId: 'aisha'), role: AppRole.member, contributions: false));
     await tester.pumpAndSettle();
     expect(find.byTooltip('Remove relationship'), findsNothing);
   });
