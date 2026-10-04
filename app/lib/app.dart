@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'l10n/l10n.dart';
 import 'services/app_update.dart';
 import 'services/invites.dart';
+import 'services/offline_cache.dart';
 import 'services/push.dart';
 import 'state/providers.dart';
 import 'ui/screens/admin_screen.dart';
@@ -201,7 +202,77 @@ class BuaFamilyApp extends ConsumerWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
       scaffoldMessengerKey: rootMessengerKey,
-      builder: (context, child) => _PushBinding(child: _AppFrame(child: child ?? const SizedBox.shrink())),
+      builder: (context, child) =>
+          _PushBinding(child: _AppFrame(child: _OfflineFrame(child: child ?? const SizedBox.shrink()))),
+    );
+  }
+}
+
+/// Without a connection, a bar on top says the app shows the saved copy, and
+/// it keeps trying to reconnect.
+class _OfflineFrame extends StatelessWidget {
+  const _OfflineFrame({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder<bool>(
+        valueListenable: OfflineCache.instance.usingSaved,
+        builder: (context, offline, _) => !offline
+            ? child
+            : Column(children: [
+                const _OfflineBar(),
+                Expanded(child: MediaQuery.removePadding(context: context, removeTop: true, child: child)),
+              ]),
+      );
+}
+
+class _OfflineBar extends ConsumerStatefulWidget {
+  const _OfflineBar();
+
+  @override
+  ConsumerState<_OfflineBar> createState() => _OfflineBarState();
+}
+
+class _OfflineBarState extends ConsumerState<_OfflineBar> {
+  Timer? _retry;
+
+  @override
+  void initState() {
+    super.initState();
+    _retry = Timer.periodic(const Duration(seconds: 45), (_) => _reconnect());
+  }
+
+  @override
+  void dispose() {
+    _retry?.cancel();
+    super.dispose();
+  }
+
+  void _reconnect() {
+    ref.invalidate(graphProvider);
+    ref.invalidate(settingsProvider);
+    ref.invalidate(membersProvider);
+    refreshSharedContent(ref, inbox: true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return Material(
+      color: Bua.goldTint,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 4, 8, 4),
+          child: Row(children: [
+            const Icon(Icons.cloud_off, size: 18, color: Bua.goldInk),
+            const SizedBox(width: 10),
+            Expanded(child: Text(l.offlineSaved, style: const TextStyle(fontSize: 13, color: Bua.goldInk))),
+            TextButton(onPressed: _reconnect, child: Text(l.retry)),
+          ]),
+        ),
+      ),
     );
   }
 }

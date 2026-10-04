@@ -15,6 +15,7 @@ import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
 import '../models/story.dart';
+import '../services/offline_cache.dart';
 
 final repositoryProvider = Provider<FamilyRepository>(
   (ref) => FamilyRepository(Supabase.instance.client),
@@ -65,6 +66,8 @@ class AuthController extends ChangeNotifier {
       await beforeSignOut?.call();
     } catch (_) {}
     await _repo.auth.signOut();
+    // Nothing of this account stays on the device.
+    await OfflineCache.instance.clear();
   }
 
   @override

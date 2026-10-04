@@ -13,6 +13,7 @@ import '../models/person.dart';
 import '../models/social.dart';
 import '../models/story.dart';
 import '../services/app_update.dart';
+import '../services/offline_cache.dart';
 
 /// All server access. Row level security on the server decides what each
 /// user may read or change; the app only hides buttons that would fail.
@@ -29,11 +30,17 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- accounts
 
+  /// Saved-copy key for the signed-in account (see [cachedRead]).
+  String _key(String name) => '${userId ?? 'anon'}:$name';
+
   Future<Profile?> myProfile() async {
     final id = userId;
     if (id == null) return null;
-    final row = await _db.from('profiles').select().eq('id', id).maybeSingle();
-    return row == null ? null : Profile.fromJson(row);
+    return cachedRead(
+      _key('profile'),
+      () => _db.from('profiles').select().eq('id', id).maybeSingle(),
+      (raw) => raw == null ? null : Profile.fromJson(Map<String, dynamic>.from(raw as Map)),
+    );
   }
 
   Future<void> updateMyProfile({String? claimNote, String? requestedPersonId, String? locale}) async {
@@ -91,10 +98,11 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- settings
 
-  Future<AppSettings> settings() async {
-    final row = await _db.from('app_settings').select().maybeSingle();
-    return row == null ? const AppSettings() : AppSettings.fromJson(row);
-  }
+  Future<AppSettings> settings() => cachedRead(
+        _key('settings'),
+        () => _db.from('app_settings').select().maybeSingle(),
+        (raw) => raw == null ? const AppSettings() : AppSettings.fromJson(Map<String, dynamic>.from(raw as Map)),
+      );
 
   Future<void> updateSettings(Map<String, dynamic> changes) async {
     await _db.from('app_settings').update(changes).eq('id', true);
@@ -102,18 +110,21 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- family graph
 
-  Future<FamilyGraph> loadGraph() async {
-    final results = await Future.wait([
-      _all('persons'),
-      _all('unions'),
-      _all('parent_child'),
-    ]);
-    return FamilyGraph(
-      persons: results[0].map(Person.fromJson),
-      unions: results[1].map(FamilyUnion.fromJson).toList(),
-      links: results[2].map(ParentLink.fromJson).toList(),
-    );
-  }
+  Future<FamilyGraph> loadGraph() => cachedRead(
+        _key('graph'),
+        () async {
+          final results = await Future.wait([_all('persons'), _all('unions'), _all('parent_child')]);
+          return {'persons': results[0], 'unions': results[1], 'links': results[2]};
+        },
+        (raw) {
+          final m = raw as Map;
+          return FamilyGraph(
+            persons: jsonRows(m['persons']).map(Person.fromJson),
+            unions: jsonRows(m['unions']).map(FamilyUnion.fromJson).toList(),
+            links: jsonRows(m['links']).map(ParentLink.fromJson).toList(),
+          );
+        },
+      );
 
   Future<List<Map<String, dynamic>>> _all(String table) async {
     final out = <Map<String, dynamic>>[];
@@ -191,22 +202,26 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- details
 
-  Future<PersonDetails> details(String personId) async {
-    final r = await Future.wait([
-      _db.from('person_education').select().eq('person_id', personId).order('start_year'),
-      _db.from('person_occupations').select().eq('person_id', personId).order('start_year'),
-      _db.from('person_skills').select().eq('person_id', personId).order('skill'),
-      _db.from('person_contacts').select().eq('person_id', personId),
-      _db.from('person_health').select().eq('person_id', personId),
-    ]);
-    return PersonDetails(
-      education: r[0].map(Education.fromJson).toList(),
-      occupations: r[1].map(Occupation.fromJson).toList(),
-      skills: r[2].map(Skill.fromJson).toList(),
-      contact: r[3].isEmpty ? null : Contact.fromJson(r[3].first),
-      health: r[4].isEmpty ? null : Health.fromJson(r[4].first),
-    );
-  }
+  Future<PersonDetails> details(String personId) => cachedRead(
+        _key('details:$personId'),
+        () => Future.wait([
+          _db.from('person_education').select().eq('person_id', personId).order('start_year'),
+          _db.from('person_occupations').select().eq('person_id', personId).order('start_year'),
+          _db.from('person_skills').select().eq('person_id', personId).order('skill'),
+          _db.from('person_contacts').select().eq('person_id', personId),
+          _db.from('person_health').select().eq('person_id', personId),
+        ]),
+        (raw) {
+          final r = [for (final part in raw as List) jsonRows(part)];
+          return PersonDetails(
+            education: r[0].map(Education.fromJson).toList(),
+            occupations: r[1].map(Occupation.fromJson).toList(),
+            skills: r[2].map(Skill.fromJson).toList(),
+            contact: r[3].isEmpty ? null : Contact.fromJson(r[3].first),
+            health: r[4].isEmpty ? null : Health.fromJson(r[4].first),
+          );
+        },
+      );
 
   Future<void> saveEducation(Education e) => _save('person_education', e.id, e.toJson());
   Future<void> saveOccupation(Occupation o) => _save('person_occupations', o.id, o.toJson());
@@ -255,15 +270,17 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- sharing
 
-  Future<Map<String, Member>> memberDirectory() async {
-    final rows = await _db.rpc('member_directory') as List;
-    return {for (final r in rows) (r as Map)['user_id'] as String: Member.fromJson(r.cast<String, dynamic>())};
-  }
+  Future<Map<String, Member>> memberDirectory() => cachedRead(
+        _key('members'),
+        () => _db.rpc('member_directory'),
+        (raw) => {for (final r in jsonRows(raw)) r['user_id'] as String: Member.fromJson(r)},
+      );
 
-  Future<List<Post>> feed({int limit = 60}) async {
-    final rows = await _db.from('posts').select(Post.select).order('created_at', ascending: false).limit(limit);
-    return rows.map(Post.fromJson).toList();
-  }
+  Future<List<Post>> feed({int limit = 60}) => cachedRead(
+        _key('feed'),
+        () => _db.from('posts').select(Post.select).order('created_at', ascending: false).limit(limit),
+        (raw) => jsonRows(raw).map(Post.fromJson).toList(),
+      );
 
   /// One moment or announcement; null when it was removed.
   Future<Post?> post(String id) async {
@@ -414,10 +431,11 @@ class FamilyRepository {
 
   // ---------------------------------------------------------------- events
 
-  Future<List<FamilyEvent>> events() async {
-    final rows = await _db.from('events').select(FamilyEvent.select).order('starts_at').limit(500);
-    return rows.map(FamilyEvent.fromJson).toList();
-  }
+  Future<List<FamilyEvent>> events() => cachedRead(
+        _key('events'),
+        () => _db.from('events').select(FamilyEvent.select).order('starts_at').limit(500),
+        (raw) => jsonRows(raw).map(FamilyEvent.fromJson).toList(),
+      );
 
   Future<String> createEvent(Map<String, dynamic> event) async {
     final row = await _db.from('events').insert(event).select('id').single();

@@ -2217,5 +2217,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "offlineSaved": "You're offline. Showing what was saved on this phone."
 }

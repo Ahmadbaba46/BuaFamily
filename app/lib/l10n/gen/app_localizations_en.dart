@@ -3324,4 +3324,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String inviteMessageFor(String name, String family, String link) {
     return 'Assalamu alaikum $name! Join the $family family app: $link';
   }
+
+  @override
+  String get offlineSaved =>
+      'You\'re offline. Showing what was saved on this phone.';
 }

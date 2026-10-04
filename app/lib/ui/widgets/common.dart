@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
+import '../../services/offline_cache.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 
@@ -102,10 +104,12 @@ class PersonAvatar extends ConsumerWidget {
     final url = path == null
         ? null
         : batch ?? (showPhoto ? ref.watch(photoUrlProvider(path)).value : null);
+    final image = path == null ? null : cachedPhoto(path, url);
     final avatar = CircleAvatar(
       radius: radius,
       backgroundColor: bg,
-      foregroundImage: url == null ? null : NetworkImage(url),
+      foregroundImage: image,
+      onForegroundImageError: image == null ? null : (_, _) {},
       child: Text(
         person.initials,
         style: TextStyle(color: fg, fontWeight: FontWeight.w700, fontSize: radius * 0.66),
@@ -124,6 +128,17 @@ class PersonAvatar extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// A stored photo, kept on the phone by its storage path (links change, the
+/// photo doesn't). Without a link, only a photo already on the phone shows,
+/// and only while offline.
+ImageProvider? cachedPhoto(String path, String? url) {
+  if (url != null) return CachedNetworkImageProvider(url, cacheKey: path);
+  if (OfflineCache.instance.usingSaved.value) {
+    return CachedNetworkImageProvider('https://offline.invalid/$path', cacheKey: path);
+  }
+  return null;
 }
 
 /// One-line description under a name: "Late", lifespan, branch.

@@ -866,5 +866,6 @@
   "shareWhatsApp": "Raba a WhatsApp",
   "copyLink": "Kwafi hanyar",
   "inviteMessage": "Assalamu alaikum! Shiga manhajar iyalin {family}: {link}",
-  "inviteMessageFor": "Assalamu alaikum {name}! Shiga manhajar iyalin {family}: {link}"
+  "inviteMessageFor": "Assalamu alaikum {name}! Shiga manhajar iyalin {family}: {link}",
+  "offlineSaved": "Babu intanet. Ana nuna abin da aka ajiye a wannan wayar."
 }

@@ -59,12 +59,13 @@ class _StoragePhotoState extends ConsumerState<StoragePhoto> {
       );
     }
     final url = ref.watch(photoUrlProvider(widget.path)).value;
+    final image = cachedPhoto(widget.path, url);
     return ColoredBox(
       color: widget.placeholder,
-      child: url == null
+      child: image == null
           ? const SizedBox.expand()
-          : Image.network(
-              url,
+          : Image(
+              image: image,
               fit: widget.fit,
               width: double.infinity,
               height: double.infinity,
