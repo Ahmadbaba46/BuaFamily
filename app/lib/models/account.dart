@@ -129,6 +129,11 @@ class AppSettings {
     this.smsChannel = 'generic',
     this.weeklyBackup = true,
     this.pushEnabled = false,
+    this.developerName,
+    this.developerCompany,
+    this.developerPhone,
+    this.developerEmail,
+    this.developerWebsite,
   });
 
   final String familyName;
@@ -146,6 +151,13 @@ class AppSettings {
   /// An admin has set up push notifications.
   final bool pushEnabled;
 
+  /// Who made the app, for the About page.
+  final String? developerName;
+  final String? developerCompany;
+  final String? developerPhone;
+  final String? developerEmail;
+  final String? developerWebsite;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -155,6 +167,11 @@ class AppSettings {
         smsChannel: j['sms_channel'] as String? ?? 'generic',
         weeklyBackup: j['weekly_backup'] as bool? ?? true,
         pushEnabled: j['push_enabled'] as bool? ?? false,
+        developerName: j['developer_name'] as String?,
+        developerCompany: j['developer_company'] as String?,
+        developerPhone: j['developer_phone'] as String?,
+        developerEmail: j['developer_email'] as String?,
+        developerWebsite: j['developer_website'] as String?,
       );
 }
 

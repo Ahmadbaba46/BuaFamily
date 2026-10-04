@@ -158,6 +158,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(l.noStoriesYet, textAlign: TextAlign.center, style: const TextStyle(color: Bua.inkSubtle)),
                 ),
+              if (ref.watch(isAdminProvider))
               DashedBox(
                 onTap: () => context.push('/stories/new'),
                 child: Padding(
@@ -181,7 +182,9 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                         style: const TextStyle(fontSize: 13, height: 1.4, color: Bua.inkMuted)),
                   ]),
                 ),
-              ),
+              )
+              else
+                InfoBanner(icon: Icons.mic_none, text: l.storiesAdminOnly),
             ]);
           },
         ),

@@ -644,15 +644,23 @@ select test.assert((select o.label = 'Kano' from public.poll_votes v join public
 -- ---------------------------------------------------------------------------
 -- 14. Elders' stories, import and backups.
 -- ---------------------------------------------------------------------------
--- Aisha uploads a story told by her grandfather; the others are told.
+-- Only admins record stories: Aisha cannot; Musa (admin) records one told by
+-- her grandfather, and the others are told.
 select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
 set role authenticated;
-insert into storage.objects (bucket_id, name) values ('stories', :member_id || '/kano.m4a');
 select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('stories', %L)$$,
-  :admin_id || '/x.m4a'), 'audio only into your own folder');
+  :member_id || '/kano.m4a'), 'members cannot upload story audio');
+select test.expect_error(format($$insert into public.stories (title, speaker_name, audio_path) values ('Mine', 'Kaka', %L)$$,
+  :member_id || '/kano.m4a'), 'members cannot record stories');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into storage.objects (bucket_id, name) values ('stories', :admin_id || '/kano.m4a');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('stories', %L)$$,
+  :member_id || '/x.m4a'), 'audio only into your own folder');
 insert into public.stories (title, speaker_id, language, audio_path, duration_seconds, source_note)
   values ('How the family came to Kano', (select id from test.ids where name = 'grandpa'), 'ha',
-          :member_id || '/kano.m4a', 760, 'Recorded 1979 on cassette');
+          :admin_id || '/kano.m4a', 760, 'Recorded 1979 on cassette');
 select test.expect_error($$insert into public.stories (title, audio_path) values ('No speaker', 'x.m4a')$$,
   'a story needs a speaker');
 reset role;

@@ -3578,4 +3578,183 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m_sms_sent => 'Text messages sent';
+
+  @override
+  String get storiesAdminOnly =>
+      'Admins record the elders\' stories. If you have one to share, tell an admin.';
+
+  @override
+  String get aboutTitle => 'About the app';
+
+  @override
+  String get aboutSub => 'Version, features and who made it';
+
+  @override
+  String get aboutTagline =>
+      'One family, one place: our tree, our news and our care for each other.';
+
+  @override
+  String aboutVersion(String version, String build) {
+    return 'Version $version · build $build';
+  }
+
+  @override
+  String get aboutOnWeb => 'Web app';
+
+  @override
+  String get aboutOnAndroid => 'Android app';
+
+  @override
+  String aboutLatestAndroid(String version) {
+    return 'Newest Android app: $version';
+  }
+
+  @override
+  String get aboutUpToDate => 'You have the newest version.';
+
+  @override
+  String get featuresTitle => 'What\'s in the app';
+
+  @override
+  String get fTree => 'Family tree';
+
+  @override
+  String get fTreeD =>
+      'Everyone, with photos and birth order, and checks that keep it right.';
+
+  @override
+  String get fMembers => 'Members and profiles';
+
+  @override
+  String get fMembersD =>
+      'Find anyone, call or message them, and keep your own details up to date.';
+
+  @override
+  String get fRelated => 'How are we related?';
+
+  @override
+  String get fRelatedD => 'The path between any two people in the family.';
+
+  @override
+  String get fSharing => 'Moments, albums and announcements';
+
+  @override
+  String get fSharingD =>
+      'Share news and photos; comment, like and tag family.';
+
+  @override
+  String get fEvents => 'Events and reminders';
+
+  @override
+  String get fEventsD =>
+      'Weddings, naming ceremonies and meetings, with RSVPs, birthdays and remembrance days.';
+
+  @override
+  String get fBlood => 'Blood donors';
+
+  @override
+  String get fBloodD =>
+      'Ask for blood in an emergency and reach donors in the family at once.';
+
+  @override
+  String get fFund => 'Welfare fund';
+
+  @override
+  String get fFundD => 'Contributions, causes and payouts, open to the family.';
+
+  @override
+  String get fMentors => 'Mentorship and opportunities';
+
+  @override
+  String get fMentorsD =>
+      'Ask an experienced relative for guidance; share jobs and scholarships.';
+
+  @override
+  String get fStories => 'Elders\' stories';
+
+  @override
+  String get fStoriesD =>
+      'Voices of our elders, recorded and kept for the next generations.';
+
+  @override
+  String get fPolls => 'Polls';
+
+  @override
+  String get fPollsD => 'Decide together.';
+
+  @override
+  String get fMemorial => 'Memorial pages';
+
+  @override
+  String get fMemorialD =>
+      'Remember those who have passed, with prayers and memories.';
+
+  @override
+  String get fReach => 'Notifications and SMS';
+
+  @override
+  String get fReachD =>
+      'On the phone, on the web, and by SMS for those without data.';
+
+  @override
+  String get fOffline => 'Works offline';
+
+  @override
+  String get fOfflineD =>
+      'What you have seen stays on your phone when the network drops.';
+
+  @override
+  String get fLanguages => 'English and Hausa';
+
+  @override
+  String get fLanguagesD => 'Switch any time in More.';
+
+  @override
+  String get fPrivate => 'Private to the family';
+
+  @override
+  String get fPrivateD =>
+      'Only approved members can see anything. Admins approve every account.';
+
+  @override
+  String get developerTitle => 'Developer';
+
+  @override
+  String get developedBy => 'Designed and developed by';
+
+  @override
+  String get contactCall => 'Call';
+
+  @override
+  String get contactWhatsApp => 'WhatsApp';
+
+  @override
+  String get contactEmail => 'Email';
+
+  @override
+  String get contactWebsite => 'Website';
+
+  @override
+  String get licensesLabel => 'Open-source licences';
+
+  @override
+  String copyrightLine(String year, String company) {
+    return '© $year $company. All rights reserved.';
+  }
+
+  @override
+  String get aboutSettings => 'About page: developer';
+
+  @override
+  String get aboutSettingsHint =>
+      'Shown on the About page to everyone in the family.';
+
+  @override
+  String get developerName => 'Developer\'s name';
+
+  @override
+  String get developerCompany => 'Company';
+
+  @override
+  String get developerWebsite => 'Website (https://…)';
 }

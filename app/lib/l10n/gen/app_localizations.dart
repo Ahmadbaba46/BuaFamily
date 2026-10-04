@@ -5767,6 +5767,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Text messages sent'**
   String get m_sms_sent;
+
+  /// No description provided for @storiesAdminOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins record the elders\' stories. If you have one to share, tell an admin.'**
+  String get storiesAdminOnly;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About the app'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Version, features and who made it'**
+  String get aboutSub;
+
+  /// No description provided for @aboutTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'One family, one place: our tree, our news and our care for each other.'**
+  String get aboutTagline;
+
+  /// No description provided for @aboutVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} · build {build}'**
+  String aboutVersion(String version, String build);
+
+  /// No description provided for @aboutOnWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Web app'**
+  String get aboutOnWeb;
+
+  /// No description provided for @aboutOnAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Android app'**
+  String get aboutOnAndroid;
+
+  /// No description provided for @aboutLatestAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest Android app: {version}'**
+  String aboutLatestAndroid(String version);
+
+  /// No description provided for @aboutUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the newest version.'**
+  String get aboutUpToDate;
+
+  /// No description provided for @featuresTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s in the app'**
+  String get featuresTitle;
+
+  /// No description provided for @fTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Family tree'**
+  String get fTree;
+
+  /// No description provided for @fTreeD.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone, with photos and birth order, and checks that keep it right.'**
+  String get fTreeD;
+
+  /// No description provided for @fMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members and profiles'**
+  String get fMembers;
+
+  /// No description provided for @fMembersD.
+  ///
+  /// In en, this message translates to:
+  /// **'Find anyone, call or message them, and keep your own details up to date.'**
+  String get fMembersD;
+
+  /// No description provided for @fRelated.
+  ///
+  /// In en, this message translates to:
+  /// **'How are we related?'**
+  String get fRelated;
+
+  /// No description provided for @fRelatedD.
+  ///
+  /// In en, this message translates to:
+  /// **'The path between any two people in the family.'**
+  String get fRelatedD;
+
+  /// No description provided for @fSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Moments, albums and announcements'**
+  String get fSharing;
+
+  /// No description provided for @fSharingD.
+  ///
+  /// In en, this message translates to:
+  /// **'Share news and photos; comment, like and tag family.'**
+  String get fSharingD;
+
+  /// No description provided for @fEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events and reminders'**
+  String get fEvents;
+
+  /// No description provided for @fEventsD.
+  ///
+  /// In en, this message translates to:
+  /// **'Weddings, naming ceremonies and meetings, with RSVPs, birthdays and remembrance days.'**
+  String get fEventsD;
+
+  /// No description provided for @fBlood.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood donors'**
+  String get fBlood;
+
+  /// No description provided for @fBloodD.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for blood in an emergency and reach donors in the family at once.'**
+  String get fBloodD;
+
+  /// No description provided for @fFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Welfare fund'**
+  String get fFund;
+
+  /// No description provided for @fFundD.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions, causes and payouts, open to the family.'**
+  String get fFundD;
+
+  /// No description provided for @fMentors.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentorship and opportunities'**
+  String get fMentors;
+
+  /// No description provided for @fMentorsD.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask an experienced relative for guidance; share jobs and scholarships.'**
+  String get fMentorsD;
+
+  /// No description provided for @fStories.
+  ///
+  /// In en, this message translates to:
+  /// **'Elders\' stories'**
+  String get fStories;
+
+  /// No description provided for @fStoriesD.
+  ///
+  /// In en, this message translates to:
+  /// **'Voices of our elders, recorded and kept for the next generations.'**
+  String get fStoriesD;
+
+  /// No description provided for @fPolls.
+  ///
+  /// In en, this message translates to:
+  /// **'Polls'**
+  String get fPolls;
+
+  /// No description provided for @fPollsD.
+  ///
+  /// In en, this message translates to:
+  /// **'Decide together.'**
+  String get fPollsD;
+
+  /// No description provided for @fMemorial.
+  ///
+  /// In en, this message translates to:
+  /// **'Memorial pages'**
+  String get fMemorial;
+
+  /// No description provided for @fMemorialD.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember those who have passed, with prayers and memories.'**
+  String get fMemorialD;
+
+  /// No description provided for @fReach.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications and SMS'**
+  String get fReach;
+
+  /// No description provided for @fReachD.
+  ///
+  /// In en, this message translates to:
+  /// **'On the phone, on the web, and by SMS for those without data.'**
+  String get fReachD;
+
+  /// No description provided for @fOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Works offline'**
+  String get fOffline;
+
+  /// No description provided for @fOfflineD.
+  ///
+  /// In en, this message translates to:
+  /// **'What you have seen stays on your phone when the network drops.'**
+  String get fOfflineD;
+
+  /// No description provided for @fLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'English and Hausa'**
+  String get fLanguages;
+
+  /// No description provided for @fLanguagesD.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch any time in More.'**
+  String get fLanguagesD;
+
+  /// No description provided for @fPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Private to the family'**
+  String get fPrivate;
+
+  /// No description provided for @fPrivateD.
+  ///
+  /// In en, this message translates to:
+  /// **'Only approved members can see anything. Admins approve every account.'**
+  String get fPrivateD;
+
+  /// No description provided for @developerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer'**
+  String get developerTitle;
+
+  /// No description provided for @developedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Designed and developed by'**
+  String get developedBy;
+
+  /// No description provided for @contactCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get contactCall;
+
+  /// No description provided for @contactWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get contactWhatsApp;
+
+  /// No description provided for @contactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get contactEmail;
+
+  /// No description provided for @contactWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get contactWebsite;
+
+  /// No description provided for @licensesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get licensesLabel;
+
+  /// No description provided for @copyrightLine.
+  ///
+  /// In en, this message translates to:
+  /// **'© {year} {company}. All rights reserved.'**
+  String copyrightLine(String year, String company);
+
+  /// No description provided for @aboutSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'About page: developer'**
+  String get aboutSettings;
+
+  /// No description provided for @aboutSettingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown on the About page to everyone in the family.'**
+  String get aboutSettingsHint;
+
+  /// No description provided for @developerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer\'s name'**
+  String get developerName;
+
+  /// No description provided for @developerCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get developerCompany;
+
+  /// No description provided for @developerWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website (https://…)'**
+  String get developerWebsite;
 }
 
 class _AppLocalizationsDelegate

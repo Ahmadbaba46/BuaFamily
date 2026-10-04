@@ -497,9 +497,11 @@ class FamilyRepository {
       .from('notifications')
       .stream(primaryKey: ['id'])
       .eq('user_id', userId!)
-      .order('created_at')
+      .order('created_at', ascending: false)
       .limit(100)
-      .map((rows) => rows.map(AppNotification.fromJson).whereType<AppNotification>().toList());
+      // Live inserts can arrive out of order; newest first, always.
+      .map((rows) => rows.map(AppNotification.fromJson).whereType<AppNotification>().toList()
+        ..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
 
   Future<void> markRead(String id) =>
       _db.from('notifications').update({'read_at': DateTime.now().toUtc().toIso8601String()}).eq('id', id);

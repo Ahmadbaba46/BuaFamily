@@ -244,6 +244,38 @@ class _SettingsTab extends ConsumerWidget {
           }),
           const SizedBox(height: 12),
           Container(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+            child: _SettingRow(
+              icon: Icons.info_outline,
+              title: l.aboutSettings,
+              value: [s.developerName, s.developerCompany].whereType<String>().where((v) => v.trim().isNotEmpty).join(' · '),
+              onTap: () async {
+                final v = await showFormDialog(context, title: l.aboutSettings, fields: [
+                  TextSpec('name', l.developerName, initial: s.developerName),
+                  TextSpec('company', l.developerCompany, initial: s.developerCompany),
+                  TextSpec('phone', l.phone, initial: s.developerPhone, hint: l.phoneHint),
+                  TextSpec('email', l.email, initial: s.developerEmail),
+                  TextSpec('website', l.developerWebsite, initial: s.developerWebsite),
+                ]);
+                if (v == null) return;
+                String? text(String k) {
+                  final t = (v[k] as String? ?? '').trim();
+                  return t.isEmpty ? null : t;
+                }
+                final site = text('website');
+                await save({
+                  'developer_name': text('name'),
+                  'developer_company': text('company'),
+                  'developer_phone': text('phone'),
+                  'developer_email': text('email'),
+                  'developer_website': site == null || site.startsWith(RegExp('https?://')) ? site : 'https://$site',
+                });
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [

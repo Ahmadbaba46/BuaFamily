@@ -10,6 +10,7 @@ import 'services/invites.dart';
 import 'services/offline_cache.dart';
 import 'services/push.dart';
 import 'state/providers.dart';
+import 'ui/screens/about_screen.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
 import 'ui/screens/app_settings_screen.dart';
@@ -69,12 +70,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!profile.isActive) return loc == '/pending' ? null : '/pending';
       if (loc == '/sign-in' || loc == '/pending' || loc == '/splash') return '/home';
       if (loc.startsWith('/admin') && !profile.isAdmin) return '/home';
+      // Admins record the elders' stories.
+      if (loc == '/stories/new' && !profile.isAdmin) return '/stories';
       return null;
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       GoRoute(path: '/get-app', builder: (_, _) => const GetAppScreen()),
+      GoRoute(path: '/about', builder: (_, _) => const AboutScreen()),
       GoRoute(path: '/join/:code', builder: (_, s) => JoinScreen(code: s.pathParameters['code']!)),
       GoRoute(path: '/pending', builder: (_, _) => const PendingScreen()),
       StatefulShellRoute.indexedStack(

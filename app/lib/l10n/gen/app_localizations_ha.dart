@@ -3488,4 +3488,182 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get m_sms_sent => 'Saƙonnin tes da aka aika';
+
+  @override
+  String get storiesAdminOnly =>
+      'Masu gudanarwa ne ke naɗar labaran dattawa. Idan kana da labari, gaya wa mai gudanarwa.';
+
+  @override
+  String get aboutTitle => 'Game da manhajar';
+
+  @override
+  String get aboutSub => 'Siga, abubuwan da ke ciki da wanda ya yi ta';
+
+  @override
+  String get aboutTagline =>
+      'Iyali ɗaya, wuri ɗaya: bishiyarmu, labarunmu da kulawarmu ga juna.';
+
+  @override
+  String aboutVersion(String version, String build) {
+    return 'Siga $version · gini $build';
+  }
+
+  @override
+  String get aboutOnWeb => 'Manhajar yanar gizo';
+
+  @override
+  String get aboutOnAndroid => 'Manhajar Android';
+
+  @override
+  String aboutLatestAndroid(String version) {
+    return 'Sabuwar manhajar Android: $version';
+  }
+
+  @override
+  String get aboutUpToDate => 'Kana da sabuwar siga.';
+
+  @override
+  String get featuresTitle => 'Abubuwan da ke cikin manhajar';
+
+  @override
+  String get fTree => 'Bishiyar iyali';
+
+  @override
+  String get fTreeD =>
+      'Kowa da hotuna da tsarin haihuwa, da bincike don daidaito.';
+
+  @override
+  String get fMembers => '\'Yan uwa da bayanansu';
+
+  @override
+  String get fMembersD => 'Nemo kowa, kira ko aika saƙo, ka sabunta bayananka.';
+
+  @override
+  String get fRelated => 'Yaya muke da dangantaka?';
+
+  @override
+  String get fRelatedD => 'Hanyar dangantaka tsakanin kowane mutum biyu.';
+
+  @override
+  String get fSharing => 'Lokuta, kundin hotuna da sanarwa';
+
+  @override
+  String get fSharingD =>
+      'Raba labarai da hotuna; yi sharhi, so da ambaton \'yan uwa.';
+
+  @override
+  String get fEvents => 'Taruka da tunatarwa';
+
+  @override
+  String get fEventsD =>
+      'Bukukuwan aure, suna da taruka, da amsa gayyata, ranakun haihuwa da tunawa.';
+
+  @override
+  String get fBlood => 'Masu ba da jini';
+
+  @override
+  String get fBloodD =>
+      'Nemi jini a gaggawa ka sami masu bayarwa a cikin iyali nan take.';
+
+  @override
+  String get fFund => 'Asusun walwala';
+
+  @override
+  String get fFundD => 'Gudummawa, buƙatu da biya, a fili ga iyali.';
+
+  @override
+  String get fMentors => 'Jagoranci da damammaki';
+
+  @override
+  String get fMentorsD =>
+      'Nemi shawara daga ɗan uwa mai gogewa; raba ayyuka da tallafin karatu.';
+
+  @override
+  String get fStories => 'Labaran dattawa';
+
+  @override
+  String get fStoriesD =>
+      'Muryoyin dattawanmu, an naɗa an adana don zuriya masu zuwa.';
+
+  @override
+  String get fPolls => 'Ƙuri\'u';
+
+  @override
+  String get fPollsD => 'Mu yanke shawara tare.';
+
+  @override
+  String get fMemorial => 'Shafukan tunawa';
+
+  @override
+  String get fMemorialD =>
+      'Tunawa da waɗanda suka rasu, da addu\'o\'i da tunani.';
+
+  @override
+  String get fReach => 'Sanarwa da SMS';
+
+  @override
+  String get fReachD =>
+      'A waya, a yanar gizo, da SMS ga waɗanda ba su da data.';
+
+  @override
+  String get fOffline => 'Tana aiki ba tare da intanet ba';
+
+  @override
+  String get fOfflineD =>
+      'Abin da ka gani yana nan a wayarka idan intanet ya yanke.';
+
+  @override
+  String get fLanguages => 'Turanci da Hausa';
+
+  @override
+  String get fLanguagesD => 'Canza a kowane lokaci a Ƙari.';
+
+  @override
+  String get fPrivate => 'Na iyali kaɗai';
+
+  @override
+  String get fPrivateD =>
+      'Sai \'yan uwa da aka amince da su ke gani. Masu gudanarwa ne ke amincewa da kowane asusu.';
+
+  @override
+  String get developerTitle => 'Mai haɓakawa';
+
+  @override
+  String get developedBy => 'Wanda ya tsara kuma ya haɓaka';
+
+  @override
+  String get contactCall => 'Kira';
+
+  @override
+  String get contactWhatsApp => 'WhatsApp';
+
+  @override
+  String get contactEmail => 'Imel';
+
+  @override
+  String get contactWebsite => 'Shafin yanar gizo';
+
+  @override
+  String get licensesLabel => 'Lasisin buɗaɗɗen manhaja';
+
+  @override
+  String copyrightLine(String year, String company) {
+    return '© $year $company. Duk haƙƙoƙi a kiyaye.';
+  }
+
+  @override
+  String get aboutSettings => 'Shafin game da manhaja: mai haɓakawa';
+
+  @override
+  String get aboutSettingsHint =>
+      'Ana nuna su a shafin game da manhaja ga kowa a cikin iyali.';
+
+  @override
+  String get developerName => 'Sunan mai haɓakawa';
+
+  @override
+  String get developerCompany => 'Kamfani';
+
+  @override
+  String get developerWebsite => 'Shafin yanar gizo (https://…)';
 }
