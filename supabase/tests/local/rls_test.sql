@@ -1302,6 +1302,100 @@ select test.assert((select private.islamic_greetings('2026-05-26') = :active_mem
 update public.app_settings set hijri_offset = 0;
 
 -- ---------------------------------------------------------------------------
+-- 29. Dues and fund reports.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$insert into public.fund_dues_plans (title, amount) values ('Mine', 10)$$,
+  'only the committee creates dues');
+reset role;
+
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.fund_dues_plans (title, amount, period, starts_on) values ('Monthly dues', 2000, 'monthly', '2026-01-01');
+select id as plan_id from public.fund_dues_plans where title = 'Monthly dues' \gset
+insert into public.fund_dues_members (plan_id, user_id, starts_on) values (:'plan_id', :member_id, '2026-08-01');
+insert into public.fund_dues_members (plan_id, user_id, exempt, note) values (:'plan_id', :member2_id, true, 'Student');
+reset role;
+
+select test.assert((select periods_due = 3 and owed = 6000 and owed_periods = 3 and paid_through is null
+  and next_due = '2026-08-01' from private.dues_rows('2026-10-15') where plan_id = :'plan_id' and user_id = :member_id),
+  'owes August to October');
+select test.assert((select owed = 0 from private.dues_rows('2026-10-15') where plan_id = :'plan_id' and user_id = :member2_id),
+  'exempt members owe nothing');
+
+-- Aisha pays part; it counts once confirmed.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.fund_contributions (amount, method, dues_plan_id) values (3000, 'transfer', :'plan_id');
+select test.expect_error(format($$insert into public.fund_contributions (amount, method, dues_plan_id, cause_id)
+  values (10, 'cash', %L, (select id from public.fund_causes limit 1))$$, :'plan_id'), 'dues or a cause, not both');
+select test.expect_error($$select public.fund_dues_status(true)$$, 'members see only their own dues');
+select test.assert((select jsonb_array_length(public.fund_dues_status()) = 1
+  and public.fund_dues_status() -> 0 ->> 'user_id' = :member_id), 'a member sees their standing');
+reset role;
+select test.assert((select pending = 3000 and owed = 6000 from private.dues_rows('2026-10-15')
+  where plan_id = :'plan_id' and user_id = :member_id), 'pending payments are not counted yet');
+
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.fund_contributions set status = 'confirmed' where dues_plan_id = :'plan_id' and user_id = :member_id;
+reset role;
+select test.assert((select owed = 3000 and owed_periods = 2 and paid_through = '2026-08-01' and next_due = '2026-09-01'
+  from private.dues_rows('2026-10-15') where plan_id = :'plan_id' and user_id = :member_id), 'part paid');
+
+-- The treasurer records cash collected from her: confirmed at once, she is told.
+select count(*) as confirmed_before from public.notifications where kind = 'fund_confirmed' and user_id = :member_id \gset
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.fund_record_for(:member_id, 5000, 'cash', null, :'plan_id');
+select test.assert((select jsonb_array_length(public.fund_dues_status(true)) >= 3), 'the committee sees everyone');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.fund_record_for(%L, 100, 'cash', null, %L)$$, :member_id, :'plan_id'),
+  'members cannot record for others');
+reset role;
+select test.assert((select count(*) = :confirmed_before + 1 from public.notifications
+  where kind = 'fund_confirmed' and user_id = :member_id), 'told it was recorded');
+select test.assert((select owed = 0 and paid = 8000 and paid_through = '2026-11-01'
+  from private.dues_rows('2026-10-15') where plan_id = :'plan_id' and user_id = :member_id), 'paid ahead to November');
+
+-- Reminders on the first day of a period, to those who owe.
+select test.assert((select private.dues_reminders('2026-11-02') = 0), 'no reminders mid-period');
+select private.dues_reminders('2026-11-01');
+select test.assert((select count(*) = 0 from public.notifications where kind = 'dues_reminder' and user_id in (:member_id, :member2_id)),
+  'paid-up and exempt members are not reminded');
+select test.assert((select (data ->> 'owed')::numeric > 0 from public.notifications
+  where kind = 'dues_reminder' and user_id = :admin_id limit 1), 'those who owe are reminded with the amount');
+select test.assert((select private.dues_reminders('2026-11-01') = 0), 'once per period');
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.fund_dues_remind(%L)$$, :'plan_id'), 'members cannot send reminders');
+reset role;
+
+-- Reports: everyone sees totals; the committee also sees every transaction.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.fund_report(current_date - 30, current_date + 1) as member_report \gset
+reset role;
+select test.assert((select (:'member_report'::jsonb -> 'transactions') = 'null'::jsonb
+  and (:'member_report'::jsonb -> 'dues') = 'null'::jsonb), 'members get totals only');
+select test.assert((select (r ->> 'closing')::numeric = (r ->> 'opening')::numeric + (r ->> 'in')::numeric - (r ->> 'out')::numeric
+  from (select :'member_report'::jsonb as r) x), 'closing = opening + in - out');
+select test.assert((select (s ->> 'in')::numeric = 8000 from jsonb_array_elements(:'member_report'::jsonb -> 'sources') s
+  where s ->> 'kind' = 'dues'), 'dues appear as a source');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select jsonb_array_length(r -> 'transactions') = (r ->> 'payments')::int
+    + (select count(*) from public.fund_payouts where paid_on between current_date - 30 and current_date + 1)
+  and (r -> 'dues' -> 0 ->> 'title') = 'Monthly dues'
+  from (select public.fund_report(current_date - 30, current_date + 1) r) x), 'the committee sees every transaction and dues');
+select test.expect_error($$select public.fund_report('2026-02-01', '2026-01-01')$$, 'a period must run forwards');
+reset role;
+select test.assert((select private.backup_data() ? 'fund_dues_plans'), 'backups include dues plans');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

@@ -702,6 +702,7 @@ class FamilyRepository {
     required PayMethod method,
     bool showName = true,
     PickedImage? receipt,
+    String? duesPlanId,
   }) async {
     String? path;
     if (receipt != null) {
@@ -719,6 +720,7 @@ class FamilyRepository {
       'method': method.name,
       'show_name': showName,
       'receipt_path': path,
+      'dues_plan_id': ?duesPlanId,
     });
   }
 
@@ -739,6 +741,54 @@ class FamilyRepository {
 
   Future<void> updateFundSettings(Map<String, dynamic> changes) =>
       _db.from('fund_settings').update(changes).eq('id', true);
+
+  // ---------------------------------------------------------------- dues & reports
+
+  Future<List<DuesPlan>> duesPlans() async =>
+      (await _db.from('fund_dues_plans').select().order('created_at')).map(DuesPlan.fromJson).toList();
+
+  /// Committee: a new plan, or changes to one.
+  Future<void> saveDuesPlan(Map<String, dynamic> plan, {String? id}) =>
+      id == null ? _db.from('fund_dues_plans').insert(plan) : _db.from('fund_dues_plans').update(plan).eq('id', id);
+
+  /// Your standing on each active plan; the committee can ask for everyone's.
+  Future<List<DuesStanding>> duesStatus({bool everyone = false}) async => [
+        for (final r in (await _db.rpc('fund_dues_status', params: {'p_everyone': everyone})) as List)
+          DuesStanding.fromJson((r as Map).cast<String, dynamic>()),
+      ];
+
+  /// Committee: exempt a member, or set when their dues start.
+  Future<void> setDuesMember(String planId, String userId, {required bool exempt, DateTime? startsOn}) =>
+      _db.from('fund_dues_members').upsert({
+        'plan_id': planId,
+        'user_id': userId,
+        'exempt': exempt,
+        'starts_on': startsOn == null ? null : _day(startsOn),
+      });
+
+  /// Committee: remind everyone who owes on [planId] now. Returns how many.
+  Future<int> remindDues(String planId) async =>
+      ((await _db.rpc('fund_dues_remind', params: {'p_plan': planId})) as num?)?.toInt() ?? 0;
+
+  /// Committee: money collected for a member, confirmed at once.
+  Future<void> recordFor({
+    required String userId,
+    required double amount,
+    PayMethod method = PayMethod.cash,
+    String? causeId,
+    String? duesPlanId,
+  }) =>
+      _db.rpc('fund_record_for', params: {
+        'p_user': userId,
+        'p_amount': amount,
+        'p_method': method.name,
+        'p_cause': causeId,
+        'p_plan': duesPlanId,
+      });
+
+  /// The fund's statement for a period (inclusive).
+  Future<FundReport> fundReport(DateTime from, DateTime to) async => FundReport.fromJson(
+      ((await _db.rpc('fund_report', params: {'p_from': _day(from), 'p_to': _day(to)})) as Map).cast<String, dynamic>());
 
   Future<void> setTreasurer(String userId, bool on) =>
       _db.rpc('admin_set_treasurer', params: {'p_user_id': userId, 'p_on': on});

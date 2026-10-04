@@ -270,10 +270,27 @@ final receiptUrlProvider = FutureProvider.family<String, String>(
 );
 
 /// Refresh everything shown on the fund pages.
+final duesPlansProvider = FutureProvider<List<DuesPlan>>((ref) => ref.watch(repositoryProvider).duesPlans());
+
+/// Your standing on each active dues plan.
+final myDuesProvider = FutureProvider<List<DuesStanding>>((ref) => ref.watch(repositoryProvider).duesStatus());
+
+/// Committee: everyone's standing.
+final allDuesProvider =
+    FutureProvider.autoDispose<List<DuesStanding>>((ref) => ref.watch(repositoryProvider).duesStatus(everyone: true));
+
+final fundReportProvider = FutureProvider.autoDispose.family<FundReport, (DateTime, DateTime)>(
+  (ref, p) => ref.watch(repositoryProvider).fundReport(p.$1, p.$2),
+);
+
 void refreshFund(WidgetRef ref) {
   ref.invalidate(fundOverviewProvider);
   ref.invalidate(fundCausesProvider);
   ref.invalidate(contributionsProvider);
+  ref.invalidate(duesPlansProvider);
+  ref.invalidate(myDuesProvider);
+  ref.invalidate(allDuesProvider);
+  ref.invalidate(fundReportProvider);
 }
 
 // ---------------------------------------------------------------- mentorship & polls

@@ -54,6 +54,7 @@ const en: Texts = {
       ? "Eid Mubarak! Barka da Babbar Sallah."
       : `Happy Islamic New Year ${n(d, "hijri_year")}!`;
   },
+  dues_reminder: (d) => `${s(d, "title")}: you owe ${naira(n(d, "owed"))}. Tap to pay.`,
   opportunity: (d) => `New opportunity: ${s(d, "title")}`,
   poll: (d) => `New poll: ${s(d, "question")}`,
   story: (d) => `New story from ${s(d, "speaker")}: ${s(d, "title")}`,
@@ -115,6 +116,7 @@ const ha: Texts = {
       ? "Barka da Babbar Sallah! Allah ya karɓi ibadunmu."
       : `Barka da sabuwar shekara ta ${n(d, "hijri_year")}!`;
   },
+  dues_reminder: (d) => `${s(d, "title")}: ana binka ${naira(n(d, "owed"))}. Taɓa don biya.`,
   opportunity: (d) => `Sabuwar dama: ${s(d, "title")}`,
   poll: (d) => `Sabuwar ƙuri'a: ${s(d, "question")}`,
   story: (d) => `Sabon labari daga ${s(d, "speaker")}: ${s(d, "title")}`,

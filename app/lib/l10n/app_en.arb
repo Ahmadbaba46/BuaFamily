@@ -2699,5 +2699,186 @@
         "type": "int"
       }
     }
-  }
+  },
+  "duesTitle": "Dues",
+  "myDues": "My dues",
+  "duesEvery": "{amount} {per}",
+  "@duesEvery": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "per": {
+        "type": "String"
+      }
+    }
+  },
+  "perMonth": "a month",
+  "perQuarter": "every 3 months",
+  "perYear": "a year",
+  "youOwe": "You owe {amount}",
+  "@youOwe": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "owesAmount": "Owes {amount}",
+  "@owesAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "unpaidPeriods": "{n, plural, =1{1 period unpaid} other{{n} periods unpaid}}",
+  "@unpaidPeriods": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "paidUpTo": "Paid up to {date}",
+  "@paidUpTo": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paidUpNothingYet": "Paid up",
+  "duesExempt": "Exempt",
+  "waitingConfirmation": "{amount} waiting for confirmation",
+  "@waitingConfirmation": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payDues": "Pay dues",
+  "payDuesTitle": "Pay: {title}",
+  "@payDuesTitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "myStatement": "My statement (PDF)",
+  "fundReports": "Reports",
+  "recordForMember": "Record a payment for a member",
+  "newDuesPlan": "New dues plan",
+  "editDuesPlan": "Edit plan",
+  "planTitleLabel": "Name (e.g. Monthly dues)",
+  "planPeriod": "How often",
+  "periodMonthly": "Monthly",
+  "periodQuarterly": "Every 3 months",
+  "periodYearly": "Yearly",
+  "planStarts": "Starts",
+  "planActive": "Active",
+  "planAutoRemind": "Remind those who owe at the start of each period",
+  "noDuesPlans": "No dues yet. Create a plan for regular contributions, e.g. ₦2,000 a month.",
+  "duesFilterAll": "All",
+  "duesFilterOwing": "Owing",
+  "duesFilterPaidUp": "Paid up",
+  "duesFilterExempt": "Exempt",
+  "duesSummaryLine": "{owing} of {total} owe · {owed} outstanding",
+  "@duesSummaryLine": {
+    "placeholders": {
+      "owing": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "owed": {
+        "type": "String"
+      }
+    }
+  },
+  "remindOwing": "Remind those who owe",
+  "remindedCount": "{n, plural, =0{Nobody to remind} =1{1 reminder sent} other{{n} reminders sent}}",
+  "@remindedCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "duesStartLabel": "Dues start",
+  "exemptToggle": "Exempt from this plan",
+  "recordPaymentFrom": "Record a payment from {name}",
+  "@recordPaymentFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentRecorded": "Payment recorded.",
+  "chooseMember": "Who paid?",
+  "forWhat": "For",
+  "notifDuesReminder": "{title}: you owe {owed}. Tap to pay.",
+  "@notifDuesReminder": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "owed": {
+        "type": "String"
+      }
+    }
+  },
+  "reportTitle": "Fund report",
+  "periodThisMonth": "This month",
+  "periodLastMonth": "Last month",
+  "periodThisYear": "This year",
+  "periodLastYear": "Last year",
+  "openingLabel": "Opening balance",
+  "moneyIn": "Money in",
+  "moneyOut": "Money out",
+  "closingLabel": "Closing balance",
+  "bySourceTitle": "By cause and dues",
+  "monthByMonth": "Month by month",
+  "transactionsTitle": "All transactions",
+  "duesStandingTitle": "Dues standing",
+  "paymentsFrom": "{p, plural, =1{1 payment} other{{p} payments}} from {c, plural, =1{1 member} other{{c} members}}",
+  "@paymentsFrom": {
+    "placeholders": {
+      "p": {
+        "type": "int"
+      },
+      "c": {
+        "type": "int"
+      }
+    }
+  },
+  "reportGenerated": "Generated {date}",
+  "@reportGenerated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reportCommitteeNote": "Members see the totals. Names and amounts are shown to the committee only.",
+  "downloadPdf": "PDF",
+  "statementFor": "Statement for {name}",
+  "@statementFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "contributionsLabel": "Contributions",
+  "statusConfirmedLabel": "Confirmed",
+  "inOut": "In",
+  "outLabel": "Out",
+  "nothingInPeriod": "No money in or out in this period.",
+  "searchByName": "Search by name",
+  "paymentMethod": "How it was paid"
 }

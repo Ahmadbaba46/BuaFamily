@@ -16,9 +16,15 @@ import 'welfare_fund_screen.dart' show payMethodLabel;
 /// One cause (or the general fund when [causeId] is null): progress, how to
 /// pay, and the form to record a contribution.
 class FundCauseScreen extends ConsumerWidget {
-  const FundCauseScreen({super.key, this.causeId});
+  const FundCauseScreen({super.key, this.causeId, this.duesPlanId, this.amount});
 
   final String? causeId;
+
+  /// Paying dues on this plan instead of giving to a cause.
+  final String? duesPlanId;
+
+  /// Suggested amount (e.g. what is owed).
+  final int? amount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +33,9 @@ class FundCauseScreen extends ConsumerWidget {
     final causes = ref.watch(fundCausesProvider);
     final cause = causeId == null ? null : causes.value?.where((c) => c.id == causeId).firstOrNull;
     final committee = ref.watch(profileProvider)?.isCommittee ?? false;
+    final plan = duesPlanId == null
+        ? null
+        : ref.watch(duesPlansProvider).value?.where((p) => p.id == duesPlanId).firstOrNull;
 
     if (causeId != null && cause == null) {
       return Scaffold(
@@ -40,7 +49,7 @@ class FundCauseScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/fund')),
         titleSpacing: 0,
-        title: Text(cause?.title ?? l.contributeToFund,
+        title: Text(plan != null ? l.payDuesTitle(plan.title) : (cause?.title ?? l.contributeToFund),
             style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis),
         actions: [
           if (committee && cause != null && cause.status == CauseStatus.open)
@@ -97,7 +106,7 @@ class FundCauseScreen extends ConsumerWidget {
         if (open) ...[
           _HowToPay(overview: overview),
           const SizedBox(height: 12),
-          _RecordForm(causeId: cause?.id),
+          _RecordForm(causeId: cause?.id, duesPlanId: plan?.id, amount: amount),
         ],
       ]),
     );
@@ -145,16 +154,18 @@ class _HowToPay extends StatelessWidget {
 }
 
 class _RecordForm extends ConsumerStatefulWidget {
-  const _RecordForm({this.causeId});
+  const _RecordForm({this.causeId, this.duesPlanId, this.amount});
 
   final String? causeId;
+  final String? duesPlanId;
+  final int? amount;
 
   @override
   ConsumerState<_RecordForm> createState() => _RecordFormState();
 }
 
 class _RecordFormState extends ConsumerState<_RecordForm> {
-  final _amount = TextEditingController();
+  late final _amount = TextEditingController(text: widget.amount?.toString() ?? '');
   PayMethod _method = PayMethod.transfer;
   PickedImage? _receipt;
   bool _showName = true;
@@ -182,6 +193,7 @@ class _RecordFormState extends ConsumerState<_RecordForm> {
       context,
       () => ref.read(repositoryProvider).recordContribution(
             causeId: widget.causeId,
+            duesPlanId: widget.duesPlanId,
             amount: amount,
             method: _method,
             showName: _showName,

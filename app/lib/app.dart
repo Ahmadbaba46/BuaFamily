@@ -20,7 +20,9 @@ import 'ui/screens/blood_donors_screen.dart';
 import 'ui/screens/edit_profile_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
+import 'ui/screens/dues_screen.dart';
 import 'ui/screens/fund_cause_screen.dart';
+import 'ui/screens/fund_report_screen.dart';
 import 'ui/screens/get_app_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/join_screen.dart';
@@ -131,7 +133,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => HowRelatedScreen(fromId: s.uri.queryParameters['a'], toId: s.uri.queryParameters['b']),
       ),
       GoRoute(path: '/fund', builder: (_, _) => const WelfareFundScreen()),
-      GoRoute(path: '/fund/give', builder: (_, _) => const FundCauseScreen()),
+      GoRoute(
+        path: '/fund/give',
+        builder: (_, s) => FundCauseScreen(
+          duesPlanId: s.uri.queryParameters['dues'],
+          amount: int.tryParse(s.uri.queryParameters['amount'] ?? ''),
+        ),
+      ),
+      GoRoute(path: '/fund/reports', builder: (_, _) => const FundReportScreen()),
+      GoRoute(path: '/fund/dues', builder: (_, _) => const DuesScreen()),
       GoRoute(path: '/fund/new', builder: (_, s) => NewCauseScreen(ask: s.uri.queryParameters['ask'] == '1')),
       GoRoute(path: '/fund/cause/:id', builder: (_, s) => FundCauseScreen(causeId: s.pathParameters['id'])),
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),
