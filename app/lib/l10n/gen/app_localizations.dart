@@ -7597,6 +7597,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside.'**
   String get familyMakeupHelp;
+
+  /// No description provided for @viewTree.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole tree'**
+  String get viewTree;
+
+  /// No description provided for @viewFamilyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Family line'**
+  String get viewFamilyLine;
+
+  /// No description provided for @childrenWithParent.
+  ///
+  /// In en, this message translates to:
+  /// **'With {name}'**
+  String childrenWithParent(String name);
+
+  /// No description provided for @childCountShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No children recorded} =1{1 child} other{{count} children}}'**
+  String childCountShort(int count);
+
+  /// No description provided for @grandchildrenCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 grandchild} other{{count} grandchildren}}'**
+  String grandchildrenCount(int count);
+
+  /// No description provided for @descendantsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 descendant} other{{count} descendants}}'**
+  String descendantsCount(int count);
+
+  /// No description provided for @openProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Open profile'**
+  String get openProfile;
+
+  /// No description provided for @upTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {name}'**
+  String upTo(String name);
+
+  /// No description provided for @familyLineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a child to see their family.'**
+  String get familyLineHint;
+
+  /// No description provided for @noChildrenYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No children recorded yet.'**
+  String get noChildrenYet;
+
+  /// No description provided for @childrenHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Children ({count})'**
+  String childrenHeading(int count);
+
+  /// No description provided for @parentsNames.
+  ///
+  /// In en, this message translates to:
+  /// **'Parents: {names}'**
+  String parentsNames(String names);
 }
 
 class _AppLocalizationsDelegate

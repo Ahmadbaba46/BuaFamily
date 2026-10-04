@@ -3009,5 +3009,66 @@
       }
     }
   },
-  "familyMakeupHelp": "Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside."
+  "familyMakeupHelp": "Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside.",
+  "viewTree": "Whole tree",
+  "viewFamilyLine": "Family line",
+  "childrenWithParent": "With {name}",
+  "@childrenWithParent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "childCountShort": "{count, plural, =0{No children recorded} =1{1 child} other{{count} children}}",
+  "@childCountShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "grandchildrenCount": "{count, plural, =1{1 grandchild} other{{count} grandchildren}}",
+  "@grandchildrenCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "descendantsCount": "{count, plural, =1{1 descendant} other{{count} descendants}}",
+  "@descendantsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openProfile": "Open profile",
+  "upTo": "Up to {name}",
+  "@upTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "familyLineHint": "Tap a child to see their family.",
+  "noChildrenYet": "No children recorded yet.",
+  "childrenHeading": "Children ({count})",
+  "@childrenHeading": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parentsNames": "Parents: {names}",
+  "@parentsNames": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  }
 }

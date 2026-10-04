@@ -8,6 +8,7 @@ import 'package:bua_family/ui/screens/tree_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'domain_test.dart' show buildFamily;
 
@@ -88,6 +89,65 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('fatima'), findsNothing);
     expect(find.text('+3'), findsOneWidget);
+  });
+
+  test('the line from the forefather down to anyone', () {
+    expect(graph.lineFrom('ahmadu', 'fatima'), ['ahmadu', 'musa', 'aisha', 'fatima']);
+    expect(graph.lineFrom('ahmadu', 'ahmadu'), ['ahmadu']);
+    // A wife who married in is reached through her husband.
+    expect(graph.lineFrom('ahmadu', 'amina'), ['ahmadu', 'musa', 'amina']);
+    expect(graph.lineFrom('ahmadu', 'stranger'), isNull);
+  });
+
+  testWidgets('family line: the forefather and his children, then down one child at a time', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    tester.view.physicalSize = const Size(400, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(app(const TreeScreen()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Family line'));
+    await tester.pumpAndSettle();
+
+    // Ahmadu with his details, and only his children, by their mothers.
+    expect(find.text('Children (2)'), findsOneWidget);
+    expect(find.text('With hauwa'), findsOneWidget);
+    expect(find.text('With zainab'), findsOneWidget);
+    expect(find.text('2 children'), findsOneWidget);
+    expect(find.text('3 grandchildren'), findsOneWidget);
+    expect(find.text('7 descendants'), findsOneWidget);
+    expect(find.text('fatima'), findsNothing);
+
+    // Down to Musa: his details and his children.
+    await tester.tap(find.text('musa'));
+    await tester.pumpAndSettle();
+    expect(find.text('Children (2)'), findsOneWidget);
+    expect(find.text('Parents: ahmadu & hauwa'), findsOneWidget);
+    expect(find.text('amina'), findsOneWidget, reason: 'his wife');
+    expect(find.text('aisha'), findsOneWidget);
+
+    // And on down to Aisha, then Fatima, who has no children yet.
+    await tester.tap(find.text('aisha'));
+    await tester.pumpAndSettle();
+    expect(find.text('Children (1)'), findsOneWidget);
+    await tester.tap(find.text('fatima'));
+    await tester.pumpAndSettle();
+    expect(find.text('No children recorded yet.'), findsOneWidget);
+
+    // The line back up: tap the forefather, or go up one.
+    await tester.tap(find.byTooltip('Up to aisha'));
+    await tester.pumpAndSettle();
+    expect(find.text('Children (1)'), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, 'ahmadu'));
+    await tester.pumpAndSettle();
+    expect(find.text('With hauwa'), findsOneWidget);
+
+    // The choice is remembered on this phone; the tree is one tap away.
+    expect((await SharedPreferences.getInstance()).getBool('tree_family_line'), isTrue);
+    await tester.tap(find.text('Whole tree'));
+    await tester.pumpAndSettle();
+    expect(find.text('Children (2)'), findsNothing);
   });
 
   testWidgets('members screen searches and filters', (tester) async {
