@@ -7387,6 +7387,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your request to be linked to {person} was declined: “{reason}”'**
   String notifClaimDeclinedWhy(String person, String reason);
+
+  /// No description provided for @showDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Show details'**
+  String get showDetails;
+
+  /// No description provided for @hideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide details'**
+  String get hideDetails;
+
+  /// No description provided for @viewPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'View photo'**
+  String get viewPhoto;
+
+  /// No description provided for @changePhoto2.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get changePhoto2;
 }
 
 class _AppLocalizationsDelegate

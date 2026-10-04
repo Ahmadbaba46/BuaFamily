@@ -4455,4 +4455,16 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifClaimDeclinedWhy(String person, String reason) {
     return 'Ba a karɓi buƙatarka ta zama $person ba: “$reason”';
   }
+
+  @override
+  String get showDetails => 'Nuna bayanai';
+
+  @override
+  String get hideDetails => 'Ɓoye bayanai';
+
+  @override
+  String get viewPhoto => 'Duba hoto';
+
+  @override
+  String get changePhoto2 => 'Canza hoto';
 }

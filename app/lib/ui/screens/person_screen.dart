@@ -13,6 +13,7 @@ import '../../models/person.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/claim_card.dart';
+import '../widgets/portrait_viewer.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
@@ -113,29 +114,40 @@ class _PersonView extends ConsumerWidget {
         right: 0,
         child: Center(
           child: Semantics(
-            button: canEditDetails,
-            label: canEditDetails ? l.changePhoto : null,
+            button: person.photoPath != null || canEditDetails,
+            label: person.photoPath != null ? l.viewPhoto : (canEditDetails ? l.changePhoto : null),
             child: GestureDetector(
-              onTap: canEditDetails ? () => _changePhoto(context, ref) : null,
+              // With a photo: see it full screen (and change it from there).
+              // Without one: add it, for those who may.
+              onTap: person.photoPath != null
+                  ? () => showPortrait(context, person,
+                      onChange: canEditDetails ? () => _changePhoto(context, ref) : null)
+                  : (canEditDetails ? () => _changePhoto(context, ref) : null),
               child: Stack(clipBehavior: Clip.none, children: [
-                Container(
-                  decoration: const BoxDecoration(color: Bua.ground, shape: BoxShape.circle),
-                  padding: const EdgeInsets.all(4),
-                  child: PersonAvatar(person: person, radius: 50, gapColor: Bua.ground),
+                Hero(
+                  tag: 'portrait-${person.id}',
+                  child: Container(
+                    decoration: const BoxDecoration(color: Bua.ground, shape: BoxShape.circle),
+                    padding: const EdgeInsets.all(4),
+                    child: PersonAvatar(person: person, radius: 50, gapColor: Bua.ground),
+                  ),
                 ),
                 if (canEditDetails)
                   Positioned(
                     right: 2,
                     bottom: 2,
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: Bua.green,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Bua.ground, width: 3),
+                    child: GestureDetector(
+                      onTap: () => _changePhoto(context, ref),
+                      child: Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          color: Bua.green,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Bua.ground, width: 3),
+                        ),
+                        child: const Icon(Icons.photo_camera, size: 16, color: Colors.white),
                       ),
-                      child: const Icon(Icons.photo_camera, size: 16, color: Colors.white),
                     ),
                   ),
               ]),

@@ -9,6 +9,7 @@ import '../../models/person.dart';
 import '../../services/offline_cache.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import 'portrait_viewer.dart';
 
 /// Readable message from a server or app error.
 String errorText(Object e) => switch (e) {
@@ -162,6 +163,7 @@ class PersonTile extends StatelessWidget {
     this.subtitle,
     this.subtitleColor,
     this.highlight,
+    this.viewPhoto = false,
   });
 
   final Person person;
@@ -170,6 +172,9 @@ class PersonTile extends StatelessWidget {
   final String? subtitle;
   final Color? subtitleColor;
   final Color? highlight;
+
+  /// Tapping the photo shows it full screen (the rest of the row still opens [onTap]).
+  final bool viewPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +186,13 @@ class PersonTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(children: [
-            PersonAvatar(person: person, highlight: highlight),
+            if (viewPhoto && person.photoPath != null)
+              GestureDetector(
+                onTap: () => showPortrait(context, person),
+                child: PersonAvatar(person: person, highlight: highlight),
+              )
+            else
+              PersonAvatar(person: person, highlight: highlight),
             const SizedBox(width: 12),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
