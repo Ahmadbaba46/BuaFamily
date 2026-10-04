@@ -1214,5 +1214,9 @@
   "childOf": "ɗan {names}",
   "notifClaimApproved": "An haɗa ka da {person} a bishiyar iyali.",
   "notifClaimDeclined": "Ba a karɓi buƙatarka ta zama {person} ba.",
-  "notifClaimDeclinedWhy": "Ba a karɓi buƙatarka ta zama {person} ba: “{reason}”"
+  "notifClaimDeclinedWhy": "Ba a karɓi buƙatarka ta zama {person} ba: “{reason}”",
+  "showDetails": "Nuna bayanai",
+  "hideDetails": "Ɓoye bayanai",
+  "viewPhoto": "Duba hoto",
+  "changePhoto2": "Canza hoto"
 }

@@ -4548,4 +4548,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifClaimDeclinedWhy(String person, String reason) {
     return 'Your request to be linked to $person was declined: “$reason”';
   }
+
+  @override
+  String get showDetails => 'Show details';
+
+  @override
+  String get hideDetails => 'Hide details';
+
+  @override
+  String get viewPhoto => 'View photo';
+
+  @override
+  String get changePhoto2 => 'Change photo';
 }

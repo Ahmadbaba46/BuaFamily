@@ -162,6 +162,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                         clipBehavior: Clip.antiAlias,
                         child: PersonTile(
                           person: me,
+                          viewPhoto: true,
                           subtitle: [l.relSelf, if (me.branch?.isNotEmpty ?? false) me.branch!].join(' · '),
                           subtitleColor: Bua.green,
                           trailing: const Icon(Icons.chevron_right, color: Bua.inkSubtle),
@@ -189,6 +190,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                               ),
                             PersonTile(
                               person: p,
+                              viewPhoto: true,
                               subtitle: _subtitle(context, graph, myId, p),
                               onTap: () => context.push('/person/${p.id}'),
                             ),

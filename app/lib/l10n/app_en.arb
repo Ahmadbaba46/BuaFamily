@@ -2950,5 +2950,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "showDetails": "Show details",
+  "hideDetails": "Hide details",
+  "viewPhoto": "View photo",
+  "changePhoto2": "Change photo"
 }
