@@ -2478,7 +2478,7 @@ class AppLocalizationsHa extends AppLocalizations {
   String get saveStory => 'Adana labari';
 
   @override
-  String get uploading => 'Ana lodawa…';
+  String get uploading => 'Ana ɗorawa…';
 
   @override
   String get needAudio => 'Fara naɗi ko zaɓi naɗi tukuna.';
@@ -2959,4 +2959,79 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get openMenu => 'Buɗe jerin zaɓuɓɓuka';
+
+  @override
+  String get updateAvailableTitle => 'Sabon salo na manhajar ya fito';
+
+  @override
+  String updateAvailableBody(String version) {
+    return 'Salo $version. Sauke shi, sannan ka buɗe fayil ɗin don sabuntawa.';
+  }
+
+  @override
+  String get getAppTitle => 'Bua Family a Android';
+
+  @override
+  String get getAppSub => 'Saka manhajar iyali a wayarka ta Android.';
+
+  @override
+  String getAppVersion(String version, String date) {
+    return 'Salo $version · $date';
+  }
+
+  @override
+  String get getAppSteps =>
+      '1. Taɓa Sauke.\n2. Buɗe fayil ɗin da aka sauke.\n3. Idan wayarka ta tambaya, ka yarda a saka manhajoji daga wannan wurin, sannan ka taɓa Install (ko Update).';
+
+  @override
+  String get getAppLatest => 'Kana da sabon salo.';
+
+  @override
+  String get getAppNone => 'Ba a fitar da manhajar Android ba tukuna.';
+
+  @override
+  String get getAppIphone =>
+      'A iPhone, yi amfani da shafin yanar gizo: buɗe shi a Safari, taɓa Share, sannan Add to Home Screen.';
+
+  @override
+  String get getTheApp => 'Sami manhajar Android';
+
+  @override
+  String get whatsNew => 'Abin da ya sabunta';
+
+  @override
+  String get androidAppAdmin => 'Manhajar Android';
+
+  @override
+  String androidPublished(String version, String date) {
+    return 'An fitar da $version · $date';
+  }
+
+  @override
+  String get androidNotPublished =>
+      'Ba a fitar ba tukuna. Gina APK a kwamfutarka, sannan ka fitar da shi a nan.';
+
+  @override
+  String get publishVersion => 'Fitar da sabon salo';
+
+  @override
+  String get buildNumber => 'Lambar gini';
+
+  @override
+  String get versionLabel => 'Salo';
+
+  @override
+  String get whatsNewOptional => 'Abin da ya sabunta (ba dole ba)';
+
+  @override
+  String get appPublished =>
+      'An fitar. An sanar da masu amfani da manhajar Android.';
+
+  @override
+  String get shareAppLink => 'Hanyar saukewa don rabawa';
+
+  @override
+  String notifAppUpdate(String version) {
+    return 'Sabon salo na manhajar ya fito ($version). Taɓa don saukewa.';
+  }
 }

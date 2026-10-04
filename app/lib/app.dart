@@ -15,6 +15,7 @@ import 'ui/screens/edit_profile_screen.dart';
 import 'ui/screens/event_screen.dart';
 import 'ui/screens/events_screen.dart';
 import 'ui/screens/fund_cause_screen.dart';
+import 'ui/screens/get_app_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
@@ -54,6 +55,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: auth,
     redirect: (context, state) {
       final loc = state.matchedLocation;
+      // The Android download page is open to everyone (shared on WhatsApp).
+      if (loc == '/get-app') return null;
       if (auth.loading) return loc == '/splash' ? null : '/splash';
       if (!auth.signedIn) return loc == '/sign-in' ? null : '/sign-in';
       final profile = auth.profile;
@@ -66,6 +69,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const _Splash()),
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
+      GoRoute(path: '/get-app', builder: (_, _) => const GetAppScreen()),
       GoRoute(path: '/pending', builder: (_, _) => const PendingScreen()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => HomeShell(shell: shell),

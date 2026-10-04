@@ -4843,6 +4843,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open menu'**
   String get openMenu;
+
+  /// No description provided for @updateAvailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of the app is ready'**
+  String get updateAvailableTitle;
+
+  /// No description provided for @updateAvailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}. Download it, then open the file to update.'**
+  String updateAvailableBody(String version);
+
+  /// No description provided for @getAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bua Family for Android'**
+  String get getAppTitle;
+
+  /// No description provided for @getAppSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Install the family app on your Android phone.'**
+  String get getAppSub;
+
+  /// No description provided for @getAppVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} · {date}'**
+  String getAppVersion(String version, String date);
+
+  /// No description provided for @getAppSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap Download.\n2. Open the downloaded file.\n3. If your phone asks, allow installing apps from this source, then tap Install (or Update).'**
+  String get getAppSteps;
+
+  /// No description provided for @getAppLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the latest version.'**
+  String get getAppLatest;
+
+  /// No description provided for @getAppNone.
+  ///
+  /// In en, this message translates to:
+  /// **'The Android app hasn\'t been published yet.'**
+  String get getAppNone;
+
+  /// No description provided for @getAppIphone.
+  ///
+  /// In en, this message translates to:
+  /// **'On an iPhone, use the website instead: open it in Safari, tap Share, then Add to Home Screen.'**
+  String get getAppIphone;
+
+  /// No description provided for @getTheApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the Android app'**
+  String get getTheApp;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
+
+  /// No description provided for @androidAppAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Android app'**
+  String get androidAppAdmin;
+
+  /// No description provided for @androidPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Published {version} · {date}'**
+  String androidPublished(String version, String date);
+
+  /// No description provided for @androidNotPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Not published yet. Build the APK on your computer, then publish it here.'**
+  String get androidNotPublished;
+
+  /// No description provided for @publishVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish a new version'**
+  String get publishVersion;
+
+  /// No description provided for @buildNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Build number'**
+  String get buildNumber;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionLabel;
+
+  /// No description provided for @whatsNewOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new (optional)'**
+  String get whatsNewOptional;
+
+  /// No description provided for @appPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Published. Members with the Android app have been notified.'**
+  String get appPublished;
+
+  /// No description provided for @shareAppLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Download link to share'**
+  String get shareAppLink;
+
+  /// No description provided for @notifAppUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of the app is ready ({version}). Tap to download.'**
+  String notifAppUpdate(String version);
 }
 
 class _AppLocalizationsDelegate

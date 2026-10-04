@@ -13,6 +13,7 @@ import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
 import '../widgets/request_card.dart';
+import 'get_app_screen.dart';
 
 class AdminScreen extends ConsumerWidget {
   const AdminScreen({super.key, this.initialTab = 0});
@@ -424,6 +425,11 @@ class _SettingsTab extends ConsumerWidget {
           _SmsCard(settings: s, save: save),
           const SizedBox(height: 12),
           _PushCard(settings: s, save: save),
+          const SizedBox(height: 12),
+          AndroidReleaseCard(pickApk: () async {
+            final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['apk']);
+            return f == null ? null : (f.name, await f.readAsBytes());
+          }),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(16),

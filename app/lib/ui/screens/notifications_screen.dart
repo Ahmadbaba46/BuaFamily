@@ -47,6 +47,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
           ? l.notifChangeAdd(n.str('name') ?? '', n.str('person') ?? l.notifSomeone)
           : l.notifChangeEdit(n.str('name') ?? '', n.str('person') ?? l.notifTheTree),
       NotificationKind.accountApproved => l.notifAccountApproved,
+      NotificationKind.appUpdate => l.notifAppUpdate(n.str('version') ?? ''),
       NotificationKind.requestReviewed => n.data['approved'] == true
           ? l.notifRequestApproved(n.str('person') ?? l.notifTheTree)
           : l.notifRequestDeclined(n.str('person') ?? l.notifTheTree),
@@ -71,6 +72,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.changeRequest => Icons.edit_note,
       NotificationKind.accountApproved => Icons.celebration_outlined,
       NotificationKind.requestReviewed => Icons.fact_check_outlined,
+      NotificationKind.appUpdate => Icons.system_update,
     };
 
 class NotificationsScreen extends ConsumerWidget {

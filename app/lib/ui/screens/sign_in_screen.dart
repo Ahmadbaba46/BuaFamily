@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
 import '../../state/providers.dart';
@@ -174,6 +176,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   ),
                 ),
               ),
+              if (kIsWeb)
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () => context.push('/get-app'),
+                    icon: const Icon(Icons.android),
+                    label: Text(l.getTheApp),
+                  ),
+                ),
               const Center(child: LanguageToggle()),
               const SizedBox(height: 12),
               Padding(

@@ -82,5 +82,7 @@ Check 'flutter build apk'
 $apk = Join-Path $repo "bua-family-1.0.$build.apk"
 Copy-Item (Join-Path $app 'build\app\outputs\flutter-apk\app-release.apk') $apk -Force
 Step "Done: $apk"
-Write-Host 'Send this file to phones (WhatsApp, Drive or USB), open it there and allow installing.'
+Write-Host 'Publish it for the family in the app: Admin > Settings > Android app > Publish a new version.'
+Write-Host 'Phones with the app then offer the update, and the download link is'
+Write-Host '  https://buafamily.vercel.app/#/get-app'
 Start-Process explorer.exe "/select,`"$apk`""

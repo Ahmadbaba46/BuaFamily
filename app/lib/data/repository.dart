@@ -12,6 +12,7 @@ import '../models/notification.dart';
 import '../models/person.dart';
 import '../models/social.dart';
 import '../models/story.dart';
+import '../services/app_update.dart';
 
 /// All server access. Row level security on the server decides what each
 /// user may read or change; the app only hides buttons that would fail.
@@ -813,6 +814,40 @@ class FamilyRepository {
 
   Future<void> registerPushToken(String token, String platform) =>
       _db.rpc('register_push_token', params: {'p_token': token, 'p_platform': platform});
+
+  // ---------------------------------------------------------------- Android app
+
+  Future<AndroidRelease?> androidRelease() async {
+    final r = await _db.rpc('android_release');
+    return r == null ? null : AndroidRelease.fromJson(Map<String, dynamic>.from(r as Map));
+  }
+
+  /// Public download link (the 'releases' bucket is public).
+  String releaseUrl(String path) => _db.storage.from('releases').getPublicUrl(path);
+
+  /// Admin: uploads a new APK and tells members with the Android app.
+  /// Each version gets its own file name, so nobody downloads a cached old one.
+  Future<void> publishAndroid({
+    required Uint8List bytes,
+    required int build,
+    required String version,
+    String? notes,
+    String? previousPath,
+  }) async {
+    final path = 'bua-family-$version.apk';
+    await _db.storage.from('releases').uploadBinary(
+          path,
+          bytes,
+          fileOptions: const FileOptions(upsert: true, contentType: 'application/vnd.android.package-archive'),
+        );
+    await _db.rpc('admin_publish_android',
+        params: {'p_build': build, 'p_version': version, 'p_path': path, 'p_notes': notes});
+    if (previousPath != null && previousPath != path) {
+      try {
+        await _db.storage.from('releases').remove([previousPath]);
+      } catch (_) {}
+    }
+  }
 
   /// Counts a notification as delivered (for the admin's push status).
   Future<void> pushAck(String notificationId) => _db.rpc('push_ack', params: {'p_id': notificationId});

@@ -48,7 +48,8 @@ async function receipt(id) {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   const link = (event.notification.data && event.notification.data.link) || '/notifications';
-  const url = new URL(link.startsWith('/') ? link : '/notifications', self.location.origin).href;
+  // The web app's pages live after the # (e.g. /#/posts/123).
+  const url = new URL('/#' + (link.startsWith('/') ? link : '/notifications'), self.location.origin).href;
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windows) => {
       for (const w of windows) {
