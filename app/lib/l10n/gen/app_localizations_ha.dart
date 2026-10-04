@@ -4467,4 +4467,72 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get changePhoto2 => 'Canza hoto';
+
+  @override
+  String get searchTitle => 'Nema';
+
+  @override
+  String get searchEverything => 'Nemi mutane, rubutu, taruka, labarai…';
+
+  @override
+  String get searchAll => 'Duka';
+
+  @override
+  String get kindPeople => 'Mutane';
+
+  @override
+  String get kindPost => 'Rubutu';
+
+  @override
+  String get kindEvent => 'Taruka';
+
+  @override
+  String get kindAlbum => 'Kundin hotuna';
+
+  @override
+  String get kindPhoto => 'Hotuna';
+
+  @override
+  String get kindStory => 'Labaran dattawa';
+
+  @override
+  String get kindCause => 'Asusun walwala';
+
+  @override
+  String get kindPoll => 'Ƙuri\'u';
+
+  @override
+  String get kindOpportunity => 'Damammaki';
+
+  @override
+  String get kindMemory => 'Tunawa';
+
+  @override
+  String get kindSkill => 'Ƙwarewa';
+
+  @override
+  String get kindWork => 'Aiki';
+
+  @override
+  String get recentSearches => 'Bincike na baya';
+
+  @override
+  String get clearRecent => 'Share';
+
+  @override
+  String searchNothing(String q) {
+    return 'Ba a sami komai ba don “$q”.';
+  }
+
+  @override
+  String get searchTypeMore => 'Rubuta aƙalla haruffa 2.';
+
+  @override
+  String get searchTips =>
+      'Gwada suna, wuri, kalma daga rubutu, ƙwarewa kamar “nas”, ko taro.';
+
+  @override
+  String showAllCount(int n) {
+    return 'Nuna duka $n';
+  }
 }

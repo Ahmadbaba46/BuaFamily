@@ -1439,6 +1439,38 @@ select test.assert((select (data ->> 'approved')::boolean and link like '/person
 update public.profiles set person_id = null where id = :member2_id;
 
 -- ---------------------------------------------------------------------------
+-- 31. Search everything.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Barka da Sallah daga gidan ɗan uwa Musa, mun gode 100% sosai');
+select test.assert((select count(*) >= 1 from public.search_all('dan uwa') where kind = 'post'), 'Hausa letters match plain letters');
+select test.assert((select snippet like '%ɗan uwa%' from public.search_all('dan uwa') where kind = 'post' limit 1),
+  'the snippet shows the original text');
+select test.assert((select count(*) = 0 from public.search_all('%')), 'wildcards are taken literally, and 1 letter is too short');
+select test.assert((select count(*) >= 1 from public.search_all('100%') where kind = 'post'), 'a literal % still matches');
+select test.assert((select count(*) >= 1 from public.search_all('Postgraduate') where kind = 'opportunity'),
+  'finds opportunities');
+select test.assert((select link like '/posts/%' from public.search_all('sallah daga') limit 1), 'results link to their page');
+reset role;
+-- Private things stay private: a conversation message is not searchable at all;
+-- a proposed cause shows only to its author and the committee.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.fund_causes (title, status) values ('Zebra private rent help', 'proposed');
+select test.assert((select count(*) = 1 from public.search_all('zebra private') where kind = 'cause'), 'the author finds their request');
+reset role;
+update public.profiles set is_treasurer = false where id = :member2_id;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.search_all('zebra private')), 'other members do not');
+reset role;
+update public.profiles set is_treasurer = true where id = :member2_id;
+set role anon;
+select test.expect_error($$select * from public.search_all('sallah')$$, 'not for anonymous visitors');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

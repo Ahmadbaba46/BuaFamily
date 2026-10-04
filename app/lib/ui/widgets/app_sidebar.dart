@@ -174,6 +174,7 @@ class AppSidebar extends ConsumerWidget {
               const Divider(height: 1, color: Bua.line),
               heading(l.family),
               item(Icons.home_outlined, l.navHome, '/home'),
+              item(Icons.search, l.searchTitle, '/search'),
               item(Icons.account_tree_outlined, l.navTree, '/tree'),
               item(Icons.people_outline, l.navMembers, '/members', badge: people),
               item(Icons.event_outlined, l.navEvents, '/events', badge: upcoming),

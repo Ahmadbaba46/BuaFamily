@@ -48,6 +48,7 @@ import 'ui/screens/polls_screen.dart';
 import 'ui/screens/post_screen.dart';
 import 'ui/screens/reminders_screen.dart';
 import 'ui/screens/restore_screen.dart';
+import 'ui/screens/search_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/stories_screen.dart';
 import 'ui/screens/tree_check_screen.dart';
@@ -85,6 +86,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       GoRoute(path: '/get-app', builder: (_, _) => const GetAppScreen()),
       GoRoute(path: '/about', builder: (_, _) => const AboutScreen()),
+      GoRoute(path: '/search', builder: (_, s) => SearchScreen(initialQuery: s.uri.queryParameters['q'] ?? '')),
       GoRoute(path: '/join/:code', builder: (_, s) => JoinScreen(code: s.pathParameters['code']!)),
       GoRoute(path: '/pending', builder: (_, _) => const PendingScreen()),
       StatefulShellRoute.indexedStack(

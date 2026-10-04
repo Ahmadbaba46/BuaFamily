@@ -127,9 +127,22 @@ class Person {
   }
 
   bool matches(String query) {
-    final q = query.trim().toLowerCase();
+    final q = searchFold(query.trim());
     if (q.isEmpty) return true;
-    final hay = [displayName, nickname, branch, birthPlace].whereType<String>().join(' ').toLowerCase();
+    final hay = searchFold([displayName, nickname, branch, birthPlace].whereType<String>().join(' '));
     return q.split(RegExp(r'\s+')).every(hay.contains);
   }
+}
+
+/// For matching: lower case, Hausa letters as plain ones ("ɗan" ~ "dan"),
+/// no apostrophes. Mirrors public.search_fold in the database.
+String searchFold(String s) {
+  const map = {'ɓ': 'b', 'Ɓ': 'b', 'ɗ': 'd', 'Ɗ': 'd', 'ƙ': 'k', 'Ƙ': 'k', 'ƴ': 'y', 'Ƴ': 'y'};
+  final b = StringBuffer();
+  for (final r in s.runes) {
+    final ch = String.fromCharCode(r);
+    if (ch == "'" || ch == '’' || ch == 'ʼ') continue;
+    b.write(map[ch] ?? ch.toLowerCase());
+  }
+  return b.toString();
 }

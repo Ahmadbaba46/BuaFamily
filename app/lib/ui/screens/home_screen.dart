@@ -71,6 +71,11 @@ class HomeScreen extends ConsumerWidget {
                   Text(l.greeting(name), style: Theme.of(context).textTheme.titleLarge),
                 ]),
               ),
+              IconButton(
+                tooltip: l.searchTitle,
+                icon: const Icon(Icons.search),
+                onPressed: () => context.push('/search'),
+              ),
               const NotificationBell(),
             ]),
           ),
