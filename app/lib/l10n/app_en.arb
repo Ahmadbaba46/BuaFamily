@@ -2954,5 +2954,40 @@
   "showDetails": "Show details",
   "hideDetails": "Hide details",
   "viewPhoto": "View photo",
-  "changePhoto2": "Change photo"
+  "changePhoto2": "Change photo",
+  "searchTitle": "Search",
+  "searchEverything": "Search people, moments, events, stories…",
+  "searchAll": "All",
+  "kindPeople": "People",
+  "kindPost": "Moments",
+  "kindEvent": "Events",
+  "kindAlbum": "Albums",
+  "kindPhoto": "Photos",
+  "kindStory": "Elders' stories",
+  "kindCause": "Welfare fund",
+  "kindPoll": "Polls",
+  "kindOpportunity": "Opportunities",
+  "kindMemory": "Memories",
+  "kindSkill": "Skills",
+  "kindWork": "Work",
+  "recentSearches": "Recent searches",
+  "clearRecent": "Clear",
+  "searchNothing": "Nothing found for “{q}”.",
+  "@searchNothing": {
+    "placeholders": {
+      "q": {
+        "type": "String"
+      }
+    }
+  },
+  "searchTypeMore": "Type at least 2 letters.",
+  "searchTips": "Try a name, a place, a word from a moment, a skill like “nurse”, or an event.",
+  "showAllCount": "Show all {n}",
+  "@showAllCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -270,6 +270,11 @@ final receiptUrlProvider = FutureProvider.family<String, String>(
 );
 
 /// Refresh everything shown on the fund pages.
+/// Search results for a query (people come from the tree, not from here).
+final searchProvider = FutureProvider.autoDispose.family<List<SearchHit>, String>(
+  (ref, q) => q.trim().length < 2 ? Future.value(const <SearchHit>[]) : ref.watch(repositoryProvider).searchAll(q, limit: 20),
+);
+
 final duesPlansProvider = FutureProvider<List<DuesPlan>>((ref) => ref.watch(repositoryProvider).duesPlans());
 
 /// Your standing on each active dues plan.

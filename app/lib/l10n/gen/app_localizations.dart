@@ -7411,6 +7411,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change photo'**
   String get changePhoto2;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchTitle;
+
+  /// No description provided for @searchEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Search people, moments, events, stories…'**
+  String get searchEverything;
+
+  /// No description provided for @searchAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get searchAll;
+
+  /// No description provided for @kindPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get kindPeople;
+
+  /// No description provided for @kindPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Moments'**
+  String get kindPost;
+
+  /// No description provided for @kindEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get kindEvent;
+
+  /// No description provided for @kindAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Albums'**
+  String get kindAlbum;
+
+  /// No description provided for @kindPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get kindPhoto;
+
+  /// No description provided for @kindStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Elders\' stories'**
+  String get kindStory;
+
+  /// No description provided for @kindCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Welfare fund'**
+  String get kindCause;
+
+  /// No description provided for @kindPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Polls'**
+  String get kindPoll;
+
+  /// No description provided for @kindOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunities'**
+  String get kindOpportunity;
+
+  /// No description provided for @kindMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Memories'**
+  String get kindMemory;
+
+  /// No description provided for @kindSkill.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get kindSkill;
+
+  /// No description provided for @kindWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get kindWork;
+
+  /// No description provided for @recentSearches.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get recentSearches;
+
+  /// No description provided for @clearRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearRecent;
+
+  /// No description provided for @searchNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found for “{q}”.'**
+  String searchNothing(String q);
+
+  /// No description provided for @searchTypeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least 2 letters.'**
+  String get searchTypeMore;
+
+  /// No description provided for @searchTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a name, a place, a word from a moment, a skill like “nurse”, or an event.'**
+  String get searchTips;
+
+  /// No description provided for @showAllCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all {n}'**
+  String showAllCount(int n);
 }
 
 class _AppLocalizationsDelegate

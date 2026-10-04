@@ -136,6 +136,15 @@ class FamilyRepository {
           ActivityEntry.fromJson(Map<String, dynamic>.from(r as Map)),
       ];
 
+  // ---------------------------------------------------------------- search
+
+  /// Everything the member may see that mentions [query] (people are searched
+  /// in the app, from the tree).
+  Future<List<SearchHit>> searchAll(String query, {int limit = 8}) async => [
+        for (final r in (await _db.rpc('search_all', params: {'p_query': query, 'p_limit': limit})) as List)
+          SearchHit.fromJson((r as Map).cast<String, dynamic>()),
+      ];
+
   // ---------------------------------------------------------------- signing in
 
   /// Opens Google's sign-in page; the session arrives when it comes back

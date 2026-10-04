@@ -4560,4 +4560,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changePhoto2 => 'Change photo';
+
+  @override
+  String get searchTitle => 'Search';
+
+  @override
+  String get searchEverything => 'Search people, moments, events, stories…';
+
+  @override
+  String get searchAll => 'All';
+
+  @override
+  String get kindPeople => 'People';
+
+  @override
+  String get kindPost => 'Moments';
+
+  @override
+  String get kindEvent => 'Events';
+
+  @override
+  String get kindAlbum => 'Albums';
+
+  @override
+  String get kindPhoto => 'Photos';
+
+  @override
+  String get kindStory => 'Elders\' stories';
+
+  @override
+  String get kindCause => 'Welfare fund';
+
+  @override
+  String get kindPoll => 'Polls';
+
+  @override
+  String get kindOpportunity => 'Opportunities';
+
+  @override
+  String get kindMemory => 'Memories';
+
+  @override
+  String get kindSkill => 'Skills';
+
+  @override
+  String get kindWork => 'Work';
+
+  @override
+  String get recentSearches => 'Recent searches';
+
+  @override
+  String get clearRecent => 'Clear';
+
+  @override
+  String searchNothing(String q) {
+    return 'Nothing found for “$q”.';
+  }
+
+  @override
+  String get searchTypeMore => 'Type at least 2 letters.';
+
+  @override
+  String get searchTips =>
+      'Try a name, a place, a word from a moment, a skill like “nurse”, or an event.';
+
+  @override
+  String showAllCount(int n) {
+    return 'Show all $n';
+  }
 }

@@ -318,3 +318,25 @@ class Memory {
         createdAt: _ts(j['created_at']),
       );
 }
+
+/// One thing found by search: a moment, an event, a story…
+class SearchHit {
+  const SearchHit({required this.kind, required this.id, required this.link, this.title, this.snippet, this.at});
+
+  /// post, event, album, photo, story, cause, poll, opportunity, memory, skill, work.
+  final String kind;
+  final String id;
+  final String? title;
+  final String? snippet;
+  final DateTime? at;
+  final String link;
+
+  factory SearchHit.fromJson(Map<String, dynamic> j) => SearchHit(
+        kind: j['kind'] as String,
+        id: j['id'] as String,
+        title: j['title'] as String?,
+        snippet: j['snippet'] as String?,
+        at: j['at'] == null ? null : DateTime.parse(j['at'] as String).toLocal(),
+        link: j['link'] as String,
+      );
+}
