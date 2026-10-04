@@ -846,7 +846,7 @@
   },
   "notificationsSms": "Notifications & SMS",
   "phoneNumber": "Phone number",
-  "phoneHint": "e.g. 0803 123 4567",
+  "phoneHint": "0803 123 4567",
   "phoneInvalid": "Enter a valid phone number.",
   "smsOptIn": "Get SMS on this phone",
   "smsOptInSub": "Important family news by text message, even without data.",
@@ -1562,7 +1562,7 @@
   "exportHeading": "Export",
   "exportGedcom": "Family tree (GEDCOM)",
   "exportGedcomSub": "Opens in other genealogy apps",
-  "exportCsv": "Spreadsheet (CSV)",
+  "exportCsv": "Export CSV",
   "exportCsvSub": "Everyone, with dates and places",
   "exportPdf": "Printable tree (PDF)",
   "exportPdfSub": "Poster size, for family gatherings",
@@ -2040,7 +2040,6 @@
   "buildNumber": "Build number",
   "versionLabel": "Version",
   "whatsNewOptional": "What's new (optional)",
-  "uploading": "Uploading…",
   "appPublished": "Published. Members with the Android app have been notified.",
   "shareAppLink": "Download link to share",
   "notifAppUpdate": "A new version of the app is ready ({version}). Tap to download.",
@@ -2130,8 +2129,6 @@
   },
   "emailTab": "Email",
   "phoneTab": "Phone",
-  "phoneNumber": "Phone number",
-  "phoneHint": "0803 123 4567",
   "yourNameNew": "Your name (if you're new here)",
   "sendCode": "Send me a code",
   "codeSent": "We sent a 6-digit code to {phone}.",
@@ -2247,7 +2244,6 @@
   "customiseTilesHint": "Pick what shows on your dashboard.",
   "showTable": "Table",
   "showChart": "Chart",
-  "exportCsv": "Export CSV",
   "breakdownBy": "Split by",
   "byBranch": "Branch",
   "byPlatform": "App",
@@ -2337,5 +2333,85 @@
   "m_opportunities": "Opportunities shared",
   "m_notifications": "Notifications sent",
   "m_notifications_received": "Notifications received",
-  "m_sms_sent": "Text messages sent"
+  "m_sms_sent": "Text messages sent",
+  "storiesAdminOnly": "Admins record the elders' stories. If you have one to share, tell an admin.",
+  "aboutTitle": "About the app",
+  "aboutSub": "Version, features and who made it",
+  "aboutTagline": "One family, one place: our tree, our news and our care for each other.",
+  "aboutVersion": "Version {version} · build {build}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutOnWeb": "Web app",
+  "aboutOnAndroid": "Android app",
+  "aboutLatestAndroid": "Newest Android app: {version}",
+  "@aboutLatestAndroid": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutUpToDate": "You have the newest version.",
+  "featuresTitle": "What's in the app",
+  "fTree": "Family tree",
+  "fTreeD": "Everyone, with photos and birth order, and checks that keep it right.",
+  "fMembers": "Members and profiles",
+  "fMembersD": "Find anyone, call or message them, and keep your own details up to date.",
+  "fRelated": "How are we related?",
+  "fRelatedD": "The path between any two people in the family.",
+  "fSharing": "Moments, albums and announcements",
+  "fSharingD": "Share news and photos; comment, like and tag family.",
+  "fEvents": "Events and reminders",
+  "fEventsD": "Weddings, naming ceremonies and meetings, with RSVPs, birthdays and remembrance days.",
+  "fBlood": "Blood donors",
+  "fBloodD": "Ask for blood in an emergency and reach donors in the family at once.",
+  "fFund": "Welfare fund",
+  "fFundD": "Contributions, causes and payouts, open to the family.",
+  "fMentors": "Mentorship and opportunities",
+  "fMentorsD": "Ask an experienced relative for guidance; share jobs and scholarships.",
+  "fStories": "Elders' stories",
+  "fStoriesD": "Voices of our elders, recorded and kept for the next generations.",
+  "fPolls": "Polls",
+  "fPollsD": "Decide together.",
+  "fMemorial": "Memorial pages",
+  "fMemorialD": "Remember those who have passed, with prayers and memories.",
+  "fReach": "Notifications and SMS",
+  "fReachD": "On the phone, on the web, and by SMS for those without data.",
+  "fOffline": "Works offline",
+  "fOfflineD": "What you have seen stays on your phone when the network drops.",
+  "fLanguages": "English and Hausa",
+  "fLanguagesD": "Switch any time in More.",
+  "fPrivate": "Private to the family",
+  "fPrivateD": "Only approved members can see anything. Admins approve every account.",
+  "developerTitle": "Developer",
+  "developedBy": "Designed and developed by",
+  "contactCall": "Call",
+  "contactWhatsApp": "WhatsApp",
+  "contactEmail": "Email",
+  "contactWebsite": "Website",
+  "licensesLabel": "Open-source licences",
+  "copyrightLine": "© {year} {company}. All rights reserved.",
+  "@copyrightLine": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      },
+      "company": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutSettings": "About page: developer",
+  "aboutSettingsHint": "Shown on the About page to everyone in the family.",
+  "developerName": "Developer's name",
+  "developerCompany": "Company",
+  "developerWebsite": "Website (https://…)"
 }

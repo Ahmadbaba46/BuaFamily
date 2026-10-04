@@ -78,12 +78,22 @@ void main() {
     expect(find.textContaining('recorded 1979 on cassette'), findsOneWidget);
     expect(find.text('0:00 / 12:40'), findsOneWidget);
     expect(find.text('Sani Bua · 8:12 · Hausa'), findsOneWidget);
-    expect(find.text('Record an elder’s story'), findsOneWidget);
+    // Members listen; admins record.
+    expect(find.text('Record an elder’s story'), findsNothing);
+    expect(find.textContaining('Admins record the elders'), findsOneWidget);
 
     expect(find.textContaining('Kakanmu'), findsNothing);
     await tester.tap(find.text('Transcript'));
     await tester.pump();
     expect(find.textContaining('Kakanmu'), findsOneWidget);
+  });
+
+  testWidgets('admins see the record button', (tester) async {
+    tall(tester);
+    await tester.pumpWidget(app(const StoriesScreen(), admin: true));
+    await tester.pumpAndSettle();
+    expect(find.text('Record an elder’s story'), findsOneWidget);
+    expect(find.textContaining('Admins record the elders'), findsNothing);
   });
 
   testWidgets('a new story needs a recording, a title and a speaker', (tester) async {

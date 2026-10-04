@@ -274,6 +274,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.info_outline,
+                title: l.aboutTitle,
+                onTap: () => context.push('/about'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.logout,
                 title: l.signOut,
                 color: Bua.danger,

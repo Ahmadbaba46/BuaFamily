@@ -191,6 +191,7 @@ class AppSidebar extends ConsumerWidget {
               item(Icons.cake_outlined, l.remindersTitle, '/reminders'),
               item(Icons.pending_actions_outlined, l.myRequests, '/my-requests', badge: myPending),
               item(Icons.settings_outlined, l.settingsScreen, '/settings'),
+              item(Icons.info_outline, l.aboutTitle, '/about'),
               if (isAdmin) ...[
                 heading(l.navAdmin),
                 item(Icons.admin_panel_settings_outlined, l.navAdmin, '/admin', badge: attention, urgent: true),
