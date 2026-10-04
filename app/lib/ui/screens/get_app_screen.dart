@@ -12,8 +12,20 @@ import '../widgets/bua.dart';
 import '../widgets/common.dart';
 
 /// Opens the APK download in the browser (Android then offers to install it).
-Future<void> downloadAndroidApp(WidgetRef ref, AndroidRelease release) =>
-    launchUrl(Uri.parse(ref.read(repositoryProvider).releaseUrl(release.path)), mode: LaunchMode.externalApplication);
+/// The Google Play build opens its Play page instead.
+Future<void> downloadAndroidApp(WidgetRef ref, AndroidRelease release) async {
+  if (isPlayBuild) return openPlayStore(ref);
+  await launchUrl(Uri.parse(ref.read(repositoryProvider).releaseUrl(release.path)),
+      mode: LaunchMode.externalApplication);
+}
+
+Future<void> openPlayStore(WidgetRef ref) async {
+  Map<String, dynamic>? info;
+  try {
+    info = await ref.read(publicInfoProvider.future);
+  } catch (_) {}
+  await launchUrl(Uri.parse(playStoreUrlOf(info)), mode: LaunchMode.externalApplication);
+}
 
 /// The Android app: download link, version and how to install it. Open to
 /// everyone (also before signing in), so the link can be shared on WhatsApp.
@@ -25,6 +37,7 @@ class GetAppScreen extends ConsumerWidget {
     final l = context.l10n;
     final release = ref.watch(androidReleaseProvider);
     final installed = ref.watch(installedBuildProvider).value;
+    final onPlay = isPlayBuild || ref.watch(publicInfoProvider).value?['play_store_url'] != null;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,9 +61,20 @@ class GetAppScreen extends ConsumerWidget {
               const SizedBox(height: 6),
               Text(l.getAppSub, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Bua.inkMuted)),
               const SizedBox(height: 24),
-              if (r == null)
+              if (onPlay) ...[
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
+                  onPressed: () => openPlayStore(ref),
+                  icon: const Icon(Icons.shop),
+                  label: Text(l.getOnPlay),
+                ),
+                if (!isPlayBuild && r != null)
+                  TextButton(onPressed: () => downloadAndroidApp(ref, r), child: Text(l.downloadApkInstead)),
+                const SizedBox(height: 12),
+              ],
+              if (r == null && !onPlay)
                 InfoBanner(icon: Icons.hourglass_empty, text: l.getAppNone)
-              else ...[
+              else if (r != null && !onPlay) ...[
                 Text(
                   l.getAppVersion(r.version, r.publishedAt == null ? '' : l.formatDate(r.publishedAt!)),
                   textAlign: TextAlign.center,
@@ -124,8 +148,8 @@ class UpdateBanner extends ConsumerWidget {
             TextButton(onPressed: () => context.push('/get-app'), child: Text(l.whatsNew)),
             FilledButton.icon(
               onPressed: () => downloadAndroidApp(ref, update),
-              icon: const Icon(Icons.download, size: 18),
-              label: Text(l.download),
+              icon: Icon(isPlayBuild ? Icons.shop : Icons.download, size: 18),
+              label: Text(isPlayBuild ? l.updateOnPlay : l.download),
             ),
           ]),
         ]),
@@ -248,6 +272,8 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
               : const Icon(Icons.upload_file),
           label: Text(_busy ? l.uploading : l.publishVersion),
         ),
+        const SizedBox(height: 12),
+        _PlayStoreLink(url: ref.watch(settingsProvider).value?.playStoreUrl),
         if (current != null) ...[
           const SizedBox(height: 12),
           Text(l.shareAppLink, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
@@ -264,6 +290,75 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
           ]),
         ],
       ]),
+    );
+  }
+}
+
+/// Admin: the app's Google Play link, once it's there.
+class _PlayStoreLink extends ConsumerWidget {
+  const _PlayStoreLink({required this.url});
+
+  final String? url;
+
+  Future<void> _edit(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
+    final box = TextEditingController(text: url ?? '');
+    final value = await showDialog<String>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text(l.playStoreLink),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          Text(l.playStoreLinkHelp, style: const TextStyle(fontSize: 13, color: Bua.inkMuted, height: 1.4)),
+          const SizedBox(height: 12),
+          TextField(
+            controller: box,
+            keyboardType: TextInputType.url,
+            decoration: const InputDecoration(hintText: 'https://play.google.com/store/apps/details?id=$androidPackage'),
+          ),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c), child: Text(l.cancel)),
+          FilledButton(onPressed: () => Navigator.pop(c, box.text.trim()), child: Text(l.save)),
+        ],
+      ),
+    );
+    box.dispose();
+    if (value == null || !context.mounted) return;
+    if (value.isNotEmpty && !value.startsWith('https://play.google.com/')) {
+      showSnack(context, l.playStoreLinkInvalid);
+      return;
+    }
+    final ok = await guarded(
+        context, () => ref.read(repositoryProvider).updateSettings({'play_store_url': value.isEmpty ? null : value}));
+    if (ok) {
+      ref.invalidate(settingsProvider);
+      ref.invalidate(publicInfoProvider);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () => _edit(context, ref),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(children: [
+          const Icon(Icons.shop, size: 20, color: Bua.green),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(l.playStoreLink, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              Text(url ?? l.notSet,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+            ]),
+          ),
+          const Icon(Icons.edit_outlined, size: 18, color: Bua.inkSubtle),
+        ]),
+      ),
     );
   }
 }

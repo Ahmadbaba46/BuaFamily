@@ -7,6 +7,13 @@
 # later runs reuse them, so every build updates the app already on phones.
 # The finished APK is copied to the top of the project folder.
 
+# For Google Play, add -Play: it builds the app bundle (.aab) to upload in
+# Play Console instead of the APK.
+#
+#   powershell -ExecutionPolicy Bypass -File app\tool\build_android.ps1 -Play
+
+param([switch]$Play)
+
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $app = Join-Path $repo 'app'
@@ -76,6 +83,18 @@ Check 'Reading the version from git'
 Step "Building Bua Family 1.0.$build"
 flutter pub get
 Check 'flutter pub get'
+if ($Play) {
+  flutter build appbundle --release --dart-define-from-file=config.json --dart-define=PLAY_STORE=true `
+    --build-number=$build --build-name="1.0.$build"
+  Check 'flutter build appbundle'
+  $aab = Join-Path $repo "bua-family-play-1.0.$build.aab"
+  Copy-Item (Join-Path $app 'build\app\outputs\bundle\release\app-release.aab') $aab -Force
+  Step "Done: $aab"
+  Write-Host 'Upload it in Play Console: your app > Test and release > (a track) > Create new release.'
+  Start-Process explorer.exe "/select,`"$aab`""
+  exit 0
+}
+
 flutter build apk --release --dart-define-from-file=config.json --build-number=$build --build-name="1.0.$build"
 Check 'flutter build apk'
 

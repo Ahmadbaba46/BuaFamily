@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy policy · Bua Family</title>
+  <meta name="description" content="How the Bua Family app collects, uses and protects family information.">
+  <meta name="theme-color" content="#1D6B40">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root { --green: #1D6B40; --green-dark: #134A2C; --tint: #E3F0E7; --ink: #17231B; --muted: #4E5C52; --line: #DDE3DA; --bg: #F6F4EE; --card: #FFFFFF; }
+    @media (prefers-color-scheme: dark) {
+      :root { --green: #6FC48F; --green-dark: #A8DDB9; --tint: #1E3326; --ink: #E8EEE9; --muted: #B4C0B7; --line: #2C3A30; --bg: #111813; --card: #18211B; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    header img { width: 52px; height: 52px; border-radius: 14px; }
+    h1 { font-size: 1.7rem; line-height: 1.25; margin: 0; }
+    h2 { font-size: 1.15rem; margin: 28px 0 6px; color: var(--green-dark); }
+    p, li { color: var(--ink); }
+    ul { padding-left: 1.2em; }
+    li { margin: 4px 0; }
+    .muted { color: var(--muted); font-size: .92rem; }
+    .lang { display: inline-flex; background: var(--line); border-radius: 999px; padding: 3px; margin: 12px 0 4px; }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .9rem; padding: 6px 16px; border-radius: 999px; cursor: pointer; min-height: 36px; }
+    .lang button[aria-pressed="true"] { background: var(--card); color: var(--ink); font-weight: 600; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 4px 18px 14px; margin-top: 16px; }
+    a { color: var(--green); }
+    main [lang="ha"] { display: none; }
+    body.ha main [lang="ha"] { display: revert; }
+    body.ha main [lang="en"] { display: none; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/Icon-192.png" alt="">
+    <div>
+      <h1><span lang="en">Privacy policy</span><span lang="ha">Manufofin sirri</span></h1>
+      <div class="muted"><span lang="en">Bua Family app · updated 4 October 2026</span><span lang="ha">Manhajar Bua Family · an sabunta 4 ga Oktoba 2026</span></div>
+    </div>
+  </header>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="ha" aria-pressed="false">Hausa</button>
+  </div>
+
+  <section lang="en">
+    <p>Bua Family is a private app for one family: its family tree, news, photos, events and support for each other. Only family members an admin has approved can open it. This page explains what the app keeps, why, who can see it, and how to have it deleted.</p>
+
+    <h2>Who runs it</h2>
+    <p>The app is made by <span class="dev-company">the developer</span> for the family. Family admins approve members and look after the family's information. <span class="contact-line">Contact: <span class="dev-contact">a family admin, through the app</span>.</span></p>
+
+    <h2>What the app keeps</h2>
+    <ul>
+      <li><b>Your account:</b> your name, email address or phone number, and your Google name and email if you sign in with Google. Passwords are stored only in scrambled (hashed) form.</li>
+      <li><b>The family tree:</b> names, relationships, dates and places of birth and death, photos, life stories, education, work, skills and contact details. Health details (blood group, genotype) are private unless the person chooses to share them.</li>
+      <li><b>What you share:</b> moments, photos, comments, likes, events and replies, polls and votes, memories of relatives who have died, mentorship messages, blood requests and offers, and welfare fund payments with their receipts.</li>
+      <li><b>Elders' stories:</b> voice recordings that admins make with an elder's permission. The microphone is used only while recording.</li>
+      <li><b>How the app is used:</b> sign-ins, which pages are opened and when, the kind of device (Android or web) and the app version, so admins can see who is active and keep the app working. Page visits are kept for 90 days and the rest of this log for a year.</li>
+      <li><b>Notifications:</b> a notification token for your device, and your phone number if you choose to get SMS.</li>
+    </ul>
+    <p>The app does not collect your location, your phone's contacts or advertising IDs. There are no ads, and the family's information is never sold.</p>
+
+    <h2>Who can see it</h2>
+    <ul>
+      <li>Approved family members see the family tree and what is shared with the family.</li>
+      <li>Admins and the welfare fund committee also see what they need to run the family's affairs: who has joined, payments, and the activity log.</li>
+      <li>Health details are seen only by the person, admins, and whoever the person shares them with.</li>
+      <li>Private mentorship conversations are seen only by the two people in them.</li>
+    </ul>
+
+    <h2>Services the app uses</h2>
+    <ul>
+      <li><b>Supabase</b>: stores the information and photos, and handles sign-in.</li>
+      <li><b>Google Firebase Cloud Messaging</b>: delivers notifications.</li>
+      <li><b>Google Sign-In</b>: if you choose to sign in with Google.</li>
+      <li><b>Termii</b>: sends SMS to Nigerian phone numbers, when the family has SMS turned on.</li>
+      <li><b>Vercel</b>: hosts the website.</li>
+    </ul>
+    <p>They process information only to provide these services. Everything travels encrypted (HTTPS), and access rules check every request.</p>
+
+    <h2>Deleting your account</h2>
+    <p>In the app, open <b>More → Delete my account</b>. Or ask for it on the <a href="delete-account.html">account deletion page</a>. Your sign-in, phone and email, and what you shared (moments, comments, likes, photos you uploaded, memories, messages and requests) are deleted. Records that belong to the whole family stay without your name: your place in the family tree, albums and events you created, polls, elders' stories you recorded, and welfare fund payments (the fund's accounts must still add up).</p>
+
+    <h2>Children</h2>
+    <p>The app is not made for children. Children's names and dates in the family tree are added by their parents or relatives and are seen only by approved family members.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be posted here with a new date.</p>
+  </section>
+
+  <section lang="ha">
+    <p>Bua Family manhaja ce ta sirri don iyali ɗaya: bishiyar iyali, labarai, hotuna, taruka da taimakon juna. Sai ’yan uwa da shugaba ya amince da su ne kawai ke iya buɗe ta. Wannan shafin ya bayyana abin da manhajar ke ajiyewa, dalili, wanda zai iya gani, da yadda za a goge shi.</p>
+
+    <h2>Wanda ke kula da ita</h2>
+    <p><span class="dev-company">Mai haɓaka manhajar</span> ne ya yi ta don iyalin. Shugabannin iyali ne ke amincewa da ’yan uwa kuma suke kula da bayanan iyali. <span class="contact-line">Tuntuɓa: <span class="dev-contact">shugaban iyali, ta cikin manhajar</span>.</span></p>
+
+    <h2>Abin da manhajar ke ajiyewa</h2>
+    <ul>
+      <li><b>Asusunka:</b> sunanka, adireshin imel ko lambar waya, da sunanka da imel na Google idan ka shiga da Google. Ana ajiye kalmar sirri a ɓoye kawai (hashed).</li>
+      <li><b>Bishiyar iyali:</b> sunaye, dangantaka, ranaku da wuraren haihuwa da rasuwa, hotuna, tarihin rayuwa, karatu, aiki, ƙwarewa da hanyoyin tuntuɓa. Bayanan lafiya (rukunin jini, genotype) sirri ne sai mutum ya zaɓi ya raba.</li>
+      <li><b>Abin da ka raba:</b> labarai, hotuna, sharhi, so, taruka da amsoshi, ƙuri’u, tunawa da waɗanda suka rasu, saƙonnin jagoranci, buƙatun jini da tayi, da gudummawar asusun taimako tare da rasidinsu.</li>
+      <li><b>Labaran dattawa:</b> naɗar murya da shugabanni ke yi da izinin dattijo. Ana amfani da makirufo ne kawai lokacin naɗa.</li>
+      <li><b>Yadda ake amfani da manhajar:</b> shiga, shafukan da aka buɗe da lokaci, irin na’ura (Android ko yanar gizo) da sigar manhajar, don shugabanni su ga masu amfani su kuma kiyaye manhajar. Ana ajiye ziyarar shafuka na kwana 90, sauran wannan rajistar na shekara guda.</li>
+      <li><b>Sanarwa:</b> alamar sanarwa ta na’urarka, da lambar wayarka idan ka zaɓi samun SMS.</li>
+    </ul>
+    <p>Manhajar ba ta ɗaukar wurin da kake, lambobin wayarka ko alamomin talla. Babu talla, kuma ba a taɓa sayar da bayanan iyali.</p>
+
+    <h2>Wanda zai iya gani</h2>
+    <ul>
+      <li>’Yan uwa da aka amince da su suna ganin bishiyar iyali da abin da aka raba wa iyali.</li>
+      <li>Shugabanni da kwamitin asusun taimako suna ganin abin da suke buƙata don gudanar da al’amuran iyali: waɗanda suka shigo, biyan kuɗi, da rajistar ayyuka.</li>
+      <li>Bayanan lafiya: mutumin kansa, shugabanni, da wanda ya raba wa ne kawai ke gani.</li>
+      <li>Tattaunawar jagoranci ta sirri: mutanen biyu da ke ciki ne kawai ke gani.</li>
+    </ul>
+
+    <h2>Ayyukan da manhajar ke amfani da su</h2>
+    <ul>
+      <li><b>Supabase</b>: ajiye bayanai da hotuna, da shiga.</li>
+      <li><b>Google Firebase Cloud Messaging</b>: isar da sanarwa.</li>
+      <li><b>Google Sign-In</b>: idan ka zaɓi shiga da Google.</li>
+      <li><b>Termii</b>: aika SMS zuwa lambobin Najeriya, idan iyali sun kunna SMS.</li>
+      <li><b>Vercel</b>: ɗaukar shafin yanar gizo.</li>
+    </ul>
+    <p>Suna sarrafa bayanai ne kawai don samar da waɗannan ayyuka. Komai yana tafiya a ɓoye (HTTPS), kuma ana duba izini a kowace buƙata.</p>
+
+    <h2>Goge asusunka</h2>
+    <p>A cikin manhajar, buɗe <b>Ƙari → Goge asusuna</b>. Ko ka nema a <a href="delete-account.html">shafin goge asusu</a>. Za a goge shigarka, lambar waya da imel, da abin da ka raba (labarai, sharhi, so, hotunan da ka ɗora, tunawa, saƙonni da buƙatu). Bayanan da na iyali ne gaba ɗaya za su zauna ba tare da sunanka ba: matsayinka a bishiyar iyali, kundin hotuna da taruka da ka ƙirƙira, ƙuri’u, labaran dattawa da ka naɗa, da gudummawar asusun taimako (lissafin asusun dole ya daidaita).</p>
+
+    <h2>Yara</h2>
+    <p>Ba don yara aka yi manhajar ba. Iyaye ko ’yan uwa ne ke saka sunaye da ranakun yara a bishiyar iyali, kuma ’yan uwa da aka amince da su ne kawai ke gani.</p>
+
+    <h2>Canje-canje</h2>
+    <p>Idan wannan manufar ta canza, za a saka sabuwar a nan da sabuwar rana.</p>
+  </section>
+</main>
+<script>
+  (function () {
+    // English or Hausa: the browser's language first, then the reader's choice.
+    function show(lang) {
+      document.body.classList.toggle('ha', lang === 'ha');
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+      });
+      try { localStorage.setItem('bua_legal_lang', lang); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('bua_legal_lang'); } catch (e) {}
+    var asked = new URLSearchParams(location.search).get('lang');
+    show(asked || saved || ((navigator.language || '').slice(0, 2) === 'ha' ? 'ha' : 'en'));
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.addEventListener('click', function () { show(b.dataset.lang); });
+    });
+
+    // The developer's contact details, as the family admins set them.
+    fetch('push-config.json').then(function (r) { return r.json(); }).then(function (c) {
+      return fetch(c.url + '/rest/v1/rpc/public_info', {
+        method: 'POST',
+        headers: { apikey: c.key, 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+    }).then(function (r) { return r.json(); }).then(function (info) {
+      if (!info) return;
+      var who = [info.developer_name, info.developer_company].filter(Boolean).join(', ');
+      if (who) document.querySelectorAll('.dev-company').forEach(function (e) { e.textContent = who; });
+      var ways = [];
+      if (info.developer_email) ways.push('<a href="mailto:' + encodeURI(info.developer_email) + '">' + escapeHtml(info.developer_email) + '</a>');
+      if (info.developer_phone) ways.push(escapeHtml(info.developer_phone));
+      if (ways.length) document.querySelectorAll('.dev-contact').forEach(function (e) { e.innerHTML = ways.join(' · '); });
+    }).catch(function () { /* the family-admin wording stays */ });
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (ch) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+      });
+    }
+  })();
+</script>
+</body>
+</html>

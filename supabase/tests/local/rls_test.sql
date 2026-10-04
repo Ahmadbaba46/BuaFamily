@@ -1567,6 +1567,22 @@ select test.assert((select count(*) = 0 from public.notifications where created_
 drop table leaver_notes;
 
 -- ---------------------------------------------------------------------------
+-- 35. Public info: the Play link and the developer's contact, for anyone.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+update public.app_settings set developer_email = 'dev@example.com', play_store_url = null;
+select test.expect_error($$update public.app_settings set play_store_url = 'https://evil.example.com/app'$$,
+  'only a Google Play link');
+update public.app_settings set play_store_url = 'https://play.google.com/store/apps/details?id=com.fuyoudhat.buafamily';
+select set_config('request.jwt.claims', '{}', false);
+set role anon;
+select test.assert((select i ->> 'developer_email' = 'dev@example.com' and i ->> 'play_store_url' like 'https://play.google.com/%'
+  and not i ? 'hijri_offset' from public.public_info() i), 'anyone sees the Play link and how to reach the developer');
+reset role;
+update public.app_settings set play_store_url = null;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

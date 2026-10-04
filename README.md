@@ -409,6 +409,17 @@ The same key is the "upload key" if the app later goes to the Play Store.
 website; added to the Home Screen (Safari → Share → Add to Home Screen, iOS
 16.4 or later) it opens like an app and can receive notifications.
 
+### 4b. Google Play (optional)
+
+[`docs/play-store`](docs/play-store/README.md) has everything for the Play Console:
+the store listing in English and Hausa, the feature graphic, the Data safety
+answers, the privacy policy (`/privacy.html`) and account deletion
+(`/delete-account.html`) pages, and the steps from the first closed test to
+production. The *Android app* workflow builds the Play app bundle
+(`bua-family-play.aab`) next to the APK; on Windows use
+`app\tool\build_android.ps1 -Play`. Once the app is live, paste its link in
+**Admin → Settings → Android app → Google Play link**.
+
 ### 5. Moving to a new Supabase project (from a backup)
 
 1. Download the latest backup: **More → Import, export & backup → Download**.

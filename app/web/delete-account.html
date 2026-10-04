@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delete your account · Bua Family</title>
+  <meta name="description" content="How to delete your Bua Family account and what is removed.">
+  <meta name="theme-color" content="#1D6B40">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root { --green: #1D6B40; --green-dark: #134A2C; --tint: #E3F0E7; --ink: #17231B; --muted: #4E5C52; --line: #DDE3DA; --bg: #F6F4EE; --card: #FFFFFF; }
+    @media (prefers-color-scheme: dark) {
+      :root { --green: #6FC48F; --green-dark: #A8DDB9; --tint: #1E3326; --ink: #E8EEE9; --muted: #B4C0B7; --line: #2C3A30; --bg: #111813; --card: #18211B; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    header img { width: 52px; height: 52px; border-radius: 14px; }
+    h1 { font-size: 1.7rem; line-height: 1.25; margin: 0; }
+    h2 { font-size: 1.15rem; margin: 28px 0 6px; color: var(--green-dark); }
+    p, li { color: var(--ink); }
+    ul { padding-left: 1.2em; }
+    li { margin: 4px 0; }
+    .muted { color: var(--muted); font-size: .92rem; }
+    .lang { display: inline-flex; background: var(--line); border-radius: 999px; padding: 3px; margin: 12px 0 4px; }
+    .lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .9rem; padding: 6px 16px; border-radius: 999px; cursor: pointer; min-height: 36px; }
+    .lang button[aria-pressed="true"] { background: var(--card); color: var(--ink); font-weight: 600; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 4px 18px 14px; margin-top: 16px; }
+    a { color: var(--green); }
+    ol { padding-left: 1.3em; }
+    .note { background: var(--tint); border-radius: 14px; padding: 12px 16px; margin-top: 16px; }
+    main [lang="ha"] { display: none; }
+    body.ha main [lang="ha"] { display: revert; }
+    body.ha main [lang="en"] { display: none; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/Icon-192.png" alt="">
+    <div>
+      <h1><span lang="en">Delete your account</span><span lang="ha">Goge asusunka</span></h1>
+      <div class="muted"><span lang="en">Bua Family app</span><span lang="ha">Manhajar Bua Family</span></div>
+    </div>
+  </header>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="ha" aria-pressed="false">Hausa</button>
+  </div>
+
+  <section lang="en">
+    <h2>In the app (straight away)</h2>
+    <ol>
+      <li>Open Bua Family and sign in.</li>
+      <li>Go to <b>More</b>.</li>
+      <li>Tap <b>Delete my account</b>, read what is removed, tick the box and confirm.</li>
+    </ol>
+    <p class="muted">The family's only admin has to make someone else an admin first.</p>
+
+    <h2>Without the app</h2>
+    <p>Send a request from the email address or phone number you sign in with, saying you want your Bua Family account deleted, to <span class="dev-contact">a family admin</span>. It is done within 30 days, and you are told when it is.</p>
+
+    <h2>What is deleted</h2>
+    <p>Your account (sign-in, phone number and email) and what you shared: moments, comments, likes, photos you uploaded, memories, mentorship messages, requests, replies to events, votes, notifications and your devices.</p>
+
+    <h2>What stays, without your name</h2>
+    <p>Records that belong to the whole family: your place in the family tree, albums and events you created (with everyone else's photos and replies), polls, elders' stories you recorded, and welfare fund payments (the fund's accounts must still add up). To change or remove your entry in the family tree, ask a family admin.</p>
+    <p class="note">Read the full <a href="privacy.html">privacy policy</a>.</p>
+  </section>
+
+  <section lang="ha">
+    <h2>A cikin manhajar (nan take)</h2>
+    <ol>
+      <li>Buɗe Bua Family ka shiga.</li>
+      <li>Je zuwa <b>Ƙari</b>.</li>
+      <li>Taɓa <b>Goge asusuna</b>, karanta abin da za a cire, yi alama a akwatin ka tabbatar.</li>
+    </ol>
+    <p class="muted">Idan kai kaɗai ne shugaban iyali, sai ka mai da wani shugaba tukuna.</p>
+
+    <h2>Ba tare da manhajar ba</h2>
+    <p>Aika buƙata daga imel ko lambar wayar da kake shiga da ita, cewa kana so a goge asusunka na Bua Family, zuwa ga <span class="dev-contact">shugaban iyali</span>. Za a yi cikin kwana 30, kuma za a sanar da kai.</p>
+
+    <h2>Abin da za a goge</h2>
+    <p>Asusunka (shiga, lambar waya da imel) da abin da ka raba: labarai, sharhi, so, hotunan da ka ɗora, tunawa, saƙonnin jagoranci, buƙatu, amsoshin taruka, ƙuri’u, sanarwa da na’urorinka.</p>
+
+    <h2>Abin da zai zauna, ba tare da sunanka ba</h2>
+    <p>Bayanan da na iyali ne gaba ɗaya: matsayinka a bishiyar iyali, kundin hotuna da taruka da ka ƙirƙira (tare da hotuna da amsoshin wasu), ƙuri’u, labaran dattawa da ka naɗa, da gudummawar asusun taimako (lissafin asusun dole ya daidaita). Don canza ko cire sunanka a bishiyar iyali, tambayi shugaban iyali.</p>
+    <p class="note">Karanta cikakkun <a href="privacy.html">manufofin sirri</a>.</p>
+  </section>
+</main>
+<script>
+  (function () {
+    // English or Hausa: the browser's language first, then the reader's choice.
+    function show(lang) {
+      document.body.classList.toggle('ha', lang === 'ha');
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+      });
+      try { localStorage.setItem('bua_legal_lang', lang); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('bua_legal_lang'); } catch (e) {}
+    var asked = new URLSearchParams(location.search).get('lang');
+    show(asked || saved || ((navigator.language || '').slice(0, 2) === 'ha' ? 'ha' : 'en'));
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.addEventListener('click', function () { show(b.dataset.lang); });
+    });
+
+    // The developer's contact details, as the family admins set them.
+    fetch('push-config.json').then(function (r) { return r.json(); }).then(function (c) {
+      return fetch(c.url + '/rest/v1/rpc/public_info', {
+        method: 'POST',
+        headers: { apikey: c.key, 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+    }).then(function (r) { return r.json(); }).then(function (info) {
+      if (!info) return;
+      var who = [info.developer_name, info.developer_company].filter(Boolean).join(', ');
+      if (who) document.querySelectorAll('.dev-company').forEach(function (e) { e.textContent = who; });
+      var ways = [];
+      if (info.developer_email) ways.push('<a href="mailto:' + encodeURI(info.developer_email) + '">' + escapeHtml(info.developer_email) + '</a>');
+      if (info.developer_phone) ways.push(escapeHtml(info.developer_phone));
+      if (ways.length) document.querySelectorAll('.dev-contact').forEach(function (e) { e.innerHTML = ways.join(' · '); });
+    }).catch(function () { /* the family-admin wording stays */ });
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (ch) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+      });
+    }
+  })();
+</script>
+</body>
+</html>

@@ -3077,5 +3077,13 @@
   "deleteAccountKept": "Kept for the family, without your name: your place in the family tree, albums and events you created, polls, elders' stories you recorded, and welfare fund payments.",
   "deleteAccountConfirm": "I understand this can't be undone",
   "deleteAccountOnlyAdmin": "You are the only admin. Make someone else an admin first.",
-  "accountDeleted": "Your account was deleted."
+  "accountDeleted": "Your account was deleted.",
+  "getOnPlay": "Get it on Google Play",
+  "downloadApkInstead": "Or download the app file (APK)",
+  "updateOnPlay": "Update on Google Play",
+  "playStoreLink": "Google Play link",
+  "playStoreLinkHelp": "Once the app is on Google Play, paste its link here. The download page then sends people to Play.",
+  "playStoreLinkInvalid": "Use the link from Google Play (https://play.google.com/…).",
+  "notSet": "Not set",
+  "privacyPolicy": "Privacy policy"
 }
