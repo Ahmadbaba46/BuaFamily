@@ -3718,4 +3718,250 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get newMessages => 'Sabo';
+
+  @override
+  String get activityTitle => 'Ayyuka';
+
+  @override
+  String get activitySub => 'Waɗanda ke kan layi da abin da suka yi';
+
+  @override
+  String get tabOnline => 'Kan layi';
+
+  @override
+  String get tabActivityLog => 'Rajistar ayyuka';
+
+  @override
+  String get onlineNow => 'Suna kan layi yanzu';
+
+  @override
+  String get earlierToday => 'A baya';
+
+  @override
+  String get nobodyOnline => 'Babu wanda ke amfani da manhajar yanzu.';
+
+  @override
+  String onlineFor(String time) {
+    return 'tsawon $time';
+  }
+
+  @override
+  String seenAgo(String time) {
+    return 'an gan shi $time';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return 'minti $n';
+  }
+
+  @override
+  String hoursShort(int h, int m) {
+    return 'awa $h minti $m';
+  }
+
+  @override
+  String onPage(String page) {
+    return 'a $page';
+  }
+
+  @override
+  String get platformAndroidShort => 'Android';
+
+  @override
+  String get platformWebShort => 'Yanar gizo';
+
+  @override
+  String get logAll => 'Duka';
+
+  @override
+  String get logChanges => 'Canje-canje';
+
+  @override
+  String get logPages => 'Shafuka';
+
+  @override
+  String get logSessions => 'Shiga';
+
+  @override
+  String get logAnyone => 'Kowa';
+
+  @override
+  String get logToday => 'Yau';
+
+  @override
+  String get log7 => 'Kwana 7';
+
+  @override
+  String get log30 => 'Kwana 30';
+
+  @override
+  String get logAnyTime => 'Kowane lokaci';
+
+  @override
+  String get logSearch => 'Nemi suna, shafi, take…';
+
+  @override
+  String get logEmpty => 'Babu komai a nan tukuna.';
+
+  @override
+  String get loadMore => 'Nuna ƙari';
+
+  @override
+  String get logPrivacyNote =>
+      'Masu gudanarwa kaɗai ke ganin wannan. Ba a rubuta abin da ke cikin tattaunawar sirri ba.';
+
+  @override
+  String get actOpenedApp => 'ya buɗe manhajar';
+
+  @override
+  String get actSignedIn => 'ya shiga';
+
+  @override
+  String get actSignedOut => 'ya fita';
+
+  @override
+  String actViewed(String page) {
+    return 'ya buɗe $page';
+  }
+
+  @override
+  String actAdded(String thing) {
+    return 'ya ƙara $thing';
+  }
+
+  @override
+  String actChanged(String thing) {
+    return 'ya gyara $thing';
+  }
+
+  @override
+  String actRemoved(String thing) {
+    return 'ya cire $thing';
+  }
+
+  @override
+  String get actLiked => 'ya so wani abu';
+
+  @override
+  String get actUnliked => 'ya janye so';
+
+  @override
+  String get actRsvp => 'ya amsa gayyata';
+
+  @override
+  String get actVoted => 'ya jefa ƙuri\'a';
+
+  @override
+  String get actReviewed => 'ya duba shawara';
+
+  @override
+  String get actAccount => 'ya gyara asusu';
+
+  @override
+  String get actSettings => 'ya canza saitunan manhaja';
+
+  @override
+  String get actMentorAsk => 'ya nemi jagora';
+
+  @override
+  String get actMentorMessage => 'ya aika saƙon jagoranci';
+
+  @override
+  String get actConfirmed => 'ya tabbatar da gudummawa';
+
+  @override
+  String get entPerson => 'mutum';
+
+  @override
+  String get entRelationship => 'dangantaka';
+
+  @override
+  String get entSuggestion => 'shawara';
+
+  @override
+  String get entAlbum => 'kundin hotuna';
+
+  @override
+  String get entPost => 'rubutu';
+
+  @override
+  String get entAnnouncement => 'sanarwa';
+
+  @override
+  String get entPhoto => 'hoto';
+
+  @override
+  String get entEvent => 'taro';
+
+  @override
+  String get entComment => 'sharhi';
+
+  @override
+  String get entBloodRequest => 'buƙatar jini';
+
+  @override
+  String get entBloodOffer => 'tayin ba da jini';
+
+  @override
+  String get entMemory => 'tunawa';
+
+  @override
+  String get entCause => 'buƙatar asusu';
+
+  @override
+  String get entContribution => 'gudummawa';
+
+  @override
+  String get entPayout => 'biya';
+
+  @override
+  String get entMentor => 'tayin jagoranci';
+
+  @override
+  String get entStudent => 'neman jagora';
+
+  @override
+  String get entOpportunity => 'dama';
+
+  @override
+  String get entPoll => 'ƙuri\'a';
+
+  @override
+  String get entStory => 'labarin dattijo';
+
+  @override
+  String get entInvite => 'hanyar gayyata';
+
+  @override
+  String get entOther => 'wani abu';
+
+  @override
+  String get pageHome => 'Gida';
+
+  @override
+  String pagePerson(String name) {
+    return 'shafin $name';
+  }
+
+  @override
+  String get pageAPerson => 'shafin mutum';
+
+  @override
+  String get pageAnEvent => 'taro';
+
+  @override
+  String get pageAMoment => 'rubutu';
+
+  @override
+  String get pageAnAlbum => 'kundin hotuna';
+
+  @override
+  String get pageAPhoto => 'hoto';
+
+  @override
+  String get pageAConversation => 'tattaunawar jagoranci';
+
+  @override
+  String get pageSignIn => 'shiga';
 }

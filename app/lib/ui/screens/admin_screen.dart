@@ -60,6 +60,11 @@ class AdminScreen extends ConsumerWidget {
           title: Text(l.navAdmin, style: Theme.of(context).textTheme.titleLarge),
           actions: [
             IconButton(
+              tooltip: l.activityTitle,
+              icon: const Icon(Icons.sensors),
+              onPressed: () => context.push('/admin/activity'),
+            ),
+            IconButton(
               tooltip: l.metricsTitle,
               icon: const Icon(Icons.insights_outlined),
               onPressed: () => context.push('/admin/metrics'),

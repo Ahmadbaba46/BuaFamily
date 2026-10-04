@@ -6169,6 +6169,456 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New'**
   String get newMessages;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activityTitle;
+
+  /// No description provided for @activitySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is online and what they did'**
+  String get activitySub;
+
+  /// No description provided for @tabOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get tabOnline;
+
+  /// No description provided for @tabActivityLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity log'**
+  String get tabActivityLog;
+
+  /// No description provided for @onlineNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Online now'**
+  String get onlineNow;
+
+  /// No description provided for @earlierToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get earlierToday;
+
+  /// No description provided for @nobodyOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has the app open right now.'**
+  String get nobodyOnline;
+
+  /// No description provided for @onlineFor.
+  ///
+  /// In en, this message translates to:
+  /// **'for {time}'**
+  String onlineFor(String time);
+
+  /// No description provided for @seenAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'last seen {time}'**
+  String seenAgo(String time);
+
+  /// No description provided for @minutesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} min'**
+  String minutesShort(int n);
+
+  /// No description provided for @hoursShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{h} h {m} min'**
+  String hoursShort(int h, int m);
+
+  /// No description provided for @onPage.
+  ///
+  /// In en, this message translates to:
+  /// **'on {page}'**
+  String onPage(String page);
+
+  /// No description provided for @platformAndroidShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Android'**
+  String get platformAndroidShort;
+
+  /// No description provided for @platformWebShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Web'**
+  String get platformWebShort;
+
+  /// No description provided for @logAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get logAll;
+
+  /// No description provided for @logChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes'**
+  String get logChanges;
+
+  /// No description provided for @logPages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get logPages;
+
+  /// No description provided for @logSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-ins'**
+  String get logSessions;
+
+  /// No description provided for @logAnyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone'**
+  String get logAnyone;
+
+  /// No description provided for @logToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get logToday;
+
+  /// No description provided for @log7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get log7;
+
+  /// No description provided for @log30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get log30;
+
+  /// No description provided for @logAnyTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Any time'**
+  String get logAnyTime;
+
+  /// No description provided for @logSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search names, pages, titles…'**
+  String get logSearch;
+
+  /// No description provided for @logEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet.'**
+  String get logEmpty;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get loadMore;
+
+  /// No description provided for @logPrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only admins see this. Private conversations are logged without their content.'**
+  String get logPrivacyNote;
+
+  /// No description provided for @actOpenedApp.
+  ///
+  /// In en, this message translates to:
+  /// **'opened the app'**
+  String get actOpenedApp;
+
+  /// No description provided for @actSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'signed in'**
+  String get actSignedIn;
+
+  /// No description provided for @actSignedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'signed out'**
+  String get actSignedOut;
+
+  /// No description provided for @actViewed.
+  ///
+  /// In en, this message translates to:
+  /// **'opened {page}'**
+  String actViewed(String page);
+
+  /// No description provided for @actAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'added {thing}'**
+  String actAdded(String thing);
+
+  /// No description provided for @actChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'changed {thing}'**
+  String actChanged(String thing);
+
+  /// No description provided for @actRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'removed {thing}'**
+  String actRemoved(String thing);
+
+  /// No description provided for @actLiked.
+  ///
+  /// In en, this message translates to:
+  /// **'liked something'**
+  String get actLiked;
+
+  /// No description provided for @actUnliked.
+  ///
+  /// In en, this message translates to:
+  /// **'took back a like'**
+  String get actUnliked;
+
+  /// No description provided for @actRsvp.
+  ///
+  /// In en, this message translates to:
+  /// **'answered an invitation'**
+  String get actRsvp;
+
+  /// No description provided for @actVoted.
+  ///
+  /// In en, this message translates to:
+  /// **'voted in a poll'**
+  String get actVoted;
+
+  /// No description provided for @actReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'reviewed a suggestion'**
+  String get actReviewed;
+
+  /// No description provided for @actAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'changed an account'**
+  String get actAccount;
+
+  /// No description provided for @actSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'changed the app settings'**
+  String get actSettings;
+
+  /// No description provided for @actMentorAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'asked a mentor for guidance'**
+  String get actMentorAsk;
+
+  /// No description provided for @actMentorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'sent a mentorship message'**
+  String get actMentorMessage;
+
+  /// No description provided for @actConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'confirmed a contribution'**
+  String get actConfirmed;
+
+  /// No description provided for @entPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'a person'**
+  String get entPerson;
+
+  /// No description provided for @entRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'a relationship'**
+  String get entRelationship;
+
+  /// No description provided for @entSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'a suggestion'**
+  String get entSuggestion;
+
+  /// No description provided for @entAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'an album'**
+  String get entAlbum;
+
+  /// No description provided for @entPost.
+  ///
+  /// In en, this message translates to:
+  /// **'a moment'**
+  String get entPost;
+
+  /// No description provided for @entAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'an announcement'**
+  String get entAnnouncement;
+
+  /// No description provided for @entPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'a photo'**
+  String get entPhoto;
+
+  /// No description provided for @entEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'an event'**
+  String get entEvent;
+
+  /// No description provided for @entComment.
+  ///
+  /// In en, this message translates to:
+  /// **'a comment'**
+  String get entComment;
+
+  /// No description provided for @entBloodRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'a blood request'**
+  String get entBloodRequest;
+
+  /// No description provided for @entBloodOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'an offer to donate blood'**
+  String get entBloodOffer;
+
+  /// No description provided for @entMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'a memory'**
+  String get entMemory;
+
+  /// No description provided for @entCause.
+  ///
+  /// In en, this message translates to:
+  /// **'a fund cause'**
+  String get entCause;
+
+  /// No description provided for @entContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'a contribution'**
+  String get entContribution;
+
+  /// No description provided for @entPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'a payout'**
+  String get entPayout;
+
+  /// No description provided for @entMentor.
+  ///
+  /// In en, this message translates to:
+  /// **'an offer to mentor'**
+  String get entMentor;
+
+  /// No description provided for @entStudent.
+  ///
+  /// In en, this message translates to:
+  /// **'a request for guidance'**
+  String get entStudent;
+
+  /// No description provided for @entOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'an opportunity'**
+  String get entOpportunity;
+
+  /// No description provided for @entPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'a poll'**
+  String get entPoll;
+
+  /// No description provided for @entStory.
+  ///
+  /// In en, this message translates to:
+  /// **'an elder\'s story'**
+  String get entStory;
+
+  /// No description provided for @entInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'an invite link'**
+  String get entInvite;
+
+  /// No description provided for @entOther.
+  ///
+  /// In en, this message translates to:
+  /// **'something'**
+  String get entOther;
+
+  /// No description provided for @pageHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get pageHome;
+
+  /// No description provided for @pagePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s page'**
+  String pagePerson(String name);
+
+  /// No description provided for @pageAPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'a person\'s page'**
+  String get pageAPerson;
+
+  /// No description provided for @pageAnEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'an event'**
+  String get pageAnEvent;
+
+  /// No description provided for @pageAMoment.
+  ///
+  /// In en, this message translates to:
+  /// **'a moment'**
+  String get pageAMoment;
+
+  /// No description provided for @pageAnAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'an album'**
+  String get pageAnAlbum;
+
+  /// No description provided for @pageAPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'a photo'**
+  String get pageAPhoto;
+
+  /// No description provided for @pageAConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'a mentorship conversation'**
+  String get pageAConversation;
+
+  /// No description provided for @pageSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'sign-in'**
+  String get pageSignIn;
 }
 
 class _AppLocalizationsDelegate

@@ -15,6 +15,7 @@ import '../models/help.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
 import '../models/story.dart';
+import '../services/app_update.dart' show activityPlatform;
 import '../services/offline_cache.dart';
 
 final repositoryProvider = Provider<FamilyRepository>(
@@ -28,12 +29,22 @@ final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
 /// Tracks the signed-in session and the account profile. Drives navigation.
 class AuthController extends ChangeNotifier {
   AuthController(this._repo) {
-    _sub = _repo.auth.onAuthStateChange.listen((_) => refresh());
+    _signedInBefore = _repo.auth.currentSession != null;
+    _sub = _repo.auth.onAuthStateChange.listen((s) {
+      if (s.event == AuthChangeEvent.signedIn && !_signedInBefore) {
+        _repo.logSession('sign_in', activityPlatform).catchError((Object _) {});
+      }
+      _signedInBefore = s.session != null;
+      refresh();
+    });
     refresh();
   }
 
   final FamilyRepository _repo;
   late final StreamSubscription<AuthState> _sub;
+
+  // A restored session isn't a sign-in; only log the change from signed out.
+  bool _signedInBefore = false;
 
   bool loading = true;
   Profile? profile;
@@ -64,6 +75,9 @@ class AuthController extends ChangeNotifier {
   Future<void> signOut() async {
     try {
       await beforeSignOut?.call();
+    } catch (_) {}
+    try {
+      await _repo.logSession('sign_out', activityPlatform);
     } catch (_) {}
     await _repo.auth.signOut();
     // Nothing of this account stays on the device.

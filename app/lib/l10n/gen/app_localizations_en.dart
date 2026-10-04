@@ -3809,4 +3809,250 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newMessages => 'New';
+
+  @override
+  String get activityTitle => 'Activity';
+
+  @override
+  String get activitySub => 'Who is online and what they did';
+
+  @override
+  String get tabOnline => 'Online';
+
+  @override
+  String get tabActivityLog => 'Activity log';
+
+  @override
+  String get onlineNow => 'Online now';
+
+  @override
+  String get earlierToday => 'Earlier';
+
+  @override
+  String get nobodyOnline => 'Nobody has the app open right now.';
+
+  @override
+  String onlineFor(String time) {
+    return 'for $time';
+  }
+
+  @override
+  String seenAgo(String time) {
+    return 'last seen $time';
+  }
+
+  @override
+  String minutesShort(int n) {
+    return '$n min';
+  }
+
+  @override
+  String hoursShort(int h, int m) {
+    return '$h h $m min';
+  }
+
+  @override
+  String onPage(String page) {
+    return 'on $page';
+  }
+
+  @override
+  String get platformAndroidShort => 'Android';
+
+  @override
+  String get platformWebShort => 'Web';
+
+  @override
+  String get logAll => 'All';
+
+  @override
+  String get logChanges => 'Changes';
+
+  @override
+  String get logPages => 'Pages';
+
+  @override
+  String get logSessions => 'Sign-ins';
+
+  @override
+  String get logAnyone => 'Anyone';
+
+  @override
+  String get logToday => 'Today';
+
+  @override
+  String get log7 => '7 days';
+
+  @override
+  String get log30 => '30 days';
+
+  @override
+  String get logAnyTime => 'Any time';
+
+  @override
+  String get logSearch => 'Search names, pages, titles…';
+
+  @override
+  String get logEmpty => 'Nothing here yet.';
+
+  @override
+  String get loadMore => 'Show more';
+
+  @override
+  String get logPrivacyNote =>
+      'Only admins see this. Private conversations are logged without their content.';
+
+  @override
+  String get actOpenedApp => 'opened the app';
+
+  @override
+  String get actSignedIn => 'signed in';
+
+  @override
+  String get actSignedOut => 'signed out';
+
+  @override
+  String actViewed(String page) {
+    return 'opened $page';
+  }
+
+  @override
+  String actAdded(String thing) {
+    return 'added $thing';
+  }
+
+  @override
+  String actChanged(String thing) {
+    return 'changed $thing';
+  }
+
+  @override
+  String actRemoved(String thing) {
+    return 'removed $thing';
+  }
+
+  @override
+  String get actLiked => 'liked something';
+
+  @override
+  String get actUnliked => 'took back a like';
+
+  @override
+  String get actRsvp => 'answered an invitation';
+
+  @override
+  String get actVoted => 'voted in a poll';
+
+  @override
+  String get actReviewed => 'reviewed a suggestion';
+
+  @override
+  String get actAccount => 'changed an account';
+
+  @override
+  String get actSettings => 'changed the app settings';
+
+  @override
+  String get actMentorAsk => 'asked a mentor for guidance';
+
+  @override
+  String get actMentorMessage => 'sent a mentorship message';
+
+  @override
+  String get actConfirmed => 'confirmed a contribution';
+
+  @override
+  String get entPerson => 'a person';
+
+  @override
+  String get entRelationship => 'a relationship';
+
+  @override
+  String get entSuggestion => 'a suggestion';
+
+  @override
+  String get entAlbum => 'an album';
+
+  @override
+  String get entPost => 'a moment';
+
+  @override
+  String get entAnnouncement => 'an announcement';
+
+  @override
+  String get entPhoto => 'a photo';
+
+  @override
+  String get entEvent => 'an event';
+
+  @override
+  String get entComment => 'a comment';
+
+  @override
+  String get entBloodRequest => 'a blood request';
+
+  @override
+  String get entBloodOffer => 'an offer to donate blood';
+
+  @override
+  String get entMemory => 'a memory';
+
+  @override
+  String get entCause => 'a fund cause';
+
+  @override
+  String get entContribution => 'a contribution';
+
+  @override
+  String get entPayout => 'a payout';
+
+  @override
+  String get entMentor => 'an offer to mentor';
+
+  @override
+  String get entStudent => 'a request for guidance';
+
+  @override
+  String get entOpportunity => 'an opportunity';
+
+  @override
+  String get entPoll => 'a poll';
+
+  @override
+  String get entStory => 'an elder\'s story';
+
+  @override
+  String get entInvite => 'an invite link';
+
+  @override
+  String get entOther => 'something';
+
+  @override
+  String get pageHome => 'Home';
+
+  @override
+  String pagePerson(String name) {
+    return '$name\'s page';
+  }
+
+  @override
+  String get pageAPerson => 'a person\'s page';
+
+  @override
+  String get pageAnEvent => 'an event';
+
+  @override
+  String get pageAMoment => 'a moment';
+
+  @override
+  String get pageAnAlbum => 'an album';
+
+  @override
+  String get pageAPhoto => 'a photo';
+
+  @override
+  String get pageAConversation => 'a mentorship conversation';
+
+  @override
+  String get pageSignIn => 'sign-in';
 }
