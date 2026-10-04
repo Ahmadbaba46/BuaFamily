@@ -4837,4 +4837,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifWeeklyForAdmins => 'Weekly summary (admins)';
+
+  @override
+  String get messagesTitle => 'Messages';
+
+  @override
+  String get newMessage => 'New message';
+
+  @override
+  String get noMessagesYet =>
+      'No messages yet. Start a conversation with someone in the family.';
+
+  @override
+  String get sendMessage => 'Message';
+
+  @override
+  String get dmPrivate => 'Only the two of you can see these messages.';
+
+  @override
+  String get startConversation => 'Start the conversation.';
+
+  @override
+  String notifDirectMessage(String name, String body) {
+    return '$name: “$body”';
+  }
+
+  @override
+  String get noOtherMembers => 'No other family members have accounts yet.';
+
+  @override
+  String get messageWho => 'Message who?';
+
+  @override
+  String get conversationNotFound => 'This conversation isn\'t available.';
 }

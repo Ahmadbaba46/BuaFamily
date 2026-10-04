@@ -12,6 +12,7 @@ import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
 import '../models/help.dart';
+import '../models/messages.dart';
 import '../models/notification.dart';
 import '../models/social.dart';
 import '../models/story.dart';
@@ -319,6 +320,22 @@ final mentorAskProvider =
 
 final mentorMessagesProvider = StreamProvider.autoDispose
     .family<List<MentorMessage>, String>((ref, id) => ref.watch(repositoryProvider).mentorMessages(id));
+
+// ---------------------------------------------------------------- direct messages
+
+final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
+  ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
+  return ref.watch(repositoryProvider).dmThreads();
+});
+
+/// Conversations with something new for me.
+final dmUnreadProvider = Provider<int>((ref) {
+  final me = ref.watch(profileProvider)?.id;
+  return ref.watch(dmThreadsProvider).value?.where((t) => t.unreadFor(me)).length ?? 0;
+});
+
+final dmMessagesProvider = StreamProvider.autoDispose
+    .family<List<DmMessage>, String>((ref, id) => ref.watch(repositoryProvider).dmMessages(id));
 
 final pollsProvider = FutureProvider<List<Poll>>((ref) => ref.watch(repositoryProvider).polls());
 

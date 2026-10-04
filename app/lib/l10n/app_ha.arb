@@ -1289,5 +1289,15 @@
   "fundAlertHint": "Za a sanar da shugabanni da ma'aji sau ɗaya duk lokacin da kuɗin ya faɗi ƙasa da wannan.",
   "offLabel": "A kashe",
   "alertsAlwaysOn": "Ana kuma sanar da shugabanni idan buƙatar jini ba ta samu tayi ba bayan awa 2, da idan shawarwari ko asusu sun jira fiye da kwana 3.",
-  "notifWeeklyForAdmins": "Taƙaitaccen mako (shugabanni)"
+  "notifWeeklyForAdmins": "Taƙaitaccen mako (shugabanni)",
+  "messagesTitle": "Saƙonni",
+  "newMessage": "Sabon saƙo",
+  "noMessagesYet": "Babu saƙonni tukuna. Fara tattaunawa da wani a cikin iyali.",
+  "sendMessage": "Aika saƙo",
+  "dmPrivate": "Ku biyu ne kawai ke ganin waɗannan saƙonni.",
+  "startConversation": "Fara tattaunawar.",
+  "notifDirectMessage": "{name}: “{body}”",
+  "noOtherMembers": "Babu sauran ’yan uwa da ke da asusu tukuna.",
+  "messageWho": "Aika wa wa?",
+  "conversationNotFound": "Babu wannan tattaunawar."
 }

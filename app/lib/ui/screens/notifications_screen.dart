@@ -48,6 +48,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
+      NotificationKind.directMessage => l.notifDirectMessage(n.str('name') ?? '', n.str('body') ?? ''),
       NotificationKind.adminAlert => switch (n.str('alert')) {
           'blood_no_offer' => l.notifAlertBlood(
               n.str('blood_group') ?? '', n.str('patient') ?? '', (n.data['hours'] as num?)?.toInt() ?? 2),
@@ -111,6 +112,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.claimReviewed => Icons.how_to_reg_outlined,
       NotificationKind.duesReminder => Icons.event_repeat,
       NotificationKind.weeklySummary => Icons.insights_outlined,
+      NotificationKind.directMessage => Icons.forum_outlined,
       NotificationKind.adminAlert => Icons.warning_amber_rounded,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,

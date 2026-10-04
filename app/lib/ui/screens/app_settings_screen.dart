@@ -18,6 +18,7 @@ const notificationGroups = {
   'comments': ['comment'],
   'occasions': ['occasion'],
   'weekly': ['weekly_summary'],
+  'messages': ['direct_message'],
 };
 
 /// Language, data saver and which notifications to receive.
@@ -113,6 +114,8 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           toggle(l.notifTagged, 'tagged'),
           divider,
           toggle(l.notifCommentsMine, 'comments'),
+          divider,
+          toggle(l.messagesTitle, 'messages'),
           divider,
           toggle(l.islamicOccasions, 'occasions'),
           divider,

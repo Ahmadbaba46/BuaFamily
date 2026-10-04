@@ -9,7 +9,8 @@ share moments and photos, plan family events, and keep everyone's details
 
 ## What's in the app
 
-- **Family tree:** zoomable tree from the eldest ancestor down. Wives sit beside
+- **Family tree:** zoomable tree from the eldest ancestor down, or the family
+  line: one person with their children at a time, going down a child at a time. Wives sit beside
   their husband and each child hangs from their own mother, so households with
   several wives stay readable. Tap anyone to open their profile; collapse or
   expand branches; start the tree from any person.
@@ -34,6 +35,9 @@ share moments and photos, plan family events, and keep everyone's details
     dates or life status still go to an admin.
 - **Accounts are separate from people in the tree.** New sign-ups wait for an
   admin, who links them to their place in the tree.
+- **Messages:** private one-to-one conversations between family members, from
+  Messages on Home or the Message button on a profile. Only the two people can
+  read them: not admins, not backups.
 - **Home feed:** today's birthdays and remembrances, pinned notices, and
   moments from relatives with photos, people tagged, "Ma sha Allah" and comments.
 - **Albums:** shared family albums (weddings, Sallah, old photos), grouped by

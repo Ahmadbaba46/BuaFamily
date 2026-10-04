@@ -10,6 +10,7 @@ import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
 import '../models/help.dart';
+import '../models/messages.dart';
 import '../models/metrics.dart';
 import '../models/notification.dart';
 import '../models/person.dart';
@@ -875,6 +876,29 @@ class FamilyRepository {
       _db.from('mentor_messages').insert({'ask_id': askId, 'body': body.trim()});
 
   Future<void> markMentorAskRead(String askId) => _db.rpc('mark_mentor_ask_read', params: {'p_ask': askId});
+
+  // ---------------------------------------------------------------- direct messages
+
+  /// My conversations, kept up to date, latest first.
+  Stream<List<DmThread>> dmThreads() => _db
+      .from('dm_threads')
+      .stream(primaryKey: ['id'])
+      .map((rows) => rows.map(DmThread.fromJson).toList()..sort((a, b) => b.activeAt.compareTo(a.activeAt)));
+
+  /// The conversation with [userId] (started if there isn't one yet).
+  Future<String> dmOpen(String userId) async => await _db.rpc('dm_open', params: {'p_user': userId}) as String;
+
+  Stream<List<DmMessage>> dmMessages(String threadId) => _db
+      .from('dm_messages')
+      .stream(primaryKey: ['id'])
+      .eq('thread_id', threadId)
+      .order('created_at', ascending: true)
+      .map((rows) => rows.map(DmMessage.fromJson).toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+
+  Future<void> sendDm(String threadId, String body) =>
+      _db.from('dm_messages').insert({'thread_id': threadId, 'body': body.trim()});
+
+  Future<void> markDmRead(String threadId) => _db.rpc('dm_mark_read', params: {'p_thread': threadId});
 
   Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
       _db.from('opportunities').insert({
