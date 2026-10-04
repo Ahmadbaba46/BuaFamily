@@ -567,6 +567,10 @@ class _SnapshotCard extends StatelessWidget {
           ].join(' · '),
           style: const TextStyle(fontSize: 13, color: Bua.inkSubtle),
         ),
+        if (snapshot['composition'] is Map) ...[
+          const Divider(height: 24, color: Bua.line),
+          FamilyMakeup(composition: (snapshot['composition'] as Map).cast<String, dynamic>()),
+        ],
         const Divider(height: 24, color: Bua.line),
         Wrap(spacing: 20, runSpacing: 8, children: [
           _fact(l.fundBalanceLabel, naira((snapshot['fund_balance'] as num?) ?? 0)),
@@ -581,4 +585,74 @@ class _SnapshotCard extends StatelessWidget {
         Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
         Text(label, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle)),
       ]);
+}
+
+/// Men and women in the tree: blood family, married in, and anyone not
+/// connected yet, from the snapshot's "composition".
+class FamilyMakeup extends StatelessWidget {
+  const FamilyMakeup({super.key, required this.composition});
+
+  final Map<String, dynamic> composition;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    int n(String group, String k) => ((composition[group] as Map?)?[k] as num?)?.toInt() ?? 0;
+    int all(String k) => ['blood', 'married_in', 'other'].fold(0, (s, g) => s + n(g, k));
+    final groups = [
+      ('blood', l.bloodFamily),
+      ('married_in', l.marriedIn),
+      if (n('other', 'male') + n('other', 'female') + n('other', 'unknown') > 0) ('other', l.notConnectedYet),
+    ];
+    final showUnknown = all('unknown') > 0;
+    const head = TextStyle(fontSize: 12, color: Bua.inkSubtle);
+    const cell = TextStyle(fontSize: 14, fontFeatures: [FontFeature.tabularFigures()]);
+    const bold = TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFeatures: [FontFeature.tabularFigures()]);
+    Widget figure(int v, [TextStyle style = cell]) =>
+        Padding(padding: const EdgeInsets.symmetric(vertical: 5), child: Text('$v', textAlign: TextAlign.end, style: style));
+    TableRow row(String label, int Function(String k) count, {bool total = false}) {
+      final style = total ? bold : cell;
+      final sum = count('male') + count('female') + count('unknown');
+      return TableRow(
+        decoration: total ? const BoxDecoration(border: Border(top: BorderSide(color: Bua.line))) : null,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Text(label, style: total ? const TextStyle(fontSize: 14, fontWeight: FontWeight.w600) : const TextStyle(fontSize: 14)),
+          ),
+          figure(count('male'), style),
+          figure(count('female'), style),
+          if (showUnknown) figure(count('unknown'), style),
+          figure(sum, bold),
+        ],
+      );
+    }
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Text(l.familyMakeup, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Bua.inkMuted)),
+      const SizedBox(height: 4),
+      Table(
+        columnWidths: {
+          0: const FlexColumnWidth(2.2),
+          for (var i = 1; i <= (showUnknown ? 4 : 3); i++) i: const FlexColumnWidth(1),
+        },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(children: [
+            const SizedBox.shrink(),
+            Text(l.menLabel, textAlign: TextAlign.end, style: head),
+            Text(l.womenLabel, textAlign: TextAlign.end, style: head),
+            if (showUnknown) Text(l.sexNotSet, textAlign: TextAlign.end, style: head),
+            Text(l.totalLabel, textAlign: TextAlign.end, style: head),
+          ]),
+          for (final g in groups) row(g.$2, (k) => n(g.$1, k)),
+          row(l.totalLabel, all, total: true),
+        ],
+      ),
+      const SizedBox(height: 6),
+      Text(l.livingMenWomen(all('living_male'), all('living_female')), style: const TextStyle(fontSize: 13)),
+      const SizedBox(height: 4),
+      Text(l.familyMakeupHelp, style: const TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
+    ]);
+  }
 }

@@ -7537,6 +7537,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show all {n}'**
   String showAllCount(int n);
+
+  /// No description provided for @familyMakeup.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is in the family'**
+  String get familyMakeup;
+
+  /// No description provided for @menLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Men'**
+  String get menLabel;
+
+  /// No description provided for @womenLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Women'**
+  String get womenLabel;
+
+  /// No description provided for @sexNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get sexNotSet;
+
+  /// No description provided for @totalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get totalLabel;
+
+  /// No description provided for @bloodFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood family'**
+  String get bloodFamily;
+
+  /// No description provided for @marriedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Married in'**
+  String get marriedIn;
+
+  /// No description provided for @notConnectedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected yet'**
+  String get notConnectedYet;
+
+  /// No description provided for @livingMenWomen.
+  ///
+  /// In en, this message translates to:
+  /// **'Living: {men} men · {women} women'**
+  String livingMenWomen(int men, int women);
+
+  /// No description provided for @familyMakeupHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside.'**
+  String get familyMakeupHelp;
 }
 
 class _AppLocalizationsDelegate

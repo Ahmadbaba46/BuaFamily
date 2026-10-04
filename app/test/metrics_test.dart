@@ -84,6 +84,10 @@ void main() {
               'fund_balance': 120000,
               'open_blood_requests': 1,
               'pending_suggestions': 2,
+              'composition': {
+                'blood': {'male': 90, 'female': 80, 'unknown': 0, 'living_male': 70, 'living_female': 60},
+                'married_in': {'male': 3, 'female': 25, 'unknown': 0, 'living_male': 3, 'living_female': 20},
+              },
             }),
         metricsProvider.overrideWith((ref, a) async {
           queries.add(a.$2);
@@ -109,6 +113,15 @@ void main() {
     expect(find.text('Right now'), findsOneWidget);
     expect(find.text('200 people · 150 living'), findsOneWidget);
     expect(find.text('₦120,000'), findsOneWidget);
+    // Men and women, blood family and married in.
+    expect(find.text('Blood family'), findsOneWidget);
+    expect(find.text('Married in'), findsOneWidget);
+    expect(find.text('Not connected yet'), findsNothing);
+    expect(find.text('Not set'), findsNothing);
+    expect(find.text('170'), findsOneWidget);
+    expect(find.text('105'), findsOneWidget);
+    expect(find.text('198'), findsOneWidget);
+    expect(find.text('Living: 73 men · 80 women'), findsOneWidget);
     // Last 30 days, daily, by default.
     expect(queries.last.from, DateTime(2026, 9, 5));
     expect(queries.last.bucket, MetricBucket.day);

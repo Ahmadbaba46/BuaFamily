@@ -4628,4 +4628,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String showAllCount(int n) {
     return 'Show all $n';
   }
+
+  @override
+  String get familyMakeup => 'Who is in the family';
+
+  @override
+  String get menLabel => 'Men';
+
+  @override
+  String get womenLabel => 'Women';
+
+  @override
+  String get sexNotSet => 'Not set';
+
+  @override
+  String get totalLabel => 'Total';
+
+  @override
+  String get bloodFamily => 'Blood family';
+
+  @override
+  String get marriedIn => 'Married in';
+
+  @override
+  String get notConnectedYet => 'Not connected yet';
+
+  @override
+  String livingMenWomen(int men, int women) {
+    return 'Living: $men men · $women women';
+  }
+
+  @override
+  String get familyMakeupHelp =>
+      'Blood family: the founders and everyone born or adopted into the line. Married in: their husbands and wives who came from outside.';
 }
