@@ -283,9 +283,17 @@ hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
 Members can sign in with their phone number and a 6-digit code by SMS,
 sent through the same Termii account. Turn it on once in Supabase:
 
-1. **Authentication → Sign In / Providers → Phone**: enable phone sign-in.
-2. **Authentication → Hooks → Add hook → Send SMS hook**: choose
+1. **Authentication → Hooks → Add hook → Send SMS hook**: choose
    **Postgres**, schema `public`, function `send_sms_hook`, and save.
+   Do this first.
+2. **Authentication → Sign In / Providers → Phone**: enable phone sign-in.
+   The form insists on an SMS provider: pick **Twilio** and type any
+   placeholder (e.g. `unused`) in its fields. With the Send SMS hook on,
+   Supabase never uses them; every code goes through Termii.
+
+**Forgot password by SMS** works without any of this (only step 2's
+Termii setup): on the sign-in page, *Forgot password? → Send a code to my
+phone*. The number must be the one saved on the member's profile.
 
 If codes don't reach some numbers, switch the SMS route to **DND** in
 **Admin → Settings → SMS**: Nigerian numbers with Do-Not-Disturb on only
@@ -295,6 +303,22 @@ receive messages sent on that route.
 to make a link (optionally for a person in the tree) and share it on
 WhatsApp. Whoever signs up with it is approved at once and linked to that
 person. Each link works once, for 30 days.
+
+### 2c. Sign in with Google (optional)
+
+1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials),
+   create an **OAuth client ID** of type **Web application**. Under
+   *Authorised redirect URIs* add
+   `https://<your-project>.supabase.co/auth/v1/callback`.
+   (Set up the *OAuth consent screen* first if asked: app name, your email.)
+2. In Supabase, **Authentication → Sign In / Providers → Google**: enable it
+   and paste the client ID and secret.
+3. **Authentication → URL Configuration → Redirect URLs**: add
+   `https://buafamily.vercel.app/**` (your site) and
+   `com.fuyoudhat.buafamily://login-callback` (the Android app).
+
+A Google account with the same email as an existing account signs in to
+that account. New Google sign-ups wait for approval like everyone else.
 
 ### 3. Turn on phone notifications (optional)
 

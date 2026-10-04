@@ -2609,5 +2609,28 @@
   "pageAnAlbum": "an album",
   "pageAPhoto": "a photo",
   "pageAConversation": "a mentorship conversation",
-  "pageSignIn": "sign-in"
+  "pageSignIn": "sign-in",
+  "continueWithGoogle": "Continue with Google",
+  "orWord": "or",
+  "resetHowTitle": "Reset your password",
+  "resetByEmail": "Send a link to my email",
+  "resetByEmailHint": "Enter your email above first.",
+  "resetByText": "Send a code to my phone",
+  "resetByTextHint": "The phone number saved on your profile",
+  "sendResetCode": "Send code",
+  "resetCodeSentTo": "If {phone} is on an account, a code is on its way. It works for 10 minutes.",
+  "@resetCodeSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "newPasswordLabel": "New password (8 or more characters)",
+  "setNewPassword": "Set new password",
+  "resetDone": "Password changed. Welcome back!",
+  "resetSmsOff": "Text messages are not set up yet. Use your email instead.",
+  "resetTooMany": "Please wait a little before asking for another code.",
+  "resetWrongCode": "That code isn't right. Check the text message.",
+  "resetExpired": "That code has expired. Ask for a new one."
 }

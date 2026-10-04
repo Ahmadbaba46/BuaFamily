@@ -4055,4 +4055,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageSignIn => 'sign-in';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get orWord => 'or';
+
+  @override
+  String get resetHowTitle => 'Reset your password';
+
+  @override
+  String get resetByEmail => 'Send a link to my email';
+
+  @override
+  String get resetByEmailHint => 'Enter your email above first.';
+
+  @override
+  String get resetByText => 'Send a code to my phone';
+
+  @override
+  String get resetByTextHint => 'The phone number saved on your profile';
+
+  @override
+  String get sendResetCode => 'Send code';
+
+  @override
+  String resetCodeSentTo(String phone) {
+    return 'If $phone is on an account, a code is on its way. It works for 10 minutes.';
+  }
+
+  @override
+  String get newPasswordLabel => 'New password (8 or more characters)';
+
+  @override
+  String get setNewPassword => 'Set new password';
+
+  @override
+  String get resetDone => 'Password changed. Welcome back!';
+
+  @override
+  String get resetSmsOff =>
+      'Text messages are not set up yet. Use your email instead.';
+
+  @override
+  String get resetTooMany =>
+      'Please wait a little before asking for another code.';
+
+  @override
+  String get resetWrongCode =>
+      'That code isn\'t right. Check the text message.';
+
+  @override
+  String get resetExpired => 'That code has expired. Ask for a new one.';
 }
