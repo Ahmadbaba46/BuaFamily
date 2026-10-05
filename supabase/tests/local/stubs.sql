@@ -17,6 +17,7 @@ create table auth.users (
   encrypted_password text,
   updated_at timestamptz
 );
+create unique index users_phone_key on auth.users (phone);
 create function auth.uid() returns uuid language sql stable as $$
   select nullif(current_setting('request.jwt.claims', true)::jsonb ->> 'sub', '')::uuid
 $$;

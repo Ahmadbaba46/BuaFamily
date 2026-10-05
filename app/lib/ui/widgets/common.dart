@@ -29,12 +29,15 @@ void showError(BuildContext context, Object e) =>
     showSnack(context, context.l10n.errorGeneric(errorText(e)));
 
 /// Runs [action], showing any error. Returns true on success.
-Future<bool> guarded(BuildContext context, Future<void> Function() action) async {
+Future<bool> guarded(BuildContext context, Future<void> Function() action,
+    {String? Function(Object error)? onError}) async {
   try {
     await action();
     return true;
   } catch (e) {
-    if (context.mounted) showError(context, e);
+    if (!context.mounted) return false;
+    final message = onError?.call(e);
+    message == null ? showError(context, e) : showSnack(context, message);
     return false;
   }
 }

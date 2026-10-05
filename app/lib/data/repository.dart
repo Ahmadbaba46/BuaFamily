@@ -480,6 +480,21 @@ class FamilyRepository {
   /// Deletes this account for good (see delete_my_account): first checks it
   /// can be done, then removes the photo files I uploaded (their rows go with
   /// the account), then the account.
+  /// Admin: deletes someone's account for good, with the photos they uploaded.
+  Future<void> adminDeleteAccount(String userId) async {
+    await _db.rpc('admin_delete_account', params: {'p_user': userId, 'p_check_only': true});
+    try {
+      final rows = await _db.from('photos').select('storage_path').eq('uploaded_by', userId);
+      final paths = [for (final r in rows) r['storage_path'] as String];
+      for (var i = 0; i < paths.length; i += 100) {
+        await _db.storage.from(photosBucket).remove(paths.sublist(i, math.min(i + 100, paths.length)));
+      }
+    } catch (_) {
+      // Files left behind are unreachable once the rows are gone.
+    }
+    await _db.rpc('admin_delete_account', params: {'p_user': userId});
+  }
+
   Future<void> deleteMyAccount() async {
     await _db.rpc('delete_my_account', params: {'p_check_only': true});
     try {

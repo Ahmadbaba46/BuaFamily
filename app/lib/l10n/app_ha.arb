@@ -1344,5 +1344,11 @@
   "forOlderPhones": "Don tsofaffin wayoyi (32-bit)",
   "messagesToggle": "Saƙonnin sirri",
   "messagesToggleHint": "’Yan uwa na iya aika wa juna saƙo (da kuma, nan gaba, hira a rukuni). Idan an kashe, babu wanda zai iya aikawa ko karanta saƙo, har da shugabanni; ana ajiye hirarrakin kuma za su dawo idan an sake kunnawa.",
-  "messagesTurnedOff": "Shugabannin iyali sun kashe saƙonni."
+  "messagesTurnedOff": "Shugabannin iyali sun kashe saƙonni.",
+  "declineAccount": "Ƙi",
+  "deleteAccountShort": "Goge asusu",
+  "confirmDeleteAccountOf": "A goge asusun {name} gaba ɗaya? Za a cire shigarsa, labaransa, sharhi, hotuna da saƙonni. Bishiyar iyali, taruka, kundin hotuna da bayanan asusun taimako za su zauna. Ba za a iya dawowa ba.",
+  "accountDeletedNote": "An goge asusun {name}.",
+  "accountSuspendedNote": "Yanzu ba za su iya amfani da manhajar ba. Kunna su a kowane lokaci don su dawo.",
+  "phoneOnAnotherAccount": "Wannan lambar tana kan wani asusu. Shiga da imel da kalmar sirrin asusun, ko ka tambayi shugaba."
 }

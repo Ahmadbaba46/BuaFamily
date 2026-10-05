@@ -1769,6 +1769,110 @@ select test.assert((select count(*) = 2 from public.dm_messages), 'turned back o
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 41. Dues: the committee writes, members only read (one rule each).
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) >= 1 from public.fund_dues_plans), 'members read the dues plans');
+update public.fund_dues_plans set amount = 1 where title = 'Monthly dues';
+delete from public.fund_dues_members where plan_id = (select id from public.fund_dues_plans where title = 'Monthly dues');
+reset role;
+select test.assert((select amount = 2000 from public.fund_dues_plans where title = 'Monthly dues'), 'members cannot change a plan');
+select test.assert((select count(*) = 2 from public.fund_dues_members m join public.fund_dues_plans p on p.id = m.plan_id
+  where p.title = 'Monthly dues'), 'or remove who pays');
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.fund_dues_plans set amount = 2500 where title = 'Monthly dues';
+select test.assert((select count(*) = 2 from public.fund_dues_members m join public.fund_dues_plans p on p.id = m.plan_id
+  where p.title = 'Monthly dues'), 'the treasurer sees everyone on the plan');
+reset role;
+select test.assert((select amount = 2500 from public.fund_dues_plans where title = 'Monthly dues'), 'the treasurer changes a plan');
+update public.fund_dues_plans set amount = 2000 where title = 'Monthly dues';
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
+-- 42. One phone number, one account; admins can delete accounts.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+\set dup_id '''00000000-0000-0000-0000-0000000000d1'''
+\set saver_id '''00000000-0000-0000-0000-0000000000d2'''
+insert into auth.users (id, email, raw_user_meta_data) values (:saver_id, 'saver@example.com', '{"display_name": "Saver"}');
+update public.profiles set status = 'active' where id = :saver_id;
+
+-- A number saved on an email account signs in to that account.
+select set_config('request.jwt.claims', json_build_object('sub', :saver_id)::text, false);
+set role authenticated;
+update public.profiles set phone = '08051234567' where id = :saver_id;
+reset role;
+select test.assert((select phone = '2348051234567' from auth.users where id = :saver_id),
+  'the saved number becomes the account''s phone sign-in');
+select test.expect_error($$insert into auth.users (id, phone) values (gen_random_uuid(), '2348051234567')$$,
+  'signing up again with that number makes no second account');
+
+-- Changed, the sign-in number moves; cleared, it goes.
+select set_config('request.jwt.claims', json_build_object('sub', :saver_id)::text, false);
+set role authenticated;
+update public.profiles set phone = '08059998888' where id = :saver_id;
+reset role;
+select test.assert((select phone = '2348059998888' from auth.users where id = :saver_id), 'a changed number moves with it');
+select set_config('request.jwt.claims', json_build_object('sub', :saver_id)::text, false);
+set role authenticated;
+update public.profiles set phone = null where id = :saver_id;
+reset role;
+select test.assert((select phone is null from auth.users where id = :saver_id), 'a removed number no longer signs in');
+
+-- A number someone else already signed up with can't be saved.
+select set_config('request.jwt.claims', '{}', false);
+insert into auth.users (id, phone) values (:dup_id, '2348051234567');
+select set_config('request.jwt.claims', json_build_object('sub', :saver_id)::text, false);
+set role authenticated;
+select test.expect_error($$update public.profiles set phone = '2348051234567' where id = auth.uid()$$,
+  'a number on another account is refused');
+reset role;
+
+-- Deleting accounts: admins only, not their own, not another admin's.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_delete_account(%L)$$, :dup_id), 'members cannot delete accounts');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_delete_account(%L)$$, :admin_id), 'not your own account');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+update public.profiles set role = 'admin' where id = :saver_id;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_delete_account(%L)$$, :saver_id), 'not another admin''s');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+update public.profiles set role = 'member' where id = :saver_id;
+
+-- Like the live case: the number is on the saver's profile and on a second,
+-- phone-only account made before this fix.
+alter table public.profiles disable trigger profiles_phone_unique;
+update public.profiles set phone = '2348051234567' where id = :saver_id;
+alter table public.profiles enable trigger profiles_phone_unique;
+select test.assert((select phone is null from auth.users where id = :saver_id), 'while another account holds it, it is not linked');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_delete_account(:dup_id, true);
+reset role;
+select test.assert((select exists (select 1 from auth.users where id = :dup_id)), 'checking deletes nothing');
+set role authenticated;
+select public.admin_delete_account(:dup_id);
+reset role;
+select test.assert((select not exists (select 1 from auth.users where id = :dup_id)), 'the account is deleted');
+select test.assert((select phone = '2348051234567' from auth.users where id = :saver_id),
+  'and the number now signs in to the account that saved it');
+select test.assert((select exists (select 1 from public.activity_log where user_id = :admin_id and action = 'delete'
+  and entity = 'account')), 'the deletion is in the activity log');
+select set_config('request.jwt.claims', '{}', false);
+delete from auth.users where id = :saver_id;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

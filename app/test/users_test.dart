@@ -1,3 +1,4 @@
+import 'package:bua_family/data/repository.dart';
 import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
 import 'package:bua_family/state/providers.dart';
@@ -6,7 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthClientOptions, SupabaseClient;
+
 import 'domain_test.dart' show buildFamily;
+
+class _FakeRepo extends FamilyRepository {
+  _FakeRepo()
+      : super(SupabaseClient('http://localhost', 'test', authOptions: const AuthClientOptions(autoRefreshToken: false)));
+
+  final deleted = <String>[];
+  final updates = <(String, AccountStatus?)>[];
+
+  @override
+  Future<void> adminDeleteAccount(String userId) async => deleted.add(userId);
+
+  @override
+  Future<void> adminUpdateAccount(String userId,
+          {AccountStatus? status, AppRole? role, String? personId, bool unlink = false}) async =>
+      updates.add((userId, status));
+}
 
 void main() {
   final now = DateTime(2026, 10, 4, 12);
@@ -81,8 +100,10 @@ void main() {
     expect(sorted(UserSort.name), ['a', 'b', 'c', 'd', 'e']);
   });
 
-  Widget app() => ProviderScope(
+  Widget app({_FakeRepo? repo}) => ProviderScope(
         overrides: [
+          if (repo != null) repositoryProvider.overrideWithValue(repo),
+          profilesProvider.overrideWith((ref) async => [for (final u in users) u.profile]),
           adminUsersProvider.overrideWith((ref) async => users),
           graphProvider.overrideWith((ref) async => buildFamily()),
           profileProvider.overrideWithValue(users.first.profile),
@@ -156,5 +177,44 @@ void main() {
     // Only open claims of approved, unlinked members count.
     expect(userInFilter(claimant, UserFilter.claims, now), isTrue);
     expect(users.where((u) => userInFilter(u, UserFilter.claims, now)), isEmpty);
+  });
+
+  testWidgets('admins decline or delete a waiting account', (tester) async {
+    tester.view.physicalSize = const Size(420, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final repo = _FakeRepo();
+    await tester.pumpWidget(app(repo: repo));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Decline'));
+    await tester.pumpAndSettle();
+    expect(repo.updates, [('d', AccountStatus.suspended)]);
+
+    await tester.tap(find.text('Delete account'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining("Delete Dije's account for good?"), findsOneWidget);
+    await tester.tap(find.text('Yes'));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, ['d']);
+    expect(find.text("Dije's account was deleted."), findsOneWidget);
+  });
+
+  testWidgets('no delete button for admins or yourself', (tester) async {
+    tester.view.physicalSize = const Size(420, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(app());
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Chiroma'));
+    await tester.tap(find.text('Chiroma'));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete account'), findsWidgets);
+    expect(find.text('Suspend'), findsOneWidget);
+    Navigator.of(tester.element(find.text('Suspend'))).pop();
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ahmad'));
+    await tester.pumpAndSettle();
+    expect(find.text('Suspend'), findsNothing);
+    expect(find.widgetWithText(OutlinedButton, 'Delete account'), findsNothing);
   });
 }
