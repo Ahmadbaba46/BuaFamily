@@ -1115,20 +1115,24 @@ class FamilyRepository {
     required Uint8List bytes,
     required int build,
     required String version,
+    Uint8List? arm32Bytes,
     String? notes,
-    String? previousPath,
+    List<String> previousPaths = const [],
   }) async {
+    const options = FileOptions(upsert: true, contentType: 'application/vnd.android.package-archive');
     final path = 'bua-family-$version.apk';
-    await _db.storage.from('releases').uploadBinary(
-          path,
-          bytes,
-          fileOptions: const FileOptions(upsert: true, contentType: 'application/vnd.android.package-archive'),
-        );
+    final arm32Path = arm32Bytes == null ? null : 'bua-family-$version-arm32.apk';
+    await _db.storage.from('releases').uploadBinary(path, bytes, fileOptions: options);
+    if (arm32Bytes != null) await _db.storage.from('releases').uploadBinary(arm32Path!, arm32Bytes, fileOptions: options);
     await _db.rpc('admin_publish_android',
         params: {'p_build': build, 'p_version': version, 'p_path': path, 'p_notes': notes});
-    if (previousPath != null && previousPath != path) {
+    if (arm32Path != null) {
+      await _db.rpc('admin_publish_android_arm32', params: {'p_build': build, 'p_path': arm32Path});
+    }
+    final old = previousPaths.where((p) => p != path && p != arm32Path).toList();
+    if (old.isNotEmpty) {
       try {
-        await _db.storage.from('releases').remove([previousPath]);
+        await _db.storage.from('releases').remove(old);
       } catch (_) {}
     }
   }

@@ -16,7 +16,7 @@ import '../widgets/form_dialog.dart';
 /// The Google Play build opens its Play page instead.
 Future<void> downloadAndroidApp(WidgetRef ref, AndroidRelease release) async {
   if (isPlayBuild) return openPlayStore(ref);
-  await launchUrl(Uri.parse(ref.read(repositoryProvider).releaseUrl(release.path)),
+  await launchUrl(Uri.parse(ref.read(repositoryProvider).releaseUrl(release.pathForThisPhone)),
       mode: LaunchMode.externalApplication);
 }
 
@@ -91,6 +91,14 @@ class GetAppScreen extends ConsumerWidget {
                     icon: const Icon(Icons.download),
                     label: Text(l.download),
                   ),
+                // On the website the phone type isn't known: the main file suits
+                // most phones; older 32-bit phones take this one.
+                if (!isAndroidApp && r.arm32Path != null)
+                  TextButton(
+                    onPressed: () => launchUrl(Uri.parse(ref.read(repositoryProvider).releaseUrl(r.arm32Path!)),
+                        mode: LaunchMode.externalApplication),
+                    child: Text(l.forOlderPhones),
+                  ),
                 if (r.notes != null) ...[
                   const SizedBox(height: 20),
                   Text(l.whatsNew, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Bua.inkMuted)),
@@ -161,10 +169,10 @@ class UpdateBanner extends ConsumerWidget {
 
 /// Admin → Settings: publish a new Android build.
 class AndroidReleaseCard extends ConsumerStatefulWidget {
-  const AndroidReleaseCard({super.key, required this.pickApk});
+  const AndroidReleaseCard({super.key, required this.pickApks});
 
-  /// Lets the admin choose the APK: (file name, bytes), or null if cancelled.
-  final Future<(String, Uint8List)?> Function() pickApk;
+  /// Lets the admin choose the APKs: (file name, bytes) each; empty if cancelled.
+  final Future<List<(String, Uint8List)>> Function() pickApks;
 
   @override
   ConsumerState<AndroidReleaseCard> createState() => _AndroidReleaseCardState();
@@ -175,8 +183,21 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
 
   Future<void> _publish(AndroidRelease? current) async {
     final l = context.l10n;
-    final file = await widget.pickApk();
-    if (file == null || !mounted) return;
+    final files = await widget.pickApks();
+    if (files.isEmpty || !mounted) return;
+    for (final f in files) {
+      if (f.$2.length > maxUploadBytes) {
+        showSnack(context, l.apkTooBig(f.$1, (f.$2.length / (1024 * 1024)).toStringAsFixed(1)));
+        return;
+      }
+    }
+    final main = files.where((f) => !isArm32Apk(f.$1)).firstOrNull;
+    final arm32 = files.where((f) => isArm32Apk(f.$1)).firstOrNull;
+    if (main == null) {
+      showSnack(context, l.apkNeedMain);
+      return;
+    }
+    final file = main;
     final guess = versionFromFileName(file.$1);
     final nextBuild = guess?.$1 ?? ((current?.build ?? 0) + 1);
     final build = TextEditingController(text: '$nextBuild');
@@ -188,7 +209,7 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
         title: Text(l.publishVersion),
         content: SingleChildScrollView(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text(file.$1, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
+            for (final f in [main, ?arm32]) Text(f.$1, style: TextStyle(fontSize: 13, color: Bua.inkSubtle)),
             const SizedBox(height: 12),
             TextField(controller: version, decoration: InputDecoration(labelText: l.versionLabel)),
             const SizedBox(height: 8),
@@ -226,10 +247,11 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
       context,
       () => ref.read(repositoryProvider).publishAndroid(
             bytes: file.$2,
+            arm32Bytes: arm32?.$2,
             build: buildNo,
             version: versionText.isEmpty ? '1.0.$buildNo' : versionText,
             notes: notesText.isEmpty ? null : notesText,
-            previousPath: current?.path,
+            previousPaths: [?current?.path, ?current?.arm32Path],
           ),
     );
     if (!mounted) return;
@@ -273,6 +295,8 @@ class _AndroidReleaseCardState extends ConsumerState<AndroidReleaseCard> {
               : const Icon(Icons.upload_file),
           label: Text(_busy ? l.uploading : l.publishVersion),
         ),
+        const SizedBox(height: 6),
+        Text(l.apkFilesHint, style: TextStyle(fontSize: 12, height: 1.4, color: Bua.inkSubtle)),
         const SizedBox(height: 12),
         _PlayStoreLink(url: ref.watch(settingsProvider).value?.playStoreUrl),
         if (current != null) ...[

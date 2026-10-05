@@ -4912,4 +4912,20 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get textSizeSample => 'Haka rubutu zai kasance.';
+
+  @override
+  String apkTooBig(String name, String size) {
+    return '$name ya kai MB $size, ya wuce iyakar MB 50. Gina da rubutun ginawa: yana yin ƙaramin fayil don kowane irin waya.';
+  }
+
+  @override
+  String get apkNeedMain =>
+      'Zaɓi fayil ɗin 64-bit ma (…-arm64.apk); yawancin wayoyi na buƙatarsa.';
+
+  @override
+  String get apkFilesHint =>
+      'Zaɓi fayiloli biyu da aka gina: -arm64 (yawancin wayoyi) da -arm32 (tsofaffin wayoyi). Kowace waya za ta samu wanda ya dace.';
+
+  @override
+  String get forOlderPhones => 'Don tsofaffin wayoyi (32-bit)';
 }

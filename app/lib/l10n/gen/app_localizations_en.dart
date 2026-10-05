@@ -5004,4 +5004,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get textSizeSample => 'This is how text will look.';
+
+  @override
+  String apkTooBig(String name, String size) {
+    return '$name is $size MB, over the 50 MB limit. Build with the script: it makes a smaller file for each phone type.';
+  }
+
+  @override
+  String get apkNeedMain =>
+      'Also choose the 64-bit file (…-arm64.apk); most phones need it.';
+
+  @override
+  String get apkFilesHint =>
+      'Choose both files the build makes: -arm64 (most phones) and -arm32 (older phones). Each phone gets the right one.';
+
+  @override
+  String get forOlderPhones => 'For older phones (32-bit)';
 }

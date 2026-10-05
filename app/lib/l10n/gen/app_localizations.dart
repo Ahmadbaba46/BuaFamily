@@ -8130,6 +8130,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is how text will look.'**
   String get textSizeSample;
+
+  /// No description provided for @apkTooBig.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is {size} MB, over the 50 MB limit. Build with the script: it makes a smaller file for each phone type.'**
+  String apkTooBig(String name, String size);
+
+  /// No description provided for @apkNeedMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Also choose the 64-bit file (…-arm64.apk); most phones need it.'**
+  String get apkNeedMain;
+
+  /// No description provided for @apkFilesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose both files the build makes: -arm64 (most phones) and -arm32 (older phones). Each phone gets the right one.'**
+  String get apkFilesHint;
+
+  /// No description provided for @forOlderPhones.
+  ///
+  /// In en, this message translates to:
+  /// **'For older phones (32-bit)'**
+  String get forOlderPhones;
 }
 
 class _AppLocalizationsDelegate

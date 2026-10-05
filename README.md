@@ -395,9 +395,14 @@ powershell -ExecutionPolicy Bypass -File app\tool\build_android.ps1
 ```
 
 The first run writes `app\config.json` and creates the family signing key in
-your user folder (`bua-family.jks`, it asks for a password: keep both safe);
-the APK is copied to the top of the project folder. Run it again after
-`git pull` to build an update.
+your user folder (`bua-family.jks`, it asks for a password: keep both safe).
+It makes two APKs at the top of the project folder, one per phone type:
+`bua-family-1.0.N-arm64.apk` (most phones) and `bua-family-1.0.N-arm32.apk`
+(older 32-bit phones). A single APK for all phones is over Supabase's 50 MB
+upload limit; each of these is well under it. Publish them in the app
+(**Admin → Settings → Android app → Publish a new version**, choose both
+files): each phone then downloads the right one, and the download page has a
+link for older phones. Run the script again after `git pull` to build an update.
 
 **Android app (built on GitHub):** the *Android app* workflow
 (`.github/workflows/android.yml`) builds the APK whenever the app changes on
@@ -406,7 +411,9 @@ is published as a GitHub release; family members install it from
 
 > https://github.com/Ahmadbaba46/BuaFamily/releases/latest/download/bua-family.apk
 
-(open it on the phone and allow installing from this source when asked).
+(open it on the phone and allow installing from this source when asked). Each
+release also has the two smaller `-arm64` and `-arm32` files to publish in the
+app.
 
 Updates install over the old app only when every build is signed with the
 same key. Create the family's key once and keep a copy somewhere safe:
@@ -471,9 +478,21 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 ## Roadmap
 
-- **Play Store release:** app icon, signing, privacy policy and the store
-  listing, so Android members can install the app. (No iPhone app is planned;
-  iPhone users use the website.)
+Next, in rough order (no iPhone app is planned; iPhone users use the website):
+
+- **Database cleanup:** the missing foreign-key indexes and two duplicated
+  access rules the Supabase advisors list; turn on leaked-password protection
+  (Authentication → Passwords).
+- **Pay dues and causes in the app** with Paystack (card, transfer, USSD),
+  confirmed automatically.
+- **Family Quran khatm:** share out the 30 juz among volunteers for a relative
+  who has passed or for an occasion, with progress and a notice when complete.
+- **Play builds uploaded from GitHub** to the testing track automatically.
+- **Find and merge duplicate people** in the tree.
+- **Photos and voice notes in messages.**
+- **Family calendar feed:** a calendar link per member with events and birthdays.
+- **Wedding and naming contributions** on an event.
+- **Group chats** per branch or committee.
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.

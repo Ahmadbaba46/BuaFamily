@@ -254,9 +254,9 @@ class _SettingsTab extends ConsumerWidget {
           const SizedBox(height: 12),
           AdminUpdatesCard(settings: s, save: save),
           const SizedBox(height: 12),
-          AndroidReleaseCard(pickApk: () async {
-            final f = await FilePicker.pickFile(type: FileType.custom, allowedExtensions: ['apk']);
-            return f == null ? null : (f.name, await f.readAsBytes());
+          AndroidReleaseCard(pickApks: () async {
+            final files = await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: ['apk']);
+            return [for (final f in files) (f.name, await f.readAsBytes())];
           }),
           const SizedBox(height: 12),
           Container(
