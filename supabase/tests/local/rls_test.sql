@@ -1739,6 +1739,36 @@ select test.expect_error($$select public.admin_publish_android_arm32(7, 'x.apk')
 reset role;
 
 -- ---------------------------------------------------------------------------
+-- 40. Admins can turn messages off for everyone.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.app_settings set messages_enabled = false;
+reset role;
+select test.assert((select messages_enabled from public.app_settings), 'a member cannot turn messages off');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.app_settings set messages_enabled = false;
+select test.expect_error(format($$select public.dm_open(%L)$$, :member_id), 'no new conversations while off');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.dm_threads), 'conversations are hidden while off');
+select test.assert((select count(*) = 0 from public.dm_messages), 'and their messages');
+select test.expect_error(format($$insert into public.dm_messages (thread_id, body) values (%L, 'still there?')$$,
+  (select id from test.ids where name = 'dm')), 'nobody can send while off');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.app_settings set messages_enabled = true;
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 2 from public.dm_messages), 'turned back on, the conversations are all there');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

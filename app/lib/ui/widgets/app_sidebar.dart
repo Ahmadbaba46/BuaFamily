@@ -189,7 +189,7 @@ class AppSidebar extends ConsumerWidget {
               item(Icons.school_outlined, l.mentorsTitle, '/mentors'),
               item(Icons.how_to_vote_outlined, l.pollsTitle, '/polls', badge: polls),
               heading(l.account),
-              item(Icons.forum_outlined, l.messagesTitle, '/messages', badge: messages),
+              if (ref.watch(messagesOnProvider)) item(Icons.forum_outlined, l.messagesTitle, '/messages', badge: messages),
               item(Icons.notifications_none, l.notifications, '/notifications', badge: unread),
               item(Icons.cake_outlined, l.remindersTitle, '/reminders'),
               item(Icons.pending_actions_outlined, l.myRequests, '/my-requests', badge: myPending),

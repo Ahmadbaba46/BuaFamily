@@ -254,6 +254,8 @@ class _SettingsTab extends ConsumerWidget {
           const SizedBox(height: 12),
           AdminUpdatesCard(settings: s, save: save),
           const SizedBox(height: 12),
+          AdminMessagesCard(settings: s, save: save),
+          const SizedBox(height: 12),
           AndroidReleaseCard(pickApks: () async {
             final files = await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: ['apk']);
             return [for (final f in files) (f.name, await f.readAsBytes())];
@@ -612,6 +614,35 @@ class _PushCard extends ConsumerWidget {
             ),
           ),
         ],
+      ]),
+    );
+  }
+}
+
+/// Private messages (and group chats) on or off for the whole family.
+class AdminMessagesCard extends StatelessWidget {
+  const AdminMessagesCard({super.key, required this.settings, required this.save});
+
+  final AppSettings settings;
+  final Future<void> Function(Map<String, dynamic>) save;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        IconTile(Icons.forum_outlined, background: Bua.greenTint),
+        const SizedBox(width: 14),
+        Expanded(
+          child: ToggleRow(
+            title: l.messagesToggle,
+            subtitle: l.messagesToggleHint,
+            value: settings.messagesEnabled,
+            onChanged: (v) => save({'messages_enabled': v}),
+          ),
+        ),
       ]),
     );
   }
