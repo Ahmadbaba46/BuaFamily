@@ -32,6 +32,7 @@ import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
 import 'ui/screens/messages_screen.dart';
+import 'ui/screens/online_payment_screen.dart';
 import 'ui/screens/mentorship_screen.dart';
 import 'ui/screens/members_screen.dart';
 import 'ui/screens/metrics_screen.dart';
@@ -147,6 +148,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/fund/reports', builder: (_, _) => const FundReportScreen()),
       GoRoute(path: '/fund/dues', builder: (_, _) => const DuesScreen()),
+      GoRoute(path: '/fund/paid/:ref', builder: (_, s) => OnlinePaymentScreen(reference: s.pathParameters['ref']!)),
       GoRoute(path: '/fund/new', builder: (_, s) => NewCauseScreen(ask: s.uri.queryParameters['ask'] == '1')),
       GoRoute(path: '/fund/cause/:id', builder: (_, s) => FundCauseScreen(causeId: s.pathParameters['id'])),
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),

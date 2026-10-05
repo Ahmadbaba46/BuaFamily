@@ -809,6 +809,36 @@ class FamilyRepository {
   Future<void> recordPayout({String? causeId, required double amount, String? note}) =>
       _db.from('fund_payouts').insert({'cause_id': causeId, 'amount': amount, 'note': note, 'recorded_by': userId});
 
+  /// Starts paying through Korapay: returns the payment's reference and the
+  /// checkout page to open.
+  Future<({String reference, String checkoutUrl})> startOnlinePayment({
+    required double amount,
+    String? causeId,
+    String? duesPlanId,
+    bool showName = true,
+  }) async {
+    final r = await _db.functions.invoke('korapay', body: {
+      'action': 'start',
+      'amount': amount,
+      'cause_id': ?causeId,
+      'dues_plan_id': ?duesPlanId,
+      'show_name': showName,
+    });
+    final data = (r.data as Map).cast<String, dynamic>();
+    return (reference: data['reference'] as String, checkoutUrl: data['checkout_url'] as String);
+  }
+
+  /// 'paid', 'failed' or 'waiting' (Korapay hasn't finished yet).
+  Future<String> checkOnlinePayment(String reference) async {
+    final r = await _db.functions.invoke('korapay', body: {'action': 'check', 'reference': reference});
+    return ((r.data as Map)['status'] as String?) ?? 'waiting';
+  }
+
+  Future<KorapayStatus> korapayStatus() async =>
+      KorapayStatus.fromJson(Map<String, dynamic>.from(await _db.rpc('korapay_status') as Map));
+
+  Future<void> setKorapayKey(String secretKey) => _db.rpc('admin_set_korapay', params: {'p_secret_key': secretKey});
+
   Future<void> updateFundSettings(Map<String, dynamic> changes) =>
       _db.from('fund_settings').update(changes).eq('id', true);
 

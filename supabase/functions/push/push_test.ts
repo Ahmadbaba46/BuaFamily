@@ -36,6 +36,11 @@ Deno.test("texts follow the reader's language", () => {
   assertEquals(render("poll", { question: "Where?" }, "en", "Bua"), { title: "Bua Family", body: "New poll: Where?" });
   assertEquals(render("poll", { question: "Ina?" }, "ha", "Bua"), { title: "Iyalin Bua", body: "Sabuwar ƙuri'a: Ina?" });
   assertEquals(render("remembrance", { years: 1, name: "Ahmadu" }, "en", "Bua").body, "1 year since Ahmadu passed");
+  assertEquals(
+    render("fund_contribution", { amount: 5000, online: true, name: "Aisha", cause: "Hospital bill" }, "en", "Bua").body,
+    "Aisha paid ₦5,000 in the app for Hospital bill",
+  );
+  assertEquals(render("fund_contribution", { amount: 5000 }, "en", "Bua").body, "New contribution to confirm: ₦5,000");
   assertEquals(render("remembrance", { years: 5, name: "Ahmadu" }, "en", "Bua").body, "5 years since Ahmadu passed");
   assertEquals(render("tagged", { photo_id: "x" }, "en", "Bua").body, "You were tagged in a photo");
   assertEquals(render("fund_confirmed", { amount: 20000 }, "en", "Bua").body,

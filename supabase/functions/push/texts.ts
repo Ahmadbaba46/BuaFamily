@@ -31,7 +31,10 @@ const en: Texts = {
   remembrance: (d) =>
     n(d, "years") === 1 ? `1 year since ${s(d, "name")} passed` : `${n(d, "years")} years since ${s(d, "name")} passed`,
   memory: (d) => `New memory of ${s(d, "name")}: “${s(d, "body")}”`,
-  fund_contribution: (d) => `New contribution to confirm: ${naira(n(d, "amount"))}`,
+  fund_contribution: (d) =>
+    d.online === true
+      ? `${s(d, "name") || "A member"} paid ${naira(n(d, "amount"))} in the app${s(d, "cause") ? ` for ${s(d, "cause")}` : ""}`
+      : `New contribution to confirm: ${naira(n(d, "amount"))}`,
   fund_confirmed: (d) => `Your contribution of ${naira(n(d, "amount"))} was confirmed. Thank you!`,
   fund_request: (d) => `Support requested: ${s(d, "title")}`,
   mentor_request: (d) =>
@@ -111,7 +114,10 @@ const ha: Texts = {
   blood_offer: (d) => `Wani ɗan uwa zai iya ba da jini (${s(d, "blood_group")})`,
   remembrance: (d) => `Shekara ${n(d, "years")} da rasuwar ${s(d, "name")}`,
   memory: (d) => `Sabon tunawa da ${s(d, "name")}: “${s(d, "body")}”`,
-  fund_contribution: (d) => `Sabuwar gudummawa da za a tabbatar: ${naira(n(d, "amount"))}`,
+  fund_contribution: (d) =>
+    d.online === true
+      ? `${s(d, "name") || "Wani ɗan uwa"} ya biya ${naira(n(d, "amount"))} a manhaja${s(d, "cause") ? ` don ${s(d, "cause")}` : ""}`
+      : `Sabuwar gudummawa da za a tabbatar: ${naira(n(d, "amount"))}`,
   fund_confirmed: (d) => `An tabbatar da gudummawarka ta ${naira(n(d, "amount"))}. Na gode!`,
   fund_request: (d) => `An nemi taimako: ${s(d, "title")}`,
   mentor_request: (d) =>

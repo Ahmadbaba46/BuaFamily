@@ -5055,4 +5055,106 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get phoneOnAnotherAccount =>
       'This number is already on another account. Sign in with that account\'s email and password, or ask an admin.';
+
+  @override
+  String get payNowButton => 'Pay now (card or transfer)';
+
+  @override
+  String get payNowHint =>
+      'Opens Korapay\'s secure page. Korapay\'s small fee is added, so the fund gets the full amount. It\'s confirmed straight away, with nothing to record.';
+
+  @override
+  String get payMinimum => 'Enter at least ₦100.';
+
+  @override
+  String get payOrRecord => 'Pay or record';
+
+  @override
+  String get orRecordPaid => 'Or record a payment you already made';
+
+  @override
+  String get recordPaidElsewhere => 'Record a payment I made';
+
+  @override
+  String get payNowTitle => 'Payment';
+
+  @override
+  String get paymentChecking => 'Checking your payment…';
+
+  @override
+  String get paymentReceived => 'Payment received. Thank you!';
+
+  @override
+  String get paymentReceivedBody =>
+      'It\'s confirmed and counted in the welfare fund.';
+
+  @override
+  String get paymentFailed => 'The payment didn\'t go through';
+
+  @override
+  String get paymentFailedBody =>
+      'Nothing was recorded. You can try again from the welfare fund.';
+
+  @override
+  String get paymentWaiting => 'Not finished yet';
+
+  @override
+  String get paymentWaitingBody =>
+      'When you\'ve paid on Korapay\'s page, come back here. It\'s checked again by itself; a transfer can take a few minutes.';
+
+  @override
+  String get backToFund => 'Back to the welfare fund';
+
+  @override
+  String get paidOnline => 'Paid in the app';
+
+  @override
+  String notifFundPaidOnline(String name, String amount) {
+    return '$name paid $amount in the app';
+  }
+
+  @override
+  String get onlinePaymentsTitle => 'Paying in the app (Korapay)';
+
+  @override
+  String get korapayNotSetUp => 'Not set up: enter your Korapay secret key';
+
+  @override
+  String get korapayTest => 'Test mode: no real money moves';
+
+  @override
+  String get korapayLive => 'Live: real payments';
+
+  @override
+  String get onlinePaymentsToggle =>
+      'Members can pay dues and causes in the app';
+
+  @override
+  String get onlinePaymentsHint =>
+      'By card or bank transfer, confirmed automatically.';
+
+  @override
+  String onlinePaid30d(int count, String amount) {
+    return '$count paid in the app in the last 30 days, $amount';
+  }
+
+  @override
+  String get korapayEnterKey => 'Enter secret key';
+
+  @override
+  String get korapayChangeKey => 'Change secret key';
+
+  @override
+  String get korapaySecretKey => 'Korapay secret key';
+
+  @override
+  String get korapayKeyHint =>
+      'In your Korapay dashboard: Settings → API Configuration. Use the test key (sk_test_…) to try it first, then the live key (sk_live_…). It\'s kept encrypted and never shown again.';
+
+  @override
+  String get korapayKeySaved => 'Korapay key saved.';
+
+  @override
+  String get korapayPayoutsNote =>
+      'Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app\'s servers don\'t have.';
 }

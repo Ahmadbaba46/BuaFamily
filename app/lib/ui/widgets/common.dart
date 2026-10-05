@@ -16,6 +16,8 @@ String errorText(Object e) => switch (e) {
       PostgrestException(:final message) => message,
       AuthException(:final message) => message,
       StorageException(:final message) => message,
+      FunctionException(:final details, :final status) =>
+        (details is Map ? details['error'] as String? : null) ?? 'Error $status',
       _ => e.toString(),
     };
 

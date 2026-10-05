@@ -18,6 +18,7 @@ class FundOverview {
     this.accountName,
     this.openingBalance = 0,
     this.pending,
+    this.onlinePayments = false,
   });
 
   final double balance;
@@ -31,6 +32,9 @@ class FundOverview {
   /// Contributions waiting for confirmation (committee only).
   final int? pending;
 
+  /// Members can pay in the app (Korapay is set up and switched on).
+  final bool onlinePayments;
+
   bool get hasAccount => (accountNumber?.isNotEmpty ?? false);
 
   factory FundOverview.fromJson(Map<String, dynamic> j) => FundOverview(
@@ -42,6 +46,7 @@ class FundOverview {
         accountName: j['account_name'] as String?,
         openingBalance: _num(j['opening_balance']),
         pending: (j['pending'] as num?)?.toInt(),
+        onlinePayments: j['online_payments'] as bool? ?? false,
       );
 }
 
@@ -112,12 +117,16 @@ class Contribution {
     this.showName = true,
     this.status = ContributionStatus.pending,
     this.duesPlanId,
+    this.online = false,
   });
 
   final String id;
   final String userId;
   final double amount;
   final PayMethod method;
+
+  /// Paid in the app through Korapay (confirmed by Korapay, not the committee).
+  final bool online;
   final DateTime createdAt;
   final String? causeId;
   final String? receiptPath;
@@ -138,6 +147,39 @@ class Contribution {
         showName: j['show_name'] as bool? ?? true,
         status: ContributionStatus.values.byName(j['status'] as String),
         duesPlanId: j['dues_plan_id'] as String?,
+        online: j['gateway_reference'] != null,
+      );
+}
+
+/// Online payments: Korapay set up (for the committee's card).
+class KorapayStatus {
+  const KorapayStatus({
+    this.keySaved = false,
+    this.mode,
+    this.enabled = false,
+    this.paid30d = 0,
+    this.amount30d = 0,
+    this.lastPaidAt,
+  });
+
+  final bool keySaved;
+
+  /// The committee switched paying in the app on.
+  final bool enabled;
+
+  /// 'test' or 'live', from the key.
+  final String? mode;
+  final int paid30d;
+  final double amount30d;
+  final DateTime? lastPaidAt;
+
+  factory KorapayStatus.fromJson(Map<String, dynamic> j) => KorapayStatus(
+        keySaved: j['key_saved'] as bool? ?? false,
+        mode: j['mode'] as String?,
+        enabled: j['enabled'] as bool? ?? false,
+        paid30d: (j['paid_30d'] as num?)?.toInt() ?? 0,
+        amount30d: _num(j['amount_30d']),
+        lastPaidAt: j['last_paid_at'] == null ? null : DateTime.parse(j['last_paid_at'] as String).toLocal(),
       );
 }
 

@@ -8208,6 +8208,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This number is already on another account. Sign in with that account\'s email and password, or ask an admin.'**
   String get phoneOnAnotherAccount;
+
+  /// No description provided for @payNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay now (card or transfer)'**
+  String get payNowButton;
+
+  /// No description provided for @payNowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens Korapay\'s secure page. Korapay\'s small fee is added, so the fund gets the full amount. It\'s confirmed straight away, with nothing to record.'**
+  String get payNowHint;
+
+  /// No description provided for @payMinimum.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter at least ₦100.'**
+  String get payMinimum;
+
+  /// No description provided for @payOrRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay or record'**
+  String get payOrRecord;
+
+  /// No description provided for @orRecordPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Or record a payment you already made'**
+  String get orRecordPaid;
+
+  /// No description provided for @recordPaidElsewhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a payment I made'**
+  String get recordPaidElsewhere;
+
+  /// No description provided for @payNowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payNowTitle;
+
+  /// No description provided for @paymentChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your payment…'**
+  String get paymentChecking;
+
+  /// No description provided for @paymentReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment received. Thank you!'**
+  String get paymentReceived;
+
+  /// No description provided for @paymentReceivedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s confirmed and counted in the welfare fund.'**
+  String get paymentReceivedBody;
+
+  /// No description provided for @paymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The payment didn\'t go through'**
+  String get paymentFailed;
+
+  /// No description provided for @paymentFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was recorded. You can try again from the welfare fund.'**
+  String get paymentFailedBody;
+
+  /// No description provided for @paymentWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Not finished yet'**
+  String get paymentWaiting;
+
+  /// No description provided for @paymentWaitingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'When you\'ve paid on Korapay\'s page, come back here. It\'s checked again by itself; a transfer can take a few minutes.'**
+  String get paymentWaitingBody;
+
+  /// No description provided for @backToFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the welfare fund'**
+  String get backToFund;
+
+  /// No description provided for @paidOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in the app'**
+  String get paidOnline;
+
+  /// No description provided for @notifFundPaidOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} paid {amount} in the app'**
+  String notifFundPaidOnline(String name, String amount);
+
+  /// No description provided for @onlinePaymentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Paying in the app (Korapay)'**
+  String get onlinePaymentsTitle;
+
+  /// No description provided for @korapayNotSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up: enter your Korapay secret key'**
+  String get korapayNotSetUp;
+
+  /// No description provided for @korapayTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test mode: no real money moves'**
+  String get korapayTest;
+
+  /// No description provided for @korapayLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live: real payments'**
+  String get korapayLive;
+
+  /// No description provided for @onlinePaymentsToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Members can pay dues and causes in the app'**
+  String get onlinePaymentsToggle;
+
+  /// No description provided for @onlinePaymentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'By card or bank transfer, confirmed automatically.'**
+  String get onlinePaymentsHint;
+
+  /// No description provided for @onlinePaid30d.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} paid in the app in the last 30 days, {amount}'**
+  String onlinePaid30d(int count, String amount);
+
+  /// No description provided for @korapayEnterKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter secret key'**
+  String get korapayEnterKey;
+
+  /// No description provided for @korapayChangeKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Change secret key'**
+  String get korapayChangeKey;
+
+  /// No description provided for @korapaySecretKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Korapay secret key'**
+  String get korapaySecretKey;
+
+  /// No description provided for @korapayKeyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'In your Korapay dashboard: Settings → API Configuration. Use the test key (sk_test_…) to try it first, then the live key (sk_live_…). It\'s kept encrypted and never shown again.'**
+  String get korapayKeyHint;
+
+  /// No description provided for @korapayKeySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Korapay key saved.'**
+  String get korapayKeySaved;
+
+  /// No description provided for @korapayPayoutsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app\'s servers don\'t have.'**
+  String get korapayPayoutsNote;
 }
 
 class _AppLocalizationsDelegate

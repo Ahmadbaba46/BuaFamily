@@ -4962,4 +4962,106 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get phoneOnAnotherAccount =>
       'Wannan lambar tana kan wani asusu. Shiga da imel da kalmar sirrin asusun, ko ka tambayi shugaba.';
+
+  @override
+  String get payNowButton => 'Biya yanzu (kati ko tura kuɗi)';
+
+  @override
+  String get payNowHint =>
+      'Zai buɗe shafin Korapay mai tsaro. Ana ƙara ƙaramin kuɗin Korapay, don asusun ya samu cikakken kuɗin. Ana tabbatarwa nan take, ba sai an rubuta ba.';
+
+  @override
+  String get payMinimum => 'Saka akalla ₦100.';
+
+  @override
+  String get payOrRecord => 'Biya ko rubuta';
+
+  @override
+  String get orRecordPaid => 'Ko ka rubuta kuɗin da ka riga ka biya';
+
+  @override
+  String get recordPaidElsewhere => 'Rubuta kuɗin da na biya';
+
+  @override
+  String get payNowTitle => 'Biya';
+
+  @override
+  String get paymentChecking => 'Ana duba biyanka…';
+
+  @override
+  String get paymentReceived => 'An karɓi kuɗin. Na gode!';
+
+  @override
+  String get paymentReceivedBody =>
+      'An tabbatar kuma an ƙidaya shi a asusun taimako.';
+
+  @override
+  String get paymentFailed => 'Biyan bai yi nasara ba';
+
+  @override
+  String get paymentFailedBody =>
+      'Ba a rubuta komai ba. Za ka iya sake gwadawa daga asusun taimako.';
+
+  @override
+  String get paymentWaiting => 'Bai kammala ba tukuna';
+
+  @override
+  String get paymentWaitingBody =>
+      'Idan ka gama biya a shafin Korapay, dawo nan. Ana sake dubawa da kanta; tura kuɗi na iya ɗaukar ’yan mintuna.';
+
+  @override
+  String get backToFund => 'Koma asusun taimako';
+
+  @override
+  String get paidOnline => 'An biya a manhaja';
+
+  @override
+  String notifFundPaidOnline(String name, String amount) {
+    return '$name ya biya $amount a manhaja';
+  }
+
+  @override
+  String get onlinePaymentsTitle => 'Biya a manhaja (Korapay)';
+
+  @override
+  String get korapayNotSetUp => 'Ba a saita ba: saka sirrin maɓallin Korapay';
+
+  @override
+  String get korapayTest => 'Yanayin gwaji: babu kuɗi na gaske';
+
+  @override
+  String get korapayLive => 'Na gaske: biya na gaske';
+
+  @override
+  String get onlinePaymentsToggle =>
+      '’Yan uwa na iya biyan kuɗin wata da buƙatu a manhaja';
+
+  @override
+  String get onlinePaymentsHint =>
+      'Ta kati ko tura kuɗi, ana tabbatarwa kai tsaye.';
+
+  @override
+  String onlinePaid30d(int count, String amount) {
+    return '$count sun biya a manhaja cikin kwana 30, $amount';
+  }
+
+  @override
+  String get korapayEnterKey => 'Saka sirrin maɓalli';
+
+  @override
+  String get korapayChangeKey => 'Canza sirrin maɓalli';
+
+  @override
+  String get korapaySecretKey => 'Sirrin maɓallin Korapay';
+
+  @override
+  String get korapayKeyHint =>
+      'A dashboard ɗin Korapay: Settings → API Configuration. Yi amfani da maɓallin gwaji (sk_test_…) da farko, sannan na gaske (sk_live_…). Ana ajiye shi a ɓoye kuma ba za a sake nuna shi ba.';
+
+  @override
+  String get korapayKeySaved => 'An ajiye maɓallin Korapay.';
+
+  @override
+  String get korapayPayoutsNote =>
+      'Ma’aji ne ke fitar da kuɗi a dashboard ɗin Korapay sannan a rubuta a nan kamar da: Korapay na karɓar buƙatar fitar da kuɗi daga adireshin IP guda ɗaya kawai, wanda sabobin manhajar ba su da shi.';
 }
