@@ -1873,6 +1873,70 @@ select set_config('request.jwt.claims', '{}', false);
 delete from auth.users where id = :saver_id;
 
 -- ---------------------------------------------------------------------------
+-- 43. Paying online through Korapay.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_set_korapay('sk_test_abc')$$, 'only admins set the Korapay key');
+select test.expect_error($$select public.korapay_config()$$, 'members cannot read the key');
+select test.expect_error(format($$select public.online_payment_start(%L, 5000)$$, :member_id),
+  'members cannot start payments directly (only through the Edge Function)');
+reset role;
+
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_set_korapay('pk_test_public')$$, 'the public key is refused');
+select public.admin_set_korapay('sk_test_family123');
+select test.assert((select public.korapay_status() ->> 'mode' = 'test'), 'the committee sees the key is saved, in test mode');
+select test.assert((select not (public.fund_overview() ->> 'online_payments')::boolean), 'not on until the committee switches it on');
+update public.fund_settings set online_payments = true;
+select test.assert((select (public.fund_overview() ->> 'online_payments')::boolean), 'switched on, members can pay');
+insert into public.fund_causes (title, target_amount) values ('Hospital bill', 100000);
+reset role;
+select id as paycause from public.fund_causes where title = 'Hospital bill' \gset
+
+set role service_role;
+select test.assert((select public.korapay_config() ->> 'secret_key' = 'sk_test_family123'), 'the Edge Function reads the key');
+select test.expect_error(format($$select public.online_payment_start(%L, 50)$$, :member_id), 'at least ₦100');
+select test.expect_error(format($$select public.online_payment_start(%L, 5000)$$, gen_random_uuid()), 'only members pay');
+select (public.online_payment_start(:member_id, 5000, :'paycause')) ->> 'reference' as payref \gset
+select test.assert((select status = 'started' and amount = 5000 from public.online_payments where reference = :'payref'),
+  'a payment is started');
+select test.expect_error(format($$select public.online_payment_paid(%L, 4000)$$, :'payref'), 'paying less is refused');
+select public.online_payment_paid(:'payref', 5000, 75);
+select public.online_payment_paid(:'payref', 5000, 75);
+reset role;
+select test.assert((select count(*) = 1 from public.fund_contributions where gateway_reference = :'payref'
+  and status = 'confirmed' and amount = 5000 and user_id = :member_id), 'paid once: one confirmed contribution, even if told twice');
+select test.assert((select status = 'paid' and fee = 75 and contribution_id is not null from public.online_payments
+  where reference = :'payref'), 'the payment is marked paid with its fee');
+select test.assert((select count(*) >= 1 from public.notifications where user_id = :member_id and kind = 'fund_confirmed'
+  and (data ->> 'amount')::numeric = 5000), 'the member is told it is confirmed');
+select test.assert((select count(*) >= 1 from public.notifications where user_id = :admin_id and kind = 'fund_contribution'
+  and (data ->> 'online')::boolean), 'the committee hears it was paid online');
+
+-- Members see their own payments only.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from public.online_payments), 'members see their own payments');
+select test.expect_error($$insert into public.online_payments (reference, user_id, amount) values ('x', auth.uid(), 500)$$,
+  'members cannot write payments');
+reset role;
+
+-- A closed cause can't be paid for; switched off, nothing can.
+update public.fund_causes set status = 'closed' where id = :'paycause';
+set role service_role;
+select test.expect_error(format($$select public.online_payment_start(%L, 5000, %L)$$, :member_id, :'paycause'),
+  'a closed cause can''t be paid for');
+reset role;
+update public.fund_settings set online_payments = false;
+set role service_role;
+select test.expect_error(format($$select public.online_payment_start(%L, 5000)$$, :member_id), 'switched off, no payments');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

@@ -279,6 +279,9 @@ final remembranceReminderProvider = FutureProvider.family<bool, String>(
 
 final fundOverviewProvider = FutureProvider<FundOverview>((ref) => ref.watch(repositoryProvider).fundOverview());
 
+final korapayStatusProvider =
+    FutureProvider.autoDispose<KorapayStatus>((ref) => ref.watch(repositoryProvider).korapayStatus());
+
 final fundCausesProvider = FutureProvider<List<FundCause>>((ref) => ref.watch(repositoryProvider).fundCauses());
 
 final contributionsProvider =

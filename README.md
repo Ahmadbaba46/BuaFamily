@@ -85,7 +85,9 @@ share moments and photos, plan family events, and keep everyone's details
   in), offer with one tap, and the person who asked is told.
 - **Welfare fund:** the fund balance, open causes (school fees, hospital
   bills, reunions) with progress, and how to pay. Members pay the family
-  account or the treasurer, record it in the app, and a treasurer confirms it.
+  account or the treasurer, record it in the app, and a treasurer confirms it,
+  or pay in the app by card or bank transfer through Korapay, confirmed
+  automatically (see setup step 3b).
   Amounts stay private to the contributor and the committee (admins and
   treasurers); everyone sees totals and the names of those who chose to be
   listed. Anyone can ask for support privately.
@@ -230,6 +232,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `push_tokens` | The phones and browsers each member turned notifications on for |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
+| `online_payments` | Payments made in the app through Korapay, each becoming a confirmed contribution once paid |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
 | `stories` | Elders' recorded stories: who is speaking, language, transcript (audio in the private `stories` bucket) |
 | `private.restore_points` | The family's data from just before the last restore, so it can be undone |
@@ -371,6 +374,27 @@ For a different Firebase project, change the IDs at the top of
 `app/lib/services/push.dart` and redeploy the function with
 `supabase functions deploy push --no-verify-jwt`.
 
+### 3b. Paying in the app with Korapay (optional)
+
+Members can pay dues and causes by card or bank transfer through
+[Korapay](https://korapay.com). The `korapay` Edge Function starts each
+payment and records it once Korapay itself confirms it was paid; the payer
+pays Korapay's fee, so the fund gets the full amount.
+
+1. In the Korapay dashboard: **Settings → API Configuration**, copy the
+   **test** secret key (`sk_test_…`).
+2. In the app: **Admin → Settings → Paying in the app (Korapay) → Enter
+   secret key**. It's kept encrypted in Vault and never shown again.
+3. Switch on **Members can pay dues and causes in the app**, and try a
+   payment with Korapay's test card.
+4. When it works, enter the **live** key (`sk_live_…`) the same way.
+
+Nothing needs setting in Korapay for notifications: each payment tells
+Korapay where to report back. Payouts aren't made from the app: Korapay only
+accepts payout requests from whitelisted IP addresses, and Supabase has no
+fixed outgoing IP. The treasurer pays out in the Korapay dashboard and
+records it in the app as before.
+
 ### 4. Run the app
 
 You need the [Flutter SDK](https://docs.flutter.dev/get-started/install).
@@ -470,6 +494,7 @@ production. The *Android app* workflow builds the Play app bundle
 cd app && flutter analyze && flutter test   # tree layout, relationships, screens in English and Hausa
 supabase/tests/local/run.sh                 # migrations + permission tests on a throwaway Postgres (run as non-root)
 deno test supabase/functions/push           # push texts, Firebase sign-in and sending
+deno test supabase/functions/korapay        # Korapay payments: start, webhook, check
 ```
 
 Both suites run on every push via GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
@@ -486,9 +511,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Pay dues and causes in the app** with Korapay (card, transfer, USSD),
-  confirmed automatically. Payouts stay in the Korapay dashboard: Supabase has
-  no fixed outgoing IP to whitelist for Korapay's payout API.
 - **Family Quran khatm:** share out the 30 juz among volunteers for a relative
   who has passed or for an occasion, with progress and a notice when complete.
 - **Play builds uploaded from GitHub** to the testing track automatically.

@@ -11,6 +11,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import 'online_payment_screen.dart' show payOnline;
 import 'welfare_fund_screen.dart' show payMethodLabel;
 
 /// One cause (or the general fund when [causeId] is null): progress, how to
@@ -209,10 +210,25 @@ class _RecordFormState extends ConsumerState<_RecordForm> {
     }
   }
 
+  Future<void> _pay() async {
+    final l = context.l10n;
+    final amount = double.tryParse(_amount.text.replaceAll(RegExp(r'[^0-9.]'), ''));
+    if (amount == null || amount < 100) return showSnack(context, l.payMinimum);
+    await payOnline(context, ref,
+        amount: amount, causeId: widget.causeId, duesPlanId: widget.duesPlanId, showName: _showName);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    return SectionCard(title: l.recordContribution, padding: const EdgeInsets.fromLTRB(0, 6, 0, 16), children: [
+    final online = ref.watch(fundOverviewProvider).value?.onlinePayments ?? false;
+    final record = _saving
+        ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+        : Text(online ? l.recordPaidElsewhere : l.recordContributionButton);
+    return SectionCard(
+        title: online ? l.payOrRecord : l.recordContribution,
+        padding: const EdgeInsets.fromLTRB(0, 6, 0, 16),
+        children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -225,6 +241,21 @@ class _RecordFormState extends ConsumerState<_RecordForm> {
               decoration: const InputDecoration(prefixText: '₦ '),
             ),
           ),
+          if (online) ...[
+            const SizedBox(height: 4),
+            ToggleRow(title: l.showMyName, value: _showName, onChanged: (v) => setState(() => _showName = v)),
+            const SizedBox(height: 8),
+            FilledButton.icon(
+              onPressed: _pay,
+              style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+              icon: const Icon(Icons.payment),
+              label: Text(l.payNowButton),
+            ),
+            const SizedBox(height: 6),
+            Text(l.payNowHint, style: TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
+            Divider(height: 28, color: Bua.line),
+            Text(l.orRecordPaid, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          ],
           const SizedBox(height: 14),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final m in PayMethod.values)
@@ -240,16 +271,23 @@ class _RecordFormState extends ConsumerState<_RecordForm> {
             icon: Icon(_receipt == null ? Icons.attach_file : Icons.check_circle_outline, size: 18),
             label: Text(_receipt == null ? l.attachReceipt : l.receiptAttached),
           ),
-          const SizedBox(height: 4),
-          ToggleRow(title: l.showMyName, value: _showName, onChanged: (v) => setState(() => _showName = v)),
+          if (!online) ...[
+            const SizedBox(height: 4),
+            ToggleRow(title: l.showMyName, value: _showName, onChanged: (v) => setState(() => _showName = v)),
+          ],
           const SizedBox(height: 12),
-          FilledButton(
-            onPressed: _saving ? null : _submit,
-            style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-            child: _saving
-                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                : Text(l.recordContributionButton),
-          ),
+          if (online)
+            OutlinedButton(
+              onPressed: _saving ? null : _submit,
+              style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+              child: record,
+            )
+          else
+            FilledButton(
+              onPressed: _saving ? null : _submit,
+              style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+              child: record,
+            ),
           const SizedBox(height: 10),
           Text(l.contributionNote, style: TextStyle(fontSize: 12, color: Bua.inkSubtle, height: 1.4)),
         ]),

@@ -171,7 +171,7 @@ class WelfareFundScreen extends ConsumerWidget {
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text(naira(c.amount), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                         Text(
-                          [causeTitles[c.causeId] ?? duesTitles[c.duesPlanId] ?? l.generalFund, payMethodLabel(l, c.method), l.formatDate(c.createdAt)]
+                          [causeTitles[c.causeId] ?? duesTitles[c.duesPlanId] ?? l.generalFund, c.online ? l.paidOnline : payMethodLabel(l, c.method), l.formatDate(c.createdAt)]
                               .join(' · '),
                           style: TextStyle(fontSize: 13, color: Bua.inkSubtle),
                         ),
@@ -510,7 +510,7 @@ class _ConfirmRow extends ConsumerWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('${who.name} · ${naira(c.amount)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text([causeTitle ?? l.generalFund, payMethodLabel(l, c.method), l.ago(c.createdAt)].join(' · '),
+              Text([causeTitle ?? l.generalFund, c.online ? l.paidOnline : payMethodLabel(l, c.method), l.ago(c.createdAt)].join(' · '),
                   style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
             ]),
           ),

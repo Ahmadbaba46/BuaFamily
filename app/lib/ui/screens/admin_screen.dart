@@ -256,6 +256,8 @@ class _SettingsTab extends ConsumerWidget {
           const SizedBox(height: 12),
           AdminMessagesCard(settings: s, save: save),
           const SizedBox(height: 12),
+          const AdminPaymentsCard(),
+          const SizedBox(height: 12),
           AndroidReleaseCard(pickApks: () async {
             final files = await FilePicker.pickFiles(type: FileType.custom, allowedExtensions: ['apk']);
             return [for (final f in files) (f.name, await f.readAsBytes())];
@@ -614,6 +616,84 @@ class _PushCard extends ConsumerWidget {
             ),
           ),
         ],
+      ]),
+    );
+  }
+}
+
+/// Paying dues and causes in the app through Korapay.
+class AdminPaymentsCard extends ConsumerWidget {
+  const AdminPaymentsCard({super.key});
+
+  Future<void> _enterKey(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
+    final r = await showFormDialog(context, title: l.korapaySecretKey, note: l.korapayKeyHint, fields: [
+      TextSpec('key', l.korapaySecretKey, required: true, hint: 'sk_test_…'),
+    ]);
+    if (r == null || !context.mounted) return;
+    final ok = await guarded(context, () => ref.read(repositoryProvider).setKorapayKey((r['key'] as String).trim()));
+    if (ok) {
+      ref.invalidate(korapayStatusProvider);
+      ref.invalidate(fundOverviewProvider);
+      if (context.mounted) showSnack(context, l.korapayKeySaved);
+    }
+  }
+
+  Future<void> _toggle(BuildContext context, WidgetRef ref, bool on) async {
+    final ok = await guarded(context, () => ref.read(repositoryProvider).updateFundSettings({'online_payments': on}));
+    if (ok) {
+      ref.invalidate(korapayStatusProvider);
+      ref.invalidate(fundOverviewProvider);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final status = ref.watch(korapayStatusProvider).value;
+    final saved = status?.keySaved ?? false;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(children: [
+          IconTile(Icons.payment, background: Bua.greenTint),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(l.onlinePaymentsTitle, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              Text(
+                !saved
+                    ? l.korapayNotSetUp
+                    : status!.mode == 'live'
+                        ? l.korapayLive
+                        : l.korapayTest,
+                style: TextStyle(fontSize: 13, color: saved && status!.mode == 'live' ? Bua.green : Bua.goldInk),
+              ),
+            ]),
+          ),
+        ]),
+        const SizedBox(height: 8),
+        ToggleRow(
+          title: l.onlinePaymentsToggle,
+          subtitle: l.onlinePaymentsHint,
+          value: status?.enabled ?? false,
+          onChanged: saved ? (v) => _toggle(context, ref, v) : null,
+        ),
+        if (status != null && status.paid30d > 0)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(l.onlinePaid30d(status.paid30d, naira(status.amount30d)),
+                style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
+          ),
+        const SizedBox(height: 10),
+        OutlinedButton.icon(
+          onPressed: () => _enterKey(context, ref),
+          icon: const Icon(Icons.key_outlined, size: 18),
+          label: Text(saved ? l.korapayChangeKey : l.korapayEnterKey),
+        ),
+        const SizedBox(height: 8),
+        Text(l.korapayPayoutsNote, style: TextStyle(fontSize: 12, height: 1.45, color: Bua.inkMuted)),
       ]),
     );
   }

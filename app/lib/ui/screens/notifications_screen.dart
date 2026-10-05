@@ -32,7 +32,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.remembrance =>
         l.notifRemembrance((n.data['years'] as num?)?.toInt() ?? 0, n.str('name') ?? ''),
       NotificationKind.memory => l.notifMemory(n.str('name') ?? '', n.str('body') ?? ''),
-      NotificationKind.fundContribution => l.notifFundContribution(naira((n.data['amount'] as num?) ?? 0)),
+      NotificationKind.fundContribution => n.data['online'] == true
+          ? l.notifFundPaidOnline(n.data['name'] as String? ?? '', naira((n.data['amount'] as num?) ?? 0))
+          : l.notifFundContribution(naira((n.data['amount'] as num?) ?? 0)),
       NotificationKind.fundConfirmed => l.notifFundConfirmed(naira((n.data['amount'] as num?) ?? 0)),
       NotificationKind.fundRequest => l.notifFundRequest(n.str('title') ?? ''),
       NotificationKind.mentorRequest => (n.str('name') ?? '').isEmpty

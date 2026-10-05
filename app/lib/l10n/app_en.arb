@@ -3318,5 +3318,55 @@
     }
   },
   "accountSuspendedNote": "They can't use the app now. Activate them any time to let them back in.",
-  "phoneOnAnotherAccount": "This number is already on another account. Sign in with that account's email and password, or ask an admin."
+  "phoneOnAnotherAccount": "This number is already on another account. Sign in with that account's email and password, or ask an admin.",
+  "payNowButton": "Pay now (card or transfer)",
+  "payNowHint": "Opens Korapay's secure page. Korapay's small fee is added, so the fund gets the full amount. It's confirmed straight away, with nothing to record.",
+  "payMinimum": "Enter at least ₦100.",
+  "payOrRecord": "Pay or record",
+  "orRecordPaid": "Or record a payment you already made",
+  "recordPaidElsewhere": "Record a payment I made",
+  "payNowTitle": "Payment",
+  "paymentChecking": "Checking your payment…",
+  "paymentReceived": "Payment received. Thank you!",
+  "paymentReceivedBody": "It's confirmed and counted in the welfare fund.",
+  "paymentFailed": "The payment didn't go through",
+  "paymentFailedBody": "Nothing was recorded. You can try again from the welfare fund.",
+  "paymentWaiting": "Not finished yet",
+  "paymentWaitingBody": "When you've paid on Korapay's page, come back here. It's checked again by itself; a transfer can take a few minutes.",
+  "backToFund": "Back to the welfare fund",
+  "paidOnline": "Paid in the app",
+  "notifFundPaidOnline": "{name} paid {amount} in the app",
+  "@notifFundPaidOnline": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "onlinePaymentsTitle": "Paying in the app (Korapay)",
+  "korapayNotSetUp": "Not set up: enter your Korapay secret key",
+  "korapayTest": "Test mode: no real money moves",
+  "korapayLive": "Live: real payments",
+  "onlinePaymentsToggle": "Members can pay dues and causes in the app",
+  "onlinePaymentsHint": "By card or bank transfer, confirmed automatically.",
+  "onlinePaid30d": "{count} paid in the app in the last 30 days, {amount}",
+  "@onlinePaid30d": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "korapayEnterKey": "Enter secret key",
+  "korapayChangeKey": "Change secret key",
+  "korapaySecretKey": "Korapay secret key",
+  "korapayKeyHint": "In your Korapay dashboard: Settings → API Configuration. Use the test key (sk_test_…) to try it first, then the live key (sk_live_…). It's kept encrypted and never shown again.",
+  "korapayKeySaved": "Korapay key saved.",
+  "korapayPayoutsNote": "Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app's servers don't have."
 }
