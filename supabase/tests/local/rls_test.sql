@@ -1716,6 +1716,29 @@ reset role;
 select test.assert((select private.backup_data() ? 'event_attendance'), 'who came is in backups');
 
 -- ---------------------------------------------------------------------------
+-- 39. The Android app as two APKs, one per phone type.
+-- ---------------------------------------------------------------------------
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_publish_android(6, '1.0.6', 'bua-family-1.0.6.apk');
+select public.admin_publish_android_arm32(6, 'bua-family-1.0.6-arm32.apk');
+select test.expect_error($$select public.admin_publish_android_arm32(5, 'old.apk')$$, 'only for the published build');
+reset role;
+set role anon;
+select test.assert((select r ->> 'path' = 'bua-family-1.0.6.apk' and r ->> 'path_arm32' = 'bua-family-1.0.6-arm32.apk'
+  from public.android_release() r), 'both files are offered');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_publish_android(7, '1.0.7', 'bua-family-1.0.7.apk');
+reset role;
+select test.assert((select not (public.android_release() ? 'path_arm32')), 'a single APK for all phones still works');
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_publish_android_arm32(7, 'x.apk')$$, 'members cannot publish');
+reset role;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

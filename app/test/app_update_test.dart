@@ -31,6 +31,16 @@ void main() {
   test('the version comes from the build script file name', () {
     expect(versionFromFileName('bua-family-1.0.250.apk'), (250, '1.0.250'));
     expect(versionFromFileName('app-release.apk'), isNull);
+    expect(versionFromFileName('bua-family-1.0.251-arm64.apk'), (251, '1.0.251'));
+    expect(versionFromFileName('bua-family-1.0.251-arm32.apk'), (251, '1.0.251'));
+    expect(isArm32Apk('bua-family-1.0.251-arm32.apk'), isTrue);
+    expect(isArm32Apk('app-armeabi-v7a-release.apk'), isTrue);
+    expect(isArm32Apk('bua-family-1.0.251-arm64.apk'), isFalse);
+    // Tests run on a 64-bit computer: the main file.
+    const two = AndroidRelease(build: 1, version: '1.0.1', path: 'a.apk', arm32Path: 'a-arm32.apk');
+    expect(two.pathForThisPhone, 'a.apk');
+    expect(AndroidRelease.fromJson(const {'build': 2, 'path': 'b.apk', 'path_arm32': 'b-arm32.apk'}).arm32Path,
+        'b-arm32.apk');
   });
 
   testWidgets('an older Android app offers the update on Home', (tester) async {
@@ -62,6 +72,18 @@ void main() {
     expect(find.text('Download'), findsOneWidget);
     expect(find.text('Banners for notifications'), findsOneWidget);
     expect(find.textContaining('Open the downloaded file'), findsOneWidget);
+  });
+
+  testWidgets('older 32-bit phones get their own download link on the website', (tester) async {
+    tester.view.physicalSize = const Size(390, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    const two = AndroidRelease(build: 261, version: '1.0.261', path: 'bua-family-1.0.261.apk',
+        arm32Path: 'bua-family-1.0.261-arm32.apk');
+    await tester.pumpWidget(app(const GetAppScreen(), published: two));
+    await tester.pumpAndSettle();
+    expect(find.text('Download'), findsOneWidget);
+    expect(find.text('For older phones (32-bit)'), findsOneWidget);
   });
 
   testWidgets('the download page knows when you are up to date', (tester) async {

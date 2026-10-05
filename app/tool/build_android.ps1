@@ -5,7 +5,8 @@
 # Needs Flutter (3.47.6) and Android Studio installed. The first run writes
 # app\config.json and creates the family signing key (it asks for a password);
 # later runs reuse them, so every build updates the app already on phones.
-# The finished APK is copied to the top of the project folder.
+# The finished APKs (one for most phones, one for older 32-bit phones) are
+# copied to the top of the project folder.
 
 # For Google Play, add -Play: it builds the app bundle (.aab) to upload in
 # Play Console instead of the APK.
@@ -95,13 +96,23 @@ if ($Play) {
   exit 0
 }
 
-flutter build apk --release --dart-define-from-file=config.json --build-number=$build --build-name="1.0.$build"
+# One APK per phone type: each is well under the 50 MB upload limit, where a
+# single APK for all phones is not.
+flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64 `
+  --dart-define-from-file=config.json --build-number=$build --build-name="1.0.$build"
 Check 'flutter build apk'
 
-$apk = Join-Path $repo "bua-family-1.0.$build.apk"
-Copy-Item (Join-Path $app 'build\app\outputs\flutter-apk\app-release.apk') $apk -Force
-Step "Done: $apk"
-Write-Host 'Publish it for the family in the app: Admin > Settings > Android app > Publish a new version.'
-Write-Host 'Phones with the app then offer the update, and the download link is'
-Write-Host '  https://buafamily.vercel.app/#/get-app'
-Start-Process explorer.exe "/select,`"$apk`""
+$out = Join-Path $app 'build\app\outputs\flutter-apk'
+$arm64 = Join-Path $repo "bua-family-1.0.$build-arm64.apk"
+$arm32 = Join-Path $repo "bua-family-1.0.$build-arm32.apk"
+Copy-Item (Join-Path $out 'app-arm64-v8a-release.apk') $arm64 -Force
+Copy-Item (Join-Path $out 'app-armeabi-v7a-release.apk') $arm32 -Force
+Step 'Done'
+foreach ($f in @($arm64, $arm32)) {
+  Write-Host ("  {0}  ({1:N1} MB)" -f $f, ((Get-Item $f).Length / 1MB))
+}
+Write-Host ''
+Write-Host 'Publish them for the family in the app: Admin > Settings > Android app > Publish a new version,'
+Write-Host 'and choose BOTH files (arm64 for most phones, arm32 for older ones). Each phone then gets the right one.'
+Write-Host 'The download link is https://buafamily.vercel.app/#/get-app'
+Start-Process explorer.exe "/select,`"$arm64`""
