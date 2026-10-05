@@ -3298,5 +3298,25 @@
   "forOlderPhones": "For older phones (32-bit)",
   "messagesToggle": "Private messages",
   "messagesToggleHint": "Members can message each other (and, later, chat in groups). Turned off, nobody can send or read messages, admins included; conversations are kept and come back when it is turned on again.",
-  "messagesTurnedOff": "Messages are turned off by the family admins."
+  "messagesTurnedOff": "Messages are turned off by the family admins.",
+  "declineAccount": "Decline",
+  "deleteAccountShort": "Delete account",
+  "confirmDeleteAccountOf": "Delete {name}'s account for good? Their sign-in, posts, comments, photos and messages are removed. The family tree, events, albums and welfare fund records stay. This can't be undone.",
+  "@confirmDeleteAccountOf": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDeletedNote": "{name}'s account was deleted.",
+  "@accountDeletedNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSuspendedNote": "They can't use the app now. Activate them any time to let them back in.",
+  "phoneOnAnotherAccount": "This number is already on another account. Sign in with that account's email and password, or ask an admin."
 }

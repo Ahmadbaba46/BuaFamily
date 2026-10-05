@@ -8172,6 +8172,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Messages are turned off by the family admins.'**
   String get messagesTurnedOff;
+
+  /// No description provided for @declineAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get declineAccount;
+
+  /// No description provided for @deleteAccountShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountShort;
+
+  /// No description provided for @confirmDeleteAccountOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}\'s account for good? Their sign-in, posts, comments, photos and messages are removed. The family tree, events, albums and welfare fund records stay. This can\'t be undone.'**
+  String confirmDeleteAccountOf(String name);
+
+  /// No description provided for @accountDeletedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s account was deleted.'**
+  String accountDeletedNote(String name);
+
+  /// No description provided for @accountSuspendedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'They can\'t use the app now. Activate them any time to let them back in.'**
+  String get accountSuspendedNote;
+
+  /// No description provided for @phoneOnAnotherAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'This number is already on another account. Sign in with that account\'s email and password, or ask an admin.'**
+  String get phoneOnAnotherAccount;
 }
 
 class _AppLocalizationsDelegate

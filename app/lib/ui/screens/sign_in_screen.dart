@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show OtpType;
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException, OtpType;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/l10n.dart';
@@ -62,6 +62,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     setState(() => _busy = true);
     final ok = await guarded(
       context,
+      onError: (e) => e is AuthException && e.message.contains('Database error saving new user') ? l.phoneOnAnotherAccount : null,
       () => ref.read(repositoryProvider).auth.signInWithOtp(
         phone: '+$phone',
         data: {

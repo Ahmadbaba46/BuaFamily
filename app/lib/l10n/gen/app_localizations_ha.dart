@@ -4938,4 +4938,28 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get messagesTurnedOff => 'Shugabannin iyali sun kashe saƙonni.';
+
+  @override
+  String get declineAccount => 'Ƙi';
+
+  @override
+  String get deleteAccountShort => 'Goge asusu';
+
+  @override
+  String confirmDeleteAccountOf(String name) {
+    return 'A goge asusun $name gaba ɗaya? Za a cire shigarsa, labaransa, sharhi, hotuna da saƙonni. Bishiyar iyali, taruka, kundin hotuna da bayanan asusun taimako za su zauna. Ba za a iya dawowa ba.';
+  }
+
+  @override
+  String accountDeletedNote(String name) {
+    return 'An goge asusun $name.';
+  }
+
+  @override
+  String get accountSuspendedNote =>
+      'Yanzu ba za su iya amfani da manhajar ba. Kunna su a kowane lokaci don su dawo.';
+
+  @override
+  String get phoneOnAnotherAccount =>
+      'Wannan lambar tana kan wani asusu. Shiga da imel da kalmar sirrin asusun, ko ka tambayi shugaba.';
 }

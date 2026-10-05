@@ -424,6 +424,21 @@ class _PendingCard extends ConsumerWidget {
             ),
           ),
         ]),
+        const SizedBox(height: 4),
+        Wrap(alignment: WrapAlignment.end, children: [
+          TextButton.icon(
+            style: TextButton.styleFrom(foregroundColor: Bua.inkMuted),
+            onPressed: actions.suspend,
+            icon: const Icon(Icons.block, size: 18),
+            label: Text(l.declineAccount),
+          ),
+          TextButton.icon(
+            style: TextButton.styleFrom(foregroundColor: Bua.danger),
+            onPressed: actions.delete,
+            icon: const Icon(Icons.delete_outline, size: 18),
+            label: Text(l.deleteAccountShort),
+          ),
+        ]),
       ]),
     );
   }
@@ -458,6 +473,25 @@ class _UserActions {
     if (graph == null) return false;
     final person = await pickPerson(context, graph);
     return person == null ? false : update(personId: person.id);
+  }
+
+  /// Declined (waiting) or suspended (active): no access until activated again.
+  Future<bool> suspend() async {
+    final ok = await update(status: AccountStatus.suspended);
+    if (ok && context.mounted) showSnack(context, context.l10n.accountSuspendedNote);
+    return ok;
+  }
+
+  Future<bool> delete() async {
+    final l = context.l10n;
+    if (!await confirm(context, l.confirmDeleteAccountOf(user.name))) return false;
+    if (!context.mounted) return false;
+    final ok = await guarded(context, () => ref.read(repositoryProvider).adminDeleteAccount(user.profile.id));
+    if (ok) {
+      _refresh();
+      if (context.mounted) showSnack(context, l.accountDeletedNote(user.name));
+    }
+    return ok;
   }
 
   Future<bool> treasurer() async {
@@ -557,10 +591,19 @@ class _UserSheet extends ConsumerWidget {
               ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(foregroundColor: Bua.danger),
-                onPressed: () => run(() => actions.update(status: AccountStatus.suspended)),
+                onPressed: () => run(actions.suspend),
                 child: Text(l.suspend),
               ),
             ],
+            if (!me && p.status == AccountStatus.pending)
+              OutlinedButton(onPressed: () => run(actions.suspend), child: Text(l.declineAccount)),
+            if (!me && p.role != AppRole.admin)
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(foregroundColor: Bua.danger),
+                onPressed: () => run(actions.delete),
+                icon: const Icon(Icons.delete_outline, size: 18),
+                label: Text(l.deleteAccountShort),
+              ),
           ]),
         ]),
       ),

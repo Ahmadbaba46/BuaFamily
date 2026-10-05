@@ -5031,4 +5031,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get messagesTurnedOff =>
       'Messages are turned off by the family admins.';
+
+  @override
+  String get declineAccount => 'Decline';
+
+  @override
+  String get deleteAccountShort => 'Delete account';
+
+  @override
+  String confirmDeleteAccountOf(String name) {
+    return 'Delete $name\'s account for good? Their sign-in, posts, comments, photos and messages are removed. The family tree, events, albums and welfare fund records stay. This can\'t be undone.';
+  }
+
+  @override
+  String accountDeletedNote(String name) {
+    return '$name\'s account was deleted.';
+  }
+
+  @override
+  String get accountSuspendedNote =>
+      'They can\'t use the app now. Activate them any time to let them back in.';
+
+  @override
+  String get phoneOnAnotherAccount =>
+      'This number is already on another account. Sign in with that account\'s email and password, or ask an admin.';
 }

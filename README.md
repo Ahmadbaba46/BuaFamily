@@ -34,7 +34,9 @@ share moments and photos, plan family events, and keep everyone's details
   - Members can always edit their own details, but changes to their own name,
     dates or life status still go to an admin.
 - **Accounts are separate from people in the tree.** New sign-ups wait for an
-  admin, who links them to their place in the tree.
+  admin, who links them to their place in the tree, or declines them. Admins
+  can suspend an account (activate it again any time) or delete it for good
+  (Admin → Accounts → the account).
 - **Family book (PDF):** everyone from the forefather down, generation by
   generation, with photos, dates, parents, spouses, children and life stories,
   register numbers (1, 1.2, 1.2.3…) and an index of names. From the Tree page
@@ -301,7 +303,9 @@ hooked letters (ɗ ƙ ƴ) because they make an SMS cost twice as much.
 ### 2b. Sign in with a phone number (optional, needs step 2)
 
 Members can sign in with their phone number and a 6-digit code by SMS,
-sent through the same Termii account. Turn it on once in Supabase:
+sent through the same Termii account. A number saved on an email account
+(More → SMS) signs in to that same account; a number can only be on one
+account. Turn it on once in Supabase:
 
 1. **Authentication → Hooks → Add hook → Send SMS hook**: choose
    **Postgres**, schema `public`, function `send_sms_hook`, and save.
@@ -482,9 +486,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Database cleanup:** the missing foreign-key indexes and two duplicated
-  access rules the Supabase advisors list; turn on leaked-password protection
-  (Authentication → Passwords).
 - **Pay dues and causes in the app** with Korapay (card, transfer, USSD),
   confirmed automatically. Payouts stay in the Korapay dashboard: Supabase has
   no fixed outgoing IP to whitelist for Korapay's payout API.
