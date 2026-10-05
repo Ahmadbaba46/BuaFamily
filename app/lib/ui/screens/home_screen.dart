@@ -77,7 +77,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: const Icon(Icons.search),
                 onPressed: () => context.push('/search'),
               ),
-              const MessagesButton(),
+              if (ref.watch(messagesOnProvider)) const MessagesButton(),
               const NotificationBell(),
             ]),
           ),

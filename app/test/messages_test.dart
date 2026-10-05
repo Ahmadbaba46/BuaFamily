@@ -7,6 +7,7 @@ import 'package:bua_family/models/details.dart';
 import 'package:bua_family/models/messages.dart';
 import 'package:bua_family/models/social.dart';
 import 'package:bua_family/state/providers.dart';
+import 'package:bua_family/ui/screens/admin_screen.dart';
 import 'package:bua_family/ui/screens/messages_screen.dart';
 import 'package:bua_family/ui/screens/person_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,13 +63,15 @@ void main() {
     ),
   ];
 
-  Widget app(Widget home, {_FakeRepo? repo, List<DmMessage> messages = const []}) => ProviderScope(
+  Widget app(Widget home,
+          {_FakeRepo? repo, List<DmMessage> messages = const [], AppSettings settings = const AppSettings()}) =>
+      ProviderScope(
         overrides: [
           if (repo != null) repositoryProvider.overrideWithValue(repo),
           profileProvider.overrideWithValue(
               const Profile(id: 'u1', displayName: 'Aisha', role: AppRole.member, status: AccountStatus.active, personId: 'aisha')),
           graphProvider.overrideWith((ref) async => buildFamily()),
-          settingsProvider.overrideWith((ref) async => const AppSettings()),
+          settingsProvider.overrideWith((ref) async => settings),
           membersProvider.overrideWith((ref) async => {
                 'u1': const Member(userId: 'u1', displayName: 'Aisha', personId: 'aisha'),
                 'u2': const Member(userId: 'u2', displayName: 'Musa', personId: 'musa'),
@@ -156,5 +159,33 @@ void main() {
     await tester.pumpAndSettle();
     expect(repo.opened, ['u2']);
     expect(find.text('conversation t-u2'), findsOneWidget);
+  });
+
+  testWidgets('admins turn messages off for everyone', (tester) async {
+    final saved = <Map<String, dynamic>>[];
+    await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(body: AdminMessagesCard(settings: const AppSettings(), save: (c) async => saved.add(c))),
+    ));
+    expect(find.text('Private messages'), findsOneWidget);
+    await tester.tap(find.byType(Switch));
+    await tester.pump();
+    expect(saved.last, {'messages_enabled': false});
+  });
+
+  testWidgets('while messages are off, they are nowhere to be found', (tester) async {
+    tester.view.physicalSize = const Size(390, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    const off = AppSettings(messagesEnabled: false);
+    await tester.pumpWidget(app(const MessagesGate(child: MessagesScreen()), settings: off));
+    await tester.pumpAndSettle();
+    expect(find.text('Messages are turned off by the family admins.'), findsOneWidget);
+    expect(find.text('Are you coming to the naming?'), findsNothing);
+
+    await tester.pumpWidget(app(const PersonScreen(personId: 'musa'), settings: off));
+    await tester.pumpAndSettle();
+    expect(find.text('Message'), findsNothing);
   });
 }

@@ -4928,4 +4928,14 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get forOlderPhones => 'Don tsofaffin wayoyi (32-bit)';
+
+  @override
+  String get messagesToggle => 'Saƙonnin sirri';
+
+  @override
+  String get messagesToggleHint =>
+      '’Yan uwa na iya aika wa juna saƙo (da kuma, nan gaba, hira a rukuni). Idan an kashe, babu wanda zai iya aikawa ko karanta saƙo, har da shugabanni; ana ajiye hirarrakin kuma za su dawo idan an sake kunnawa.';
+
+  @override
+  String get messagesTurnedOff => 'Shugabannin iyali sun kashe saƙonni.';
 }

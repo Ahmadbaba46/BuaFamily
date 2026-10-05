@@ -139,6 +139,7 @@ class AppSettings {
     this.playStoreUrl,
     this.weeklySummary = true,
     this.fundAlertBelow,
+    this.messagesEnabled = true,
   });
 
   final String familyName;
@@ -178,6 +179,9 @@ class AppSettings {
   /// Admins and treasurers are warned when the fund drops below this (null: off).
   final double? fundAlertBelow;
 
+  /// Private messages (and group chats) for everyone; admins can turn them off.
+  final bool messagesEnabled;
+
   factory AppSettings.fromJson(Map<String, dynamic> j) => AppSettings(
         familyName: j['family_name'] as String? ?? 'Bua',
         memberContributionsEnabled: j['member_contributions_enabled'] as bool? ?? false,
@@ -197,6 +201,7 @@ class AppSettings {
         playStoreUrl: j['play_store_url'] as String?,
         weeklySummary: j['weekly_summary'] as bool? ?? true,
         fundAlertBelow: (j['fund_alert_below'] as num?)?.toDouble(),
+        messagesEnabled: j['messages_enabled'] as bool? ?? true,
       );
 }
 

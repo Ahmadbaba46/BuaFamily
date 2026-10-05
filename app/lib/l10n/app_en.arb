@@ -3295,5 +3295,8 @@
   },
   "apkNeedMain": "Also choose the 64-bit file (…-arm64.apk); most phones need it.",
   "apkFilesHint": "Choose both files the build makes: -arm64 (most phones) and -arm32 (older phones). Each phone gets the right one.",
-  "forOlderPhones": "For older phones (32-bit)"
+  "forOlderPhones": "For older phones (32-bit)",
+  "messagesToggle": "Private messages",
+  "messagesToggleHint": "Members can message each other (and, later, chat in groups). Turned off, nobody can send or read messages, admins included; conversations are kept and come back when it is turned on again.",
+  "messagesTurnedOff": "Messages are turned off by the family admins."
 }

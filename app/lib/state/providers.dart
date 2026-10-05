@@ -124,6 +124,9 @@ final settingsProvider = FutureProvider<AppSettings>((ref) {
   return ref.watch(repositoryProvider).settings();
 });
 
+/// Whether private messages are on for the family (admins can turn them off).
+final messagesOnProvider = Provider<bool>((ref) => ref.watch(settingsProvider).value?.messagesEnabled ?? false);
+
 /// Whether the current user may add or link relatives (directly or by request).
 final canContributeProvider = Provider<bool>((ref) {
   if (ref.watch(isAdminProvider)) return true;

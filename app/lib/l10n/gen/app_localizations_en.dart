@@ -5020,4 +5020,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forOlderPhones => 'For older phones (32-bit)';
+
+  @override
+  String get messagesToggle => 'Private messages';
+
+  @override
+  String get messagesToggleHint =>
+      'Members can message each other (and, later, chat in groups). Turned off, nobody can send or read messages, admins included; conversations are kept and come back when it is turned on again.';
+
+  @override
+  String get messagesTurnedOff =>
+      'Messages are turned off by the family admins.';
 }

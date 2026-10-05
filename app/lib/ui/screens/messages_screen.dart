@@ -20,6 +20,35 @@ Future<void> openDmWith(BuildContext context, WidgetRef ref, String userId) asyn
   if (ok && id != null && context.mounted) context.push('/messages/$id');
 }
 
+/// Shows [child] while messages are on, and a note when admins turned them off.
+class MessagesGate extends ConsumerWidget {
+  const MessagesGate({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(settingsProvider).value?.messagesEnabled ?? true) return child;
+    final l = context.l10n;
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/home')),
+        title: Text(l.messagesTitle),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.speaker_notes_off_outlined, size: 48, color: Bua.inkSubtle),
+            const SizedBox(height: 12),
+            Text(l.messagesTurnedOff, textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
 /// My private conversations, latest first.
 class MessagesScreen extends ConsumerWidget {
   const MessagesScreen({super.key});

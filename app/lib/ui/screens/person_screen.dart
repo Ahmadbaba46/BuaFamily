@@ -249,7 +249,7 @@ class _PersonView extends ConsumerWidget {
                 ],
               ]),
             ),
-            if (messageTo != null)
+            if (messageTo != null && ref.watch(messagesOnProvider))
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                 child: OutlinedButton.icon(

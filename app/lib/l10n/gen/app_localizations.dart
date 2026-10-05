@@ -8154,6 +8154,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'For older phones (32-bit)'**
   String get forOlderPhones;
+
+  /// No description provided for @messagesToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Private messages'**
+  String get messagesToggle;
+
+  /// No description provided for @messagesToggleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Members can message each other (and, later, chat in groups). Turned off, nobody can send or read messages, admins included; conversations are kept and come back when it is turned on again.'**
+  String get messagesToggleHint;
+
+  /// No description provided for @messagesTurnedOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages are turned off by the family admins.'**
+  String get messagesTurnedOff;
 }
 
 class _AppLocalizationsDelegate

@@ -49,7 +49,9 @@ share moments and photos, plan family events, and keep everyone's details
   phone's own text size). Kept on the phone.
 - **Messages:** private one-to-one conversations between family members, from
   Messages on Home or the Message button on a profile. Only the two people can
-  read them: not admins, not backups.
+  read them: not admins, not backups. Admins can turn messages off for the
+  whole family (Admin → Settings → Private messages): then nobody can send or
+  read them, and the conversations come back when they're turned on again.
 - **Home feed:** today's birthdays and remembrances, pinned notices, and
   moments from relatives with photos, people tagged, "Ma sha Allah" and comments.
 - **Albums:** shared family albums (weddings, Sallah, old photos), grouped by
@@ -483,8 +485,9 @@ Next, in rough order (no iPhone app is planned; iPhone users use the website):
 - **Database cleanup:** the missing foreign-key indexes and two duplicated
   access rules the Supabase advisors list; turn on leaked-password protection
   (Authentication → Passwords).
-- **Pay dues and causes in the app** with Paystack (card, transfer, USSD),
-  confirmed automatically.
+- **Pay dues and causes in the app** with Korapay (card, transfer, USSD),
+  confirmed automatically. Payouts stay in the Korapay dashboard: Supabase has
+  no fixed outgoing IP to whitelist for Korapay's payout API.
 - **Family Quran khatm:** share out the 30 juz among volunteers for a relative
   who has passed or for an occasion, with progress and a notice when complete.
 - **Play builds uploaded from GitHub** to the testing track automatically.
@@ -492,7 +495,7 @@ Next, in rough order (no iPhone app is planned; iPhone users use the website):
 - **Photos and voice notes in messages.**
 - **Family calendar feed:** a calendar link per member with events and birthdays.
 - **Wedding and naming contributions** on an event.
-- **Group chats** per branch or committee.
+- **Group chats** per branch or committee (under the same admin switch as messages).
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.

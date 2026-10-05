@@ -1341,5 +1341,8 @@
   "apkTooBig": "{name} ya kai MB {size}, ya wuce iyakar MB 50. Gina da rubutun ginawa: yana yin ƙaramin fayil don kowane irin waya.",
   "apkNeedMain": "Zaɓi fayil ɗin 64-bit ma (…-arm64.apk); yawancin wayoyi na buƙatarsa.",
   "apkFilesHint": "Zaɓi fayiloli biyu da aka gina: -arm64 (yawancin wayoyi) da -arm32 (tsofaffin wayoyi). Kowace waya za ta samu wanda ya dace.",
-  "forOlderPhones": "Don tsofaffin wayoyi (32-bit)"
+  "forOlderPhones": "Don tsofaffin wayoyi (32-bit)",
+  "messagesToggle": "Saƙonnin sirri",
+  "messagesToggleHint": "’Yan uwa na iya aika wa juna saƙo (da kuma, nan gaba, hira a rukuni). Idan an kashe, babu wanda zai iya aikawa ko karanta saƙo, har da shugabanni; ana ajiye hirarrakin kuma za su dawo idan an sake kunnawa.",
+  "messagesTurnedOff": "Shugabannin iyali sun kashe saƙonni."
 }
