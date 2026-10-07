@@ -11,6 +11,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/dm_bubble.dart' show SpeedButton;
 import '../widgets/form_dialog.dart';
 
 String languageName(AppLocalizations l, String code) => switch (code) {
@@ -39,6 +40,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
   String? _loadedId;
   bool _loading = false;
   bool _showTranscript = false;
+  double _speed = 1;
 
   @override
   void dispose() {
@@ -47,7 +49,7 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
   }
 
   Future<void> _play(Story s) async {
-    final player = _player ??= AudioPlayer();
+    final player = _player ??= AudioPlayer()..setSpeed(_speed);
     if (_loadedId == s.id) {
       player.playing ? await player.pause() : unawaited(player.play());
       return;
@@ -136,6 +138,11 @@ class _StoriesScreenState extends ConsumerState<StoriesScreen> {
                   onTranscript: () => setState(() => _showTranscript = !_showTranscript),
                   onEdit: () => _edit(selected),
                   onDelete: () => _delete(selected),
+                  speed: _speed,
+                  onSpeed: (v) {
+                    setState(() => _speed = v);
+                    _player?.setSpeed(v);
+                  },
                 ),
                 const SizedBox(height: 12),
               ],
@@ -203,9 +210,13 @@ class _NowPlaying extends ConsumerWidget {
     required this.onTranscript,
     required this.onEdit,
     required this.onDelete,
+    required this.speed,
+    required this.onSpeed,
   });
 
   final Story story;
+  final double speed;
+  final ValueChanged<double> onSpeed;
   final AudioPlayer? player;
   final bool loading;
   final bool showTranscript;
@@ -228,10 +239,15 @@ class _NowPlaying extends ConsumerWidget {
           ? 0.0
           : (position.inMilliseconds / length.inMilliseconds).clamp(0.0, 1.0);
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Text(
-          '${(playing ? l.nowPlaying : l.listen).toUpperCase()} · ${languageName(l, story.language).toUpperCase()}',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1, color: Bua.goldOnDark),
-        ),
+        Row(children: [
+          Expanded(
+            child: Text(
+              '${(playing ? l.nowPlaying : l.listen).toUpperCase()} · ${languageName(l, story.language).toUpperCase()}',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 1, color: Bua.goldOnDark),
+            ),
+          ),
+          SpeedButton(speed: speed, onChanged: onSpeed, color: Colors.white, background: const Color(0x26FFFFFF)),
+        ]),
         const SizedBox(height: 10),
         Text(story.title,
             style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: Colors.white, height: 1.25)),

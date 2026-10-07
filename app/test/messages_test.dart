@@ -451,4 +451,30 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Retry'), findsOneWidget);
   });
+
+  testWidgets('voice notes and stories play at 1×, 1.5× or 2×', (tester) async {
+    expect(SpeedButton.next(1), 1.5);
+    expect(SpeedButton.next(1.5), 2);
+    expect(SpeedButton.next(2), 1);
+    expect(SpeedButton.label(1.5), '1.5×');
+    expect(SpeedButton.label(2), '2×');
+    var speed = 1.0;
+    await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(
+        body: StatefulBuilder(
+          builder: (context, setState) => SpeedButton(speed: speed, onChanged: (v) => setState(() => speed = v)),
+        ),
+      ),
+    ));
+    expect(find.text('1×'), findsOneWidget);
+    await tester.tap(find.text('1×'));
+    await tester.pump();
+    expect(find.text('1.5×'), findsOneWidget);
+    expect(find.bySemanticsLabel('Playback speed: 1.5×'), findsOneWidget);
+    await tester.tap(find.text('1.5×'));
+    await tester.pump();
+    expect(speed, 2);
+  });
 }

@@ -5741,4 +5741,9 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get groupSendMessage => 'Aika saƙo';
+
+  @override
+  String playbackSpeed(String speed) {
+    return 'Saurin kunnawa: $speed';
+  }
 }

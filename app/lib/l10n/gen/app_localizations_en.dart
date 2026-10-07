@@ -5831,4 +5831,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupSendMessage => 'Message';
+
+  @override
+  String playbackSpeed(String speed) {
+    return 'Playback speed: $speed';
+  }
 }

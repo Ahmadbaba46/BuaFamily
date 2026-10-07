@@ -9528,6 +9528,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Message'**
   String get groupSendMessage;
+
+  /// No description provided for @playbackSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback speed: {speed}'**
+  String playbackSpeed(String speed);
 }
 
 class _AppLocalizationsDelegate

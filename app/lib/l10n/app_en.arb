@@ -3911,5 +3911,13 @@
   },
   "groupEveryoneIn": "Everyone in the family is already in this group.",
   "groupSelectAll": "Select all",
-  "groupSendMessage": "Message"
+  "groupSendMessage": "Message",
+  "playbackSpeed": "Playback speed: {speed}",
+  "@playbackSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -55,7 +55,7 @@ share moments and photos, plan family events, and keep everyone's details
   blue: read; "delivered" is marked when the notification reaches their phone,
   even with the app closed), photos (camera or gallery, with a caption; kept
   on the phone once seen, tap for full screen), voice notes with their
-  waveform (tap or drag it to jump), emoji (a panel in place of the keyboard;
+  waveform (tap or drag it to jump; play at 1×, 1.5× or 2×), emoji (a panel in place of the keyboard;
   a message of just one to three emoji shows large), reactions (long-press a
   message; the sender is told), swipe a message right to reply to it, and
   delete for everyone. Bubbles fit their words with the time tucked in at the
