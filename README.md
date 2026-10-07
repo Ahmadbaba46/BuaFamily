@@ -64,6 +64,19 @@ share moments and photos, plan family events, and keep everyone's details
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
+- **Group chats:** start one from Messages (the group icon at the top): a
+  name, an optional description, and who's in it. Groups have everything
+  private messages have (photos, voice notes with waveforms, emoji,
+  reactions, swipe to reply, delete for everyone, "typing…", ticks: two grey
+  once it's on every member's phone, two blue once everyone has read it, and
+  "Message info" to see who). Whoever starts it is its admin; group admins
+  add and remove people, make others admin, change the name, photo and
+  description, can delete anyone's message, and can let only admins send.
+  Anyone can mute a group or leave it (if the last admin leaves, the member
+  who has been in it longest takes over). Notices like "Musa added Bello"
+  show in the chat. Only the members can read a group, and newcomers only see
+  what was sent after they joined. Groups follow the same admin switch as
+  private messages. They sit with conversations in Messages, latest first.
 - **Find duplicates (admins):** people entered twice in the tree (similar
   names, including common spellings like Muhammadu/Mohammed, with compatible
   dates, often the same parents or spouse) are listed side by side. Merge

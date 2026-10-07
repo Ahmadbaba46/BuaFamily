@@ -5559,4 +5559,186 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get dmTapToRemove => 'Taɓa naka don cire shi';
+
+  @override
+  String get newGroup => 'Sabon rukuni';
+
+  @override
+  String get groupName => 'Sunan rukuni';
+
+  @override
+  String get groupAboutOptional => 'Bayani (ba dole ba)';
+
+  @override
+  String get groupAbout => 'Bayani';
+
+  @override
+  String get groupAddMembers => 'Ƙara mutane';
+
+  @override
+  String get groupCreate => 'Ƙirƙiri rukuni';
+
+  @override
+  String get groupNeedName => 'Ba rukunin suna';
+
+  @override
+  String get groupNeedMembers => 'Zaɓi mutum ɗaya aƙalla';
+
+  @override
+  String groupSelected(int count) {
+    return 'An zaɓi $count';
+  }
+
+  @override
+  String groupMembersCount(int count) {
+    return 'Mutum $count';
+  }
+
+  @override
+  String get groupPrivate =>
+      'Membobin wannan rukuni kaɗai ke ganin waɗannan saƙonni.';
+
+  @override
+  String get groupInfo => 'Bayanin rukuni';
+
+  @override
+  String get groupAdminBadge => 'Shugaban rukuni';
+
+  @override
+  String get groupMakeAdmin => 'Mai da shi shugaban rukuni';
+
+  @override
+  String get groupRemoveAdmin => 'Cire shi daga shugabancin rukuni';
+
+  @override
+  String get groupRemoveMember => 'Cire daga rukuni';
+
+  @override
+  String groupConfirmRemove(String name) {
+    return 'A cire $name daga rukunin?';
+  }
+
+  @override
+  String get groupLeave => 'Fita daga rukuni';
+
+  @override
+  String get groupConfirmLeave =>
+      'Ka fita daga wannan rukuni? Ba za ka ƙara samun saƙonninsa ba.';
+
+  @override
+  String get groupMute => 'Kashe sanarwa';
+
+  @override
+  String get groupMuteHint => 'Babu sanarwa daga wannan rukuni';
+
+  @override
+  String get groupOnlyAdmins => 'Shugabanni kaɗai ke aika saƙo';
+
+  @override
+  String get groupOnlyAdminsNote =>
+      'Shugabannin rukuni kaɗai ke iya aika saƙo.';
+
+  @override
+  String get groupYouLeft => 'Ba ka cikin wannan rukuni yanzu.';
+
+  @override
+  String get groupNotFound => 'Ba a samu wannan rukuni ba.';
+
+  @override
+  String get groupChangePhoto => 'Canja hoton rukuni';
+
+  @override
+  String get groupRemovePhoto => 'Cire hoton rukuni';
+
+  @override
+  String get groupEdit => 'Gyara suna da bayani';
+
+  @override
+  String get groupMessageInfo => 'Bayanin saƙo';
+
+  @override
+  String get groupReadBy => 'Waɗanda suka karanta';
+
+  @override
+  String get groupDeliveredTo => 'Ya isa wurin';
+
+  @override
+  String get groupNotDelivered => 'Bai isa ba tukuna';
+
+  @override
+  String groupTypingOne(String name) {
+    return '$name na rubutu…';
+  }
+
+  @override
+  String get groupTypingMany => 'Mutane da dama na rubutu…';
+
+  @override
+  String groupEventCreated(String actor, String name) {
+    return '$actor ya ƙirƙiri rukunin “$name”';
+  }
+
+  @override
+  String groupEventAdded(String actor, String user) {
+    return '$actor ya ƙara $user';
+  }
+
+  @override
+  String groupEventRemoved(String actor, String user) {
+    return '$actor ya cire $user';
+  }
+
+  @override
+  String groupEventLeft(String user) {
+    return '$user ya fita';
+  }
+
+  @override
+  String groupEventRenamed(String actor, String name) {
+    return '$actor ya canja sunan rukunin zuwa “$name”';
+  }
+
+  @override
+  String groupEventPhoto(String actor) {
+    return '$actor ya canja hoton rukunin';
+  }
+
+  @override
+  String groupEventPhotoRemoved(String actor) {
+    return '$actor ya cire hoton rukunin';
+  }
+
+  @override
+  String groupEventOnlyAdmins(String actor) {
+    return '$actor ya bar shugabanni kaɗai su aika saƙo';
+  }
+
+  @override
+  String groupEventEveryone(String actor) {
+    return '$actor ya bar kowa ya aika saƙo';
+  }
+
+  @override
+  String notifGroupAdded(String name, String group) {
+    return '$name ya saka ka a rukunin “$group”';
+  }
+
+  @override
+  String notifGroupMessage(String name, String group, String body) {
+    return '$name @ $group: $body';
+  }
+
+  @override
+  String notifGroupReaction(String name, String emoji, String group) {
+    return '$name ya yi martanin $emoji ga saƙonka a “$group”';
+  }
+
+  @override
+  String get groupEveryoneIn => 'Duk \'yan uwa suna cikin wannan rukuni.';
+
+  @override
+  String get groupSelectAll => 'Zaɓi duka';
+
+  @override
+  String get groupSendMessage => 'Aika saƙo';
 }

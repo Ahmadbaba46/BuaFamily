@@ -22,7 +22,7 @@ void listenForPushInBackground() {
 
 @pragma('vm:entry-point')
 Future<void> pushBackgroundHandler(RemoteMessage message) async {
-  if (message.data['kind'] != 'direct_message') return;
+  if (!const {'direct_message', 'group_message'}.contains(message.data['kind'])) return;
   DartPluginRegistrant.ensureInitialized();
   await markMessagesDelivered();
 }

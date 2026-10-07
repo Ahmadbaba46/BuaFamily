@@ -22,6 +22,7 @@ class DmBubble extends StatelessWidget {
     required this.message,
     required this.mine,
     this.status,
+    this.author,
     this.quoted,
     this.quotedAuthor,
     this.reactions = const [],
@@ -35,6 +36,9 @@ class DmBubble extends StatelessWidget {
 
   /// Ticks, for my own messages.
   final MessageStatus? status;
+
+  /// In a group, who sent it (over the first of their messages in a row).
+  final String? author;
 
   /// The message this one replies to, and who wrote it.
   final DmMessage? quoted;
@@ -136,7 +140,15 @@ class DmBubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (quoted != null) _Quote(message: quoted!, author: quotedAuthor ?? '', mine: mine, onTap: onQuoteTap),
+            if (author != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2),
+              child: Text(author!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: authorColor(author!))),
+            ),
+          if (quoted != null) _Quote(message: quoted!, author: quotedAuthor ?? '', mine: mine, onTap: onQuoteTap),
             ...content,
           ],
         ),
@@ -170,6 +182,20 @@ class DmBubble extends StatelessWidget {
       ),
     );
   }
+}
+
+/// A steady colour for each sender's name in a group, as on WhatsApp.
+Color authorColor(String name) {
+  const colors = [
+    Color(0xFF1F7A4D),
+    Color(0xFF9C4A1A),
+    Color(0xFF2F5FA8),
+    Color(0xFF8A3B8F),
+    Color(0xFFA23B4F),
+    Color(0xFF34707A),
+    Color(0xFF7A6A1F),
+  ];
+  return colors[name.codeUnits.fold<int>(0, (a, c) => (a * 31 + c) & 0xffff) % colors.length];
 }
 
 /// The emoji under a message, most used first, with how many.
@@ -309,7 +335,7 @@ String dmSummary(AppLocalizations l, DmMessage m) {
   return switch (m.kind) {
     DmKind.photo => m.text.isEmpty ? '📷 ${l.dmPhoto}' : '📷 ${m.text}',
     DmKind.voice => '🎤 ${l.dmVoiceNote}',
-    DmKind.text => m.text,
+    DmKind.text || DmKind.event => m.text,
   };
 }
 

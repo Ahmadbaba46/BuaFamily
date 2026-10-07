@@ -50,6 +50,17 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
+      NotificationKind.groupAdded => l.notifGroupAdded(n.str('name') ?? '', n.str('group') ?? ''),
+      NotificationKind.groupMessage when n.str('message_kind') == 'reaction' =>
+        l.notifGroupReaction(n.str('name') ?? '', n.str('body') ?? '', n.str('group') ?? ''),
+      NotificationKind.groupMessage => l.notifGroupMessage(
+          n.str('name') ?? '',
+          n.str('group') ?? '',
+          switch (n.str('message_kind')) {
+            'photo' => (n.str('body')?.isNotEmpty ?? false) ? '📷 ${n.str('body')}' : '📷 ${l.dmPhoto}',
+            'voice' => '🎤 ${l.dmVoiceNote}',
+            _ => n.str('body') ?? '',
+          }),
       NotificationKind.directMessage when n.str('message_kind') == 'reaction' =>
         l.dmReactionNotice(n.str('name') ?? '', n.str('body') ?? ''),
       NotificationKind.directMessage => l.notifDirectMessage(
@@ -129,6 +140,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.duesReminder => Icons.event_repeat,
       NotificationKind.weeklySummary => Icons.insights_outlined,
       NotificationKind.directMessage => Icons.forum_outlined,
+      NotificationKind.groupMessage || NotificationKind.groupAdded => Icons.groups_outlined,
       NotificationKind.contentReport => Icons.flag_outlined,
       NotificationKind.khatm || NotificationKind.khatmCompleted || NotificationKind.khatmReminder =>
         Icons.menu_book_outlined,

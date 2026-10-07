@@ -1093,14 +1093,56 @@ class FamilyRepository {
     int? durationMs,
     List<int>? waveform,
     String? replyTo,
+  }) =>
+      _sendChatMedia('dm_messages', 'thread_id', threadId, threadId,
+          kind: kind,
+          bytes: bytes,
+          extension: extension,
+          caption: caption,
+          durationMs: durationMs,
+          waveform: waveform,
+          replyTo: replyTo);
+
+  /// The same in a group: the file goes under `g/<group>/<me>/`.
+  Future<void> sendGroupMedia(
+    String groupId, {
+    required DmKind kind,
+    required Uint8List bytes,
+    required String extension,
+    String caption = '',
+    int? durationMs,
+    List<int>? waveform,
+    String? replyTo,
+  }) =>
+      _sendChatMedia('group_messages', 'group_id', groupId, 'g/$groupId',
+          kind: kind,
+          bytes: bytes,
+          extension: extension,
+          caption: caption,
+          durationMs: durationMs,
+          waveform: waveform,
+          replyTo: replyTo);
+
+  Future<void> _sendChatMedia(
+    String table,
+    String column,
+    String id,
+    String folder, {
+    required DmKind kind,
+    required Uint8List bytes,
+    required String extension,
+    required String caption,
+    int? durationMs,
+    List<int>? waveform,
+    String? replyTo,
   }) async {
     final ext = extension.toLowerCase().replaceAll('jpeg', 'jpg');
-    final path = '$threadId/$userId/${DateTime.now().millisecondsSinceEpoch}.$ext';
+    final path = '$folder/$userId/${DateTime.now().millisecondsSinceEpoch}.$ext';
     final type = kind == DmKind.photo ? (ext == 'jpg' ? 'image/jpeg' : 'image/$ext') : audioMime(ext);
     await _db.storage.from(dmBucket).uploadBinary(path, bytes, fileOptions: FileOptions(contentType: type));
     try {
-      await _db.from('dm_messages').insert({
-        'thread_id': threadId,
+      await _db.from(table).insert({
+        column: id,
         'kind': kind.name,
         'media_path': path,
         'body': caption.trim().isNotEmpty ? caption.trim() : (kind == DmKind.photo ? DmMessage.photoMark : DmMessage.voiceMark),
@@ -1163,8 +1205,11 @@ class FamilyRepository {
   Future<void> markDmDelivered() => _db.rpc('dm_mark_delivered');
 
   /// "typing…": a Realtime broadcast between the two, nothing stored.
-  TypingSignal dmTyping(String threadId, void Function(String userId) onTyping) {
-    final channel = _db.channel('dm-typing:$threadId');
+  TypingSignal dmTyping(String threadId, void Function(String userId) onTyping) =>
+      _typing('dm-typing:$threadId', onTyping);
+
+  TypingSignal _typing(String name, void Function(String userId) onTyping) {
+    final channel = _db.channel(name);
     channel
         .onBroadcast(
           event: 'typing',
@@ -1179,6 +1224,113 @@ class FamilyRepository {
       () => _db.removeChannel(channel),
     );
   }
+
+  // ---------------------------------------------------------------- group chats
+
+  /// The groups I'm in, latest activity first.
+  Stream<List<ChatGroup>> groups() => _db
+      .from('chat_groups')
+      .stream(primaryKey: ['id'])
+      .map((rows) => rows.map(ChatGroup.fromJson).toList()..sort((a, b) => b.activeAt.compareTo(a.activeAt)));
+
+  /// My place in each group (what I've read, whether I muted it).
+  Stream<List<GroupMember>> myGroupMemberships() => _db
+      .from('chat_group_members')
+      .stream(primaryKey: ['group_id', 'user_id'])
+      .eq('user_id', userId ?? '')
+      .map((rows) => rows.map(GroupMember.fromJson).toList());
+
+  /// Everyone who is (or was) in a group.
+  Stream<List<GroupMember>> groupMembers(String groupId) => _db
+      .from('chat_group_members')
+      .stream(primaryKey: ['group_id', 'user_id'])
+      .eq('group_id', groupId)
+      .map((rows) => rows.map(GroupMember.fromJson).toList()..sort((a, b) => a.joinedAt.compareTo(b.joinedAt)));
+
+  Stream<List<DmMessage>> groupMessages(String groupId) => _db
+      .from('group_messages')
+      .stream(primaryKey: ['id'])
+      .eq('group_id', groupId)
+      .order('created_at', ascending: true)
+      .map((rows) => rows.map(DmMessage.fromJson).toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
+
+  Future<void> sendGroup(String groupId, String body, {String? replyTo}) =>
+      _db.from('group_messages').insert({'group_id': groupId, 'body': body.trim(), 'reply_to': ?replyTo});
+
+  Stream<List<DmReaction>> groupReactions(String groupId) => _db
+      .from('group_reactions')
+      .stream(primaryKey: ['message_id', 'user_id'])
+      .eq('group_id', groupId)
+      .map((rows) => rows.map(DmReaction.fromJson).toList());
+
+  Future<void> reactGroup(String messageId, String groupId, String? emoji) async {
+    if (emoji == null) {
+      await _db.from('group_reactions').delete().eq('message_id', messageId).eq('user_id', userId!);
+    } else {
+      await _db
+          .from('group_reactions')
+          .upsert({'message_id': messageId, 'group_id': groupId, 'user_id': userId, 'emoji': emoji});
+    }
+  }
+
+  /// Delete for everyone: my own, or anyone's if I'm a group admin.
+  Future<void> deleteGroupMessage(DmMessage m) async {
+    await _db.rpc('group_delete_message', params: {'p_message': m.id});
+    if (m.mediaPath != null && m.authorId == userId) {
+      try {
+        await _db.storage.from(dmBucket).remove([m.mediaPath!]);
+      } catch (_) {
+        // The message is gone; the file can't be reached without it.
+      }
+    }
+  }
+
+  Future<void> markGroupRead(String groupId) => _db.rpc('group_mark_read', params: {'p_group': groupId});
+
+  TypingSignal groupTyping(String groupId, void Function(String userId) onTyping) =>
+      _typing('group-typing:$groupId', onTyping);
+
+  /// A new group with me as its admin; returns its id.
+  Future<String> createGroup(String name, List<String> members, {String? about}) async =>
+      await _db.rpc('group_create', params: {'p_name': name.trim(), 'p_members': members, 'p_about': about}) as String;
+
+  Future<void> addToGroup(String groupId, List<String> users) =>
+      _db.rpc('group_add', params: {'p_group': groupId, 'p_users': users});
+
+  Future<void> removeFromGroup(String groupId, String user) =>
+      _db.rpc('group_remove', params: {'p_group': groupId, 'p_user': user});
+
+  Future<void> leaveGroup(String groupId) => _db.rpc('group_leave', params: {'p_group': groupId});
+
+  Future<void> setGroupAdmin(String groupId, String user, bool admin) =>
+      _db.rpc('group_set_admin', params: {'p_group': groupId, 'p_user': user, 'p_admin': admin});
+
+  /// Group admins: what's given changes; the rest stays.
+  Future<void> updateGroup(String groupId, {String? name, String? about, bool? onlyAdminsSend}) =>
+      _db.rpc('group_update', params: {
+        'p_group': groupId,
+        'p_name': name,
+        'p_about': about,
+        'p_only_admins': onlyAdminsSend,
+      });
+
+  /// Group admins: a new photo for the group (or none, with null [bytes]).
+  Future<void> setGroupPhoto(String groupId, Uint8List? bytes, {String extension = 'jpg'}) async {
+    if (bytes == null) {
+      await _db.rpc('group_set_photo', params: {'p_group': groupId, 'p_path': null});
+      return;
+    }
+    final ext = extension.toLowerCase().replaceAll('jpeg', 'jpg');
+    final path = 'g/$groupId/$userId/photo-${DateTime.now().millisecondsSinceEpoch}.$ext';
+    await _db.storage
+        .from(dmBucket)
+        .uploadBinary(path, bytes, fileOptions: FileOptions(contentType: ext == 'jpg' ? 'image/jpeg' : 'image/$ext'));
+    await _db.rpc('group_set_photo', params: {'p_group': groupId, 'p_path': path});
+    unawaited(MediaStore.instance.write(path, bytes));
+  }
+
+  Future<void> muteGroup(String groupId, bool muted) =>
+      _db.rpc('group_mute', params: {'p_group': groupId, 'p_muted': muted});
 
   Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
       _db.from('opportunities').insert({

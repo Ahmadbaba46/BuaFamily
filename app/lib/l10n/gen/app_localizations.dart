@@ -9234,6 +9234,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap yours to remove it'**
   String get dmTapToRemove;
+
+  /// No description provided for @newGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'New group'**
+  String get newGroup;
+
+  /// No description provided for @groupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get groupName;
+
+  /// No description provided for @groupAboutOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get groupAboutOptional;
+
+  /// No description provided for @groupAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get groupAbout;
+
+  /// No description provided for @groupAddMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Add members'**
+  String get groupAddMembers;
+
+  /// No description provided for @groupCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get groupCreate;
+
+  /// No description provided for @groupNeedName.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the group a name'**
+  String get groupNeedName;
+
+  /// No description provided for @groupNeedMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one person'**
+  String get groupNeedMembers;
+
+  /// No description provided for @groupSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String groupSelected(int count);
+
+  /// No description provided for @groupMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String groupMembersCount(int count);
+
+  /// No description provided for @groupPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the members of this group can see these messages.'**
+  String get groupPrivate;
+
+  /// No description provided for @groupInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Group info'**
+  String get groupInfo;
+
+  /// No description provided for @groupAdminBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Group admin'**
+  String get groupAdminBadge;
+
+  /// No description provided for @groupMakeAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Make group admin'**
+  String get groupMakeAdmin;
+
+  /// No description provided for @groupRemoveAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove as group admin'**
+  String get groupRemoveAdmin;
+
+  /// No description provided for @groupRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from group'**
+  String get groupRemoveMember;
+
+  /// No description provided for @groupConfirmRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the group?'**
+  String groupConfirmRemove(String name);
+
+  /// No description provided for @groupLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave group'**
+  String get groupLeave;
+
+  /// No description provided for @groupConfirmLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this group? You will stop getting its messages.'**
+  String get groupConfirmLeave;
+
+  /// No description provided for @groupMute.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute notifications'**
+  String get groupMute;
+
+  /// No description provided for @groupMuteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications from this group'**
+  String get groupMuteHint;
+
+  /// No description provided for @groupOnlyAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Only admins can send messages'**
+  String get groupOnlyAdmins;
+
+  /// No description provided for @groupOnlyAdminsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only group admins can send messages.'**
+  String get groupOnlyAdminsNote;
+
+  /// No description provided for @groupYouLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re no longer in this group.'**
+  String get groupYouLeft;
+
+  /// No description provided for @groupNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This group isn\'t available.'**
+  String get groupNotFound;
+
+  /// No description provided for @groupChangePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change group photo'**
+  String get groupChangePhoto;
+
+  /// No description provided for @groupRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove group photo'**
+  String get groupRemovePhoto;
+
+  /// No description provided for @groupEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit name and description'**
+  String get groupEdit;
+
+  /// No description provided for @groupMessageInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Message info'**
+  String get groupMessageInfo;
+
+  /// No description provided for @groupReadBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Read by'**
+  String get groupReadBy;
+
+  /// No description provided for @groupDeliveredTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered to'**
+  String get groupDeliveredTo;
+
+  /// No description provided for @groupNotDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Not delivered yet'**
+  String get groupNotDelivered;
+
+  /// No description provided for @groupTypingOne.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is typing…'**
+  String groupTypingOne(String name);
+
+  /// No description provided for @groupTypingMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Several people are typing…'**
+  String get groupTypingMany;
+
+  /// No description provided for @groupEventCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} created the group “{name}”'**
+  String groupEventCreated(String actor, String name);
+
+  /// No description provided for @groupEventAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} added {user}'**
+  String groupEventAdded(String actor, String user);
+
+  /// No description provided for @groupEventRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed {user}'**
+  String groupEventRemoved(String actor, String user);
+
+  /// No description provided for @groupEventLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{user} left'**
+  String groupEventLeft(String user);
+
+  /// No description provided for @groupEventRenamed.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} changed the group name to “{name}”'**
+  String groupEventRenamed(String actor, String name);
+
+  /// No description provided for @groupEventPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} changed the group photo'**
+  String groupEventPhoto(String actor);
+
+  /// No description provided for @groupEventPhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} removed the group photo'**
+  String groupEventPhotoRemoved(String actor);
+
+  /// No description provided for @groupEventOnlyAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} allowed only admins to send messages'**
+  String groupEventOnlyAdmins(String actor);
+
+  /// No description provided for @groupEventEveryone.
+  ///
+  /// In en, this message translates to:
+  /// **'{actor} allowed everyone to send messages'**
+  String groupEventEveryone(String actor);
+
+  /// No description provided for @notifGroupAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} added you to the group “{group}”'**
+  String notifGroupAdded(String name, String group);
+
+  /// No description provided for @notifGroupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} @ {group}: {body}'**
+  String notifGroupMessage(String name, String group, String body);
+
+  /// No description provided for @notifGroupReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} reacted {emoji} to your message in “{group}”'**
+  String notifGroupReaction(String name, String emoji, String group);
+
+  /// No description provided for @groupEveryoneIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone in the family is already in this group.'**
+  String get groupEveryoneIn;
+
+  /// No description provided for @groupSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get groupSelectAll;
+
+  /// No description provided for @groupSendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get groupSendMessage;
 }
 
 class _AppLocalizationsDelegate

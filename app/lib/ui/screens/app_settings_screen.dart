@@ -19,7 +19,7 @@ const notificationGroups = {
   'occasions': ['occasion'],
   'khatm': ['khatm', 'khatm_completed', 'khatm_reminder'],
   'weekly': ['weekly_summary'],
-  'messages': ['direct_message'],
+  'messages': ['direct_message', 'group_message', 'group_added'],
 };
 
 /// Language, data saver and which notifications to receive.
