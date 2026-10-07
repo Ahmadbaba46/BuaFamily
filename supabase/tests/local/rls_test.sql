@@ -2437,6 +2437,78 @@ select test.assert((select snapshot ->> 'group' = 'Cousins & co' and target_user
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 50. Family calendar feed.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.calendar_feed_link() as cal_token \gset
+select test.assert(length(:'cal_token') = 64, 'a long random token');
+select test.assert(public.calendar_feed_link() = :'cal_token', 'the same link each time');
+select test.expect_error(format($$select public.calendar_feed(%L)$$, :'cal_token'), 'members cannot read feeds directly');
+select test.expect_error($$insert into public.calendar_feeds (user_id, token) values (auth.uid(), 'x')$$,
+  'links are made through calendar_feed_link');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.calendar_feeds), 'nobody sees someone else''s link');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+set role anon;
+select test.expect_error(format($$select public.calendar_feed(%L)$$, :'cal_token'), 'nor can anyone signed out');
+reset role;
+
+-- The Edge Function (service role) reads it.
+set role service_role;
+select test.assert((select jsonb_typeof(public.calendar_feed(:'cal_token') -> 'events') = 'array'), 'events');
+select test.assert((select jsonb_array_length(public.calendar_feed(:'cal_token') -> 'events') > 0), 'with the family''s events');
+select test.assert((select public.calendar_feed(:'cal_token') ->> 'locale' = 'ha'), 'in the member''s language');
+select test.assert((select public.calendar_feed('wrong' || :'cal_token') is null), 'a wrong token gets nothing');
+reset role;
+select test.assert((select last_fetched_at is not null from public.calendar_feeds where user_id = :member_id),
+  'we know when it was last fetched');
+
+-- Birthdays of living relatives with a known date, not your own.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.persons set birth_date = '1990-03-14', birth_date_approx = false, is_living = true
+ where id = (select id from public.persons where id is distinct from (select person_id from public.profiles where id = :member_id)
+             order by id limit 1);
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+set role service_role;
+select test.assert((select jsonb_array_length(public.calendar_feed(:'cal_token') -> 'birthdays') >= 1), 'birthdays');
+select test.assert((select not exists (
+  select 1 from jsonb_array_elements(public.calendar_feed(:'cal_token') -> 'birthdays') b
+   where b ->> 'person_id' = (select person_id::text from public.profiles where id = :member_id))), 'not your own');
+reset role;
+
+-- Leave birthdays out; turn it off; a new link replaces the old one.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.calendar_feed_settings(p_birthdays => false);
+reset role;
+set role service_role;
+select test.assert((select jsonb_array_length(public.calendar_feed(:'cal_token') -> 'birthdays') = 0), 'birthdays left out');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.calendar_feed_settings(p_enabled => false);
+reset role;
+set role service_role;
+select test.assert((select public.calendar_feed(:'cal_token') is null), 'turned off: nothing');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.calendar_feed_link(true) as cal_token2 \gset
+reset role;
+set role service_role;
+select test.assert((select public.calendar_feed(:'cal_token') is null), 'the old link stops working');
+select test.assert((select public.calendar_feed(:'cal_token2') is not null), 'the new one works (and is on again)');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

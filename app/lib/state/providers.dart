@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/repository.dart';
 import '../models/account.dart';
+import '../models/calendar.dart';
 import '../models/community.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
@@ -362,6 +363,12 @@ final blockedProvider = FutureProvider<Set<String>>((ref) {
 final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
   ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
   return ref.watch(repositoryProvider).dmThreads();
+});
+
+/// My calendar link (null until I make one).
+final calendarFeedProvider = FutureProvider<CalendarFeed?>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).calendarFeed();
 });
 
 /// The groups I'm in, latest first.

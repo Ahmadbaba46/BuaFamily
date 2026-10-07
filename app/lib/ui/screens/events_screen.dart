@@ -43,6 +43,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
             child: Row(children: [
               const SidebarButton(),
               Expanded(child: Text(l.navEvents, style: Theme.of(context).textTheme.titleLarge)),
+              IconButton(
+                tooltip: l.calendarTitle,
+                onPressed: () => context.push('/calendar'),
+                icon: const Icon(Icons.calendar_month_outlined),
+              ),
               FilledButton.icon(
                 onPressed: () => context.push(_tab == _Tab.announcements ? '/events/new?type=announcement' : '/events/new'),
                 icon: const Icon(Icons.add, size: 18),

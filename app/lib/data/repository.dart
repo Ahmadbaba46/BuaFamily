@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/account.dart';
 import '../models/activity.dart';
+import '../models/calendar.dart';
 import '../models/community.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
@@ -1224,6 +1225,28 @@ class FamilyRepository {
       () => _db.removeChannel(channel),
     );
   }
+
+  // ---------------------------------------------------------------- calendar feed
+
+  /// My calendar link, if I've made one.
+  Future<CalendarFeed?> calendarFeed() async {
+    final r = await _db.from('calendar_feeds').select().eq('user_id', userId ?? '').maybeSingle();
+    return r == null ? null : CalendarFeed.fromJson(r);
+  }
+
+  /// Turns my calendar link on (making it if needed); [reset] gives a new one.
+  Future<void> calendarLink({bool reset = false}) => _db.rpc('calendar_feed_link', params: {'p_reset': reset});
+
+  Future<void> calendarSettings({bool? enabled, bool? birthdays, bool? remembrance}) =>
+      _db.rpc('calendar_feed_settings', params: {
+        'p_enabled': enabled,
+        'p_birthdays': birthdays,
+        'p_remembrance': remembrance,
+      });
+
+  /// The 'calendar' Edge Function in this same project, for [token].
+  CalendarLinks calendarLinks(String token) => CalendarLinks(
+      '${_db.rest.url.replaceFirst(RegExp(r'/rest/v1/?$'), '/functions/v1/calendar')}?token=$token');
 
   // ---------------------------------------------------------------- group chats
 

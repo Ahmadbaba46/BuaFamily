@@ -185,6 +185,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.calendar_month_outlined,
+                title: l.calendarTitle,
+                onTap: () => context.push('/calendar'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.link,
                 title: l.howRelated,
                 onTap: () => context.push('/related'),
