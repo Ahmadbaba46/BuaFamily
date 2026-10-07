@@ -3,12 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
+import 'config.dart';
 import 'l10n/l10n.dart';
-
-// Supplied at build time, e.g.
-//   flutter run --dart-define-from-file=config.json
-const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-const supabaseKey = String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
+import 'services/push_background.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +14,7 @@ Future<void> main() async {
     return;
   }
   await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseKey);
+  listenForPushInBackground();
   runApp(const ProviderScope(child: BuaFamilyApp()));
 }
 

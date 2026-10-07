@@ -9186,6 +9186,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose from gallery'**
   String get chooseFromGallery;
+
+  /// No description provided for @dmCantPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t play this voice note. Check your connection and try again.'**
+  String get dmCantPlay;
+
+  /// No description provided for @dmChooseReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a reaction'**
+  String get dmChooseReaction;
+
+  /// No description provided for @dmReactionNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} reacted {emoji} to your message'**
+  String dmReactionNotice(String name, String emoji);
+
+  /// No description provided for @dmEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Emoji'**
+  String get dmEmoji;
+
+  /// No description provided for @dmKeyboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Keyboard'**
+  String get dmKeyboard;
+
+  /// No description provided for @dmMoreReactions.
+  ///
+  /// In en, this message translates to:
+  /// **'More reactions'**
+  String get dmMoreReactions;
+
+  /// No description provided for @dmReactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Reactions'**
+  String get dmReactions;
+
+  /// No description provided for @dmTapToRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap yours to remove it'**
+  String get dmTapToRemove;
 }
 
 class _AppLocalizationsDelegate

@@ -5622,4 +5622,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get dmCantPlay =>
+      'Couldn\'t play this voice note. Check your connection and try again.';
+
+  @override
+  String get dmChooseReaction => 'Choose a reaction';
+
+  @override
+  String dmReactionNotice(String name, String emoji) {
+    return '$name reacted $emoji to your message';
+  }
+
+  @override
+  String get dmEmoji => 'Emoji';
+
+  @override
+  String get dmKeyboard => 'Keyboard';
+
+  @override
+  String get dmMoreReactions => 'More reactions';
+
+  @override
+  String get dmReactions => 'Reactions';
+
+  @override
+  String get dmTapToRemove => 'Tap yours to remove it';
 }

@@ -21,6 +21,7 @@ import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/dm_bubble.dart';
+import '../widgets/emoji_panel.dart';
 import '../widgets/report_sheet.dart';
 import '../widgets/social.dart';
 
@@ -280,8 +281,12 @@ class DmScreen extends ConsumerStatefulWidget {
 class _DmScreenState extends ConsumerState<DmScreen> {
   final _text = TextEditingController();
   final _scroll = ScrollController();
+  final _focus = FocusNode();
   bool _sending = false;
   int _seen = -1;
+
+  /// The emoji panel shows in place of the keyboard.
+  bool _emoji = false;
 
   /// The message being answered.
   DmMessage? _replyTo;
@@ -297,6 +302,8 @@ class _DmScreenState extends ConsumerState<DmScreen> {
   Duration _recorded = Duration.zero;
   Timer? _recordTicker;
   String _recordExt = 'm4a';
+  StreamSubscription<Amplitude>? _amplitude;
+  final _levels = <double>[];
 
   @override
   void initState() {
@@ -304,6 +311,9 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     _text.addListener(() {
       if (_text.text.isNotEmpty) _typing?.typing();
       setState(() {});
+    });
+    _focus.addListener(() {
+      if (_focus.hasFocus && _emoji) setState(() => _emoji = false);
     });
     try {
       _typing = ref.read(repositoryProvider).dmTyping(widget.threadId, (_) {
@@ -322,9 +332,11 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     _typing?.dispose();
     _typingOff?.cancel();
     _recordTicker?.cancel();
+    _amplitude?.cancel();
     _recorder?.dispose();
     _text.dispose();
     _scroll.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -333,6 +345,32 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       await ref.read(repositoryProvider).markDmRead(widget.threadId);
     } catch (_) {
       // Not important enough to bother anyone.
+    }
+  }
+
+  /// Back to the newest message (the bottom of the list).
+  void _toNewest() {
+    if (_scroll.hasClients && _scroll.offset > 0) {
+      _scroll.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
+    }
+  }
+
+  void _insertEmoji(String e) {
+    final v = _text.value;
+    final sel = v.selection.isValid ? v.selection : TextSelection.collapsed(offset: v.text.length);
+    _text.value = TextEditingValue(
+      text: v.text.replaceRange(sel.start, sel.end, e),
+      selection: TextSelection.collapsed(offset: sel.start + e.length),
+    );
+  }
+
+  void _toggleEmoji() {
+    if (_emoji) {
+      setState(() => _emoji = false);
+      _focus.requestFocus();
+    } else {
+      _focus.unfocus();
+      setState(() => _emoji = true);
     }
   }
 
@@ -356,6 +394,7 @@ class _DmScreenState extends ConsumerState<DmScreen> {
         _replyTo = null;
       }
     });
+    if (ok) _toNewest();
   }
 
   Future<void> _sendPhoto() async {
@@ -454,6 +493,10 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       return;
     }
     if (!mounted) return;
+    _levels.clear();
+    _amplitude = rec.onAmplitudeChanged(const Duration(milliseconds: 100)).listen((a) {
+      if (mounted && _recordingSince != null) setState(() => _levels.add(levelFromDb(a.current)));
+    });
     setState(() {
       _recordingSince = DateTime.now();
       _recorded = Duration.zero;
@@ -468,6 +511,9 @@ class _DmScreenState extends ConsumerState<DmScreen> {
 
   Future<void> _stopRecording({required bool send}) async {
     _recordTicker?.cancel();
+    await _amplitude?.cancel();
+    _amplitude = null;
+    final waveform = compactWaveform(_levels);
     final length = _recordingSince == null ? Duration.zero : DateTime.now().difference(_recordingSince!);
     setState(() => _recordingSince = null);
     String? out;
@@ -484,7 +530,12 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     final ok = await guarded(
       context,
       () => ref.read(repositoryProvider).sendDmMedia(widget.threadId,
-          kind: DmKind.voice, bytes: bytes, extension: _recordExt, durationMs: length.inMilliseconds, replyTo: reply),
+          kind: DmKind.voice,
+          bytes: bytes,
+          extension: _recordExt,
+          durationMs: length.inMilliseconds,
+          waveform: waveform,
+          replyTo: reply),
       onError: _cantSend,
     );
     if (!mounted) return;
@@ -492,17 +543,32 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       _sending = false;
       if (ok) _replyTo = null;
     });
+    if (ok) _toNewest();
   }
 
-  Future<void> _messageMenu(DmMessage m, bool mine) async {
+  /// Long press: react (the quick ones, or any with +), or copy, delete, report.
+  Future<void> _messageMenu(DmMessage m, bool mine, String? myReaction) async {
+    if (m.deleted && !mine) return;
     final l = context.l10n;
+    unawaited(HapticFeedback.selectionClick());
     final choice = await showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
       builder: (c) => SafeArea(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           if (!m.deleted)
-            ListTile(leading: const Icon(Icons.reply), title: Text(l.dmReply), onTap: () => Navigator.pop(c, 'reply')),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                for (final e in quickReactions)
+                  _ReactionChoice(emoji: e, chosen: e == myReaction, onTap: () => Navigator.pop(c, 'react:$e')),
+                IconButton.filledTonal(
+                  tooltip: l.dmMoreReactions,
+                  onPressed: () => Navigator.pop(c, 'more'),
+                  icon: const Icon(Icons.add),
+                ),
+              ]),
+            ),
           if (!m.deleted && m.text.isNotEmpty)
             ListTile(leading: const Icon(Icons.copy), title: Text(l.copyText), onTap: () => Navigator.pop(c, 'copy')),
           if (mine && !m.deleted)
@@ -520,10 +586,16 @@ class _DmScreenState extends ConsumerState<DmScreen> {
         ]),
       ),
     );
-    if (!mounted) return;
+    if (!mounted || choice == null) return;
+    if (choice.startsWith('react:')) {
+      final e = choice.substring(6);
+      await _react(m, e == myReaction ? null : e);
+      return;
+    }
     switch (choice) {
-      case 'reply':
-        setState(() => _replyTo = m);
+      case 'more':
+        final e = await pickEmoji(context);
+        if (e != null && mounted) await _react(m, e);
       case 'copy':
         await Clipboard.setData(ClipboardData(text: m.text));
         if (mounted) showSnack(context, l.copied);
@@ -533,6 +605,34 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       case 'report':
         await reportToAdmins(context, ref, ReportKind.message, m.id);
     }
+  }
+
+  Future<void> _react(DmMessage m, String? emoji) =>
+      guarded(context, () => ref.read(repositoryProvider).reactDm(m.id, widget.threadId, emoji), onError: _cantSend);
+
+  /// Who reacted with what; tapping your own takes it off.
+  Future<void> _showReactions(DmMessage m, List<DmReaction> list, String? me, String Function(String) nameOf) async {
+    final l = context.l10n;
+    final remove = await showModalBottomSheet<bool>(
+      context: context,
+      showDragHandle: true,
+      builder: (c) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(l.dmReactions, style: Theme.of(c).textTheme.titleMedium),
+          ),
+          for (final r in list)
+            ListTile(
+              title: Text(nameOf(r.userId)),
+              subtitle: r.userId == me ? Text(l.dmTapToRemove) : null,
+              trailing: Text(r.emoji, style: const TextStyle(fontSize: 24)),
+              onTap: r.userId == me ? () => Navigator.pop(c, true) : null,
+            ),
+        ]),
+      ),
+    );
+    if (remove == true && mounted) await _react(m, null);
   }
 
   Future<void> _memberMenu(String action, String other, String name) async {
@@ -552,6 +652,32 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     }
   }
 
+  Widget _bubble(DmMessage m, String? me, DmThread? thread, Map<String, DmMessage> byId, List<DmReaction> reacts,
+      String Function(String) nameOf) {
+    final mine = m.authorId == me;
+    final quoted = m.replyTo == null ? null : byId[m.replyTo];
+    final bubble = DmBubble(
+      message: m,
+      mine: mine,
+      status: mine && thread != null ? thread.statusOf(m.createdAt, me!) : null,
+      quoted: quoted,
+      quotedAuthor: quoted == null ? null : nameOf(quoted.authorId),
+      reactions: reacts,
+      onLongPress: () => _messageMenu(m, mine, reacts.where((r) => r.userId == me).firstOrNull?.emoji),
+      onReactionsTap: () => _showReactions(m, reacts, me, nameOf),
+    );
+    if (m.deleted) return KeyedSubtree(key: ValueKey(m.id), child: bubble);
+    return SwipeToReply(
+      key: ValueKey(m.id),
+      onReply: () {
+        unawaited(HapticFeedback.selectionClick());
+        setState(() => _replyTo = m);
+        if (!_emoji) _focus.requestFocus();
+      },
+      child: bubble,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -559,15 +685,17 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     final threads = ref.watch(dmThreadsProvider);
     final thread = threads.value?.where((t) => t.id == widget.threadId).firstOrNull;
     final messages = ref.watch(dmMessagesProvider(widget.threadId));
+    final reactions = <String, List<DmReaction>>{};
+    for (final r in ref.watch(dmReactionsProvider(widget.threadId)).value ?? const <DmReaction>[]) {
+      (reactions[r.messageId] ??= []).add(r);
+    }
 
     // Read as soon as something new shows.
     final count = messages.value?.length ?? -1;
     if (count != _seen && messages.hasValue) {
       _seen = count;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        _markRead();
-        if (_scroll.hasClients) _scroll.jumpTo(_scroll.position.maxScrollExtent);
+        if (mounted) _markRead();
       });
     }
 
@@ -578,7 +706,12 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     final byId = {for (final m in messages.value ?? const <DmMessage>[]) m.id: m};
     String nameOf(String userId) => userId == me ? l.you : (other?.name ?? '');
 
-    return Scaffold(
+    return PopScope(
+      canPop: !_emoji,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) setState(() => _emoji = false);
+      },
+      child: Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/messages')),
         titleSpacing: 0,
@@ -625,10 +758,10 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                 child: AsyncBody(
                   value: messages,
                   onRetry: () => ref.invalidate(dmMessagesProvider(widget.threadId)),
-                  builder: (list) => ListView(
-                    controller: _scroll,
-                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-                    children: [
+                  // Newest at the bottom, drawn from the bottom up: it opens on the
+                  // last message and the keyboard pushes the messages up.
+                  builder: (list) {
+                    final items = <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -649,18 +782,17 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                       for (final (i, m) in list.indexed) ...[
                         if (i == 0 || !DateUtils.isSameDay(list[i - 1].createdAt, m.createdAt))
                           _DayChip(m.createdAt),
-                        DmBubble(
-                          key: ValueKey(m.id),
-                          message: m,
-                          mine: m.authorId == me,
-                          status: m.authorId == me && thread != null ? thread.statusOf(m.createdAt, me) : null,
-                          quoted: m.replyTo == null ? null : byId[m.replyTo],
-                          quotedAuthor: m.replyTo == null || byId[m.replyTo] == null ? null : nameOf(byId[m.replyTo]!.authorId),
-                          onLongPress: () => _messageMenu(m, m.authorId == me),
-                        ),
+                        _bubble(m, me, thread, byId, reactions[m.id] ?? const [], nameOf),
                       ],
-                    ],
-                  ),
+                    ];
+                    return ListView(
+                      controller: _scroll,
+                      reverse: true,
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+                      children: items.reversed.toList(),
+                    );
+                  },
                 ),
               ),
               if (iBlocked)
@@ -720,9 +852,22 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                           ),
                           Icon(Icons.fiber_manual_record, size: 14, color: Bua.danger),
                           const SizedBox(width: 6),
+                          Text(_clockOf(_recorded),
+                              semanticsLabel: l.dmRecording(_clockOf(_recorded)),
+                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                          const SizedBox(width: 10),
                           Expanded(
-                            child: Text(l.dmRecording(_clockOf(_recorded)),
-                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                            child: VoiceWave(
+                              levels: [
+                                for (var i = 0; i < 36; i++)
+                                  (() {
+                                    final k = _levels.length - 36 + i;
+                                    return k < 0 ? 0 : (_levels[k] * 100).round();
+                                  })(),
+                              ],
+                              progress: 1,
+                              played: Bua.danger,
+                            ),
                           ),
                           IconButton.filled(
                             tooltip: l.send,
@@ -737,9 +882,16 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                             onPressed: _sending ? null : _sendPhoto,
                             icon: Icon(Icons.photo_camera_outlined, color: Bua.inkMuted),
                           ),
+                          IconButton(
+                            tooltip: _emoji ? l.dmKeyboard : l.dmEmoji,
+                            onPressed: _toggleEmoji,
+                            icon: Icon(_emoji ? Icons.keyboard_outlined : Icons.emoji_emotions_outlined,
+                                color: Bua.inkMuted),
+                          ),
                           Expanded(
                             child: TextField(
                               controller: _text,
+                              focusNode: _focus,
                               minLines: 1,
                               maxLines: 5,
                               maxLength: 4000,
@@ -763,10 +915,12 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                           else
                             IconButton.filled(tooltip: l.send, onPressed: _sending ? null : _send, icon: const Icon(Icons.send)),
                         ]),
+                      if (_emoji && _recordingSince == null) EmojiPanel(onPick: _insertEmoji),
                     ]),
                   ),
                 ),
             ]),
+    ),
     );
   }
 }
@@ -774,6 +928,27 @@ class _DmScreenState extends ConsumerState<DmScreen> {
 String _clockOf(Duration d) => '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
 
 /// Today / Yesterday / the date, between messages of different days.
+class _ReactionChoice extends StatelessWidget {
+  const _ReactionChoice({required this.emoji, required this.chosen, required this.onTap});
+
+  final String emoji;
+  final bool chosen;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: chosen ? Bua.greenTint : null),
+        child: Text(emoji, style: const TextStyle(fontSize: 28)),
+      ),
+    );
+  }
+}
+
 class _DayChip extends StatelessWidget {
   const _DayChip(this.at);
 

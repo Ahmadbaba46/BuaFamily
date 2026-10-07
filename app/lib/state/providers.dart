@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -377,6 +378,15 @@ final dmUnreadProvider = Provider<int>((ref) {
 /// A short-lived link to a photo or voice note in a conversation.
 final dmMediaUrlProvider =
     FutureProvider.autoDispose.family<String, String>((ref, path) => ref.watch(repositoryProvider).dmMediaUrl(path));
+
+/// A conversation photo's bytes: kept for as long as the app runs, and on the
+/// phone for next time.
+final dmMediaProvider =
+    FutureProvider.family<Uint8List, String>((ref, path) => ref.watch(repositoryProvider).dmMediaBytes(path));
+
+/// Reactions in a conversation, live.
+final dmReactionsProvider = StreamProvider.autoDispose
+    .family<List<DmReaction>, String>((ref, id) => ref.watch(repositoryProvider).dmReactions(id));
 
 final dmMessagesProvider = StreamProvider.autoDispose
     .family<List<DmMessage>, String>((ref, id) => ref.watch(repositoryProvider).dmMessages(id));
