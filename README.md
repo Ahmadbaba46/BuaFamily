@@ -50,8 +50,11 @@ share moments and photos, plan family events, and keep everyone's details
   phone), Light or Dark, and text Normal, Large or Larger (on top of the
   phone's own text size). Kept on the phone.
 - **Messages:** private one-to-one conversations between family members, from
-  Messages on Home or the Message button on a profile. Only the two people can
-  read them: not admins, not backups. Admins can turn messages off for the
+  Messages on Home or the Message button on a profile, WhatsApp-style:
+  "typing…", ticks (one grey: sent, two grey: delivered to their phone, two
+  blue: read), photos (camera or gallery, with a caption), voice notes,
+  replies that quote a message, and delete for everyone. Only the two people
+  can read them (photos and voice notes too): not admins, not backups. Admins can turn messages off for the
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
@@ -533,8 +536,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Messages like WhatsApp:** typing indicator, delivered and read ticks,
-  photos and voice notes.
 - **Family calendar feed:** a calendar link per member with events and birthdays.
 - **Wedding and naming contributions** on an event.
 - **Group chats** per branch or committee (under the same admin switch as messages).

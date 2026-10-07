@@ -3670,5 +3670,40 @@
       }
     }
   },
-  "hasAccount": "Has an account"
+  "hasAccount": "Has an account",
+  "dmTyping": "typing…",
+  "dmReply": "Reply",
+  "dmReplyingTo": "Replying to {name}",
+  "@dmReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dmDeleteForEveryone": "Delete for everyone",
+  "dmConfirmDelete": "Delete this message for everyone?",
+  "dmDeleted": "This message was deleted",
+  "dmYouDeleted": "You deleted this message",
+  "dmPhoto": "Photo",
+  "dmVoiceNote": "Voice note",
+  "dmSendPhoto": "Send a photo",
+  "dmAddCaption": "Add a caption…",
+  "dmRecording": "Recording {time}",
+  "@dmRecording": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "dmCancelRecording": "Cancel recording",
+  "dmSent": "Sent",
+  "dmDelivered": "Delivered",
+  "dmRead": "Read",
+  "play": "Play",
+  "pause": "Pause",
+  "yesterday": "Yesterday",
+  "takePhoto": "Take a photo",
+  "chooseFromGallery": "Choose from gallery"
 }

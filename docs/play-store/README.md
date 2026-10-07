@@ -146,9 +146,9 @@ count as sharing.
 | Personal info → Other info (dates, places, family relations, education, work) | Yes | Optional | App functionality |
 | Health and fitness → Health info (blood group, genotype) | Yes | Optional | App functionality |
 | Financial info → Other financial info (dues and cause contributions paid through Korapay: amount, reference, gateway fee) | Yes | Optional | App functionality |
-| Messages → Other in-app messages (comments, mentorship) | Yes | Optional | App functionality |
+| Messages → Other in-app messages (comments, private messages with photos and voice notes, mentorship) | Yes | Optional | App functionality |
 | Photos and videos → Photos | Yes | Optional | App functionality |
-| Audio → Voice or sound recordings (elders' stories) | Yes | Optional | App functionality |
+| Audio → Voice or sound recordings (elders' stories, voice notes in messages) | Yes | Optional | App functionality |
 | App activity → App interactions (pages opened) | Yes | Required | Analytics (admins see who is active) |
 | App activity → Other user-generated content | Yes | Optional | App functionality |
 | Device or other IDs (notification token) | Yes | Optional | App functionality |

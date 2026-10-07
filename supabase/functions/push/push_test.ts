@@ -50,6 +50,8 @@ Deno.test("texts follow the reader's language", () => {
     render("khatm_reminder", { title: "Khatm for Kaka", juz: [1, 5] }, "en", "Bua").body,
     "Reminder: “Khatm for Kaka” is to be finished tomorrow (your juz: 1, 5).",
   );
+  assertEquals(render("direct_message", { name: "Musa", message_kind: "voice", body: "" }, "en", "Bua").body, "Musa: 🎤 Voice note");
+  assertEquals(render("direct_message", { name: "Musa", message_kind: "photo", body: "" }, "ha", "Bua").body, "Musa: 📷 Hoto");
   assertEquals(render("khatm", { title: "Sauka don Kaka" }, "ha", "Bua").body, "Sabuwar saukar Alƙur'ani: Sauka don Kaka. Ɗauki juz'i.");
   assertEquals(render("remembrance", { years: 5, name: "Ahmadu" }, "en", "Bua").body, "5 years since Ahmadu passed");
   assertEquals(render("tagged", { photo_id: "x" }, "en", "Bua").body, "You were tagged in a photo");

@@ -9060,6 +9060,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Has an account'**
   String get hasAccount;
+
+  /// No description provided for @dmTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'typing…'**
+  String get dmTyping;
+
+  /// No description provided for @dmReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get dmReply;
+
+  /// No description provided for @dmReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String dmReplyingTo(String name);
+
+  /// No description provided for @dmDeleteForEveryone.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete for everyone'**
+  String get dmDeleteForEveryone;
+
+  /// No description provided for @dmConfirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this message for everyone?'**
+  String get dmConfirmDelete;
+
+  /// No description provided for @dmDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This message was deleted'**
+  String get dmDeleted;
+
+  /// No description provided for @dmYouDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'You deleted this message'**
+  String get dmYouDeleted;
+
+  /// No description provided for @dmPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get dmPhoto;
+
+  /// No description provided for @dmVoiceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice note'**
+  String get dmVoiceNote;
+
+  /// No description provided for @dmSendPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a photo'**
+  String get dmSendPhoto;
+
+  /// No description provided for @dmAddCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a caption…'**
+  String get dmAddCaption;
+
+  /// No description provided for @dmRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording {time}'**
+  String dmRecording(String time);
+
+  /// No description provided for @dmCancelRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel recording'**
+  String get dmCancelRecording;
+
+  /// No description provided for @dmSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get dmSent;
+
+  /// No description provided for @dmDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get dmDelivered;
+
+  /// No description provided for @dmRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get dmRead;
+
+  /// No description provided for @play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get takePhoto;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get chooseFromGallery;
 }
 
 class _AppLocalizationsDelegate
