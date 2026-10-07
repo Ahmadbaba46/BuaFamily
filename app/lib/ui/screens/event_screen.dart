@@ -8,6 +8,7 @@ import '../../models/family_graph.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import '../widgets/event_contributions.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/hijri.dart';
@@ -175,6 +176,8 @@ class EventScreen extends ConsumerWidget {
               const SizedBox(height: 14),
               _Attendees(event: event),
             ],
+            // Wedding and naming gifts (gudummawa), when the host opened them.
+            EventContributions(event: event),
             // From the day itself: who came, and the photos.
             if (!DateTime.now().isBefore(event.startsAt.subtract(const Duration(hours: 6)))) ...[
               const SizedBox(height: 14),

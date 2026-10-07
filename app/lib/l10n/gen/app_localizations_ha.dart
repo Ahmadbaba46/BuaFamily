@@ -5817,4 +5817,176 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get calendarRefreshNote =>
       'Manhajojin kalanda na duba sauye-sauye bayan \'yan awoyi; Google Calendar na iya ɗaukar kwana ɗaya.';
+
+  @override
+  String get giftsTitle => 'Gudummawa';
+
+  @override
+  String get giftsOpen => 'Karɓi gudummawa';
+
+  @override
+  String get giftsOpenHint =>
+      'Don biki ko suna: \'yan uwa za su yi alƙawari su aika gudummawa, kuma za ka ga wa ya bayar da me.';
+
+  @override
+  String get giftsReceiver => 'Za ta tafi wurin';
+
+  @override
+  String giftsGoesTo(String name) {
+    return 'Za ta tafi wurin $name';
+  }
+
+  @override
+  String get giftsTarget => 'Burin kuɗi a naira (ba dole ba)';
+
+  @override
+  String get giftsPayDetails => 'Yadda za a biya (banki, lambar asusu, suna)';
+
+  @override
+  String get giftsShowAmounts => 'Membobi su ga adadin da kowa ya bayar';
+
+  @override
+  String get giftsGive => 'Bayar';
+
+  @override
+  String get giftsGiveTitle => 'Gudummawarka';
+
+  @override
+  String get giftsAmount => 'Adadi a naira';
+
+  @override
+  String get giftsMethod => 'Ta yaya';
+
+  @override
+  String get giftsMethodTransfer => 'Tura ta banki';
+
+  @override
+  String get giftsMethodCash => 'Kuɗi hannu';
+
+  @override
+  String get giftsMethodInKind => 'Kayan gudummawa';
+
+  @override
+  String get giftsMethodOther => 'Wani';
+
+  @override
+  String get giftsItem => 'Me (idan kaya ne)';
+
+  @override
+  String get giftsNote => 'Saƙo ga mai biki (ba dole ba)';
+
+  @override
+  String get giftsAnonymous => 'Ɓoye sunana daga sauran membobi';
+
+  @override
+  String get giftsAlreadySent => 'Na riga na aika';
+
+  @override
+  String get giftsNeedAmount => 'Saka adadi, ko ka faɗi kayan da za ka bayar';
+
+  @override
+  String get giftsPledged => 'Alƙawari';
+
+  @override
+  String get giftsSent => 'An aika';
+
+  @override
+  String get giftsReceived => 'An karɓa';
+
+  @override
+  String get giftsMarkSent => 'Na aika';
+
+  @override
+  String get giftsMarkReceived => 'Tabbatar an karɓa';
+
+  @override
+  String get giftsMarkNotReceived => 'Ba a karɓa ba tukuna';
+
+  @override
+  String get giftsWithdraw => 'Janye';
+
+  @override
+  String get giftsConfirmWithdraw => 'A janye wannan alƙawarin?';
+
+  @override
+  String get giftsEdit => 'Gyara';
+
+  @override
+  String get giftsAnonymousGiver => 'Wani ɗan uwa';
+
+  @override
+  String get giftsYours => 'Naka';
+
+  @override
+  String giftsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gudummawa $count',
+      zero: 'Babu gudummawa tukuna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String giftsTotals(String given, String received) {
+    return '$given an bayar · $received an karɓa';
+  }
+
+  @override
+  String giftsOfTarget(String target) {
+    return 'Buri $target';
+  }
+
+  @override
+  String get giftsClose => 'Rufe gudummawa';
+
+  @override
+  String get giftsReopen => 'Sake buɗe gudummawa';
+
+  @override
+  String get giftsClosed => 'An rufe gudummawa.';
+
+  @override
+  String get giftsCopyList => 'Kwafi jerin';
+
+  @override
+  String get giftsListCopied => 'An kwafi jerin';
+
+  @override
+  String get giftsPrivateAmounts => 'Mai biki kaɗai ke ganin adadi.';
+
+  @override
+  String giftsNotWelfare(String name) {
+    return 'Wannan na $name ne, ba na asusun taimako ba.';
+  }
+
+  @override
+  String get giftsCopyDetails => 'Kwafi bayanan asusu';
+
+  @override
+  String get giftsDetailsCopied => 'An kwafi bayanan asusu';
+
+  @override
+  String get giftsSettings => 'Saitunan gudummawa';
+
+  @override
+  String notifEventCollection(String title) {
+    return 'An buɗe gudummawa don $title';
+  }
+
+  @override
+  String notifEventGiftPledged(String name, String what, String title) {
+    return '$name ya yi alƙawarin $what don $title';
+  }
+
+  @override
+  String notifEventGiftSent(String name, String what, String title) {
+    return '$name ya aika $what don $title';
+  }
+
+  @override
+  String notifEventGiftReceived(String name, String title) {
+    return '$name ya karɓi gudummawarka don $title. Na gode!';
+  }
 }

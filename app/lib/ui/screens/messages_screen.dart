@@ -275,15 +275,20 @@ class _GroupRow extends ConsumerWidget {
 }
 
 /// Choose someone in the family to write to (members with an account, not me).
-Future<String?> pickMember(BuildContext context, WidgetRef ref) => showModalBottomSheet<String>(
+/// [title] instead of "Message who?"; [includeMe] to offer myself too.
+Future<String?> pickMember(BuildContext context, WidgetRef ref, {String? title, bool includeMe = false}) =>
+    showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => const _MemberPicker(),
+      builder: (_) => _MemberPicker(title: title, includeMe: includeMe),
     );
 
 class _MemberPicker extends ConsumerStatefulWidget {
-  const _MemberPicker();
+  const _MemberPicker({this.title, this.includeMe = false});
+
+  final String? title;
+  final bool includeMe;
 
   @override
   ConsumerState<_MemberPicker> createState() => _MemberPickerState();
@@ -304,7 +309,7 @@ class _MemberPickerState extends ConsumerState<_MemberPicker> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text(l.messageWho, style: Theme.of(context).textTheme.titleLarge),
+            Text(widget.title ?? l.messageWho, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 10),
             TextField(
               autofocus: true,
@@ -321,7 +326,7 @@ class _MemberPickerState extends ConsumerState<_MemberPicker> {
               final q = searchFold(_query.trim());
               final people = [
                 for (final m in map.values)
-                  if (m.userId != me) (m, authorOf(ref, m.userId)),
+                  if (m.userId != me || widget.includeMe) (m, authorOf(ref, m.userId)),
               ].where((e) => q.isEmpty || searchFold(e.$2.name).contains(q)).toList()
                 ..sort((a, b) => a.$2.name.toLowerCase().compareTo(b.$2.name.toLowerCase()));
               if (people.isEmpty) {

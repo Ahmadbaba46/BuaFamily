@@ -5907,4 +5907,178 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calendarRefreshNote =>
       'Calendar apps check for changes every few hours; Google Calendar can take up to a day.';
+
+  @override
+  String get giftsTitle => 'Contributions';
+
+  @override
+  String get giftsOpen => 'Collect contributions';
+
+  @override
+  String get giftsOpenHint =>
+      'For a wedding or naming: relatives pledge and send gifts, and you see who gave what.';
+
+  @override
+  String get giftsReceiver => 'Goes to';
+
+  @override
+  String giftsGoesTo(String name) {
+    return 'Goes to $name';
+  }
+
+  @override
+  String get giftsTarget => 'Target in naira (optional)';
+
+  @override
+  String get giftsPayDetails => 'How to pay (bank, account number, name)';
+
+  @override
+  String get giftsShowAmounts => 'Members see each other\'s amounts';
+
+  @override
+  String get giftsGive => 'Give';
+
+  @override
+  String get giftsGiveTitle => 'Your contribution';
+
+  @override
+  String get giftsAmount => 'Amount in naira';
+
+  @override
+  String get giftsMethod => 'How';
+
+  @override
+  String get giftsMethodTransfer => 'Bank transfer';
+
+  @override
+  String get giftsMethodCash => 'Cash';
+
+  @override
+  String get giftsMethodInKind => 'In kind';
+
+  @override
+  String get giftsMethodOther => 'Other';
+
+  @override
+  String get giftsItem => 'What (if in kind)';
+
+  @override
+  String get giftsNote => 'A note for the host (optional)';
+
+  @override
+  String get giftsAnonymous => 'Hide my name from other members';
+
+  @override
+  String get giftsAlreadySent => 'I\'ve already sent it';
+
+  @override
+  String get giftsNeedAmount =>
+      'Enter an amount, or say what you\'re giving in kind';
+
+  @override
+  String get giftsPledged => 'Pledged';
+
+  @override
+  String get giftsSent => 'Sent';
+
+  @override
+  String get giftsReceived => 'Received';
+
+  @override
+  String get giftsMarkSent => 'I\'ve sent it';
+
+  @override
+  String get giftsMarkReceived => 'Mark received';
+
+  @override
+  String get giftsMarkNotReceived => 'Mark not received';
+
+  @override
+  String get giftsWithdraw => 'Take back';
+
+  @override
+  String get giftsConfirmWithdraw => 'Take back this pledge?';
+
+  @override
+  String get giftsEdit => 'Change';
+
+  @override
+  String get giftsAnonymousGiver => 'A relative';
+
+  @override
+  String get giftsYours => 'Yours';
+
+  @override
+  String giftsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gifts',
+      one: '1 gift',
+      zero: 'No gifts yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String giftsTotals(String given, String received) {
+    return '$given given · $received received';
+  }
+
+  @override
+  String giftsOfTarget(String target) {
+    return 'Target $target';
+  }
+
+  @override
+  String get giftsClose => 'Close contributions';
+
+  @override
+  String get giftsReopen => 'Reopen contributions';
+
+  @override
+  String get giftsClosed => 'Contributions are closed.';
+
+  @override
+  String get giftsCopyList => 'Copy the list';
+
+  @override
+  String get giftsListCopied => 'List copied';
+
+  @override
+  String get giftsPrivateAmounts => 'Only the host sees the amounts.';
+
+  @override
+  String giftsNotWelfare(String name) {
+    return 'This goes to $name, not to the welfare fund.';
+  }
+
+  @override
+  String get giftsCopyDetails => 'Copy account details';
+
+  @override
+  String get giftsDetailsCopied => 'Account details copied';
+
+  @override
+  String get giftsSettings => 'Contribution settings';
+
+  @override
+  String notifEventCollection(String title) {
+    return 'Contributions are open for $title';
+  }
+
+  @override
+  String notifEventGiftPledged(String name, String what, String title) {
+    return '$name pledged $what for $title';
+  }
+
+  @override
+  String notifEventGiftSent(String name, String what, String title) {
+    return '$name sent $what for $title';
+  }
+
+  @override
+  String notifEventGiftReceived(String name, String title) {
+    return '$name received your gift for $title. Thank you!';
+  }
 }

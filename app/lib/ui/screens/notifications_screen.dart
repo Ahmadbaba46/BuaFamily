@@ -15,6 +15,13 @@ import '../widgets/push_widgets.dart';
 import '../widgets/social.dart';
 
 /// The main line of a notification, in the reader's language.
+/// "₦20,000", "a ram", or both.
+String _giftWhat(AppNotification n) => [
+      if (n.data['amount'] is num) naira(n.data['amount'] as num),
+      if (n.data['amount'] is String) naira(num.tryParse(n.data['amount'] as String) ?? 0),
+      if (n.str('item')?.trim().isNotEmpty ?? false) n.str('item')!.trim(),
+    ].join(' + ');
+
 String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind) {
       NotificationKind.event => l.notifEvent(n.str('title') ?? ''),
       NotificationKind.announcement => n.str('body') ?? l.announcement,
@@ -50,6 +57,10 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
+      NotificationKind.eventCollection => l.notifEventCollection(n.str('title') ?? ''),
+      NotificationKind.eventGift => (n.str('status') == 'sent' ? l.notifEventGiftSent : l.notifEventGiftPledged)(
+          n.str('name') ?? '', _giftWhat(n), n.str('title') ?? ''),
+      NotificationKind.eventGiftReceived => l.notifEventGiftReceived(n.str('name') ?? '', n.str('title') ?? ''),
       NotificationKind.groupAdded => l.notifGroupAdded(n.str('name') ?? '', n.str('group') ?? ''),
       NotificationKind.groupMessage when n.str('message_kind') == 'reaction' =>
         l.notifGroupReaction(n.str('name') ?? '', n.str('body') ?? '', n.str('group') ?? ''),
@@ -141,6 +152,8 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.weeklySummary => Icons.insights_outlined,
       NotificationKind.directMessage => Icons.forum_outlined,
       NotificationKind.groupMessage || NotificationKind.groupAdded => Icons.groups_outlined,
+      NotificationKind.eventCollection || NotificationKind.eventGift || NotificationKind.eventGiftReceived =>
+        Icons.redeem_outlined,
       NotificationKind.contentReport => Icons.flag_outlined,
       NotificationKind.khatm || NotificationKind.khatmCompleted || NotificationKind.khatmReminder =>
         Icons.menu_book_outlined,
