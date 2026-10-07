@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/l10n.dart';
+import '../../models/report.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/report_sheet.dart';
 import '../widgets/social.dart';
 
 /// Full-screen photo with its caption, tagged people, likes and memories.
@@ -144,13 +146,15 @@ class _PhotoMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     final profile = ref.watch(profileProvider);
-    final canEdit = photo.uploadedBy == profile?.id || (profile?.isAdmin ?? false);
-    if (!canEdit) return const SizedBox.shrink();
+    final mine = photo.uploadedBy == profile?.id;
+    final canEdit = mine || (profile?.isAdmin ?? false);
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert),
       onSelected: (v) async {
         final repo = ref.read(repositoryProvider);
-        if (v == 'edit') {
+        if (v == 'report') {
+          await reportToAdmins(context, ref, ReportKind.photo, photo.id);
+        } else if (v == 'edit') {
           final changed = await _editPhoto(context, photo);
           if (changed == null || !context.mounted) return;
           if (await guarded(context, () => repo.updatePhoto(photo.id, caption: changed.$1, takenYear: changed.$2))) {
@@ -166,8 +170,9 @@ class _PhotoMenu extends ConsumerWidget {
         }
       },
       itemBuilder: (_) => [
-        PopupMenuItem(value: 'edit', child: Text(l.editDetails)),
-        PopupMenuItem(value: 'delete', child: Text(l.deletePhoto)),
+        if (!mine) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
+        if (canEdit) PopupMenuItem(value: 'edit', child: Text(l.editDetails)),
+        if (canEdit) PopupMenuItem(value: 'delete', child: Text(l.deletePhoto)),
       ],
     );
   }

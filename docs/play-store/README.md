@@ -43,8 +43,10 @@ When you upload the first bundle, Play asks about the **app signing key**:
   uninstall it once before installing from Play (signed in again, nothing is
   lost: everything is on the server).
 
-Use **one** source of build numbers for Play: the GitHub build (its number grows
-with every run). Play refuses a bundle whose number isn't higher than the last.
+Build numbers count the commits, both on your computer (`build_android.ps1`)
+and on GitHub, so the same commit gets the same number either way. Play
+refuses a bundle whose number isn't higher than the last, so upload a bundle
+from a newer commit each time.
 
 ## 4. Store listing
 

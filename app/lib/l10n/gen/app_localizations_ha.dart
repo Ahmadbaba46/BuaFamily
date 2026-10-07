@@ -5064,4 +5064,170 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get korapayPayoutsNote =>
       'Ma’aji ne ke fitar da kuɗi a dashboard ɗin Korapay sannan a rubuta a nan kamar da: Korapay na karɓar buƙatar fitar da kuɗi daga adireshin IP guda ɗaya kawai, wanda sabobin manhajar ba su da shi.';
+
+  @override
+  String get reportAction => 'Kai rahoto';
+
+  @override
+  String get reportIntro =>
+      'Shugabannin iyali ne kaɗai ke ganin rahoto, kuma ba za su faɗa wa kowa wanda ya kai ba. Ana kwafar abin da ka kai rahotonsa domin su gani ko da an goge shi.';
+
+  @override
+  String get reportReasonChildSafety => 'Damuwa kan lafiyar yara';
+
+  @override
+  String get reportReasonAbuse => 'Cin zarafi, tsangwama ko barazana';
+
+  @override
+  String get reportReasonSpam => 'Saƙon banza ko zamba';
+
+  @override
+  String get reportReasonOther => 'Wani abu daban';
+
+  @override
+  String get reportChildSafetyNote =>
+      'Idan yaro yana cikin haɗari yanzu, fara kiran ’yan sanda. Ana sanar da shugabanni nan take, kuma muna kai rahoton cin zarafin yara ga hukuma.';
+
+  @override
+  String get reportNoteHint =>
+      'Abin da ya kamata shugabanni su sani (ba dole ba)';
+
+  @override
+  String get reportSend => 'Aika rahoto';
+
+  @override
+  String get reportSent => 'Na gode. Shugabanni za su duba.';
+
+  @override
+  String get commentOptions => 'Zaɓuɓɓukan sharhi';
+
+  @override
+  String get reportMessage => 'Kai rahoton wannan saƙo';
+
+  @override
+  String get reportMember => 'Kai rahoton wannan ɗan uwa';
+
+  @override
+  String get copyText => 'Kwafa';
+
+  @override
+  String get block => 'Toshe';
+
+  @override
+  String get unblock => 'Cire toshewa';
+
+  @override
+  String confirmBlock(String name) {
+    return 'A toshe $name? Babu ɗayanku da zai iya aika wa ɗayan saƙo. Ba za a sanar da su ba.';
+  }
+
+  @override
+  String blockedNote(String name) {
+    return 'An toshe $name.';
+  }
+
+  @override
+  String youBlocked(String name) {
+    return 'Ka toshe $name. Cire toshewa don sake aika saƙo.';
+  }
+
+  @override
+  String get cantMessageMember =>
+      'Ba za ka iya aika wa wannan ɗan uwa saƙo ba.';
+
+  @override
+  String get reportsTitle => 'Rahotanni';
+
+  @override
+  String get reportsIntro =>
+      'Abubuwan da ’yan uwa suka kai rahotonsu. Cire abin da ya karya dokokin iyali, dakatar ko goge asusu idan ya dace, kuma a kai rahoton cin zarafin yara ga hukuma (duba shafin lafiyar yara).';
+
+  @override
+  String get noOpenReports => 'Babu rahoton da ke jira.';
+
+  @override
+  String get reportsDone => 'An magance';
+
+  @override
+  String get reportKindPost => 'Wani rubutu';
+
+  @override
+  String get reportKindPhoto => 'Wani hoto';
+
+  @override
+  String get reportKindComment => 'Wani sharhi';
+
+  @override
+  String get reportKindProfile => 'Wani bayanin mutum';
+
+  @override
+  String get reportKindMember => 'Wani ɗan uwa';
+
+  @override
+  String get reportKindMessage => 'Wani saƙon sirri';
+
+  @override
+  String get reportStatusOpen => 'A buɗe';
+
+  @override
+  String get reportStatusRemoved => 'An cire';
+
+  @override
+  String get reportStatusActioned => 'An magance';
+
+  @override
+  String get reportStatusDismissed => 'An watsar';
+
+  @override
+  String reportedAuthor(String name) {
+    return 'Daga $name';
+  }
+
+  @override
+  String reportedBy(String name) {
+    return '$name ya kai rahoto';
+  }
+
+  @override
+  String reportNoteFrom(String note) {
+    return 'Bayani: $note';
+  }
+
+  @override
+  String get reopen => 'Sake buɗewa';
+
+  @override
+  String get openLabel => 'Buɗe';
+
+  @override
+  String get removeContent => 'Cire';
+
+  @override
+  String get confirmRemoveReported =>
+      'A cire shi ga kowa? Ba za a iya dawowa ba.';
+
+  @override
+  String get suspendAccount => 'Dakatar da asusu';
+
+  @override
+  String confirmSuspendReported(String name) {
+    return 'A dakatar da asusun $name? Ba za su iya amfani da manhajar ba sai shugaba ya sake kunna su.';
+  }
+
+  @override
+  String get markHandled => 'Alama an magance';
+
+  @override
+  String get dismissReport => 'Watsar';
+
+  @override
+  String get notifReport =>
+      'An kai rahoton wani abu ga shugabanni. Taɓa don dubawa.';
+
+  @override
+  String get notifReportChildSafety =>
+      'GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu.';
+
+  @override
+  String get reportSheetTitle => 'Kai rahoto ga shugabanni';
 }

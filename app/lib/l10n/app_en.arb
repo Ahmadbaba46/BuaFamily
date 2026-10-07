@@ -3368,5 +3368,102 @@
   "korapaySecretKey": "Korapay secret key",
   "korapayKeyHint": "In your Korapay dashboard: Settings → API Configuration. Use the test key (sk_test_…) to try it first, then the live key (sk_live_…). It's kept encrypted and never shown again.",
   "korapayKeySaved": "Korapay key saved.",
-  "korapayPayoutsNote": "Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app's servers don't have."
+  "korapayPayoutsNote": "Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app's servers don't have.",
+  "reportAction": "Report",
+  "reportIntro": "Only the family's admins see reports, and they won't tell anyone who reported. What you report is copied for them, so they can see it even if it's deleted.",
+  "reportReasonChildSafety": "Child safety concern",
+  "reportReasonAbuse": "Abuse, harassment or threats",
+  "reportReasonSpam": "Spam or a scam",
+  "reportReasonOther": "Something else",
+  "reportChildSafetyNote": "If a child is in danger now, call the police first. The admins are told at once, and we report child abuse to the authorities.",
+  "reportNoteHint": "Anything the admins should know (optional)",
+  "reportSend": "Send report",
+  "reportSent": "Thank you. The admins will look at it.",
+  "commentOptions": "Comment options",
+  "reportMessage": "Report this message",
+  "reportMember": "Report this member",
+  "copyText": "Copy",
+  "block": "Block",
+  "unblock": "Unblock",
+  "confirmBlock": "Block {name}? Neither of you will be able to message the other. They aren't told.",
+  "@confirmBlock": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "blockedNote": "{name} is blocked.",
+  "@blockedNote": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "youBlocked": "You blocked {name}. Unblock to send messages again.",
+  "@youBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cantMessageMember": "You can't message this member.",
+  "reportsTitle": "Reports",
+  "reportsIntro": "Things members reported. Remove what breaks the family's rules, suspend or delete the account if needed, and report child abuse to the authorities (see the child safety page).",
+  "noOpenReports": "No reports waiting.",
+  "reportsDone": "Handled",
+  "reportKindPost": "A moment",
+  "reportKindPhoto": "A photo",
+  "reportKindComment": "A comment",
+  "reportKindProfile": "A profile",
+  "reportKindMember": "A member",
+  "reportKindMessage": "A private message",
+  "reportStatusOpen": "Open",
+  "reportStatusRemoved": "Removed",
+  "reportStatusActioned": "Handled",
+  "reportStatusDismissed": "Dismissed",
+  "reportedAuthor": "By {name}",
+  "@reportedAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportedBy": "reported by {name}",
+  "@reportedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportNoteFrom": "Note: {note}",
+  "@reportNoteFrom": {
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "reopen": "Reopen",
+  "openLabel": "Open",
+  "removeContent": "Remove",
+  "confirmRemoveReported": "Remove it for everyone? This can't be undone.",
+  "suspendAccount": "Suspend account",
+  "confirmSuspendReported": "Suspend {name}'s account? They can't use the app until an admin activates them again.",
+  "@confirmSuspendReported": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "markHandled": "Mark handled",
+  "dismissReport": "Dismiss",
+  "notifReport": "Something was reported to the admins. Tap to review.",
+  "notifReportChildSafety": "URGENT: a child safety concern was reported. Please review it now.",
+  "reportSheetTitle": "Report to the admins"
 }

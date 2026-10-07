@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 
 import '../../l10n/l10n.dart';
 import '../../models/messages.dart';
 import '../../models/person.dart' show searchFold;
+import '../../models/report.dart';
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/chat_bubble.dart';
 import '../widgets/common.dart';
+import '../widgets/report_sheet.dart';
 import '../widgets/social.dart';
 
 /// Opens the conversation with [userId], starting it if there isn't one.
@@ -276,11 +280,61 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     }
   }
 
+  Future<void> _messageMenu(DmMessage m) async {
+    final l = context.l10n;
+    final choice = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (c) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          ListTile(
+            leading: const Icon(Icons.copy),
+            title: Text(l.copyText),
+            onTap: () => Navigator.pop(c, 'copy'),
+          ),
+          ListTile(
+            leading: Icon(Icons.flag_outlined, color: Bua.danger),
+            title: Text(l.reportMessage),
+            onTap: () => Navigator.pop(c, 'report'),
+          ),
+        ]),
+      ),
+    );
+    if (!mounted) return;
+    if (choice == 'copy') {
+      await Clipboard.setData(ClipboardData(text: m.body));
+      if (mounted) showSnack(context, l.copied);
+    } else if (choice == 'report') {
+      await reportToAdmins(context, ref, ReportKind.message, m.id);
+    }
+  }
+
+  Future<void> _memberMenu(String action, String other, String name) async {
+    final l = context.l10n;
+    final repo = ref.read(repositoryProvider);
+    switch (action) {
+      case 'report':
+        await reportToAdmins(context, ref, ReportKind.member, other);
+      case 'block':
+        if (!await confirm(context, l.confirmBlock(name)) || !mounted) return;
+        if (await guarded(context, () => repo.block(other))) {
+          ref.invalidate(blockedProvider);
+          if (mounted) showSnack(context, l.blockedNote(name));
+        }
+      case 'unblock':
+        if (await guarded(context, () => repo.unblock(other))) ref.invalidate(blockedProvider);
+    }
+  }
+
   Future<void> _send() async {
     final body = _text.text.trim();
     if (body.isEmpty || _sending) return;
     setState(() => _sending = true);
-    final ok = await guarded(context, () => ref.read(repositoryProvider).sendDm(widget.threadId, body));
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).sendDm(widget.threadId, body),
+      onError: (e) => e is PostgrestException && e.code == '42501' ? context.l10n.cantMessageMember : null,
+    );
     if (!mounted) return;
     setState(() => _sending = false);
     if (ok) _text.clear();
@@ -305,8 +359,10 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       });
     }
 
-    final other = thread == null ? null : authorOf(ref, thread.otherThan(me));
+    final otherId = thread == null || me == null ? null : thread.otherThan(me);
+    final other = otherId == null ? null : authorOf(ref, otherId);
     final relation = other?.relation(l);
+    final iBlocked = otherId != null && (ref.watch(blockedProvider).value?.contains(otherId) ?? false);
 
     return Scaffold(
       appBar: AppBar(
@@ -334,6 +390,16 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                   ),
                 ]),
               ),
+        actions: [
+          if (otherId != null)
+            PopupMenuButton<String>(
+              onSelected: (v) => _memberMenu(v, otherId, other!.name),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: 'report', child: Text(l.reportMember)),
+                PopupMenuItem(value: iBlocked ? 'unblock' : 'block', child: Text(iBlocked ? l.unblock : l.block)),
+              ],
+            ),
+        ],
       ),
       body: threads.hasValue && thread == null
           ? Center(child: Text(l.conversationNotFound, style: TextStyle(color: Bua.inkSubtle)))
@@ -363,11 +429,32 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                           child: Text(l.startConversation,
                               textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
                         ),
-                      for (final m in list) ChatBubble(text: m.body, at: m.createdAt, mine: m.authorId == me),
+                      for (final m in list)
+                        ChatBubble(
+                          text: m.body,
+                          at: m.createdAt,
+                          mine: m.authorId == me,
+                          onLongPress: m.authorId == me ? null : () => _messageMenu(m),
+                        ),
                     ],
                   ),
                 ),
               ),
+              if (iBlocked)
+                SafeArea(
+                  top: false,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(color: Bua.surface, border: Border(top: BorderSide(color: Bua.line))),
+                    child: Column(children: [
+                      Text(l.youBlocked(other?.name ?? ''),
+                          textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
+                      TextButton(onPressed: () => _memberMenu('unblock', otherId, other?.name ?? ''), child: Text(l.unblock)),
+                    ]),
+                  ),
+                )
+              else
               SafeArea(
                 top: false,
                 child: Container(

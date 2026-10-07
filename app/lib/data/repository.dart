@@ -13,6 +13,7 @@ import '../models/help.dart';
 import '../models/messages.dart';
 import '../models/metrics.dart';
 import '../models/notification.dart';
+import '../models/report.dart';
 import '../models/person.dart';
 import '../models/social.dart';
 import '../models/story.dart';
@@ -572,6 +573,58 @@ class FamilyRepository {
 
   Future<void> updatePhoto(String id, {String? caption, int? takenYear}) =>
       _db.from('photos').update({'caption': caption, 'taken_year': takenYear}).eq('id', id);
+
+  // ---------------------------------------------------------------- reports & blocking
+
+  /// Reports something to the admins.
+  Future<void> reportContent(ReportKind kind, String targetId, ReportReason reason, {String? note}) =>
+      _db.rpc('report_content', params: {
+        'p_kind': kind.name,
+        'p_target': targetId,
+        'p_reason': reportReasonName(reason),
+        'p_note': note,
+      });
+
+  /// Admins: every report; members: their own.
+  Future<List<Report>> reports() async {
+    final rows = await _db.from('reports').select().order('created_at', ascending: false).limit(300);
+    return rows.map(Report.fromJson).toList();
+  }
+
+  Future<void> resolveReport(String id, ReportStatus status) =>
+      _db.rpc('admin_resolve_report', params: {'p_report': id, 'p_status': status.name});
+
+  /// Admin: removes a reported moment, photo or comment.
+  Future<void> removeReported(Report r) async {
+    switch (r.kind) {
+      case ReportKind.post:
+        await _db.from('posts').delete().eq('id', r.targetId);
+      case ReportKind.comment:
+        await _db.from('comments').delete().eq('id', r.targetId);
+      case ReportKind.photo:
+        await _db.from('photos').delete().eq('id', r.targetId);
+        final path = r.snapshot['storage_path'] as String?;
+        if (path != null) {
+          try {
+            await _db.storage.from(photosBucket).remove([path]);
+          } catch (_) {
+            // The row is gone; the file can't be reached without it.
+          }
+        }
+      default:
+        throw ArgumentError('Only moments, photos and comments can be removed');
+    }
+    await resolveReport(r.id, ReportStatus.removed);
+  }
+
+  /// The members I've blocked.
+  Future<Set<String>> blockedUsers() async =>
+      {for (final r in await _db.from('blocks').select('blocked_id')) r['blocked_id'] as String};
+
+  Future<void> block(String userId) => _db.from('blocks').insert({'blocked_id': userId});
+
+  Future<void> unblock(String blockedId) =>
+      _db.from('blocks').delete().eq('blocker_id', userId!).eq('blocked_id', blockedId);
 
   Future<void> deletePhoto(Photo photo) async {
     await _db.from('photos').delete().eq('id', photo.id);

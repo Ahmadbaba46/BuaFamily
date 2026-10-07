@@ -14,6 +14,7 @@ import '../models/fund.dart';
 import '../models/help.dart';
 import '../models/messages.dart';
 import '../models/notification.dart';
+import '../models/report.dart';
 import '../models/social.dart';
 import '../models/story.dart';
 import '../services/app_update.dart' show activityPlatform;
@@ -331,6 +332,24 @@ final mentorMessagesProvider = StreamProvider.autoDispose
     .family<List<MentorMessage>, String>((ref, id) => ref.watch(repositoryProvider).mentorMessages(id));
 
 // ---------------------------------------------------------------- direct messages
+
+/// Admins: all reports, newest first.
+final reportsProvider = FutureProvider<List<Report>>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).reports();
+});
+
+/// Open reports, for the admin badge.
+final openReportsProvider = Provider<int>((ref) {
+  if (!ref.watch(isAdminProvider)) return 0;
+  return ref.watch(reportsProvider).value?.where((r) => r.isOpen).length ?? 0;
+});
+
+/// The members I've blocked.
+final blockedProvider = FutureProvider<Set<String>>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).blockedUsers();
+});
 
 final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
   ref.watch(profileProvider.select((p) => (p?.id, p?.status)));

@@ -1,3 +1,4 @@
 
-# Android builds made with app/tool/build_android.ps1
+# Android builds made with app/tool/build_android.ps1 (APKs, and Play bundles with -Play)
 /bua-family-*.apk
+/bua-family-*.aab

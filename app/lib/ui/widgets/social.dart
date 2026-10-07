@@ -7,12 +7,14 @@ import '../../domain/kinship.dart';
 import '../../l10n/l10n.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
+import '../../models/report.dart';
 import '../../models/social.dart';
 import '../../state/prefs.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import 'bua.dart';
 import 'common.dart';
+import 'report_sheet.dart';
 import 'share_sheet.dart';
 
 /// Picks photos from the device, resized to save data unless [shrink] is off.
@@ -303,7 +305,8 @@ class _CommentThreadState extends ConsumerState<CommentThread> {
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Text(l.noCommentsYet, style: TextStyle(color: Bua.inkSubtle)),
         ),
-      for (final c in rows) _CommentRow(comment: c, canDelete: c.authorId == me?.id || (me?.isAdmin ?? false)),
+      for (final c in rows)
+        _CommentRow(comment: c, mine: c.authorId == me?.id, canDelete: c.authorId == me?.id || (me?.isAdmin ?? false)),
     ];
     final input = Padding(
       padding: EdgeInsets.only(top: 8, bottom: widget.scrollable ? MediaQuery.viewInsetsOf(context).bottom + 12 : 0),
@@ -331,9 +334,10 @@ class _CommentThreadState extends ConsumerState<CommentThread> {
 }
 
 class _CommentRow extends ConsumerWidget {
-  const _CommentRow({required this.comment, required this.canDelete});
+  const _CommentRow({required this.comment, required this.mine, required this.canDelete});
 
   final Comment comment;
+  final bool mine;
   final bool canDelete;
 
   @override
@@ -361,19 +365,23 @@ class _CommentRow extends ConsumerWidget {
             ]),
           ),
         ),
-        if (canDelete)
-          IconButton(
-            tooltip: l.delete,
-            visualDensity: VisualDensity.compact,
-            icon: Icon(Icons.close, size: 18, color: Bua.inkSubtle),
-            onPressed: () async {
-              final ok = await guarded(context, () => ref.read(repositoryProvider).deleteComment(comment.id));
-              if (ok) {
-                ref.invalidate(commentsProvider);
-                ref.invalidate(feedProvider);
-              }
-            },
-          ),
+        PopupMenuButton<String>(
+          tooltip: l.commentOptions,
+          padding: EdgeInsets.zero,
+          icon: Icon(Icons.more_vert, size: 18, color: Bua.inkSubtle),
+          onSelected: (v) async {
+            if (v == 'report') return reportToAdmins(context, ref, ReportKind.comment, comment.id);
+            final ok = await guarded(context, () => ref.read(repositoryProvider).deleteComment(comment.id));
+            if (ok) {
+              ref.invalidate(commentsProvider);
+              ref.invalidate(feedProvider);
+            }
+          },
+          itemBuilder: (_) => [
+            if (!mine) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
+            if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.delete)),
+          ],
+        ),
       ]),
     );
   }
@@ -443,6 +451,8 @@ class PostCard extends ConsumerWidget {
                     if (await guarded(context, () => repo.setPinned(postId: post.id, pinned: !post.pinned))) {
                       ref.invalidate(feedProvider);
                     }
+                  } else if (v == 'report') {
+                    await reportToAdmins(context, ref, ReportKind.post, post.id);
                   } else if (v == 'delete') {
                     if (!await confirm(context, l.confirmDeletePost) || !context.mounted) return;
                     if (await guarded(context, () => repo.deletePost(post))) {
@@ -454,6 +464,7 @@ class PostCard extends ConsumerWidget {
                 itemBuilder: (_) => [
                   PopupMenuItem(value: 'share', child: Text(l.shareLabel)),
                   if (isAdmin) PopupMenuItem(value: 'pin', child: Text(post.pinned ? l.unpin : l.pinToHome)),
+                  if (post.authorId != profile?.id) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
                   if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deletePost)),
                 ],
               ),

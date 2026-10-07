@@ -67,6 +67,16 @@ class AdminScreen extends ConsumerWidget {
           title: Text(l.navAdmin, style: Theme.of(context).textTheme.titleLarge),
           actions: [
             IconButton(
+              tooltip: l.reportsTitle,
+              icon: Badge(
+                isLabelVisible: ref.watch(openReportsProvider) > 0,
+                label: Text('${ref.watch(openReportsProvider)}'),
+                backgroundColor: Bua.danger,
+                child: const Icon(Icons.flag_outlined),
+              ),
+              onPressed: () => context.push('/admin/reports'),
+            ),
+            IconButton(
               tooltip: l.activityTitle,
               icon: const Icon(Icons.sensors),
               onPressed: () => context.push('/admin/activity'),

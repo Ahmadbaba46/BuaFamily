@@ -15,7 +15,7 @@ final adminAttentionProvider = Provider<int>((ref) {
   final requests = ref.watch(requestsProvider(RequestStatus.pending)).value?.length ?? 0;
   final accounts =
       ref.watch(profilesProvider).value?.where((p) => p.status == AccountStatus.pending || hasOpenClaim(p)).length ?? 0;
-  return requests + accounts;
+  return requests + accounts + ref.watch(openReportsProvider);
 });
 
 /// Bottom navigation and a sidebar drawer (phones), a side rail (tablets), or
