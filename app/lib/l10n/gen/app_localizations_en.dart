@@ -5555,4 +5555,71 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hasAccount => 'Has an account';
+
+  @override
+  String get dmTyping => 'typing…';
+
+  @override
+  String get dmReply => 'Reply';
+
+  @override
+  String dmReplyingTo(String name) {
+    return 'Replying to $name';
+  }
+
+  @override
+  String get dmDeleteForEveryone => 'Delete for everyone';
+
+  @override
+  String get dmConfirmDelete => 'Delete this message for everyone?';
+
+  @override
+  String get dmDeleted => 'This message was deleted';
+
+  @override
+  String get dmYouDeleted => 'You deleted this message';
+
+  @override
+  String get dmPhoto => 'Photo';
+
+  @override
+  String get dmVoiceNote => 'Voice note';
+
+  @override
+  String get dmSendPhoto => 'Send a photo';
+
+  @override
+  String get dmAddCaption => 'Add a caption…';
+
+  @override
+  String dmRecording(String time) {
+    return 'Recording $time';
+  }
+
+  @override
+  String get dmCancelRecording => 'Cancel recording';
+
+  @override
+  String get dmSent => 'Sent';
+
+  @override
+  String get dmDelivered => 'Delivered';
+
+  @override
+  String get dmRead => 'Read';
+
+  @override
+  String get play => 'Play';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get takePhoto => 'Take a photo';
+
+  @override
+  String get chooseFromGallery => 'Choose from gallery';
 }

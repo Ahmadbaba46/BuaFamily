@@ -1,9 +1,16 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 
+import '../../data/repository.dart' show TypingSignal;
 import '../../l10n/l10n.dart';
 import '../../models/messages.dart';
 import '../../models/person.dart' show searchFold;
@@ -12,8 +19,8 @@ import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
-import '../widgets/chat_bubble.dart';
 import '../widgets/common.dart';
+import '../widgets/dm_bubble.dart';
 import '../widgets/report_sheet.dart';
 import '../widgets/social.dart';
 
@@ -123,8 +130,15 @@ class _ThreadRow extends ConsumerWidget {
     final l = context.l10n;
     final other = authorOf(ref, thread.otherThan(me));
     final unread = thread.unreadFor(me);
+    final mineLast = thread.lastMessageBy == me;
     final last = thread.lastMessage;
-    final preview = last == null ? l.startConversation : (thread.lastMessageBy == me ? l.youPrefix(last) : last);
+    final words = switch (thread.lastMessageKind) {
+      'photo' => (last?.isNotEmpty ?? false) ? '📷 $last' : '📷 ${l.dmPhoto}',
+      'voice' => '🎤 ${l.dmVoiceNote}',
+      'deleted' => l.dmDeleted,
+      _ => last,
+    };
+    final preview = words == null ? l.startConversation : (mineLast ? l.youPrefix(words) : words);
     return InkWell(
       onTap: () => context.push('/messages/${thread.id}'),
       child: Padding(
@@ -146,6 +160,10 @@ class _ThreadRow extends ConsumerWidget {
               ]),
               const SizedBox(height: 2),
               Row(children: [
+                if (mineLast && thread.lastMessageAt != null && thread.lastMessageKind != 'deleted') ...[
+                  Ticks(thread.statusOf(thread.lastMessageAt!, me)),
+                  const SizedBox(width: 4),
+                ],
                 Expanded(
                   child: Text(preview,
                       maxLines: 1,
@@ -249,7 +267,7 @@ class _MemberPickerState extends ConsumerState<_MemberPicker> {
   }
 }
 
-/// One conversation: the messages and a box to write.
+/// One conversation: the messages and a box to write, WhatsApp-style.
 class DmScreen extends ConsumerStatefulWidget {
   const DmScreen({super.key, required this.threadId});
 
@@ -265,8 +283,46 @@ class _DmScreenState extends ConsumerState<DmScreen> {
   bool _sending = false;
   int _seen = -1;
 
+  /// The message being answered.
+  DmMessage? _replyTo;
+
+  // "typing…"
+  TypingSignal? _typing;
+  bool _otherTyping = false;
+  Timer? _typingOff;
+
+  // Recording a voice note.
+  AudioRecorder? _recorder;
+  DateTime? _recordingSince;
+  Duration _recorded = Duration.zero;
+  Timer? _recordTicker;
+  String _recordExt = 'm4a';
+
+  @override
+  void initState() {
+    super.initState();
+    _text.addListener(() {
+      if (_text.text.isNotEmpty) _typing?.typing();
+      setState(() {});
+    });
+    try {
+      _typing = ref.read(repositoryProvider).dmTyping(widget.threadId, (_) {
+        if (!mounted) return;
+        setState(() => _otherTyping = true);
+        _typingOff?.cancel();
+        _typingOff = Timer(const Duration(seconds: 4), () => mounted ? setState(() => _otherTyping = false) : null);
+      });
+    } catch (_) {
+      // No live connection: no "typing…", everything else works.
+    }
+  }
+
   @override
   void dispose() {
+    _typing?.dispose();
+    _typingOff?.cancel();
+    _recordTicker?.cancel();
+    _recorder?.dispose();
     _text.dispose();
     _scroll.dispose();
     super.dispose();
@@ -280,32 +336,202 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     }
   }
 
-  Future<void> _messageMenu(DmMessage m) async {
+  String? _cantSend(Object e) => e is PostgrestException && e.code == '42501' ? context.l10n.cantMessageMember : null;
+
+  Future<void> _send() async {
+    final body = _text.text.trim();
+    if (body.isEmpty || _sending) return;
+    setState(() => _sending = true);
+    final reply = _replyTo?.id;
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).sendDm(widget.threadId, body, replyTo: reply),
+      onError: _cantSend,
+    );
+    if (!mounted) return;
+    setState(() {
+      _sending = false;
+      if (ok) {
+        _text.clear();
+        _replyTo = null;
+      }
+    });
+  }
+
+  Future<void> _sendPhoto() async {
+    final l = context.l10n;
+    final source = kIsWeb
+        ? ImageSource.gallery
+        : await showModalBottomSheet<ImageSource>(
+            context: context,
+            showDragHandle: true,
+            builder: (c) => SafeArea(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_camera_outlined),
+                  title: Text(l.takePhoto),
+                  onTap: () => Navigator.pop(c, ImageSource.camera),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library_outlined),
+                  title: Text(l.chooseFromGallery),
+                  onTap: () => Navigator.pop(c, ImageSource.gallery),
+                ),
+              ]),
+            ),
+          );
+    if (source == null || !mounted) return;
+    final f = await ImagePicker().pickImage(source: source, maxWidth: 1600, imageQuality: 80);
+    if (f == null || !mounted) return;
+    final bytes = await f.readAsBytes();
+    if (!mounted) return;
+    final caption = TextEditingController(text: _text.text.trim());
+    final send = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        contentPadding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.memory(bytes, height: 260, fit: BoxFit.cover)),
+          const SizedBox(height: 12),
+          TextField(
+            controller: caption,
+            maxLength: 4000,
+            minLines: 1,
+            maxLines: 3,
+            decoration: InputDecoration(hintText: l.dmAddCaption, counterText: ''),
+          ),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: Text(l.cancel)),
+          FilledButton.icon(onPressed: () => Navigator.pop(c, true), icon: const Icon(Icons.send, size: 18), label: Text(l.send)),
+        ],
+      ),
+    );
+    final words = caption.text;
+    caption.dispose();
+    if (send != true || !mounted) return;
+    setState(() => _sending = true);
+    final reply = _replyTo?.id;
+    final name = f.name.toLowerCase();
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).sendDmMedia(widget.threadId,
+          kind: DmKind.photo,
+          bytes: bytes,
+          extension: name.contains('.') ? name.split('.').last : 'jpg',
+          caption: words,
+          replyTo: reply),
+      onError: _cantSend,
+    );
+    if (!mounted) return;
+    setState(() {
+      _sending = false;
+      if (ok) {
+        _text.clear();
+        _replyTo = null;
+      }
+    });
+  }
+
+  Future<void> _startRecording() async {
+    final l = context.l10n;
+    final rec = _recorder ??= AudioRecorder();
+    try {
+      if (!await rec.hasPermission()) {
+        if (mounted) showSnack(context, l.micDenied);
+        return;
+      }
+      final aac = await rec.isEncoderSupported(AudioEncoder.aacLc);
+      _recordExt = aac ? 'm4a' : (kIsWeb ? 'webm' : 'ogg');
+      final path =
+          kIsWeb ? '' : '${(await getTemporaryDirectory()).path}/dm_${DateTime.now().millisecondsSinceEpoch}.$_recordExt';
+      await rec.start(
+        RecordConfig(encoder: aac ? AudioEncoder.aacLc : AudioEncoder.opus, bitRate: 48000, numChannels: 1),
+        path: path,
+      );
+    } catch (e) {
+      if (mounted) showError(context, e);
+      return;
+    }
+    if (!mounted) return;
+    setState(() {
+      _recordingSince = DateTime.now();
+      _recorded = Duration.zero;
+    });
+    _recordTicker = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      if (mounted && _recordingSince != null) {
+        setState(() => _recorded = DateTime.now().difference(_recordingSince!));
+        _typing?.typing();
+      }
+    });
+  }
+
+  Future<void> _stopRecording({required bool send}) async {
+    _recordTicker?.cancel();
+    final length = _recordingSince == null ? Duration.zero : DateTime.now().difference(_recordingSince!);
+    setState(() => _recordingSince = null);
+    String? out;
+    try {
+      out = await _recorder?.stop();
+    } catch (_) {
+      out = null;
+    }
+    if (!send || out == null || length < const Duration(milliseconds: 700) || !mounted) return;
+    final bytes = await XFile(out).readAsBytes();
+    if (!mounted) return;
+    setState(() => _sending = true);
+    final reply = _replyTo?.id;
+    final ok = await guarded(
+      context,
+      () => ref.read(repositoryProvider).sendDmMedia(widget.threadId,
+          kind: DmKind.voice, bytes: bytes, extension: _recordExt, durationMs: length.inMilliseconds, replyTo: reply),
+      onError: _cantSend,
+    );
+    if (!mounted) return;
+    setState(() {
+      _sending = false;
+      if (ok) _replyTo = null;
+    });
+  }
+
+  Future<void> _messageMenu(DmMessage m, bool mine) async {
     final l = context.l10n;
     final choice = await showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
       builder: (c) => SafeArea(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          ListTile(
-            leading: const Icon(Icons.copy),
-            title: Text(l.copyText),
-            onTap: () => Navigator.pop(c, 'copy'),
-          ),
-          ListTile(
-            leading: Icon(Icons.flag_outlined, color: Bua.danger),
-            title: Text(l.reportMessage),
-            onTap: () => Navigator.pop(c, 'report'),
-          ),
+          if (!m.deleted)
+            ListTile(leading: const Icon(Icons.reply), title: Text(l.dmReply), onTap: () => Navigator.pop(c, 'reply')),
+          if (!m.deleted && m.text.isNotEmpty)
+            ListTile(leading: const Icon(Icons.copy), title: Text(l.copyText), onTap: () => Navigator.pop(c, 'copy')),
+          if (mine && !m.deleted)
+            ListTile(
+              leading: Icon(Icons.delete_outline, color: Bua.danger),
+              title: Text(l.dmDeleteForEveryone),
+              onTap: () => Navigator.pop(c, 'delete'),
+            ),
+          if (!mine)
+            ListTile(
+              leading: Icon(Icons.flag_outlined, color: Bua.danger),
+              title: Text(l.reportMessage),
+              onTap: () => Navigator.pop(c, 'report'),
+            ),
         ]),
       ),
     );
     if (!mounted) return;
-    if (choice == 'copy') {
-      await Clipboard.setData(ClipboardData(text: m.body));
-      if (mounted) showSnack(context, l.copied);
-    } else if (choice == 'report') {
-      await reportToAdmins(context, ref, ReportKind.message, m.id);
+    switch (choice) {
+      case 'reply':
+        setState(() => _replyTo = m);
+      case 'copy':
+        await Clipboard.setData(ClipboardData(text: m.text));
+        if (mounted) showSnack(context, l.copied);
+      case 'delete':
+        if (!await confirm(context, l.dmConfirmDelete) || !mounted) return;
+        await guarded(context, () => ref.read(repositoryProvider).deleteDm(m));
+      case 'report':
+        await reportToAdmins(context, ref, ReportKind.message, m.id);
     }
   }
 
@@ -324,20 +550,6 @@ class _DmScreenState extends ConsumerState<DmScreen> {
       case 'unblock':
         if (await guarded(context, () => repo.unblock(other))) ref.invalidate(blockedProvider);
     }
-  }
-
-  Future<void> _send() async {
-    final body = _text.text.trim();
-    if (body.isEmpty || _sending) return;
-    setState(() => _sending = true);
-    final ok = await guarded(
-      context,
-      () => ref.read(repositoryProvider).sendDm(widget.threadId, body),
-      onError: (e) => e is PostgrestException && e.code == '42501' ? context.l10n.cantMessageMember : null,
-    );
-    if (!mounted) return;
-    setState(() => _sending = false);
-    if (ok) _text.clear();
   }
 
   @override
@@ -363,6 +575,8 @@ class _DmScreenState extends ConsumerState<DmScreen> {
     final other = otherId == null ? null : authorOf(ref, otherId);
     final relation = other?.relation(l);
     final iBlocked = otherId != null && (ref.watch(blockedProvider).value?.contains(otherId) ?? false);
+    final byId = {for (final m in messages.value ?? const <DmMessage>[]) m.id: m};
+    String nameOf(String userId) => userId == me ? l.you : (other?.name ?? '');
 
     return Scaffold(
       appBar: AppBar(
@@ -381,7 +595,10 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                      if (relation != null)
+                      if (_otherTyping)
+                        Text(l.dmTyping,
+                            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: Bua.green))
+                      else if (relation != null)
                         Text(relation,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -410,7 +627,7 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                   onRetry: () => ref.invalidate(dmMessagesProvider(widget.threadId)),
                   builder: (list) => ListView(
                     controller: _scroll,
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
@@ -429,13 +646,19 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                           child: Text(l.startConversation,
                               textAlign: TextAlign.center, style: TextStyle(color: Bua.inkMuted)),
                         ),
-                      for (final m in list)
-                        ChatBubble(
-                          text: m.body,
-                          at: m.createdAt,
+                      for (final (i, m) in list.indexed) ...[
+                        if (i == 0 || !DateUtils.isSameDay(list[i - 1].createdAt, m.createdAt))
+                          _DayChip(m.createdAt),
+                        DmBubble(
+                          key: ValueKey(m.id),
+                          message: m,
                           mine: m.authorId == me,
-                          onLongPress: m.authorId == me ? null : () => _messageMenu(m),
+                          status: m.authorId == me && thread != null ? thread.statusOf(m.createdAt, me) : null,
+                          quoted: m.replyTo == null ? null : byId[m.replyTo],
+                          quotedAuthor: m.replyTo == null || byId[m.replyTo] == null ? null : nameOf(byId[m.replyTo]!.authorId),
+                          onLongPress: () => _messageMenu(m, m.authorId == me),
                         ),
+                      ],
                     ],
                   ),
                 ),
@@ -455,34 +678,123 @@ class _DmScreenState extends ConsumerState<DmScreen> {
                   ),
                 )
               else
-              SafeArea(
-                top: false,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-                  decoration: BoxDecoration(color: Bua.surface, border: Border(top: BorderSide(color: Bua.line))),
-                  child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _text,
-                        minLines: 1,
-                        maxLines: 5,
-                        maxLength: 4000,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: l.writeMessage,
-                          counterText: '',
-                          isDense: true,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                SafeArea(
+                  top: false,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
+                    decoration: BoxDecoration(color: Bua.surface, border: Border(top: BorderSide(color: Bua.line))),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      if (_replyTo != null)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 6),
+                          padding: const EdgeInsets.fromLTRB(10, 6, 4, 6),
+                          decoration: BoxDecoration(
+                            color: Bua.ground,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border(left: BorderSide(color: Bua.green, width: 3)),
+                          ),
+                          child: Row(children: [
+                            Expanded(
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Text(l.dmReplyingTo(nameOf(_replyTo!.authorId)),
+                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Bua.green)),
+                                Text(dmSummary(l, _replyTo!),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                              ]),
+                            ),
+                            IconButton(
+                              tooltip: l.cancel,
+                              icon: const Icon(Icons.close, size: 18),
+                              onPressed: () => setState(() => _replyTo = null),
+                            ),
+                          ]),
                         ),
-                        onSubmitted: (_) => _send(),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    IconButton.filled(tooltip: l.send, onPressed: _sending ? null : _send, icon: const Icon(Icons.send)),
-                  ]),
+                      if (_recordingSince != null)
+                        Row(children: [
+                          IconButton(
+                            tooltip: l.dmCancelRecording,
+                            onPressed: () => _stopRecording(send: false),
+                            icon: Icon(Icons.delete_outline, color: Bua.danger),
+                          ),
+                          Icon(Icons.fiber_manual_record, size: 14, color: Bua.danger),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(l.dmRecording(_clockOf(_recorded)),
+                                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                          ),
+                          IconButton.filled(
+                            tooltip: l.send,
+                            onPressed: () => _stopRecording(send: true),
+                            icon: const Icon(Icons.send),
+                          ),
+                        ])
+                      else
+                        Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                          IconButton(
+                            tooltip: l.dmSendPhoto,
+                            onPressed: _sending ? null : _sendPhoto,
+                            icon: Icon(Icons.photo_camera_outlined, color: Bua.inkMuted),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _text,
+                              minLines: 1,
+                              maxLines: 5,
+                              maxLength: 4000,
+                              textCapitalization: TextCapitalization.sentences,
+                              decoration: InputDecoration(
+                                hintText: l.writeMessage,
+                                counterText: '',
+                                isDense: true,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                              ),
+                              onSubmitted: (_) => _send(),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          if (_text.text.trim().isEmpty)
+                            IconButton.filled(
+                              tooltip: l.dmVoiceNote,
+                              onPressed: _sending ? null : _startRecording,
+                              icon: const Icon(Icons.mic),
+                            )
+                          else
+                            IconButton.filled(tooltip: l.send, onPressed: _sending ? null : _send, icon: const Icon(Icons.send)),
+                        ]),
+                    ]),
+                  ),
                 ),
-              ),
             ]),
+    );
+  }
+}
+
+String _clockOf(Duration d) => '${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}';
+
+/// Today / Yesterday / the date, between messages of different days.
+class _DayChip extends StatelessWidget {
+  const _DayChip(this.at);
+
+  final DateTime at;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final now = DateTime.now();
+    final label = DateUtils.isSameDay(at, now)
+        ? l.today
+        : DateUtils.isSameDay(at, now.subtract(const Duration(days: 1)))
+            ? l.yesterday
+            : l.formatDate(at);
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(color: Bua.track, borderRadius: BorderRadius.circular(10)),
+        child: Text(label, style: TextStyle(fontSize: 12, color: Bua.inkMuted)),
+      ),
     );
   }
 }

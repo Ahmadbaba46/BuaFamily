@@ -50,7 +50,13 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
-      NotificationKind.directMessage => l.notifDirectMessage(n.str('name') ?? '', n.str('body') ?? ''),
+      NotificationKind.directMessage => l.notifDirectMessage(
+          n.str('name') ?? '',
+          switch (n.str('message_kind')) {
+            'photo' => (n.str('body')?.isNotEmpty ?? false) ? '📷 ${n.str('body')}' : '📷 ${l.dmPhoto}',
+            'voice' => '🎤 ${l.dmVoiceNote}',
+            _ => n.str('body') ?? '',
+          }),
       NotificationKind.khatm => l.notifKhatm(n.str('title') ?? ''),
       NotificationKind.khatmCompleted => l.notifKhatmCompleted(n.str('title') ?? ''),
       NotificationKind.khatmReminder => l.notifKhatmReminder(

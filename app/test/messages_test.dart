@@ -11,6 +11,7 @@ import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/screens/admin_screen.dart';
 import 'package:bua_family/ui/screens/messages_screen.dart';
 import 'package:bua_family/ui/screens/person_screen.dart';
+import 'package:bua_family/ui/widgets/dm_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,6 +25,10 @@ class _FakeRepo extends FamilyRepository {
       : super(SupabaseClient('http://localhost', 'test', authOptions: const AuthClientOptions(autoRefreshToken: false)));
 
   final sent = <(String, String)>[];
+  final replies = <String?>[];
+  final deleted = <String>[];
+  final pings = <String>[];
+  void Function(String)? typingFrom;
   final opened = <String>[];
   final read = <String>[];
   final blocked = <String>[];
@@ -37,7 +42,22 @@ class _FakeRepo extends FamilyRepository {
       reported.add((kind, targetId));
 
   @override
-  Future<void> sendDm(String threadId, String body) async => sent.add((threadId, body));
+  Future<void> sendDm(String threadId, String body, {String? replyTo}) async {
+    sent.add((threadId, body));
+    replies.add(replyTo);
+  }
+
+  @override
+  Future<void> deleteDm(DmMessage m) async => deleted.add(m.id);
+
+  @override
+  Future<void> markDmDelivered() async {}
+
+  @override
+  TypingSignal dmTyping(String threadId, void Function(String userId) onTyping) {
+    typingFrom = onTyping;
+    return TypingSignal(() async => pings.add(threadId), () async {});
+  }
 
   @override
   Future<void> markDmRead(String threadId) async => read.add(threadId);
@@ -157,6 +177,7 @@ void main() {
     expect(find.text('Salam Baba'), findsOneWidget);
     expect(repo.read, contains('t1'));
     await tester.enterText(find.byType(TextField), 'Insha Allah, yes');
+    await tester.pump();
     await tester.tap(find.byTooltip('Send'));
     await tester.pumpAndSettle();
     expect(repo.sent, [('t1', 'Insha Allah, yes')]);
@@ -213,6 +234,9 @@ void main() {
     await tester.longPress(find.text('Salam Baba'));
     await tester.pumpAndSettle();
     expect(find.text('Report this message'), findsNothing, reason: 'not your own messages');
+    expect(find.text('Delete for everyone'), findsOneWidget);
+    Navigator.of(tester.element(find.text('Delete for everyone'))).pop();
+    await tester.pumpAndSettle();
 
     await tester.longPress(find.text('Something nasty'));
     await tester.pumpAndSettle();
@@ -240,5 +264,109 @@ void main() {
     expect(find.text('You blocked musa. Unblock to send messages again.'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
     expect(find.text('Unblock'), findsOneWidget);
+  });
+
+  testWidgets('WhatsApp-style: ticks, typing…, reply, delete for everyone, photos and voice notes', (tester) async {
+    tester.view.physicalSize = const Size(420, 1800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final repo = _FakeRepo();
+    // u2 read up to 1 hour ago and their phone received everything up to 10 minutes ago.
+    final thread = DmThread(
+      id: 't1',
+      userA: 'u1',
+      userB: 'u2',
+      createdAt: now.subtract(const Duration(days: 2)),
+      lastMessageAt: now,
+      lastMessageBy: 'u1',
+      bReadAt: now.subtract(const Duration(hours: 1)),
+      bDeliveredAt: now.subtract(const Duration(minutes: 10)),
+    );
+    expect(thread.statusOf(now.subtract(const Duration(hours: 2)), 'u1'), MessageStatus.read);
+    expect(thread.statusOf(now.subtract(const Duration(minutes: 30)), 'u1'), MessageStatus.delivered);
+    expect(thread.statusOf(now, 'u1'), MessageStatus.sent);
+
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        repositoryProvider.overrideWithValue(repo),
+        profileProvider.overrideWithValue(
+            const Profile(id: 'u1', displayName: 'Aisha', role: AppRole.member, status: AccountStatus.active, personId: 'aisha')),
+        graphProvider.overrideWith((ref) async => buildFamily()),
+        settingsProvider.overrideWith((ref) async => const AppSettings()),
+        membersProvider.overrideWith((ref) async => {
+              'u1': const Member(userId: 'u1', displayName: 'Aisha', personId: 'aisha'),
+              'u2': const Member(userId: 'u2', displayName: 'Musa', personId: 'musa'),
+            }),
+        dmThreadsProvider.overrideWith((ref) => Stream.value([thread])),
+        blockedProvider.overrideWith((ref) async => const {}),
+        dmMediaUrlProvider.overrideWith((ref, path) => Completer<String>().future),
+        dmMessagesProvider.overrideWith((ref, id) => Stream.value([
+              DmMessage(id: 'm1', threadId: 't1', authorId: 'u1', body: 'Old one', createdAt: now.subtract(const Duration(hours: 2))),
+              DmMessage(id: 'm2', threadId: 't1', authorId: 'u2', body: 'Are you coming?', createdAt: now.subtract(const Duration(minutes: 40))),
+              DmMessage(id: 'm3', threadId: 't1', authorId: 'u1', body: 'Yes!', createdAt: now.subtract(const Duration(minutes: 30)), replyTo: 'm2'),
+              DmMessage(
+                  id: 'm4', threadId: 't1', authorId: 'u2', body: '🎤', kind: DmKind.voice, mediaPath: 't1/u2/a.m4a',
+                  durationMs: 65000, createdAt: now.subtract(const Duration(minutes: 20))),
+              DmMessage(
+                  id: 'm5', threadId: 't1', authorId: 'u2', body: 'x', createdAt: now.subtract(const Duration(minutes: 15)),
+                  deletedAt: now),
+              DmMessage(id: 'm6', threadId: 't1', authorId: 'u1', body: 'On my way', createdAt: now),
+            ])),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const DmScreen(threadId: 't1'),
+      ),
+    ));
+    await tester.pumpAndSettle();
+
+    // Ticks on my messages: read, delivered, sent.
+    Finder ticks(MessageStatus s) => find.byWidgetPredicate((w) => w is Ticks && w.status == s);
+    expect(ticks(MessageStatus.read), findsOneWidget);
+    expect(ticks(MessageStatus.delivered), findsOneWidget);
+    expect(ticks(MessageStatus.sent), findsOneWidget);
+    // A reply shows what it answers; a voice note its length; a deleted message says so.
+    expect(find.text('Are you coming?'), findsNWidgets(2));
+    expect(find.text('1:05'), findsOneWidget);
+    expect(find.text('This message was deleted'), findsOneWidget);
+    expect(find.text('Today'), findsOneWidget);
+
+    // They are typing.
+    repo.typingFrom!('u2');
+    await tester.pump();
+    expect(find.text('typing…'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
+    expect(find.text('typing…'), findsNothing);
+
+    // Typing tells them, once every few seconds.
+    await tester.enterText(find.byType(TextField), 'Al');
+    await tester.enterText(find.byType(TextField), 'Alhamdulillah');
+    await tester.pump();
+    expect(repo.pings, ['t1']);
+
+    // Reply to their question.
+    await tester.longPress(find.text('Are you coming?').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Reply'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replying to musa'), findsOneWidget);
+    await tester.tap(find.byTooltip('Send'));
+    await tester.pumpAndSettle();
+    expect(repo.sent.last, ('t1', 'Alhamdulillah'));
+    expect(repo.replies.last, 'm2');
+    expect(find.text('Replying to musa'), findsNothing);
+
+    // An empty box offers a voice note instead of Send.
+    expect(find.byTooltip('Voice note'), findsOneWidget);
+
+    // Delete my own message for everyone.
+    await tester.longPress(find.text('On my way'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete for everyone'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yes'));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, ['m6']);
   });
 }

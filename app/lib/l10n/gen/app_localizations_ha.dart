@@ -5465,4 +5465,71 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get hasAccount => 'Yana da asusu';
+
+  @override
+  String get dmTyping => 'yana rubutu…';
+
+  @override
+  String get dmReply => 'Amsa';
+
+  @override
+  String dmReplyingTo(String name) {
+    return 'Amsa wa $name';
+  }
+
+  @override
+  String get dmDeleteForEveryone => 'Goge ga kowa';
+
+  @override
+  String get dmConfirmDelete => 'A goge wannan saƙo ga kowa?';
+
+  @override
+  String get dmDeleted => 'An goge wannan saƙo';
+
+  @override
+  String get dmYouDeleted => 'Ka goge wannan saƙo';
+
+  @override
+  String get dmPhoto => 'Hoto';
+
+  @override
+  String get dmVoiceNote => 'Saƙon murya';
+
+  @override
+  String get dmSendPhoto => 'Aika hoto';
+
+  @override
+  String get dmAddCaption => 'Ƙara bayani…';
+
+  @override
+  String dmRecording(String time) {
+    return 'Ana naɗa $time';
+  }
+
+  @override
+  String get dmCancelRecording => 'Soke naɗi';
+
+  @override
+  String get dmSent => 'An aika';
+
+  @override
+  String get dmDelivered => 'Ya isa';
+
+  @override
+  String get dmRead => 'An karanta';
+
+  @override
+  String get play => 'Kunna';
+
+  @override
+  String get pause => 'Dakata';
+
+  @override
+  String get yesterday => 'Jiya';
+
+  @override
+  String get takePhoto => 'Ɗauki hoto';
+
+  @override
+  String get chooseFromGallery => 'Zaɓa daga hotuna';
 }

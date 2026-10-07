@@ -363,11 +363,20 @@ final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
   return ref.watch(repositoryProvider).dmThreads();
 });
 
-/// Conversations with something new for me.
+/// Conversations with something new for me. Also tells senders their
+/// messages reached my phone (two grey ticks).
 final dmUnreadProvider = Provider<int>((ref) {
   final me = ref.watch(profileProvider)?.id;
-  return ref.watch(dmThreadsProvider).value?.where((t) => t.unreadFor(me)).length ?? 0;
+  final threads = ref.watch(dmThreadsProvider).value ?? const <DmThread>[];
+  if (threads.any((t) => t.undeliveredFor(me))) {
+    Future(() => ref.read(repositoryProvider).markDmDelivered()).catchError((_) {});
+  }
+  return threads.where((t) => t.unreadFor(me)).length;
 });
+
+/// A short-lived link to a photo or voice note in a conversation.
+final dmMediaUrlProvider =
+    FutureProvider.autoDispose.family<String, String>((ref, path) => ref.watch(repositoryProvider).dmMediaUrl(path));
 
 final dmMessagesProvider = StreamProvider.autoDispose
     .family<List<DmMessage>, String>((ref, id) => ref.watch(repositoryProvider).dmMessages(id));

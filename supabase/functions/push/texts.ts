@@ -40,7 +40,12 @@ const en: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
-  direct_message: (d) => `${s(d, "name") || "New message"}: “${s(d, "body")}”`,
+  direct_message: (d) =>
+    s(d, "message_kind") === "photo"
+      ? `${s(d, "name") || "New message"}: 📷 ${s(d, "body") || "Photo"}`
+      : s(d, "message_kind") === "voice"
+      ? `${s(d, "name") || "New message"}: 🎤 Voice note`
+      : `${s(d, "name") || "New message"}: “${s(d, "body")}”`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "URGENT: a child safety concern was reported. Please review it now."
@@ -133,7 +138,12 @@ const ha: Texts = {
   mentor_request: (d) =>
     s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
-  direct_message: (d) => `${s(d, "name") || "Sabon saƙo"}: “${s(d, "body")}”`,
+  direct_message: (d) =>
+    s(d, "message_kind") === "photo"
+      ? `${s(d, "name") || "Sabon saƙo"}: 📷 ${s(d, "body") || "Hoto"}`
+      : s(d, "message_kind") === "voice"
+      ? `${s(d, "name") || "Sabon saƙo"}: 🎤 Saƙon murya`
+      : `${s(d, "name") || "Sabon saƙo"}: “${s(d, "body")}”`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."

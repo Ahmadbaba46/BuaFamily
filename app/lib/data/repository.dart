@@ -1075,10 +1075,78 @@ class FamilyRepository {
       .order('created_at', ascending: true)
       .map((rows) => rows.map(DmMessage.fromJson).toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt)));
 
-  Future<void> sendDm(String threadId, String body) =>
-      _db.from('dm_messages').insert({'thread_id': threadId, 'body': body.trim()});
+  static const dmBucket = 'dm';
+
+  Future<void> sendDm(String threadId, String body, {String? replyTo}) =>
+      _db.from('dm_messages').insert({'thread_id': threadId, 'body': body.trim(), 'reply_to': ?replyTo});
+
+  /// A photo (and its caption) or a voice note: the file goes in the
+  /// conversation's folder, under my name.
+  Future<void> sendDmMedia(
+    String threadId, {
+    required DmKind kind,
+    required Uint8List bytes,
+    required String extension,
+    String caption = '',
+    int? durationMs,
+    String? replyTo,
+  }) async {
+    final ext = extension.toLowerCase().replaceAll('jpeg', 'jpg');
+    final path = '$threadId/$userId/${DateTime.now().millisecondsSinceEpoch}.$ext';
+    final type = kind == DmKind.photo ? (ext == 'jpg' ? 'image/jpeg' : 'image/$ext') : audioMime(ext);
+    await _db.storage.from(dmBucket).uploadBinary(path, bytes, fileOptions: FileOptions(contentType: type));
+    try {
+      await _db.from('dm_messages').insert({
+        'thread_id': threadId,
+        'kind': kind.name,
+        'media_path': path,
+        'body': caption.trim().isNotEmpty ? caption.trim() : (kind == DmKind.photo ? DmMessage.photoMark : DmMessage.voiceMark),
+        'duration_ms': ?durationMs,
+        'reply_to': ?replyTo,
+      });
+    } catch (_) {
+      await _db.storage.from(dmBucket).remove([path]);
+      rethrow;
+    }
+  }
+
+  /// A short-lived link to a photo or voice note in a conversation.
+  Future<String> dmMediaUrl(String path) => _db.storage.from(dmBucket).createSignedUrl(path, 60 * 60);
+
+  /// Delete for everyone (my own messages only).
+  Future<void> deleteDm(DmMessage m) async {
+    await _db.rpc('dm_delete_message', params: {'p_message': m.id});
+    if (m.mediaPath != null) {
+      try {
+        await _db.storage.from(dmBucket).remove([m.mediaPath!]);
+      } catch (_) {
+        // The message is gone; the file can't be reached without it.
+      }
+    }
+  }
 
   Future<void> markDmRead(String threadId) => _db.rpc('dm_mark_read', params: {'p_thread': threadId});
+
+  /// My app has what was sent to me (the other person sees two ticks).
+  Future<void> markDmDelivered() => _db.rpc('dm_mark_delivered');
+
+  /// "typing…": a Realtime broadcast between the two, nothing stored.
+  TypingSignal dmTyping(String threadId, void Function(String userId) onTyping) {
+    final channel = _db.channel('dm-typing:$threadId');
+    channel
+        .onBroadcast(
+          event: 'typing',
+          callback: (payload) {
+            final who = payload['user'] as String?;
+            if (who != null && who != userId) onTyping(who);
+          },
+        )
+        .subscribe();
+    return TypingSignal(
+      () => channel.sendBroadcastMessage(event: 'typing', payload: {'user': userId}),
+      () => _db.removeChannel(channel),
+    );
+  }
 
   Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
       _db.from('opportunities').insert({
@@ -1310,4 +1378,23 @@ class FamilyRepository {
       });
 
   Future<void> sendTestPush() => _db.rpc('send_test_push');
+}
+
+/// Telling the other person I'm typing, and hearing when they are.
+class TypingSignal {
+  TypingSignal(this._ping, this._close);
+
+  final Future<void> Function() _ping;
+  final Future<void> Function() _close;
+  DateTime? _last;
+
+  /// While typing; sent at most every three seconds.
+  void typing() {
+    final now = DateTime.now();
+    if (_last != null && now.difference(_last!) < const Duration(seconds: 3)) return;
+    _last = now;
+    _ping().catchError((_) {});
+  }
+
+  void dispose() => _close().catchError((_) {});
 }

@@ -2158,6 +2158,76 @@ select test.assert((select exists (select 1 from public.activity_log where actio
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 47. Messages like WhatsApp: ticks, photos and voice notes, replies, delete.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+select id as dmt from public.dm_threads
+ where :member_id in (user_a, user_b) and :member2_id in (user_a, user_b) \gset
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.dm_messages (thread_id, body) values (:'dmt', 'Are you coming tomorrow?');
+reset role;
+select id as q from public.dm_messages where body = 'Are you coming tomorrow?' \gset
+select test.assert((select (case when user_a = :member_id then b_delivered_at else a_delivered_at end) is null
+                           or (case when user_a = :member_id then b_delivered_at else a_delivered_at end) < last_message_at
+  from public.dm_threads where id = :'dmt'), 'not yet delivered to the other person');
+
+-- Their app hears of it: delivered. They open it: read.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select public.dm_mark_delivered();
+reset role;
+select test.assert((select (case when user_a = :member2_id then a_delivered_at else b_delivered_at end) >= last_message_at
+  from public.dm_threads where id = :'dmt'), 'delivered (two grey ticks)');
+
+-- A photo with a caption, replying to the question; files only in this conversation's folder.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$insert into public.dm_messages (thread_id, body, kind, media_path)
+  values (%L, 'x', 'photo', 'other-thread/%s/a.jpg')$$, :'dmt', :member2_id), 'files go in this conversation''s folder');
+select test.expect_error(format($$insert into public.dm_messages (thread_id, body, kind) values (%L, '📷', 'photo')$$, :'dmt'),
+  'a photo needs its file');
+insert into public.dm_messages (thread_id, body, kind, media_path, reply_to)
+values (:'dmt', 'Yes, see the ticket', 'photo', :'dmt' || '/' || :member2_id || '/ticket.jpg', :'q');
+insert into storage.objects (bucket_id, name) values ('dm', :'dmt' || '/' || :member2_id || '/ticket.jpg');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('dm', '%s/%s/x.jpg')$$,
+  :'dmt', :member_id), 'files are uploaded under your own name');
+insert into public.dm_messages (thread_id, body, kind, media_path, duration_ms, reply_to)
+values (:'dmt', '🎤', 'voice', :'dmt' || '/' || :member2_id || '/note.m4a', 4200,
+        (select id from public.dm_messages where body = 'Lafiya lau!'));
+reset role;
+select test.assert((select reply_to = :'q' from public.dm_messages where body = 'Yes, see the ticket'), 'a reply quotes the message');
+select test.assert((select last_message_kind = 'voice' and last_message = '' from public.dm_threads where id = :'dmt'),
+  'the conversation shows it was a voice note');
+select test.assert((select data ->> 'message_kind' = 'voice' from public.notifications
+  where kind = 'direct_message' and user_id = :member_id order by created_at desc limit 1), 'the notice says what kind');
+
+-- The other person sees the photo; nobody else can.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 1 from storage.objects where bucket_id = 'dm'), 'the other person can open the photo');
+select public.dm_mark_read(:'dmt');
+select test.expect_error(format($$select public.dm_delete_message(%L)$$,
+  (select id from public.dm_messages where body = 'Yes, see the ticket')), 'only the sender deletes a message');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from storage.objects where bucket_id = 'dm'), 'admins cannot open it');
+reset role;
+
+-- Delete for everyone.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select public.dm_delete_message((select id from public.dm_messages where body = '🎤' and kind = 'voice'));
+reset role;
+select test.assert((select deleted_at is not null and media_path is null and body = '🚫' from public.dm_messages
+  where kind = 'voice' and duration_ms is null), 'deleted for everyone');
+select test.assert((select last_message_kind = 'deleted' from public.dm_threads where id = :'dmt'), 'and the preview says so');
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
