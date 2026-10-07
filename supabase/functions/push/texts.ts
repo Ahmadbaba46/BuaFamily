@@ -48,6 +48,17 @@ const en: Texts = {
       : s(d, "message_kind") === "voice"
       ? `${s(d, "name") || "New message"}: 🎤 Voice note`
       : `${s(d, "name") || "New message"}: “${s(d, "body")}”`,
+  group_message: (d) =>
+    s(d, "message_kind") === "reaction"
+      ? `${s(d, "name") || "Someone"} reacted ${s(d, "body")} to your message in “${s(d, "group")}”`
+      : `${s(d, "name")} @ ${s(d, "group")}: ` + (
+        s(d, "message_kind") === "photo"
+          ? `📷 ${s(d, "body") || "Photo"}`
+          : s(d, "message_kind") === "voice"
+          ? "🎤 Voice note"
+          : `“${s(d, "body")}”`
+      ),
+  group_added: (d) => `${s(d, "name") || "Someone"} added you to the group “${s(d, "group")}”`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "URGENT: a child safety concern was reported. Please review it now."
@@ -148,6 +159,17 @@ const ha: Texts = {
       : s(d, "message_kind") === "voice"
       ? `${s(d, "name") || "Sabon saƙo"}: 🎤 Saƙon murya`
       : `${s(d, "name") || "Sabon saƙo"}: “${s(d, "body")}”`,
+  group_message: (d) =>
+    s(d, "message_kind") === "reaction"
+      ? `${s(d, "name") || "Wani"} ya yi martanin ${s(d, "body")} ga saƙonka a “${s(d, "group")}”`
+      : `${s(d, "name")} @ ${s(d, "group")}: ` + (
+        s(d, "message_kind") === "photo"
+          ? `📷 ${s(d, "body") || "Hoto"}`
+          : s(d, "message_kind") === "voice"
+          ? "🎤 Saƙon murya"
+          : `“${s(d, "body")}”`
+      ),
+  group_added: (d) => `${s(d, "name") || "Wani"} ya saka ka a rukunin “${s(d, "group")}”`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."

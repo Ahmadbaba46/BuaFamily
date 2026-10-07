@@ -33,6 +33,7 @@ import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
 import 'ui/screens/duplicates_screen.dart';
 import 'ui/screens/khatm_screen.dart';
+import 'ui/screens/group_screens.dart';
 import 'ui/screens/messages_screen.dart';
 import 'ui/screens/online_payment_screen.dart';
 import 'ui/screens/reports_screen.dart';
@@ -163,6 +164,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
           path: '/messages/:id',
           builder: (_, s) => MessagesGate(child: DmScreen(threadId: s.pathParameters['id']!))),
+      GoRoute(path: '/groups/new', builder: (_, _) => const MessagesGate(child: NewGroupScreen())),
+      GoRoute(
+          path: '/groups/:id',
+          builder: (_, s) => MessagesGate(child: GroupChatScreen(groupId: s.pathParameters['id']!))),
+      GoRoute(
+          path: '/groups/:id/info',
+          builder: (_, s) => MessagesGate(child: GroupInfoScreen(groupId: s.pathParameters['id']!))),
       GoRoute(path: '/polls', builder: (_, _) => const PollsScreen()),
       GoRoute(path: '/polls/new', builder: (_, _) => const NewPollScreen()),
       GoRoute(path: '/albums', builder: (_, _) => const AlbumsScreen()),
@@ -484,7 +492,7 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   void _showForeground(ForegroundPush push) {
     if (push.id != null) ref.read(repositoryProvider).pushAck(push.id!).catchError((_) {});
     // A message reached this phone: the sender sees two grey ticks.
-    if (push.link?.startsWith('/messages/') ?? false) {
+    if ((push.link?.startsWith('/messages/') ?? false) || (push.link?.startsWith('/groups/') ?? false)) {
       ref.read(repositoryProvider).markDmDelivered().catchError((_) {});
     }
     final messenger = rootMessengerKey.currentState;

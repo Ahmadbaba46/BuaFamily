@@ -56,6 +56,14 @@ Deno.test("texts follow the reader's language", () => {
     "Musa reacted ❤️ to your message");
   assertEquals(render("direct_message", { name: "Musa", message_kind: "reaction", body: "👍" }, "ha", "Bua").body,
     "Musa ya yi martanin 👍 ga saƙonka");
+  assertEquals(render("group_message", { name: "Musa", group: "Cousins", body: "Salam" }, "en", "Bua").body,
+    "Musa @ Cousins: “Salam”");
+  assertEquals(render("group_message", { name: "Musa", group: "Cousins", body: "", message_kind: "voice" }, "ha", "Bua").body,
+    "Musa @ Cousins: 🎤 Saƙon murya");
+  assertEquals(render("group_message", { name: "Musa", group: "Cousins", body: "❤️", message_kind: "reaction" }, "en", "Bua")
+    .body, "Musa reacted ❤️ to your message in “Cousins”");
+  assertEquals(render("group_added", { name: "Aisha", group: "Cousins" }, "ha", "Bua").body,
+    "Aisha ya saka ka a rukunin “Cousins”");
   assertEquals(render("khatm", { title: "Sauka don Kaka" }, "ha", "Bua").body, "Sabuwar saukar Alƙur'ani: Sauka don Kaka. Ɗauki juz'i.");
   assertEquals(render("remembrance", { years: 5, name: "Ahmadu" }, "en", "Bua").body, "5 years since Ahmadu passed");
   assertEquals(render("tagged", { photo_id: "x" }, "en", "Bua").body, "You were tagged in a photo");

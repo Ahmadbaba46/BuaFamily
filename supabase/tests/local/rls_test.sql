@@ -2279,6 +2279,164 @@ reset role;
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 49. Group chats.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- Aisha starts a group with Musa: she is its admin; Musa is told.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_create('Cousins', array[:member2_id]::uuid[], 'For the cousins') as grp \gset
+select test.assert((select count(*) = 2 from public.chat_group_members where group_id = :'grp'), 'two members');
+select test.assert((select role = 'admin' from public.chat_group_members where group_id = :'grp' and user_id = auth.uid()),
+  'whoever starts it is admin');
+select test.assert((select count(*) = 2 from public.group_messages where group_id = :'grp' and kind = 'event'),
+  'created and added notices');
+select test.expect_error($$insert into public.chat_groups (name) values ('Sneaky')$$, 'groups are made through group_create');
+select test.expect_error(format($$insert into public.group_messages (group_id, body, kind, event)
+  values (%L, 'added', 'event', '{"type":"added"}')$$, :'grp'), 'members cannot write notices');
+insert into public.group_messages (group_id, body) values (:'grp', 'Salam everyone');
+reset role;
+select test.assert((select data ->> 'group' = 'Cousins' from public.notifications
+  where user_id = :member2_id and kind = 'group_added'), 'Musa is told he was added');
+select test.assert((select data ->> 'body' = 'Salam everyone' and link = '/groups/' || :'grp' from public.notifications
+  where user_id = :member2_id and kind = 'group_message'), 'and about the message');
+select test.assert((select last_message = 'Salam everyone' and last_message_kind = 'text' from public.chat_groups
+  where id = :'grp'), 'the group shows its last message');
+
+-- The admin of the family is not in it: sees nothing, can't post or upload.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.chat_groups where id = :'grp'), 'outsiders don''t see the group');
+select test.assert((select count(*) = 0 from public.group_messages where group_id = :'grp'), 'or its messages');
+select test.expect_error(format($$insert into public.group_messages (group_id, body) values (%L, 'hi')$$, :'grp'),
+  'outsiders cannot post');
+select test.expect_error(format($$insert into storage.objects (bucket_id, name) values ('dm', 'g/%s/%s/x.jpg')$$,
+  :'grp', :admin_id), 'or upload');
+select test.expect_error(format($$select public.group_add(%L, array[%L]::uuid[])$$, :'grp', :admin_id),
+  'or add themselves');
+reset role;
+
+-- Musa: delivered, then read; a photo replying; only a group admin manages it.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 3 from public.group_messages where group_id = :'grp'), 'Musa sees what was sent since he joined');
+select public.dm_mark_delivered();
+select test.assert((select delivered_at >= (select last_message_at from public.chat_groups where id = :'grp')
+  from public.chat_group_members where group_id = :'grp' and user_id = auth.uid()), 'delivered to Musa');
+select public.group_mark_read(:'grp');
+insert into storage.objects (bucket_id, name) values ('dm', 'g/' || :'grp' || '/' || :member2_id || '/p.jpg');
+select test.expect_error(format($$insert into public.group_messages (group_id, body, kind, media_path)
+  values (%L, '📷', 'photo', 'g/%s/%s/p.jpg')$$, :'grp', :'grp', :member_id), 'files go under your own name');
+insert into public.group_messages (group_id, body, kind, media_path, reply_to)
+values (:'grp', 'Wa alaikum salam', 'photo', 'g/' || :'grp' || '/' || :member2_id || '/p.jpg',
+        (select id from public.group_messages where body = 'Salam everyone'));
+select test.expect_error(format($$select public.group_update(%L, 'Renamed')$$, :'grp'), 'only group admins rename it');
+select test.expect_error(format($$select public.group_add(%L, array[%L]::uuid[])$$, :'grp', :admin_id),
+  'or add people');
+insert into public.group_reactions (message_id, group_id, emoji)
+values ((select id from public.group_messages where body = 'Salam everyone'), gen_random_uuid(), '❤️');
+reset role;
+select test.assert((select reply_to is not null from public.group_messages where body = 'Wa alaikum salam'), 'a reply');
+select test.assert((select group_id = :'grp' from public.group_reactions), 'the reaction belongs to the group');
+select test.assert((select data ->> 'message_kind' = 'reaction' from public.notifications
+  where user_id = :member_id and kind = 'group_message' order by created_at desc limit 1), 'Aisha is told of the reaction');
+
+-- Aisha adds the admin, renames it, lets only admins send; the newcomer sees
+-- only what came after.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select public.group_add(:'grp', array[:admin_id, :member2_id]::uuid[]) = 1), 'only new people are added');
+select public.group_update(:'grp', 'Cousins & co', null, true);
+select public.group_mute(:'grp', true);
+reset role;
+select test.assert((select name = 'Cousins & co' and only_admins_send and about = 'For the cousins'
+  from public.chat_groups where id = :'grp'), 'renamed; only admins send; the description stays');
+select test.assert((select last_message_kind = 'event' and last_event ->> 'type' = 'only_admins'
+  from public.chat_groups where id = :'grp'), 'the list shows the last notice');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.group_messages where group_id = :'grp' and body = 'Salam everyone'),
+  'a newcomer does not see older messages');
+select test.assert((select count(*) >= 1 from public.group_messages where group_id = :'grp'
+  and event ->> 'type' = 'renamed'), 'but sees what came after');
+select test.assert((select count(*) = 1 from storage.objects where bucket_id = 'dm' and name like 'g/%'),
+  'and the group''s files');
+select test.expect_error(format($$insert into public.group_messages (group_id, body) values (%L, 'hi')$$, :'grp'),
+  'only admins send now');
+reset role;
+-- Muted: no notification for Aisha.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_set_admin(:'grp', :member2_id, true);
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.group_messages (group_id, body) values (:'grp', 'Admins only now');
+reset role;
+select test.assert((select count(*) = 0 from public.notifications
+  where user_id = :member_id and kind = 'group_message' and data ->> 'body' = 'Admins only now'), 'a muted group stays quiet');
+select test.assert((select count(*) = 1 from public.notifications
+  where user_id = :admin_id and kind = 'group_message' and data ->> 'body' = 'Admins only now'), 'others are told');
+
+-- Delete for everyone: a group admin can delete anyone's message.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.group_delete_message(%L)$$,
+  (select id from public.group_messages where body = 'Admins only now')), 'members delete only their own');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_delete_message((select id from public.group_messages where body = 'Admins only now'));
+reset role;
+select test.assert((select deleted_at is not null and deleted_by = :member_id and body = '🚫'
+  from public.group_messages where deleted_by is not null), 'deleted for everyone by a group admin');
+
+-- Removed and leaving; the last admin leaving hands it on.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_remove(:'grp', :admin_id);
+select public.group_set_admin(:'grp', :member2_id, false);
+select public.group_leave(:'grp');
+select test.assert((select count(*) = 0 from public.chat_groups where id = :'grp'), 'once you leave, you don''t see it');
+reset role;
+select test.assert((select left_at is not null from public.chat_group_members where group_id = :'grp' and user_id = :admin_id),
+  'removed');
+select test.assert((select role = 'admin' from public.chat_group_members where group_id = :'grp' and user_id = :member2_id),
+  'the one left becomes admin');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.group_messages where group_id = :'grp'), 'removed: nothing to read');
+reset role;
+
+-- Messages off: groups are off too.
+update public.app_settings set messages_enabled = false;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.chat_groups), 'off: no groups');
+select test.expect_error($$select public.group_create('New', '{}')$$, 'off: no new groups');
+reset role;
+update public.app_settings set messages_enabled = true;
+
+-- A group message can be reported.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select public.group_add(:'grp', array[:member_id]::uuid[]);
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.group_messages (group_id, body) values (:'grp', 'Something rude');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.report_content('message', (select id from public.group_messages where body = 'Something rude'), 'abuse');
+reset role;
+select test.assert((select snapshot ->> 'group' = 'Cousins & co' and target_user = :member2_id from public.reports
+  where kind = 'message' and snapshot ->> 'body' = 'Something rude'), 'reported, with the group''s name');
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

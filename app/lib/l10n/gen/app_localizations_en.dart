@@ -5649,4 +5649,186 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dmTapToRemove => 'Tap yours to remove it';
+
+  @override
+  String get newGroup => 'New group';
+
+  @override
+  String get groupName => 'Group name';
+
+  @override
+  String get groupAboutOptional => 'Description (optional)';
+
+  @override
+  String get groupAbout => 'Description';
+
+  @override
+  String get groupAddMembers => 'Add members';
+
+  @override
+  String get groupCreate => 'Create group';
+
+  @override
+  String get groupNeedName => 'Give the group a name';
+
+  @override
+  String get groupNeedMembers => 'Choose at least one person';
+
+  @override
+  String groupSelected(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String groupMembersCount(int count) {
+    return '$count members';
+  }
+
+  @override
+  String get groupPrivate =>
+      'Only the members of this group can see these messages.';
+
+  @override
+  String get groupInfo => 'Group info';
+
+  @override
+  String get groupAdminBadge => 'Group admin';
+
+  @override
+  String get groupMakeAdmin => 'Make group admin';
+
+  @override
+  String get groupRemoveAdmin => 'Remove as group admin';
+
+  @override
+  String get groupRemoveMember => 'Remove from group';
+
+  @override
+  String groupConfirmRemove(String name) {
+    return 'Remove $name from the group?';
+  }
+
+  @override
+  String get groupLeave => 'Leave group';
+
+  @override
+  String get groupConfirmLeave =>
+      'Leave this group? You will stop getting its messages.';
+
+  @override
+  String get groupMute => 'Mute notifications';
+
+  @override
+  String get groupMuteHint => 'No notifications from this group';
+
+  @override
+  String get groupOnlyAdmins => 'Only admins can send messages';
+
+  @override
+  String get groupOnlyAdminsNote => 'Only group admins can send messages.';
+
+  @override
+  String get groupYouLeft => 'You\'re no longer in this group.';
+
+  @override
+  String get groupNotFound => 'This group isn\'t available.';
+
+  @override
+  String get groupChangePhoto => 'Change group photo';
+
+  @override
+  String get groupRemovePhoto => 'Remove group photo';
+
+  @override
+  String get groupEdit => 'Edit name and description';
+
+  @override
+  String get groupMessageInfo => 'Message info';
+
+  @override
+  String get groupReadBy => 'Read by';
+
+  @override
+  String get groupDeliveredTo => 'Delivered to';
+
+  @override
+  String get groupNotDelivered => 'Not delivered yet';
+
+  @override
+  String groupTypingOne(String name) {
+    return '$name is typing…';
+  }
+
+  @override
+  String get groupTypingMany => 'Several people are typing…';
+
+  @override
+  String groupEventCreated(String actor, String name) {
+    return '$actor created the group “$name”';
+  }
+
+  @override
+  String groupEventAdded(String actor, String user) {
+    return '$actor added $user';
+  }
+
+  @override
+  String groupEventRemoved(String actor, String user) {
+    return '$actor removed $user';
+  }
+
+  @override
+  String groupEventLeft(String user) {
+    return '$user left';
+  }
+
+  @override
+  String groupEventRenamed(String actor, String name) {
+    return '$actor changed the group name to “$name”';
+  }
+
+  @override
+  String groupEventPhoto(String actor) {
+    return '$actor changed the group photo';
+  }
+
+  @override
+  String groupEventPhotoRemoved(String actor) {
+    return '$actor removed the group photo';
+  }
+
+  @override
+  String groupEventOnlyAdmins(String actor) {
+    return '$actor allowed only admins to send messages';
+  }
+
+  @override
+  String groupEventEveryone(String actor) {
+    return '$actor allowed everyone to send messages';
+  }
+
+  @override
+  String notifGroupAdded(String name, String group) {
+    return '$name added you to the group “$group”';
+  }
+
+  @override
+  String notifGroupMessage(String name, String group, String body) {
+    return '$name @ $group: $body';
+  }
+
+  @override
+  String notifGroupReaction(String name, String emoji, String group) {
+    return '$name reacted $emoji to your message in “$group”';
+  }
+
+  @override
+  String get groupEveryoneIn =>
+      'Everyone in the family is already in this group.';
+
+  @override
+  String get groupSelectAll => 'Select all';
+
+  @override
+  String get groupSendMessage => 'Message';
 }

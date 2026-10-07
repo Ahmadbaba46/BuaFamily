@@ -81,7 +81,8 @@ class DmThread {
 /// WhatsApp's ticks: one grey (sent), two grey (delivered), two blue (read).
 enum MessageStatus { sent, delivered, read }
 
-enum DmKind { text, photo, voice }
+/// What a message is; 'event' is a group notice ("Musa added Bello").
+enum DmKind { text, photo, voice, event }
 
 class DmMessage {
   const DmMessage({
@@ -96,6 +97,8 @@ class DmMessage {
     this.replyTo,
     this.deletedAt,
     this.waveform,
+    this.event,
+    this.deletedBy,
   });
 
   /// What a photo or voice note's body holds when it has no words.
@@ -120,14 +123,25 @@ class DmMessage {
   /// A voice note's levels (0–100), measured while recording.
   final List<int>? waveform;
 
+  /// A group notice: {"type": "added", "user": ..., ...}.
+  final Map<String, dynamic>? event;
+
+  /// In a group, who deleted it (the sender, or a group admin).
+  final String? deletedBy;
+
   bool get deleted => deletedAt != null;
 
   /// The words: a text, or a photo's caption ('' when there is none).
-  String get text => kind == DmKind.text ? body : (body == photoMark || body == voiceMark ? '' : body);
+  String get text => kind == DmKind.event
+      ? ''
+      : kind == DmKind.text
+          ? body
+          : (body == photoMark || body == voiceMark ? '' : body);
 
   factory DmMessage.fromJson(Map<String, dynamic> j) => DmMessage(
         id: j['id'] as String,
-        threadId: j['thread_id'] as String,
+        // A private conversation's, or a group's.
+        threadId: (j['thread_id'] ?? j['group_id']) as String,
         authorId: j['author_id'] as String,
         body: j['body'] as String,
         createdAt: _ts(j['created_at']),
@@ -137,7 +151,129 @@ class DmMessage {
         replyTo: j['reply_to'] as String?,
         deletedAt: _tsOrNull(j['deleted_at']),
         waveform: (j['waveform'] as List?)?.map((v) => (v as num).toInt()).toList(),
+        event: j['event'] == null ? null : Map<String, dynamic>.from(j['event'] as Map),
+        deletedBy: j['deleted_by'] as String?,
       );
+}
+
+/// A group chat.
+class ChatGroup {
+  const ChatGroup({
+    required this.id,
+    required this.name,
+    required this.createdAt,
+    this.about,
+    this.photoPath,
+    this.onlyAdminsSend = false,
+    this.createdBy,
+    this.lastMessageAt,
+    this.lastMessage,
+    this.lastMessageBy,
+    this.lastMessageKind,
+    this.lastEvent,
+  });
+
+  final String id;
+  final String name;
+  final String? about;
+
+  /// In the 'dm' bucket, under `g/<group>/`.
+  final String? photoPath;
+  final bool onlyAdminsSend;
+  final String? createdBy;
+  final DateTime createdAt;
+  final DateTime? lastMessageAt;
+  final String? lastMessage;
+  final String? lastMessageBy;
+
+  /// 'text', 'photo', 'voice', 'event' or 'deleted'.
+  final String? lastMessageKind;
+
+  /// When the last message is a notice, what it says.
+  final Map<String, dynamic>? lastEvent;
+
+  DateTime get activeAt => lastMessageAt ?? createdAt;
+
+  /// Something new from someone else since [mine] (my membership) was read.
+  bool unreadFor(GroupMember? mine) {
+    if (mine == null || lastMessageAt == null || lastMessageBy == null || lastMessageBy == mine.userId) return false;
+    if (lastMessageKind == 'event') return false;
+    return mine.readAt == null || mine.readAt!.isBefore(lastMessageAt!);
+  }
+
+  /// Sent to me and not yet on my phone.
+  bool undeliveredFor(GroupMember? mine) {
+    if (mine == null || lastMessageAt == null || lastMessageBy == null || lastMessageBy == mine.userId) return false;
+    return mine.deliveredAt == null || mine.deliveredAt!.isBefore(lastMessageAt!);
+  }
+
+  factory ChatGroup.fromJson(Map<String, dynamic> j) => ChatGroup(
+        id: j['id'] as String,
+        name: j['name'] as String,
+        about: j['about'] as String?,
+        photoPath: j['photo_path'] as String?,
+        onlyAdminsSend: j['only_admins_send'] as bool? ?? false,
+        createdBy: j['created_by'] as String?,
+        createdAt: _ts(j['created_at']),
+        lastMessageAt: _tsOrNull(j['last_message_at']),
+        lastMessage: j['last_message'] as String?,
+        lastMessageBy: j['last_message_by'] as String?,
+        lastMessageKind: j['last_message_kind'] as String?,
+        lastEvent: j['last_event'] == null ? null : Map<String, dynamic>.from(j['last_event'] as Map),
+      );
+}
+
+/// Someone in a group (or who was: [leftAt]).
+class GroupMember {
+  const GroupMember({
+    required this.groupId,
+    required this.userId,
+    required this.joinedAt,
+    this.admin = false,
+    this.addedBy,
+    this.leftAt,
+    this.readAt,
+    this.deliveredAt,
+    this.muted = false,
+  });
+
+  final String groupId;
+  final String userId;
+  final bool admin;
+  final String? addedBy;
+  final DateTime joinedAt;
+  final DateTime? leftAt;
+  final DateTime? readAt;
+  final DateTime? deliveredAt;
+  final bool muted;
+
+  bool get current => leftAt == null;
+
+  factory GroupMember.fromJson(Map<String, dynamic> j) => GroupMember(
+        groupId: j['group_id'] as String,
+        userId: j['user_id'] as String,
+        admin: j['role'] == 'admin',
+        addedBy: j['added_by'] as String?,
+        joinedAt: _ts(j['joined_at']),
+        leftAt: _tsOrNull(j['left_at']),
+        readAt: _tsOrNull(j['read_at']),
+        deliveredAt: _tsOrNull(j['delivered_at']),
+        muted: j['muted'] as bool? ?? false,
+      );
+}
+
+/// Ticks on a message [me] sent to a group at [sentAt]: read once everyone
+/// who was in it then has read it, delivered once it's on all their phones.
+MessageStatus groupStatus(Iterable<GroupMember> members, DateTime sentAt, String? me) {
+  final others = members.where((m) => m.current && m.userId != me && !m.joinedAt.isAfter(sentAt)).toList();
+  if (others.isEmpty) return MessageStatus.sent;
+  bool all(DateTime? Function(GroupMember) at) => others.every((m) => at(m) != null && !at(m)!.isBefore(sentAt));
+  if (all((m) => m.readAt)) return MessageStatus.read;
+  // Read means it reached their phone too.
+  if (all((m) => m.deliveredAt == null || (m.readAt?.isAfter(m.deliveredAt!) ?? false) ? m.readAt : m.deliveredAt)) {
+    return MessageStatus.delivered;
+  }
+  return MessageStatus.sent;
 }
 
 /// Someone's emoji on a message (one each).

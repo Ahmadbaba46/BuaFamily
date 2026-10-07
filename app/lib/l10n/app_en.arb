@@ -3723,5 +3723,193 @@
   "dmKeyboard": "Keyboard",
   "dmMoreReactions": "More reactions",
   "dmReactions": "Reactions",
-  "dmTapToRemove": "Tap yours to remove it"
+  "dmTapToRemove": "Tap yours to remove it",
+  "newGroup": "New group",
+  "groupName": "Group name",
+  "groupAboutOptional": "Description (optional)",
+  "groupAbout": "Description",
+  "groupAddMembers": "Add members",
+  "groupCreate": "Create group",
+  "groupNeedName": "Give the group a name",
+  "groupNeedMembers": "Choose at least one person",
+  "groupSelected": "{count} selected",
+  "@groupSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupMembersCount": "{count} members",
+  "@groupMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupPrivate": "Only the members of this group can see these messages.",
+  "groupInfo": "Group info",
+  "groupAdminBadge": "Group admin",
+  "groupMakeAdmin": "Make group admin",
+  "groupRemoveAdmin": "Remove as group admin",
+  "groupRemoveMember": "Remove from group",
+  "groupConfirmRemove": "Remove {name} from the group?",
+  "@groupConfirmRemove": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupLeave": "Leave group",
+  "groupConfirmLeave": "Leave this group? You will stop getting its messages.",
+  "groupMute": "Mute notifications",
+  "groupMuteHint": "No notifications from this group",
+  "groupOnlyAdmins": "Only admins can send messages",
+  "groupOnlyAdminsNote": "Only group admins can send messages.",
+  "groupYouLeft": "You're no longer in this group.",
+  "groupNotFound": "This group isn't available.",
+  "groupChangePhoto": "Change group photo",
+  "groupRemovePhoto": "Remove group photo",
+  "groupEdit": "Edit name and description",
+  "groupMessageInfo": "Message info",
+  "groupReadBy": "Read by",
+  "groupDeliveredTo": "Delivered to",
+  "groupNotDelivered": "Not delivered yet",
+  "groupTypingOne": "{name} is typing…",
+  "@groupTypingOne": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupTypingMany": "Several people are typing…",
+  "groupEventCreated": "{actor} created the group “{name}”",
+  "@groupEventCreated": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventAdded": "{actor} added {user}",
+  "@groupEventAdded": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventRemoved": "{actor} removed {user}",
+  "@groupEventRemoved": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventLeft": "{user} left",
+  "@groupEventLeft": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventRenamed": "{actor} changed the group name to “{name}”",
+  "@groupEventRenamed": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventPhoto": "{actor} changed the group photo",
+  "@groupEventPhoto": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventPhotoRemoved": "{actor} removed the group photo",
+  "@groupEventPhotoRemoved": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventOnlyAdmins": "{actor} allowed only admins to send messages",
+  "@groupEventOnlyAdmins": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEventEveryone": "{actor} allowed everyone to send messages",
+  "@groupEventEveryone": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "notifGroupAdded": "{name} added you to the group “{group}”",
+  "@notifGroupAdded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "notifGroupMessage": "{name} @ {group}: {body}",
+  "@notifGroupMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      },
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "notifGroupReaction": "{name} reacted {emoji} to your message in “{group}”",
+  "@notifGroupReaction": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "emoji": {
+        "type": "String"
+      },
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "groupEveryoneIn": "Everyone in the family is already in this group.",
+  "groupSelectAll": "Select all",
+  "groupSendMessage": "Message"
 }

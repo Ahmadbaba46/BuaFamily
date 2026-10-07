@@ -364,15 +364,41 @@ final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
   return ref.watch(repositoryProvider).dmThreads();
 });
 
-/// Conversations with something new for me. Also tells senders their
-/// messages reached my phone (two grey ticks).
+/// The groups I'm in, latest first.
+final groupsProvider = StreamProvider<List<ChatGroup>>((ref) {
+  ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
+  return ref.watch(repositoryProvider).groups();
+});
+
+/// My place in each group, by group id.
+final myGroupMembershipsProvider = StreamProvider<Map<String, GroupMember>>((ref) {
+  ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
+  return ref
+      .watch(repositoryProvider)
+      .myGroupMemberships()
+      .map((rows) => {for (final m in rows) m.groupId: m});
+});
+
+final groupMembersProvider = StreamProvider.autoDispose
+    .family<List<GroupMember>, String>((ref, id) => ref.watch(repositoryProvider).groupMembers(id));
+
+final groupMessagesProvider = StreamProvider.autoDispose
+    .family<List<DmMessage>, String>((ref, id) => ref.watch(repositoryProvider).groupMessages(id));
+
+final groupReactionsProvider = StreamProvider.autoDispose
+    .family<List<DmReaction>, String>((ref, id) => ref.watch(repositoryProvider).groupReactions(id));
+
+/// Conversations and groups with something new for me. Also tells senders
+/// their messages reached my phone (two grey ticks).
 final dmUnreadProvider = Provider<int>((ref) {
   final me = ref.watch(profileProvider)?.id;
   final threads = ref.watch(dmThreadsProvider).value ?? const <DmThread>[];
-  if (threads.any((t) => t.undeliveredFor(me))) {
+  final groups = ref.watch(groupsProvider).value ?? const <ChatGroup>[];
+  final mine = ref.watch(myGroupMembershipsProvider).value ?? const <String, GroupMember>{};
+  if (threads.any((t) => t.undeliveredFor(me)) || groups.any((g) => g.undeliveredFor(mine[g.id]))) {
     Future(() => ref.read(repositoryProvider).markDmDelivered()).catchError((_) {});
   }
-  return threads.where((t) => t.unreadFor(me)).length;
+  return threads.where((t) => t.unreadFor(me)).length + groups.where((g) => g.unreadFor(mine[g.id])).length;
 });
 
 /// A short-lived link to a photo or voice note in a conversation.

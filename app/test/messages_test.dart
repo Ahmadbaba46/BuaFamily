@@ -103,7 +103,8 @@ void main() {
           {_FakeRepo? repo,
           List<DmMessage> messages = const [],
           AppSettings settings = const AppSettings(),
-          Set<String> blocked = const {}}) =>
+          Set<String> blocked = const {},
+          List<ChatGroup> groups = const []}) =>
       ProviderScope(
         overrides: [
           if (repo != null) repositoryProvider.overrideWithValue(repo),
@@ -120,6 +121,8 @@ void main() {
           blockedProvider.overrideWith((ref) async => blocked),
           dmMessagesProvider.overrideWith((ref, id) => Stream.value(messages)),
           dmReactionsProvider.overrideWith((ref, id) => Stream.value(const [])),
+          groupsProvider.overrideWith((ref) => Stream.value(groups)),
+          myGroupMembershipsProvider.overrideWith((ref) => Stream.value(const {})),
           photoUrlProvider.overrideWith((ref, path) => Completer<String>().future),
           detailsProvider.overrideWith((ref, id) async => const PersonDetails()),
           requestsProvider.overrideWith((ref, s) async => const []),
