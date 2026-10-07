@@ -1,6 +1,6 @@
 /// An entry in the in-app notification inbox. The text is written by the app
 /// from [kind] and [data], in the reader's language.
-enum NotificationKind { event, announcement, birthday, eventReminder, tagged, comment, bloodRequest, bloodOffer, remembrance, memory, fundContribution, fundConfirmed, fundRequest, mentorRequest, opportunity, poll, story, test, accountRequest, changeRequest, accountApproved, requestReviewed, appUpdate, mentorReply, occasion, duesReminder, claimReviewed, weeklySummary, adminAlert, directMessage, contentReport, khatm, khatmCompleted, khatmReminder, groupMessage, groupAdded }
+enum NotificationKind { event, announcement, birthday, eventReminder, tagged, comment, bloodRequest, bloodOffer, remembrance, memory, fundContribution, fundConfirmed, fundRequest, mentorRequest, opportunity, poll, story, test, accountRequest, changeRequest, accountApproved, requestReviewed, appUpdate, mentorReply, occasion, duesReminder, claimReviewed, weeklySummary, adminAlert, directMessage, contentReport, khatm, khatmCompleted, khatmReminder, groupMessage, groupAdded, eventCollection, eventGift, eventGiftReceived }
 
 const _kinds = {
   'event': NotificationKind.event,
@@ -29,6 +29,9 @@ const _kinds = {
   'khatm_reminder': NotificationKind.khatmReminder,
   'group_message': NotificationKind.groupMessage,
   'group_added': NotificationKind.groupAdded,
+  'event_collection': NotificationKind.eventCollection,
+  'event_gift': NotificationKind.eventGift,
+  'event_gift_received': NotificationKind.eventGiftReceived,
   'claim_reviewed': NotificationKind.claimReviewed,
   'opportunity': NotificationKind.opportunity,
   'poll': NotificationKind.poll,

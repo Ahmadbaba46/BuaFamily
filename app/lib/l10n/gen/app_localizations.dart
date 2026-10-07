@@ -9654,6 +9654,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Calendar apps check for changes every few hours; Google Calendar can take up to a day.'**
   String get calendarRefreshNote;
+
+  /// No description provided for @giftsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions'**
+  String get giftsTitle;
+
+  /// No description provided for @giftsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect contributions'**
+  String get giftsOpen;
+
+  /// No description provided for @giftsOpenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For a wedding or naming: relatives pledge and send gifts, and you see who gave what.'**
+  String get giftsOpenHint;
+
+  /// No description provided for @giftsReceiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Goes to'**
+  String get giftsReceiver;
+
+  /// No description provided for @giftsGoesTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Goes to {name}'**
+  String giftsGoesTo(String name);
+
+  /// No description provided for @giftsTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target in naira (optional)'**
+  String get giftsTarget;
+
+  /// No description provided for @giftsPayDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'How to pay (bank, account number, name)'**
+  String get giftsPayDetails;
+
+  /// No description provided for @giftsShowAmounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Members see each other\'s amounts'**
+  String get giftsShowAmounts;
+
+  /// No description provided for @giftsGive.
+  ///
+  /// In en, this message translates to:
+  /// **'Give'**
+  String get giftsGive;
+
+  /// No description provided for @giftsGiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contribution'**
+  String get giftsGiveTitle;
+
+  /// No description provided for @giftsAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in naira'**
+  String get giftsAmount;
+
+  /// No description provided for @giftsMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'How'**
+  String get giftsMethod;
+
+  /// No description provided for @giftsMethodTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank transfer'**
+  String get giftsMethodTransfer;
+
+  /// No description provided for @giftsMethodCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get giftsMethodCash;
+
+  /// No description provided for @giftsMethodInKind.
+  ///
+  /// In en, this message translates to:
+  /// **'In kind'**
+  String get giftsMethodInKind;
+
+  /// No description provided for @giftsMethodOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get giftsMethodOther;
+
+  /// No description provided for @giftsItem.
+  ///
+  /// In en, this message translates to:
+  /// **'What (if in kind)'**
+  String get giftsItem;
+
+  /// No description provided for @giftsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A note for the host (optional)'**
+  String get giftsNote;
+
+  /// No description provided for @giftsAnonymous.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide my name from other members'**
+  String get giftsAnonymous;
+
+  /// No description provided for @giftsAlreadySent.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve already sent it'**
+  String get giftsAlreadySent;
+
+  /// No description provided for @giftsNeedAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount, or say what you\'re giving in kind'**
+  String get giftsNeedAmount;
+
+  /// No description provided for @giftsPledged.
+  ///
+  /// In en, this message translates to:
+  /// **'Pledged'**
+  String get giftsPledged;
+
+  /// No description provided for @giftsSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get giftsSent;
+
+  /// No description provided for @giftsReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get giftsReceived;
+
+  /// No description provided for @giftsMarkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve sent it'**
+  String get giftsMarkSent;
+
+  /// No description provided for @giftsMarkReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark received'**
+  String get giftsMarkReceived;
+
+  /// No description provided for @giftsMarkNotReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark not received'**
+  String get giftsMarkNotReceived;
+
+  /// No description provided for @giftsWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Take back'**
+  String get giftsWithdraw;
+
+  /// No description provided for @giftsConfirmWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Take back this pledge?'**
+  String get giftsConfirmWithdraw;
+
+  /// No description provided for @giftsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get giftsEdit;
+
+  /// No description provided for @giftsAnonymousGiver.
+  ///
+  /// In en, this message translates to:
+  /// **'A relative'**
+  String get giftsAnonymousGiver;
+
+  /// No description provided for @giftsYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours'**
+  String get giftsYours;
+
+  /// No description provided for @giftsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No gifts yet} =1{1 gift} other{{count} gifts}}'**
+  String giftsCount(int count);
+
+  /// No description provided for @giftsTotals.
+  ///
+  /// In en, this message translates to:
+  /// **'{given} given · {received} received'**
+  String giftsTotals(String given, String received);
+
+  /// No description provided for @giftsOfTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Target {target}'**
+  String giftsOfTarget(String target);
+
+  /// No description provided for @giftsClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close contributions'**
+  String get giftsClose;
+
+  /// No description provided for @giftsReopen.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen contributions'**
+  String get giftsReopen;
+
+  /// No description provided for @giftsClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions are closed.'**
+  String get giftsClosed;
+
+  /// No description provided for @giftsCopyList.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the list'**
+  String get giftsCopyList;
+
+  /// No description provided for @giftsListCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'List copied'**
+  String get giftsListCopied;
+
+  /// No description provided for @giftsPrivateAmounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the host sees the amounts.'**
+  String get giftsPrivateAmounts;
+
+  /// No description provided for @giftsNotWelfare.
+  ///
+  /// In en, this message translates to:
+  /// **'This goes to {name}, not to the welfare fund.'**
+  String giftsNotWelfare(String name);
+
+  /// No description provided for @giftsCopyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy account details'**
+  String get giftsCopyDetails;
+
+  /// No description provided for @giftsDetailsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Account details copied'**
+  String get giftsDetailsCopied;
+
+  /// No description provided for @giftsSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution settings'**
+  String get giftsSettings;
+
+  /// No description provided for @notifEventCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributions are open for {title}'**
+  String notifEventCollection(String title);
+
+  /// No description provided for @notifEventGiftPledged.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} pledged {what} for {title}'**
+  String notifEventGiftPledged(String name, String what, String title);
+
+  /// No description provided for @notifEventGiftSent.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} sent {what} for {title}'**
+  String notifEventGiftSent(String name, String what, String title);
+
+  /// No description provided for @notifEventGiftReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} received your gift for {title}. Thank you!'**
+  String notifEventGiftReceived(String name, String title);
 }
 
 class _AppLocalizationsDelegate

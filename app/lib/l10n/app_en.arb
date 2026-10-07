@@ -3946,5 +3946,135 @@
   "calendarConfirmNewLink": "Get a new link? The old one will stop working, and you'll need to add the new one to your calendar again.",
   "calendarTurnOff": "Turn off my calendar link",
   "calendarTurnedOff": "Your calendar link is off. Calendars that had it will stop updating.",
-  "calendarRefreshNote": "Calendar apps check for changes every few hours; Google Calendar can take up to a day."
+  "calendarRefreshNote": "Calendar apps check for changes every few hours; Google Calendar can take up to a day.",
+  "giftsTitle": "Contributions",
+  "giftsOpen": "Collect contributions",
+  "giftsOpenHint": "For a wedding or naming: relatives pledge and send gifts, and you see who gave what.",
+  "giftsReceiver": "Goes to",
+  "giftsGoesTo": "Goes to {name}",
+  "@giftsGoesTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "giftsTarget": "Target in naira (optional)",
+  "giftsPayDetails": "How to pay (bank, account number, name)",
+  "giftsShowAmounts": "Members see each other's amounts",
+  "giftsGive": "Give",
+  "giftsGiveTitle": "Your contribution",
+  "giftsAmount": "Amount in naira",
+  "giftsMethod": "How",
+  "giftsMethodTransfer": "Bank transfer",
+  "giftsMethodCash": "Cash",
+  "giftsMethodInKind": "In kind",
+  "giftsMethodOther": "Other",
+  "giftsItem": "What (if in kind)",
+  "giftsNote": "A note for the host (optional)",
+  "giftsAnonymous": "Hide my name from other members",
+  "giftsAlreadySent": "I've already sent it",
+  "giftsNeedAmount": "Enter an amount, or say what you're giving in kind",
+  "giftsPledged": "Pledged",
+  "giftsSent": "Sent",
+  "giftsReceived": "Received",
+  "giftsMarkSent": "I've sent it",
+  "giftsMarkReceived": "Mark received",
+  "giftsMarkNotReceived": "Mark not received",
+  "giftsWithdraw": "Take back",
+  "giftsConfirmWithdraw": "Take back this pledge?",
+  "giftsEdit": "Change",
+  "giftsAnonymousGiver": "A relative",
+  "giftsYours": "Yours",
+  "giftsCount": "{count, plural, =0{No gifts yet} =1{1 gift} other{{count} gifts}}",
+  "@giftsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "giftsTotals": "{given} given · {received} received",
+  "@giftsTotals": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "received": {
+        "type": "String"
+      }
+    }
+  },
+  "giftsOfTarget": "Target {target}",
+  "@giftsOfTarget": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "giftsClose": "Close contributions",
+  "giftsReopen": "Reopen contributions",
+  "giftsClosed": "Contributions are closed.",
+  "giftsCopyList": "Copy the list",
+  "giftsListCopied": "List copied",
+  "giftsPrivateAmounts": "Only the host sees the amounts.",
+  "giftsNotWelfare": "This goes to {name}, not to the welfare fund.",
+  "@giftsNotWelfare": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "giftsCopyDetails": "Copy account details",
+  "giftsDetailsCopied": "Account details copied",
+  "giftsSettings": "Contribution settings",
+  "notifEventCollection": "Contributions are open for {title}",
+  "@notifEventCollection": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventGiftPledged": "{name} pledged {what} for {title}",
+  "@notifEventGiftPledged": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "what": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventGiftSent": "{name} sent {what} for {title}",
+  "@notifEventGiftSent": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "what": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventGiftReceived": "{name} received your gift for {title}. Thank you!",
+  "@notifEventGiftReceived": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

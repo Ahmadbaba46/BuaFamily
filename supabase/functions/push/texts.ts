@@ -14,6 +14,10 @@ export function naira(amount: number): string {
 
 type Texts = Record<string, (d: Data) => string>;
 
+/** "₦20,000", "a ram", or both. */
+const giftWhat = (d: Data) =>
+  [d.amount != null && d.amount !== "" ? naira(n(d, "amount")) : "", s(d, "item").trim()].filter(Boolean).join(" + ");
+
 const en: Texts = {
   event: (d) => `New event: ${s(d, "title")}`,
   announcement: (d) => s(d, "body") || "Announcement",
@@ -59,6 +63,10 @@ const en: Texts = {
           : `“${s(d, "body")}”`
       ),
   group_added: (d) => `${s(d, "name") || "Someone"} added you to the group “${s(d, "group")}”`,
+  event_collection: (d) => `Contributions are open for ${s(d, "title")}`,
+  event_gift: (d) =>
+    `${s(d, "name") || "Someone"} ${s(d, "status") === "sent" ? "sent" : "pledged"} ${giftWhat(d)} for ${s(d, "title")}`,
+  event_gift_received: (d) => `${s(d, "name") || "The host"} received your gift for ${s(d, "title")}. Thank you!`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "URGENT: a child safety concern was reported. Please review it now."
@@ -170,6 +178,10 @@ const ha: Texts = {
           : `“${s(d, "body")}”`
       ),
   group_added: (d) => `${s(d, "name") || "Wani"} ya saka ka a rukunin “${s(d, "group")}”`,
+  event_collection: (d) => `An buɗe gudummawa don ${s(d, "title")}`,
+  event_gift: (d) =>
+    `${s(d, "name") || "Wani"} ${s(d, "status") === "sent" ? "ya aika" : "ya yi alƙawarin"} ${giftWhat(d)} don ${s(d, "title")}`,
+  event_gift_received: (d) => `${s(d, "name") || "Mai biki"} ya karɓi gudummawarka don ${s(d, "title")}. Na gode!`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."

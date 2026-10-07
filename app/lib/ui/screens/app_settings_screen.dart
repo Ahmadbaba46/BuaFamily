@@ -12,7 +12,7 @@ import 'sign_in_screen.dart' show LanguageToggle;
 
 /// In-app notification groups and the database kinds each one covers.
 const notificationGroups = {
-  'events': ['event', 'announcement', 'event_reminder'],
+  'events': ['event', 'announcement', 'event_reminder', 'event_collection', 'event_gift', 'event_gift_received'],
   'birthdays': ['birthday', 'remembrance', 'memory'],
   'tagged': ['tagged'],
   'comments': ['comment'],

@@ -2471,9 +2471,10 @@ select test.assert((select last_fetched_at is not null from public.calendar_feed
 -- Birthdays of living relatives with a known date, not your own.
 select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
 set role authenticated;
-update public.persons set birth_date = '1990-03-14', birth_date_approx = false, is_living = true
- where id = (select id from public.persons where id is distinct from (select person_id from public.profiles where id = :member_id)
-             order by id limit 1);
+update public.persons set birth_date = '1990-03-14', birth_date_approx = false
+ where id = (select id from public.persons
+              where is_living and id is distinct from (select person_id from public.profiles where id = :member_id)
+              order by id limit 1);
 reset role;
 select set_config('request.jwt.claims', '{}', false);
 set role service_role;
@@ -2506,6 +2507,96 @@ set role service_role;
 select test.assert((select public.calendar_feed(:'cal_token') is null), 'the old link stops working');
 select test.assert((select public.calendar_feed(:'cal_token2') is not null), 'the new one works (and is on again)');
 reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
+-- 51. Wedding and naming contributions on an event.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.events (title, category, starts_at) values ('Naming of Fatima', 'naming', now() + interval '10 days');
+select id as naming from public.events where title = 'Naming of Fatima' \gset
+reset role;
+
+-- Only whoever made the event (or an admin) opens contributions.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$insert into public.event_collections (event_id, receiver_id) values (%L, %L)$$,
+  :'naming', :member2_id), 'not someone else''s event');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.event_collections (event_id, receiver_id, target, pay_details, show_amounts)
+values (:'naming', :member_id, 200000, 'GTBank 0123456789 Aisha Bua', false);
+reset role;
+select test.assert((select count(*) >= 1 from public.notifications
+  where user_id = :member2_id and kind = 'event_collection' and data ->> 'title' = 'Naming of Fatima'), 'everyone is told');
+
+-- Musa pledges, then sends; Aisha (the receiver) is told each time.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.event_gifts (event_id, amount, method, note) values (:'naming', 20000, 'transfer', 'Barka');
+select test.expect_error(format($$insert into public.event_gifts (event_id, method) values (%L, 'cash')$$, :'naming'),
+  'an amount, or something in kind');
+insert into public.event_gifts (event_id, method, item, anonymous) values (:'naming', 'in_kind', 'A ram', true);
+update public.event_gifts set status = 'sent' where amount = 20000;
+select test.expect_error($$update public.event_gifts set status = 'received' where amount = 20000$$,
+  'givers cannot mark their own gift received');
+reset role;
+select test.assert((select count(*) = 3 from public.notifications where user_id = :member_id and kind = 'event_gift'),
+  'the receiver hears of each pledge and payment');
+
+-- What other members see: no amounts (kept private), no anonymous names.
+update public.profiles set role = 'member' where id = :admin_id;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.event_gifts), 'a plain member reads no rows directly');
+select test.assert((select count(*) = 2 from public.event_gift_list(:'naming')), 'but sees the list');
+select test.assert((select bool_and(amount is null) from public.event_gift_list(:'naming')), 'amounts are private');
+select test.assert((select giver_id is null from public.event_gift_list(:'naming') where item = 'A ram'),
+  'an anonymous giver stays anonymous');
+select test.assert((select giver_id = :member2_id from public.event_gift_list(:'naming') where item is null),
+  'others are named');
+reset role;
+update public.profiles set role = 'admin' where id = :admin_id;
+
+-- The giver sees their own amount; the receiver sees everything and marks it received.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select amount = 20000 from public.event_gift_list(:'naming') where item is null), 'my own amount');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 2 from public.event_gifts), 'the receiver reads every gift');
+select test.assert((select giver_id = :member2_id from public.event_gift_list(:'naming') where item = 'A ram'),
+  'including who gave anonymously');
+update public.event_gifts set status = 'received' where amount = 20000;
+reset role;
+select test.assert((select received_at is not null and received_by = :member_id from public.event_gifts where amount = 20000),
+  'received, by whom and when');
+select test.assert((select data ->> 'amount' = '20000.00' from public.notifications
+  where user_id = :member2_id and kind = 'event_gift_received'), 'the giver is thanked');
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error($$update public.event_gifts set amount = 1 where amount = 20000$$,
+  'a received gift can''t be changed by the giver');
+-- Taking it back does nothing once received.
+delete from public.event_gifts where amount = 20000;
+reset role;
+select test.assert((select count(*) = 1 from public.event_gifts where amount = 20000), 'still there');
+
+-- Closed: no new gifts. Backups include contributions.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.event_collections set open = false where event_id = :'naming';
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$insert into public.event_gifts (event_id, amount) values (%L, 5000)$$, :'naming'),
+  'closed: no new gifts');
+reset role;
+select test.assert((select jsonb_array_length(private.backup_data() -> 'event_gifts') = 2), 'backups include gifts');
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------

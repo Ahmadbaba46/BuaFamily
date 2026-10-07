@@ -64,6 +64,17 @@ share moments and photos, plan family events, and keep everyone's details
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
+- **Wedding and naming contributions (gudummawa):** whoever made an event
+  (or an admin) can open contributions on it: who receives them (the host;
+  it can be handed to someone else, like the baby's father), how to pay
+  (bank details, with a copy button), an optional target, and whether members
+  see each other's amounts. Everyone is told. Members give an amount or
+  something in kind ("a ram"), by transfer, cash or in kind, with a note,
+  and can hide their name from other members (never from the host); they
+  pledge first and tap "I've sent it" once they have paid. The host sees who
+  gave what, totals against the target, marks each gift received (the giver
+  is thanked), can copy the list to share, and closes contributions when
+  done. The money goes straight to the host; it is not the welfare fund's.
 - **Calendar on your phone:** More → Calendar on your phone (or the calendar
   icon on Events) gives each member a private link to add to Google Calendar,
   an iPhone or Outlook. It holds the family's events (with a reminder the day
@@ -567,7 +578,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Wedding and naming contributions** on an event.
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.

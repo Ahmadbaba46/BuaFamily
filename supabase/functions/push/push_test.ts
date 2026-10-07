@@ -64,6 +64,13 @@ Deno.test("texts follow the reader's language", () => {
     .body, "Musa reacted ❤️ to your message in “Cousins”");
   assertEquals(render("group_added", { name: "Aisha", group: "Cousins" }, "ha", "Bua").body,
     "Aisha ya saka ka a rukunin “Cousins”");
+  assertEquals(render("event_gift", { name: "Musa", amount: 20000, title: "Naming of Fatima", status: "pledged" }, "en", "Bua")
+    .body, "Musa pledged ₦20,000 for Naming of Fatima");
+  assertEquals(render("event_gift", { name: "Musa", amount: null, item: "A ram", title: "Suna", status: "sent" }, "ha", "Bua")
+    .body, "Musa ya aika A ram don Suna");
+  assertEquals(render("event_gift_received", { name: "Aisha", title: "Naming of Fatima" }, "en", "Bua").body,
+    "Aisha received your gift for Naming of Fatima. Thank you!");
+  assertEquals(render("event_collection", { title: "Auren Musa" }, "ha", "Bua").body, "An buɗe gudummawa don Auren Musa");
   assertEquals(render("khatm", { title: "Sauka don Kaka" }, "ha", "Bua").body, "Sabuwar saukar Alƙur'ani: Sauka don Kaka. Ɗauki juz'i.");
   assertEquals(render("remembrance", { years: 5, name: "Ahmadu" }, "en", "Bua").body, "5 years since Ahmadu passed");
   assertEquals(render("tagged", { photo_id: "x" }, "en", "Bua").body, "You were tagged in a photo");

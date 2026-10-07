@@ -8,6 +8,7 @@ import '../models/account.dart';
 import '../models/activity.dart';
 import '../models/calendar.dart';
 import '../models/community.dart';
+import '../models/contributions.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
@@ -1225,6 +1226,67 @@ class FamilyRepository {
       () => _db.removeChannel(channel),
     );
   }
+
+  // ---------------------------------------------------------------- event contributions
+
+  Future<EventCollection?> eventCollection(String eventId) async {
+    final r = await _db.from('event_collections').select().eq('event_id', eventId).maybeSingle();
+    return r == null ? null : EventCollection.fromJson(r);
+  }
+
+  Future<void> openCollection(String eventId,
+          {required String receiverId, num? target, String? payDetails, bool showAmounts = true}) =>
+      _db.from('event_collections').insert({
+        'event_id': eventId,
+        'receiver_id': receiverId,
+        'target': target,
+        'pay_details': payDetails,
+        'show_amounts': showAmounts,
+      });
+
+  Future<void> updateCollection(String eventId,
+      {String? receiverId, num? target, bool clearTarget = false, String? payDetails, bool? showAmounts, bool? open}) {
+    final changes = {
+      'receiver_id': ?receiverId,
+      if (target != null || clearTarget) 'target': target,
+      'pay_details': ?payDetails,
+      'show_amounts': ?showAmounts,
+      'open': ?open,
+    };
+    return _db.from('event_collections').update(changes).eq('event_id', eventId);
+  }
+
+  /// Every gift, as I may see it (anonymous names and private amounts hidden).
+  Future<List<EventGift>> eventGifts(String eventId) async => [
+        for (final r in (await _db.rpc('event_gift_list', params: {'p_event': eventId})) as List)
+          EventGift.fromJson(Map<String, dynamic>.from(r as Map)),
+      ];
+
+  Future<void> giveGift(String eventId,
+          {num? amount, String? item, GiftMethod method = GiftMethod.transfer, String? note, bool anonymous = false,
+          bool sent = false}) =>
+      _db.from('event_gifts').insert({
+        'event_id': eventId,
+        'amount': amount,
+        'item': item,
+        'method': method.db,
+        'note': note,
+        'anonymous': anonymous,
+        'status': sent ? 'sent' : 'pledged',
+      });
+
+  Future<void> updateGift(String id,
+          {num? amount, String? item, GiftMethod? method, String? note, bool? anonymous, GiftStatus? status}) =>
+      _db.from('event_gifts').update({
+        'amount': ?amount,
+        'item': ?item,
+        'method': ?method?.db,
+        'note': ?note,
+        'anonymous': ?anonymous,
+        'status': ?status?.name,
+      }).eq('id', id);
+
+  Future<void> deleteGift(String id) => _db.from('event_gifts').delete().eq('id', id);
 
   // ---------------------------------------------------------------- calendar feed
 

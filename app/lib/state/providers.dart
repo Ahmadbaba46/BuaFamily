@@ -10,6 +10,7 @@ import '../data/repository.dart';
 import '../models/account.dart';
 import '../models/calendar.dart';
 import '../models/community.dart';
+import '../models/contributions.dart';
 import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
@@ -364,6 +365,14 @@ final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
   ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
   return ref.watch(repositoryProvider).dmThreads();
 });
+
+/// Contributions opened on an event (null when there are none).
+final eventCollectionProvider = FutureProvider.autoDispose
+    .family<EventCollection?, String>((ref, id) => ref.watch(repositoryProvider).eventCollection(id));
+
+/// The gifts on an event, as I may see them.
+final eventGiftsProvider =
+    FutureProvider.autoDispose.family<List<EventGift>, String>((ref, id) => ref.watch(repositoryProvider).eventGifts(id));
 
 /// My calendar link (null until I make one).
 final calendarFeedProvider = FutureProvider<CalendarFeed?>((ref) {
