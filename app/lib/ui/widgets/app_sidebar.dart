@@ -181,6 +181,7 @@ class AppSidebar extends ConsumerWidget {
               item(Icons.event_outlined, l.navEvents, '/events', badge: upcoming),
               item(Icons.photo_library_outlined, l.albums, '/albums', badge: albums),
               item(Icons.mic_none, l.storiesTitle, '/stories', badge: stories),
+              item(Icons.menu_book_outlined, l.khatmTitle, '/khatm'),
               item(Icons.alt_route, l.howRelated, '/related'),
               heading(l.helpEachOther),
               item(Icons.handshake_outlined, l.whoCanHelp, '/help'),

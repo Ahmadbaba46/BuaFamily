@@ -51,6 +51,10 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
       NotificationKind.directMessage => l.notifDirectMessage(n.str('name') ?? '', n.str('body') ?? ''),
+      NotificationKind.khatm => l.notifKhatm(n.str('title') ?? ''),
+      NotificationKind.khatmCompleted => l.notifKhatmCompleted(n.str('title') ?? ''),
+      NotificationKind.khatmReminder => l.notifKhatmReminder(
+          n.str('title') ?? '', [for (final j in (n.data['juz'] as List? ?? const [])) '$j'].join(', ')),
       NotificationKind.contentReport =>
         n.str('reason') == 'child_safety' ? l.notifReportChildSafety : l.notifReport,
       NotificationKind.adminAlert => switch (n.str('alert')) {
@@ -118,6 +122,8 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.weeklySummary => Icons.insights_outlined,
       NotificationKind.directMessage => Icons.forum_outlined,
       NotificationKind.contentReport => Icons.flag_outlined,
+      NotificationKind.khatm || NotificationKind.khatmCompleted || NotificationKind.khatmReminder =>
+        Icons.menu_book_outlined,
       NotificationKind.adminAlert => Icons.warning_amber_rounded,
       NotificationKind.poll => Icons.how_to_vote_outlined,
       NotificationKind.story => Icons.mic_none,

@@ -17,6 +17,7 @@ const notificationGroups = {
   'tagged': ['tagged'],
   'comments': ['comment'],
   'occasions': ['occasion'],
+  'khatm': ['khatm', 'khatm_completed', 'khatm_reminder'],
   'weekly': ['weekly_summary'],
   'messages': ['direct_message'],
 };
@@ -153,6 +154,8 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           divider,
           if (ref.watch(messagesOnProvider)) ...[toggle(l.messagesTitle, 'messages'), divider],
           toggle(l.islamicOccasions, 'occasions'),
+          divider,
+          toggle(l.khatmTitle, 'khatm'),
           divider,
           if (ref.watch(isAdminProvider)) ...[toggle(l.notifWeeklyForAdmins, 'weekly'), divider],
           Padding(

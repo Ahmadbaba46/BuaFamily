@@ -3465,5 +3465,176 @@
   "dismissReport": "Dismiss",
   "notifReport": "Something was reported to the admins. Tap to review.",
   "notifReportChildSafety": "URGENT: a child safety concern was reported. Please review it now.",
-  "reportSheetTitle": "Report to the admins"
+  "reportSheetTitle": "Report to the admins",
+  "khatmTitle": "Quran khatm",
+  "khatmIntro": "Share out the 30 juz of the Quran among the family, for a relative who has passed or for an occasion. Take a juz, read it, and mark it read; when all 30 are read, everyone who took part is told.",
+  "startKhatm": "Start a khatm",
+  "noKhatmsYet": "No khatm going on. Start one for a relative who has passed, or for an occasion.",
+  "khatmsCompleted": "Completed",
+  "khatmComplete": "Complete",
+  "khatmProgress": "{read} of 30 read · {taken} taken",
+  "@khatmProgress": {
+    "placeholders": {
+      "read": {
+        "type": "int"
+      },
+      "taken": {
+        "type": "int"
+      }
+    }
+  },
+  "khatmDue": "Finish by {date}",
+  "@khatmDue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmYourJuz": "Yours: {juz}",
+  "@khatmYourJuz": {
+    "placeholders": {
+      "juz": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmTakeConfirm": "Take juz {juz}?",
+  "@khatmTakeConfirm": {
+    "placeholders": {
+      "juz": {
+        "type": "int"
+      }
+    }
+  },
+  "khatmTaken": "Juz {juz} is yours. May Allah make it easy.",
+  "@khatmTaken": {
+    "placeholders": {
+      "juz": {
+        "type": "int"
+      }
+    }
+  },
+  "juzNumber": "Juz {juz}",
+  "@juzNumber": {
+    "placeholders": {
+      "juz": {
+        "type": "int"
+      }
+    }
+  },
+  "juzOf": "Juz {juz} · {name}",
+  "@juzOf": {
+    "placeholders": {
+      "juz": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmMarkRead": "I've read it",
+  "khatmMarkReadFor": "Mark read for {name}",
+  "@khatmMarkReadFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmMarkUnread": "Not read after all",
+  "khatmGiveBack": "Give it back for someone else",
+  "khatmFree": "Free this juz for someone else",
+  "khatmReadThanks": "Ma sha Allah. May Allah accept it.",
+  "khatmCancel": "Cancel this khatm",
+  "khatmCancelConfirm": "Cancel this khatm? It will no longer be open to take part in.",
+  "khatmCancelled": "Cancelled",
+  "khatmCompleteOn": "Completed on {date}. May Allah accept it.",
+  "@khatmCompleteOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmStartedBy": "Started by {name}, {date}",
+  "@khatmStartedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmTakeNext": "Take the next free juz",
+  "khatmReaders": "Reading ({count})",
+  "@khatmReaders": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "juzFree": "Free",
+  "juzTaken": "Taken",
+  "juzRead": "Read",
+  "khatmForLate": "For a relative who has passed",
+  "khatmForOccasion": "For an occasion",
+  "khatmForOther": "Other",
+  "khatmChoosePerson": "Who is it for? (optional)",
+  "khatmPersonHint": "Choose from the family tree",
+  "khatmName": "Name",
+  "khatmNameHint": "e.g. Khatm for Baba Musa",
+  "khatmForName": "Khatm for {name}",
+  "@khatmForName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmNeedsTitle": "Give the khatm a name.",
+  "khatmNoDue": "No date to finish by",
+  "khatmDueHint": "Those still reading are reminded the day before",
+  "khatmNote": "Note (optional)",
+  "khatmNoteHint": "e.g. the du'a will be on Friday after Jumu'ah",
+  "khatmEveryoneTold": "Everyone in the family is told, so they can take a juz.",
+  "khatmStartFor": "Start a Quran khatm for {name}",
+  "@khatmStartFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifKhatm": "New Quran khatm: {title}. Take a juz.",
+  "@notifKhatm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifKhatmCompleted": "The khatm “{title}” is complete: all 30 juz read. May Allah accept it.",
+  "@notifKhatmCompleted": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notifKhatmReminder": "Reminder: “{title}” is to be finished tomorrow (your juz: {juz}).",
+  "@notifKhatmReminder": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "juz": {
+        "type": "String"
+      }
+    }
+  }
 }

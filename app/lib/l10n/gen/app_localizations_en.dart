@@ -5321,4 +5321,181 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportSheetTitle => 'Report to the admins';
+
+  @override
+  String get khatmTitle => 'Quran khatm';
+
+  @override
+  String get khatmIntro =>
+      'Share out the 30 juz of the Quran among the family, for a relative who has passed or for an occasion. Take a juz, read it, and mark it read; when all 30 are read, everyone who took part is told.';
+
+  @override
+  String get startKhatm => 'Start a khatm';
+
+  @override
+  String get noKhatmsYet =>
+      'No khatm going on. Start one for a relative who has passed, or for an occasion.';
+
+  @override
+  String get khatmsCompleted => 'Completed';
+
+  @override
+  String get khatmComplete => 'Complete';
+
+  @override
+  String khatmProgress(int read, int taken) {
+    return '$read of 30 read · $taken taken';
+  }
+
+  @override
+  String khatmDue(String date) {
+    return 'Finish by $date';
+  }
+
+  @override
+  String khatmYourJuz(String juz) {
+    return 'Yours: $juz';
+  }
+
+  @override
+  String khatmTakeConfirm(int juz) {
+    return 'Take juz $juz?';
+  }
+
+  @override
+  String khatmTaken(int juz) {
+    return 'Juz $juz is yours. May Allah make it easy.';
+  }
+
+  @override
+  String juzNumber(int juz) {
+    return 'Juz $juz';
+  }
+
+  @override
+  String juzOf(int juz, String name) {
+    return 'Juz $juz · $name';
+  }
+
+  @override
+  String get khatmMarkRead => 'I\'ve read it';
+
+  @override
+  String khatmMarkReadFor(String name) {
+    return 'Mark read for $name';
+  }
+
+  @override
+  String get khatmMarkUnread => 'Not read after all';
+
+  @override
+  String get khatmGiveBack => 'Give it back for someone else';
+
+  @override
+  String get khatmFree => 'Free this juz for someone else';
+
+  @override
+  String get khatmReadThanks => 'Ma sha Allah. May Allah accept it.';
+
+  @override
+  String get khatmCancel => 'Cancel this khatm';
+
+  @override
+  String get khatmCancelConfirm =>
+      'Cancel this khatm? It will no longer be open to take part in.';
+
+  @override
+  String get khatmCancelled => 'Cancelled';
+
+  @override
+  String khatmCompleteOn(String date) {
+    return 'Completed on $date. May Allah accept it.';
+  }
+
+  @override
+  String khatmStartedBy(String name, String date) {
+    return 'Started by $name, $date';
+  }
+
+  @override
+  String get khatmTakeNext => 'Take the next free juz';
+
+  @override
+  String khatmReaders(int count) {
+    return 'Reading ($count)';
+  }
+
+  @override
+  String get juzFree => 'Free';
+
+  @override
+  String get juzTaken => 'Taken';
+
+  @override
+  String get juzRead => 'Read';
+
+  @override
+  String get khatmForLate => 'For a relative who has passed';
+
+  @override
+  String get khatmForOccasion => 'For an occasion';
+
+  @override
+  String get khatmForOther => 'Other';
+
+  @override
+  String get khatmChoosePerson => 'Who is it for? (optional)';
+
+  @override
+  String get khatmPersonHint => 'Choose from the family tree';
+
+  @override
+  String get khatmName => 'Name';
+
+  @override
+  String get khatmNameHint => 'e.g. Khatm for Baba Musa';
+
+  @override
+  String khatmForName(String name) {
+    return 'Khatm for $name';
+  }
+
+  @override
+  String get khatmNeedsTitle => 'Give the khatm a name.';
+
+  @override
+  String get khatmNoDue => 'No date to finish by';
+
+  @override
+  String get khatmDueHint => 'Those still reading are reminded the day before';
+
+  @override
+  String get khatmNote => 'Note (optional)';
+
+  @override
+  String get khatmNoteHint => 'e.g. the du\'a will be on Friday after Jumu\'ah';
+
+  @override
+  String get khatmEveryoneTold =>
+      'Everyone in the family is told, so they can take a juz.';
+
+  @override
+  String khatmStartFor(String name) {
+    return 'Start a Quran khatm for $name';
+  }
+
+  @override
+  String notifKhatm(String title) {
+    return 'New Quran khatm: $title. Take a juz.';
+  }
+
+  @override
+  String notifKhatmCompleted(String title) {
+    return 'The khatm “$title” is complete: all 30 juz read. May Allah accept it.';
+  }
+
+  @override
+  String notifKhatmReminder(String title, String juz) {
+    return 'Reminder: “$title” is to be finished tomorrow (your juz: $juz).';
+  }
 }

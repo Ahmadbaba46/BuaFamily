@@ -45,6 +45,12 @@ const en: Texts = {
     s(d, "reason") === "child_safety"
       ? "URGENT: a child safety concern was reported. Please review it now."
       : "Something was reported to the admins. Tap to review.",
+  khatm: (d) => `New Quran khatm: ${s(d, "title")}. Take a juz.`,
+  khatm_completed: (d) => `The khatm “${s(d, "title")}” is complete: all 30 juz read. May Allah accept it.`,
+  khatm_reminder: (d) => {
+    const juz = Array.isArray(d.juz) ? (d.juz as unknown[]).join(", ") : "";
+    return `Reminder: “${s(d, "title")}” is to be finished tomorrow${juz ? ` (your juz: ${juz})` : ""}.`;
+  },
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {
@@ -132,6 +138,12 @@ const ha: Texts = {
     s(d, "reason") === "child_safety"
       ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."
       : "An kai rahoton wani abu ga shugabanni. Taɓa don dubawa.",
+  khatm: (d) => `Sabuwar saukar Alƙur'ani: ${s(d, "title")}. Ɗauki juz'i.`,
+  khatm_completed: (d) => `An kammala saukar Alƙur'ani “${s(d, "title")}”: an karanta juz'i 30 duka. Allah ya karɓa.`,
+  khatm_reminder: (d) => {
+    const juz = Array.isArray(d.juz) ? (d.juz as unknown[]).join(", ") : "";
+    return `Tunatarwa: gobe za a kammala “${s(d, "title")}”${juz ? ` (juz'inka: ${juz})` : ""}.`;
+  },
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {

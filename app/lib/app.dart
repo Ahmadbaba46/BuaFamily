@@ -31,6 +31,7 @@ import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
+import 'ui/screens/khatm_screen.dart';
 import 'ui/screens/messages_screen.dart';
 import 'ui/screens/online_payment_screen.dart';
 import 'ui/screens/reports_screen.dart';
@@ -199,6 +200,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, s) => ImportReviewScreen(plan: s.extra! as ImportPlan),
       ),
       GoRoute(path: '/stories', builder: (_, _) => const StoriesScreen()),
+      GoRoute(path: '/khatm', builder: (_, _) => const KhatmsScreen()),
+      GoRoute(path: '/khatm/new', builder: (_, s) => NewKhatmScreen(personId: s.uri.queryParameters['person'])),
+      GoRoute(path: '/khatm/:id', builder: (_, s) => KhatmScreen(khatmId: s.pathParameters['id']!)),
       GoRoute(path: '/stories/new', builder: (_, _) => const NewStoryScreen()),
       GoRoute(path: '/my-requests', builder: (_, _) => const MyRequestsScreen()),
       GoRoute(
