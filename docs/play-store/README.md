@@ -66,7 +66,7 @@ Bua Family keeps our family together in one private place, in English and Hausa.
 • Events: weddings, naming ceremonies and meetings, with replies and reminders.
 • Birthdays and remembrance: reminders for birthdays and for relatives who have passed, with Islamic dates and Eid greetings.
 • Elders' stories: voice recordings of our elders, kept for the next generation.
-• Welfare fund: causes, dues and contributions with receipts, and clear reports for the committee.
+• Welfare fund: causes, dues and contributions with receipts, clear reports for the committee, and a Pay now button to pay dues or a cause by card or bank transfer.
 • Helping each other: blood donors, mentorship and opportunities.
 • Polls and announcements for family decisions.
 
@@ -84,7 +84,7 @@ Bua Family na haɗa iyalinmu wuri ɗaya na sirri, da Turanci da Hausa.
 • Taruka: aure, suna da taro, tare da amsoshi da tunatarwa.
 • Ranakun haihuwa da tunawa: tunatarwa kan ranakun haihuwa da ’yan uwan da suka rasu, da kwanakin Musulunci da barka da Sallah.
 • Labaran dattawa: naɗar muryar dattawanmu, don zuri’a mai zuwa.
-• Asusun taimako: buƙatu, kuɗin wata-wata da gudummawa tare da rasidi, da rahotanni ga kwamiti.
+• Asusun taimako: buƙatu, kuɗin wata-wata da gudummawa tare da rasidi, rahotanni ga kwamiti, da kuma biya ta kati ko tura kuɗi a manhaja.
 • Taimakon juna: masu ba da jini, jagoranci da damammaki.
 • Ƙuri’u da sanarwa don shawarwarin iyali.
 
@@ -114,8 +114,14 @@ and faces first.
   Expect *Everyone* / PEGI 3 with "Users Interact".
 - **Target audience:** 18 and over (or 13+). Don't include under-13 age groups:
   that brings in the Families policy.
-- **News app:** No. **Government app:** No. **Financial features:** none (the
-  welfare fund only records payments made outside the app).
+- **News app:** No. **Government app:** No.
+- **Financial features:** *Other*. The app no longer only records payments made
+  outside it: members may pay dues or contribute to a cause through Korapay, a
+  licensed Nigerian payment gateway (card or bank transfer). The money goes into
+  the family's own welfare fund, and payouts are made from Korapay's dashboard.
+  Paying unlocks no feature or content, so this is a real-world payment and
+  **not an in-app purchase** — Google Play Billing must not be used for it, and
+  must not be introduced unless that changes. See the declaration text below.
 - **Health apps:** No (blood group is just a detail on someone's profile).
 - **Data safety:** see below.
 - **Account deletion:** *Yes, users can request deletion.* In the app: More →
@@ -126,7 +132,8 @@ and faces first.
 Does the app collect or share user data? **Yes, collects.** Is it all encrypted
 in transit? **Yes.** Can users ask for deletion? **Yes.**
 Shared with third parties: **No.** The services the app uses (Supabase, Firebase,
-Termii) process data on its behalf, which Play doesn't count as sharing.
+Termii, and Korapay for payments) process data on its behalf, which Play doesn't
+count as sharing.
 
 | Data type | Collected | Required? | Why |
 |---|---|---|---|
@@ -136,7 +143,7 @@ Termii) process data on its behalf, which Play doesn't count as sharing.
 | Personal info → User IDs | Yes | Required | Account management |
 | Personal info → Other info (dates, places, family relations, education, work) | Yes | Optional | App functionality |
 | Health and fitness → Health info (blood group, genotype) | Yes | Optional | App functionality |
-| Financial info → Other financial info (welfare fund payments, receipts) | Yes | Optional | App functionality |
+| Financial info → Other financial info (dues and cause contributions paid through Korapay: amount, reference, gateway fee) | Yes | Optional | App functionality |
 | Messages → Other in-app messages (comments, mentorship) | Yes | Optional | App functionality |
 | Photos and videos → Photos | Yes | Optional | App functionality |
 | Audio → Voice or sound recordings (elders' stories) | Yes | Optional | App functionality |
@@ -146,6 +153,36 @@ Termii) process data on its behalf, which Play doesn't count as sharing.
 
 Not collected: location, contacts, calendar, files, web history, crash logs,
 advertising ID.
+
+Card and bank details are entered on Korapay's own checkout and never reach the
+app's database, so they are not declared.
+
+### Financial features declaration
+
+Tick **Other**, not *Crowdfunding and chit funds*: a chit fund is a licensed
+financial product in several jurisdictions, and ticking it invites a licensing
+request a private family app can't satisfy. Paste this if Play asks you to
+describe it:
+
+```
+Private, invitation-only family app. Family members may optionally pay their
+monthly welfare dues or contribute to family welfare causes (school fees,
+hospital bills, reunions) through a licensed Nigerian payment gateway (Korapay),
+by card or bank transfer. Funds are collected into the family's own welfare fund
+account; payouts are made by the family committee from the gateway's dashboard.
+The app does not lend, does not extend credit, does not sell or trade
+investments, cryptocurrencies or other financial products, does not transmit
+money between unrelated users, and charges no fee of its own. Paying does not
+unlock any app feature or content.
+```
+
+This declaration is two steps, and step 2 asks for documentation. Expect a
+request for supporting material — that is normal review routing, not a
+rejection.
+
+The exemption above depends on paying unlocking nothing. If a contribution ever
+gates content or a feature, it becomes an in-app purchase of digital content and
+Google Play Billing becomes mandatory.
 
 ## 6. Test, then release
 
