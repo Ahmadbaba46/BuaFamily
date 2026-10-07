@@ -5,6 +5,7 @@ import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
 import 'package:bua_family/models/details.dart';
 import 'package:bua_family/models/messages.dart';
+import 'package:bua_family/models/report.dart';
 import 'package:bua_family/models/social.dart';
 import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/screens/admin_screen.dart';
@@ -25,6 +26,15 @@ class _FakeRepo extends FamilyRepository {
   final sent = <(String, String)>[];
   final opened = <String>[];
   final read = <String>[];
+  final blocked = <String>[];
+  final reported = <(ReportKind, String)>[];
+
+  @override
+  Future<void> block(String userId) async => blocked.add(userId);
+
+  @override
+  Future<void> reportContent(ReportKind kind, String targetId, ReportReason reason, {String? note}) async =>
+      reported.add((kind, targetId));
 
   @override
   Future<void> sendDm(String threadId, String body) async => sent.add((threadId, body));
@@ -64,7 +74,10 @@ void main() {
   ];
 
   Widget app(Widget home,
-          {_FakeRepo? repo, List<DmMessage> messages = const [], AppSettings settings = const AppSettings()}) =>
+          {_FakeRepo? repo,
+          List<DmMessage> messages = const [],
+          AppSettings settings = const AppSettings(),
+          Set<String> blocked = const {}}) =>
       ProviderScope(
         overrides: [
           if (repo != null) repositoryProvider.overrideWithValue(repo),
@@ -78,6 +91,7 @@ void main() {
                 'u3': const Member(userId: 'u3', displayName: 'Bello', personId: 'bello'),
               }),
           dmThreadsProvider.overrideWith((ref) => Stream.value(threads)),
+          blockedProvider.overrideWith((ref) async => blocked),
           dmMessagesProvider.overrideWith((ref, id) => Stream.value(messages)),
           photoUrlProvider.overrideWith((ref, path) => Completer<String>().future),
           detailsProvider.overrideWith((ref, id) async => const PersonDetails()),
@@ -187,5 +201,44 @@ void main() {
     await tester.pumpWidget(app(const PersonScreen(personId: 'musa'), settings: off));
     await tester.pumpAndSettle();
     expect(find.text('Message'), findsNothing);
+  });
+
+  testWidgets('report a message, or block the member', (tester) async {
+    final repo = _FakeRepo();
+    await tester.pumpWidget(app(const DmScreen(threadId: 't1'), repo: repo, messages: [
+      DmMessage(id: 'm1', threadId: 't1', authorId: 'u1', body: 'Salam Baba', createdAt: now.subtract(const Duration(hours: 2))),
+      DmMessage(id: 'm2', threadId: 't1', authorId: 'u2', body: 'Something nasty', createdAt: now),
+    ]));
+    await tester.pumpAndSettle();
+    await tester.longPress(find.text('Salam Baba'));
+    await tester.pumpAndSettle();
+    expect(find.text('Report this message'), findsNothing, reason: 'not your own messages');
+
+    await tester.longPress(find.text('Something nasty'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Report this message'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Abuse, harassment or threats'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Send report'));
+    await tester.tap(find.text('Send report'));
+    await tester.pumpAndSettle();
+    expect(repo.reported, [(ReportKind.message, 'm2')]);
+
+    await tester.tap(find.byType(PopupMenuButton<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Block'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yes'));
+    await tester.pumpAndSettle();
+    expect(repo.blocked, ['u2']);
+  });
+
+  testWidgets('a blocked member: no way to write until unblocked', (tester) async {
+    await tester.pumpWidget(app(const DmScreen(threadId: 't1'), repo: _FakeRepo(), blocked: {'u2'}));
+    await tester.pumpAndSettle();
+    expect(find.text('You blocked musa. Unblock to send messages again.'), findsOneWidget);
+    expect(find.byType(TextField), findsNothing);
+    expect(find.text('Unblock'), findsOneWidget);
   });
 }

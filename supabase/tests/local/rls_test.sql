@@ -1937,6 +1937,85 @@ reset role;
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 44. Reporting to admins, and blocking.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Something nobody should post');
+reset role;
+select id as bad_post from public.posts where body = 'Something nobody should post' \gset
+select m.id as bad_msg from public.dm_messages m where m.author_id = :member2_id and m.body = 'Lafiya lau!' \gset
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.report_content('post', %L, 'whatever')$$, :'bad_post'), 'a reason is needed');
+select test.expect_error(format($$select public.report_content('post', %L, 'abuse')$$, gen_random_uuid()), 'only things that exist');
+select public.report_content('post', :'bad_post', 'child_safety', 'Please look at this');
+select public.report_content('post', :'bad_post', 'abuse');
+select test.assert((select count(*) = 1 and bool_and(reason = 'abuse' and note = 'Please look at this')
+  from public.reports where target_id = :'bad_post'), 'reporting again updates the same open report');
+select public.report_content('message', :'bad_msg', 'abuse');
+select test.assert((select count(*) = 2 from public.reports), 'members see their own reports');
+select test.expect_error($$update public.reports set status = 'dismissed'$$, 'members cannot change reports');
+select test.expect_error($$insert into public.reports (kind, target_id, reason) values ('post', gen_random_uuid(), 'spam')$$,
+  'reports are only made through report_content');
+reset role;
+select test.assert((select status = 'open' from public.reports where target_id = :'bad_post'), 'still open');
+
+-- Someone else's message, or your own things, can't be reported.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.report_content('message', %L, 'abuse')$$, :'bad_msg'),
+  'only people in the conversation can report a message');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.report_content('post', %L, 'spam')$$, :'bad_post'), 'not your own');
+select test.assert((select count(*) = 0 from public.reports), 'the reported person does not see the reports');
+reset role;
+
+-- Admins hear about it and see what was reported, even a private message.
+select test.assert((select count(*) = 1 from public.notifications where user_id = :admin_id and kind = 'content_report'
+  and data ->> 'kind' = 'post'), 'admins are told');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select snapshot ->> 'body' = 'Lafiya lau!' and target_user = :member2_id
+  from public.reports where kind = 'message'), 'admins see the reported message and who wrote it');
+select test.assert((select link = '/posts/' || :'bad_post' from public.reports where kind = 'post'), 'and where it is');
+delete from public.posts where id = :'bad_post';
+select public.admin_resolve_report((select id from public.reports where kind = 'post'), 'removed');
+select test.assert((select status = 'removed' and reviewed_by = :admin_id and snapshot ->> 'body' = 'Something nobody should post'
+  from public.reports where kind = 'post'), 'resolved, and the copy stays after the content is gone');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_resolve_report(%L, 'dismissed')$$,
+  (select id from public.reports where kind = 'message')), 'only admins resolve reports');
+
+-- Blocking: neither can message the other.
+insert into public.blocks (blocked_id) values (:member2_id);
+select test.expect_error(format($$insert into public.blocks (blocker_id, blocked_id) values (%L, %L)$$, :member2_id, :member_id),
+  'you only block for yourself');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.blocks), 'the blocked person does not see the block');
+select test.expect_error(format($$insert into public.dm_messages (thread_id, body) values (%L, 'hello?')$$,
+  (select id from public.dm_threads where :member_id in (user_a, user_b) and :member2_id in (user_a, user_b))),
+  'a blocked person cannot send');
+select test.expect_error(format($$select public.dm_open(%L)$$, :member_id), 'or start a conversation');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.dm_open(%L)$$, :member2_id), 'nor can the one who blocked');
+delete from public.blocks where blocked_id = :member2_id;
+insert into public.dm_messages (thread_id, body)
+values (public.dm_open(:member2_id), 'Sorry, unblocked you');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

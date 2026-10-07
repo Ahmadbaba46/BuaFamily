@@ -5,11 +5,14 @@ import '../theme.dart';
 
 /// One message: mine on the right in green, theirs on the left.
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({super.key, required this.text, required this.at, required this.mine});
+  const ChatBubble({super.key, required this.text, required this.at, required this.mine, this.onLongPress});
 
   final String text;
   final DateTime at;
   final bool mine;
+
+  /// Holding the message (e.g. to report it).
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,9 @@ class ChatBubble extends StatelessWidget {
       alignment: mine ? Alignment.centerRight : Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.78),
-        child: Container(
+        child: GestureDetector(
+          onLongPress: onLongPress,
+          child: Container(
           margin: const EdgeInsets.symmetric(vertical: 4),
           padding: const EdgeInsets.fromLTRB(14, 9, 14, 7),
           decoration: BoxDecoration(
@@ -34,11 +39,14 @@ class ChatBubble extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: SelectableText(text, style: const TextStyle(fontSize: 15, height: 1.4)),
+              child: onLongPress == null
+                  ? SelectableText(text, style: const TextStyle(fontSize: 15, height: 1.4))
+                  : Text(text, style: const TextStyle(fontSize: 15, height: 1.4)),
             ),
             const SizedBox(height: 2),
             Text(l.ago(at), style: TextStyle(fontSize: 11, color: Bua.inkSubtle)),
           ]),
+          ),
         ),
       ),
     );

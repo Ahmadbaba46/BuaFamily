@@ -41,6 +41,10 @@ const en: Texts = {
     s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
   direct_message: (d) => `${s(d, "name") || "New message"}: “${s(d, "body")}”`,
+  content_report: (d) =>
+    s(d, "reason") === "child_safety"
+      ? "URGENT: a child safety concern was reported. Please review it now."
+      : "Something was reported to the admins. Tap to review.",
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {
@@ -124,6 +128,10 @@ const ha: Texts = {
     s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
   direct_message: (d) => `${s(d, "name") || "Sabon saƙo"}: “${s(d, "body")}”`,
+  content_report: (d) =>
+    s(d, "reason") === "child_safety"
+      ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."
+      : "An kai rahoton wani abu ga shugabanni. Taɓa don dubawa.",
   occasion: (d) => {
     const o = s(d, "occasion");
     if (d.eve === true) {

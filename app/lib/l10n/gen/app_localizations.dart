@@ -8388,6 +8388,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app\'s servers don\'t have.'**
   String get korapayPayoutsNote;
+
+  /// No description provided for @reportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get reportAction;
+
+  /// No description provided for @reportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the family\'s admins see reports, and they won\'t tell anyone who reported. What you report is copied for them, so they can see it even if it\'s deleted.'**
+  String get reportIntro;
+
+  /// No description provided for @reportReasonChildSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Child safety concern'**
+  String get reportReasonChildSafety;
+
+  /// No description provided for @reportReasonAbuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Abuse, harassment or threats'**
+  String get reportReasonAbuse;
+
+  /// No description provided for @reportReasonSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam or a scam'**
+  String get reportReasonSpam;
+
+  /// No description provided for @reportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportReasonOther;
+
+  /// No description provided for @reportChildSafetyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'If a child is in danger now, call the police first. The admins are told at once, and we report child abuse to the authorities.'**
+  String get reportChildSafetyNote;
+
+  /// No description provided for @reportNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything the admins should know (optional)'**
+  String get reportNoteHint;
+
+  /// No description provided for @reportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you. The admins will look at it.'**
+  String get reportSent;
+
+  /// No description provided for @commentOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment options'**
+  String get commentOptions;
+
+  /// No description provided for @reportMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Report this message'**
+  String get reportMessage;
+
+  /// No description provided for @reportMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Report this member'**
+  String get reportMember;
+
+  /// No description provided for @copyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyText;
+
+  /// No description provided for @block.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get block;
+
+  /// No description provided for @unblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get unblock;
+
+  /// No description provided for @confirmBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}? Neither of you will be able to message the other. They aren\'t told.'**
+  String confirmBlock(String name);
+
+  /// No description provided for @blockedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is blocked.'**
+  String blockedNote(String name);
+
+  /// No description provided for @youBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'You blocked {name}. Unblock to send messages again.'**
+  String youBlocked(String name);
+
+  /// No description provided for @cantMessageMember.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t message this member.'**
+  String get cantMessageMember;
+
+  /// No description provided for @reportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reportsTitle;
+
+  /// No description provided for @reportsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Things members reported. Remove what breaks the family\'s rules, suspend or delete the account if needed, and report child abuse to the authorities (see the child safety page).'**
+  String get reportsIntro;
+
+  /// No description provided for @noOpenReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports waiting.'**
+  String get noOpenReports;
+
+  /// No description provided for @reportsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Handled'**
+  String get reportsDone;
+
+  /// No description provided for @reportKindPost.
+  ///
+  /// In en, this message translates to:
+  /// **'A moment'**
+  String get reportKindPost;
+
+  /// No description provided for @reportKindPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'A photo'**
+  String get reportKindPhoto;
+
+  /// No description provided for @reportKindComment.
+  ///
+  /// In en, this message translates to:
+  /// **'A comment'**
+  String get reportKindComment;
+
+  /// No description provided for @reportKindProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'A profile'**
+  String get reportKindProfile;
+
+  /// No description provided for @reportKindMember.
+  ///
+  /// In en, this message translates to:
+  /// **'A member'**
+  String get reportKindMember;
+
+  /// No description provided for @reportKindMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A private message'**
+  String get reportKindMessage;
+
+  /// No description provided for @reportStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get reportStatusOpen;
+
+  /// No description provided for @reportStatusRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get reportStatusRemoved;
+
+  /// No description provided for @reportStatusActioned.
+  ///
+  /// In en, this message translates to:
+  /// **'Handled'**
+  String get reportStatusActioned;
+
+  /// No description provided for @reportStatusDismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissed'**
+  String get reportStatusDismissed;
+
+  /// No description provided for @reportedAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'By {name}'**
+  String reportedAuthor(String name);
+
+  /// No description provided for @reportedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'reported by {name}'**
+  String reportedBy(String name);
+
+  /// No description provided for @reportNoteFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: {note}'**
+  String reportNoteFrom(String note);
+
+  /// No description provided for @reopen.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get reopen;
+
+  /// No description provided for @openLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openLabel;
+
+  /// No description provided for @removeContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get removeContent;
+
+  /// No description provided for @confirmRemoveReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove it for everyone? This can\'t be undone.'**
+  String get confirmRemoveReported;
+
+  /// No description provided for @suspendAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend account'**
+  String get suspendAccount;
+
+  /// No description provided for @confirmSuspendReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspend {name}\'s account? They can\'t use the app until an admin activates them again.'**
+  String confirmSuspendReported(String name);
+
+  /// No description provided for @markHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark handled'**
+  String get markHandled;
+
+  /// No description provided for @dismissReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get dismissReport;
+
+  /// No description provided for @notifReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Something was reported to the admins. Tap to review.'**
+  String get notifReport;
+
+  /// No description provided for @notifReportChildSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'URGENT: a child safety concern was reported. Please review it now.'**
+  String get notifReportChildSafety;
+
+  /// No description provided for @reportSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report to the admins'**
+  String get reportSheetTitle;
 }
 
 class _AppLocalizationsDelegate

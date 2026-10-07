@@ -10,11 +10,13 @@ import '../../models/account.dart';
 import '../../models/details.dart';
 import '../../models/family_graph.dart';
 import '../../models/person.dart';
+import '../../models/report.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import 'messages_screen.dart' show openDmWith;
 import '../widgets/claim_card.dart';
 import '../widgets/portrait_viewer.dart';
+import '../widgets/report_sheet.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/form_dialog.dart';
@@ -93,6 +95,7 @@ class _PersonView extends ConsumerWidget {
           PopupMenuItem(value: 'tree', child: Text(l.viewInTree)),
           if (profile?.personId == null && profile?.requestedPersonId != person.id)
             PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
+          if (!isMe) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
           if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
         ],
       ),
@@ -287,6 +290,8 @@ class _PersonView extends ConsumerWidget {
     final l = context.l10n;
     final repo = ref.read(repositoryProvider);
     switch (action) {
+      case 'report':
+        await reportToAdmins(context, ref, ReportKind.profile, person.id);
       case 'tree':
         context.go('/tree?focus=${person.id}');
       case 'me':

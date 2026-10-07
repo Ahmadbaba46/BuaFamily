@@ -5157,4 +5157,168 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get korapayPayoutsNote =>
       'Payouts are made by the treasurer in the Korapay dashboard and recorded here as before: Korapay only accepts payout requests from a fixed IP address, which the app\'s servers don\'t have.';
+
+  @override
+  String get reportAction => 'Report';
+
+  @override
+  String get reportIntro =>
+      'Only the family\'s admins see reports, and they won\'t tell anyone who reported. What you report is copied for them, so they can see it even if it\'s deleted.';
+
+  @override
+  String get reportReasonChildSafety => 'Child safety concern';
+
+  @override
+  String get reportReasonAbuse => 'Abuse, harassment or threats';
+
+  @override
+  String get reportReasonSpam => 'Spam or a scam';
+
+  @override
+  String get reportReasonOther => 'Something else';
+
+  @override
+  String get reportChildSafetyNote =>
+      'If a child is in danger now, call the police first. The admins are told at once, and we report child abuse to the authorities.';
+
+  @override
+  String get reportNoteHint => 'Anything the admins should know (optional)';
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent => 'Thank you. The admins will look at it.';
+
+  @override
+  String get commentOptions => 'Comment options';
+
+  @override
+  String get reportMessage => 'Report this message';
+
+  @override
+  String get reportMember => 'Report this member';
+
+  @override
+  String get copyText => 'Copy';
+
+  @override
+  String get block => 'Block';
+
+  @override
+  String get unblock => 'Unblock';
+
+  @override
+  String confirmBlock(String name) {
+    return 'Block $name? Neither of you will be able to message the other. They aren\'t told.';
+  }
+
+  @override
+  String blockedNote(String name) {
+    return '$name is blocked.';
+  }
+
+  @override
+  String youBlocked(String name) {
+    return 'You blocked $name. Unblock to send messages again.';
+  }
+
+  @override
+  String get cantMessageMember => 'You can\'t message this member.';
+
+  @override
+  String get reportsTitle => 'Reports';
+
+  @override
+  String get reportsIntro =>
+      'Things members reported. Remove what breaks the family\'s rules, suspend or delete the account if needed, and report child abuse to the authorities (see the child safety page).';
+
+  @override
+  String get noOpenReports => 'No reports waiting.';
+
+  @override
+  String get reportsDone => 'Handled';
+
+  @override
+  String get reportKindPost => 'A moment';
+
+  @override
+  String get reportKindPhoto => 'A photo';
+
+  @override
+  String get reportKindComment => 'A comment';
+
+  @override
+  String get reportKindProfile => 'A profile';
+
+  @override
+  String get reportKindMember => 'A member';
+
+  @override
+  String get reportKindMessage => 'A private message';
+
+  @override
+  String get reportStatusOpen => 'Open';
+
+  @override
+  String get reportStatusRemoved => 'Removed';
+
+  @override
+  String get reportStatusActioned => 'Handled';
+
+  @override
+  String get reportStatusDismissed => 'Dismissed';
+
+  @override
+  String reportedAuthor(String name) {
+    return 'By $name';
+  }
+
+  @override
+  String reportedBy(String name) {
+    return 'reported by $name';
+  }
+
+  @override
+  String reportNoteFrom(String note) {
+    return 'Note: $note';
+  }
+
+  @override
+  String get reopen => 'Reopen';
+
+  @override
+  String get openLabel => 'Open';
+
+  @override
+  String get removeContent => 'Remove';
+
+  @override
+  String get confirmRemoveReported =>
+      'Remove it for everyone? This can\'t be undone.';
+
+  @override
+  String get suspendAccount => 'Suspend account';
+
+  @override
+  String confirmSuspendReported(String name) {
+    return 'Suspend $name\'s account? They can\'t use the app until an admin activates them again.';
+  }
+
+  @override
+  String get markHandled => 'Mark handled';
+
+  @override
+  String get dismissReport => 'Dismiss';
+
+  @override
+  String get notifReport =>
+      'Something was reported to the admins. Tap to review.';
+
+  @override
+  String get notifReportChildSafety =>
+      'URGENT: a child safety concern was reported. Please review it now.';
+
+  @override
+  String get reportSheetTitle => 'Report to the admins';
 }

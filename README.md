@@ -54,6 +54,13 @@ share moments and photos, plan family events, and keep everyone's details
   read them: not admins, not backups. Admins can turn messages off for the
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
+  A member can block someone so neither can message the other.
+- **Reporting:** every moment, photo, comment, profile and message can be
+  reported to the admins (its menu, or hold a message), with a reason; a
+  child safety report reaches admins as urgent. Admins review them under
+  Admin → Reports: open, remove, suspend the account, or dismiss. What was
+  reported is copied into the report. See the
+  [child safety standards](app/web/child-safety.html).
 - **Home feed:** today's birthdays and remembrances, pinned notices, and
   moments from relatives with photos, people tagged, "Ma sha Allah" and comments.
 - **Albums:** shared family albums (weddings, Sallah, old photos), grouped by
@@ -232,6 +239,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `push_tokens` | The phones and browsers each member turned notifications on for |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
+| `reports`, `blocks` | What members reported to the admins (with a copy of it), and who blocked whom in messages |
 | `online_payments` | Payments made in the app through Korapay, each becoming a confirmed contribution once paid |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
 | `stories` | Elders' recorded stories: who is speaking, language, transcript (audio in the private `stories` bucket) |
