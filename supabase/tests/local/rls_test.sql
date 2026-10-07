@@ -2090,6 +2090,74 @@ select test.assert((select private.backup_data() -> 'khatm_parts' @> jsonb_build
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 46. Merging a person entered twice.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+-- Kabiru, son of Ahmadu, entered twice: once with Hauwa as mother and a skill,
+-- once with a birth date, a wife, a child, the same skill and another.
+insert into test.ids values
+  ('kab1', public.create_person_with_relation('{"first_name":"Kabiru","last_name":"Bua","sex":"male"}',
+     json_build_object('type','child','person_id',(select id from test.ids where name='grandpa'),
+                       'other_parent_id',(select id from test.ids where name='hauwa'))::jsonb)),
+  ('kab2', public.create_person_with_relation('{"first_name":"Kabir","sex":"unknown","birth_date":"1960-03-01","birth_place":"Kano"}',
+     json_build_object('type','child','person_id',(select id from test.ids where name='grandpa'))::jsonb));
+insert into test.ids values
+  ('kabwife', public.create_person_with_relation('{"first_name":"Ladi","sex":"female"}',
+     json_build_object('type','spouse','person_id',(select id from test.ids where name='kab2'))::jsonb));
+insert into test.ids values
+  ('kabson', public.create_person_with_relation('{"first_name":"Yusuf","sex":"male"}',
+     json_build_object('type','child','person_id',(select id from test.ids where name='kab2'))::jsonb));
+insert into public.person_skills (person_id, skill) values
+  ((select id from test.ids where name = 'kab1'), 'Farming'),
+  ((select id from test.ids where name = 'kab2'), 'Farming'),
+  ((select id from test.ids where name = 'kab2'), 'Tailoring');
+reset role;
+select id as kab1 from test.ids where name = 'kab1' \gset
+select id as kab2 from test.ids where name = 'kab2' \gset
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_merge_persons(%L, %L)$$, :'kab1', :'kab2'), 'only admins merge');
+select test.expect_error(format($$insert into public.not_duplicates (person_a, person_b) values (%L, %L)$$,
+  least(:'kab1'::uuid, :'kab2'::uuid), greatest(:'kab1'::uuid, :'kab2'::uuid)), 'only admins mark pairs');
+reset role;
+
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_merge_persons(%L, %L)$$, :'kab1', :'kab1'), 'two different people');
+select test.expect_error(format($$select public.admin_merge_persons(%L, %L)$$,
+  (select id from test.ids where name = 'hauwa'), :'kab1'), 'a woman and a man are not merged');
+select public.admin_merge_persons(:'kab1', :'kab2');
+reset role;
+select test.assert((select birth_date = '1960-03-01' and birth_place = 'Kano' and last_name = 'Bua' and first_name = 'Kabiru'
+  from public.persons where id = :'kab1'), 'the kept record keeps its details and gains the missing ones');
+select test.assert((select count(*) = 1 from public.unions
+  where :'kab1' in (partner1_id, partner2_id)), 'the wife moved to the kept record');
+select test.assert((select count(*) = 1 from public.parent_child
+  where parent_id = :'kab1' and child_id = (select id from test.ids where name = 'kabson')), 'and the child');
+select test.assert((select count(*) = 2 from public.parent_child where child_id = :'kab1'),
+  'parents stay two (father once, mother)');
+select test.assert((select array_agg(skill order by skill) = '{Farming,Tailoring}' from public.person_skills
+  where person_id = :'kab1'), 'skills joined without repeats');
+
+-- The duplicate is then deleted; what's left goes with it.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+delete from public.persons where id = :'kab2';
+insert into public.not_duplicates (person_a, person_b)
+values (least((select id from test.ids where name = 'musa'), (select id from test.ids where name = 'sani')),
+        greatest((select id from test.ids where name = 'musa'), (select id from test.ids where name = 'sani')));
+select test.assert((select count(*) = 1 from public.not_duplicates), 'admins can say two people are different');
+reset role;
+select test.assert((select count(*) = 0 from public.persons where id = :'kab2'), 'the duplicate is gone');
+select test.assert((select count(*) = 2 from public.parent_child where child_id = :'kab1'), 'the kept links remain');
+select test.assert((select exists (select 1 from public.activity_log where action = 'merge' and target = :'kab1')),
+  'the merge is in the activity log');
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

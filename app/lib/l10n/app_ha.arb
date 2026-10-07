@@ -1475,5 +1475,22 @@
   "khatmStartFor": "Fara saukar Alƙur'ani don {name}",
   "notifKhatm": "Sabuwar saukar Alƙur'ani: {title}. Ɗauki juz'i.",
   "notifKhatmCompleted": "An kammala saukar Alƙur'ani “{title}”: an karanta juz'i 30 duka. Allah ya karɓa.",
-  "notifKhatmReminder": "Tunatarwa: gobe za a kammala “{title}” (juz'inka: {juz})."
+  "notifKhatmReminder": "Tunatarwa: gobe za a kammala “{title}” (juz'inka: {juz}).",
+  "duplicatesTitle": "Nemo masu maimaituwa",
+  "duplicatesIntro": "Mutanen da wataƙila an saka su sau biyu a bishiyar: sunaye masu kama da juna da ranaku masu dacewa, sau da yawa iyaye ko ma’aurata ɗaya. Haɗa su, ka zaɓi wanda za a riƙe; bayanan ɗayan za su cike gibi, kuma iyayensa, ’ya’yansa, ma’auratansa, hotuna da sauran abubuwa duka za su koma.",
+  "noDuplicates": "Ba a sami masu maimaituwa ba.",
+  "dupSameName": "Suna ɗaya",
+  "dupSimilarName": "Suna mai kama",
+  "dupSameParents": "Iyaye ɗaya",
+  "dupSameSpouse": "Mata/miji ɗaya",
+  "dupSameBirthYear": "Shekarar haihuwa ɗaya",
+  "dupSameLastName": "Sunan iyali ɗaya",
+  "notTheSamePerson": "Mutane daban ne",
+  "mergeAction": "Haɗa",
+  "mergeWith": "Haɗa da…",
+  "mergeWhichToKeep": "Wanne za a riƙe?",
+  "mergeExplain": "Bayanan ɗayan za su cike abin da wannan ba shi da shi, kuma duk alaƙoƙinsa (iyaye, ’ya’ya, ma’aurata, hotuna, tunawa, asusu) za su koma nan. Sannan a goge shi. Ba za a iya dawowa ba.",
+  "keepPerson": "Riƙe {name}",
+  "mergedNote": "An haɗa {removed} cikin {kept}.",
+  "hasAccount": "Yana da asusu"
 }

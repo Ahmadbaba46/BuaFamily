@@ -152,6 +152,12 @@ class MoreScreen extends ConsumerWidget {
                   title: l.checkTree,
                   onTap: () => context.push('/admin/tree-check'),
                 ),
+                const InsetDivider(),
+                NavRow(
+                  icon: Icons.merge,
+                  title: l.duplicatesTitle,
+                  onTap: () => context.push('/admin/duplicates'),
+                ),
               ]),
             ),
           ],

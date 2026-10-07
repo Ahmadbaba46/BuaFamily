@@ -31,6 +31,7 @@ import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
 import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
+import 'ui/screens/duplicates_screen.dart';
 import 'ui/screens/khatm_screen.dart';
 import 'ui/screens/messages_screen.dart';
 import 'ui/screens/online_payment_screen.dart';
@@ -194,6 +195,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/admin/metrics', builder: (_, _) => const MetricsScreen()),
       GoRoute(path: '/admin/activity', builder: (_, _) => const ActivityScreen()),
       GoRoute(path: '/admin/reports', builder: (_, _) => const ReportsScreen()),
+      GoRoute(path: '/admin/duplicates', builder: (_, _) => const DuplicatesScreen()),
       GoRoute(
         path: '/admin/import',
         redirect: (_, s) => s.extra is ImportPlan ? null : '/admin/data',
