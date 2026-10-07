@@ -397,6 +397,9 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
       _trackPresence(false);
     } else if (state == AppLifecycleState.resumed) {
       _trackPresence(ref.read(profileProvider)?.isActive == true);
+      if (ref.read(profileProvider)?.isActive == true) {
+        ref.read(repositoryProvider).markDmDelivered().catchError((_) {});
+      }
       final away = _leftAt == null ? Duration.zero : DateTime.now().difference(_leftAt!);
       _leftAt = null;
       if (away > const Duration(seconds: 10) && ref.read(profileProvider)?.isActive == true) {
@@ -480,6 +483,10 @@ class _PushBindingState extends ConsumerState<_PushBinding> with WidgetsBindingO
   /// as a banner (the bell updates too), with a button to open the page.
   void _showForeground(ForegroundPush push) {
     if (push.id != null) ref.read(repositoryProvider).pushAck(push.id!).catchError((_) {});
+    // A message reached this phone: the sender sees two grey ticks.
+    if (push.link?.startsWith('/messages/') ?? false) {
+      ref.read(repositoryProvider).markDmDelivered().catchError((_) {});
+    }
     final messenger = rootMessengerKey.currentState;
     if (messenger == null || (push.title.isEmpty && push.body.isEmpty)) return;
     final l = messenger.context.l10n;

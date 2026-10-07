@@ -50,6 +50,8 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.duesReminder =>
         l.notifDuesReminder(n.str('title') ?? '', naira((n.data['owed'] as num?) ?? 0)),
       NotificationKind.weeklySummary => _weeklyText(l, n),
+      NotificationKind.directMessage when n.str('message_kind') == 'reaction' =>
+        l.dmReactionNotice(n.str('name') ?? '', n.str('body') ?? ''),
       NotificationKind.directMessage => l.notifDirectMessage(
           n.str('name') ?? '',
           switch (n.str('message_kind')) {

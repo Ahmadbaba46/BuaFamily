@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:bua_family/data/repository.dart';
 import 'package:bua_family/l10n/l10n.dart';
@@ -12,6 +13,7 @@ import 'package:bua_family/ui/screens/admin_screen.dart';
 import 'package:bua_family/ui/screens/messages_screen.dart';
 import 'package:bua_family/ui/screens/person_screen.dart';
 import 'package:bua_family/ui/widgets/dm_bubble.dart';
+import 'package:bua_family/ui/widgets/emoji_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,6 +35,10 @@ class _FakeRepo extends FamilyRepository {
   final read = <String>[];
   final blocked = <String>[];
   final reported = <(ReportKind, String)>[];
+  final reacted = <(String, String?)>[];
+
+  @override
+  Future<void> reactDm(String messageId, String threadId, String? emoji) async => reacted.add((messageId, emoji));
 
   @override
   Future<void> block(String userId) async => blocked.add(userId);
@@ -113,6 +119,7 @@ void main() {
           dmThreadsProvider.overrideWith((ref) => Stream.value(threads)),
           blockedProvider.overrideWith((ref) async => blocked),
           dmMessagesProvider.overrideWith((ref, id) => Stream.value(messages)),
+          dmReactionsProvider.overrideWith((ref, id) => Stream.value(const [])),
           photoUrlProvider.overrideWith((ref, path) => Completer<String>().future),
           detailsProvider.overrideWith((ref, id) async => const PersonDetails()),
           requestsProvider.overrideWith((ref, s) async => const []),
@@ -174,7 +181,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('musa'), findsOneWidget);
     expect(find.text('Only the two of you can see these messages.'), findsOneWidget);
-    expect(find.text('Salam Baba'), findsOneWidget);
+    expect(find.textContaining('Salam Baba'), findsOneWidget);
     expect(repo.read, contains('t1'));
     await tester.enterText(find.byType(TextField), 'Insha Allah, yes');
     await tester.pump();
@@ -231,14 +238,14 @@ void main() {
       DmMessage(id: 'm2', threadId: 't1', authorId: 'u2', body: 'Something nasty', createdAt: now),
     ]));
     await tester.pumpAndSettle();
-    await tester.longPress(find.text('Salam Baba'));
+    await tester.longPress(find.textContaining('Salam Baba'));
     await tester.pumpAndSettle();
     expect(find.text('Report this message'), findsNothing, reason: 'not your own messages');
     expect(find.text('Delete for everyone'), findsOneWidget);
     Navigator.of(tester.element(find.text('Delete for everyone'))).pop();
     await tester.pumpAndSettle();
 
-    await tester.longPress(find.text('Something nasty'));
+    await tester.longPress(find.textContaining('Something nasty'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Report this message'));
     await tester.pumpAndSettle();
@@ -266,7 +273,20 @@ void main() {
     expect(find.text('Unblock'), findsOneWidget);
   });
 
-  testWidgets('WhatsApp-style: ticks, typing…, reply, delete for everyone, photos and voice notes', (tester) async {
+  test('emoji-only messages show large; voice levels are kept small', () {
+    expect(isBigEmoji('❤️'), isTrue);
+    expect(isBigEmoji('😂😂👍'), isTrue);
+    expect(isBigEmoji('😂😂😂😂'), isFalse);
+    expect(isBigEmoji('Salam ❤️'), isFalse);
+    expect(isBigEmoji(''), isFalse);
+    final w = compactWaveform([for (var i = 0; i < 300; i++) i.isEven ? 1.0 : 0.0]);
+    expect(w.length, 48);
+    expect(w.every((v) => v >= 0 && v <= 100), isTrue);
+    expect(levelFromDb(-60), 0);
+    expect(levelFromDb(0), 1);
+  });
+
+  testWidgets('WhatsApp-style: ticks, typing…, swipe to reply, reactions, emoji, delete for everyone', (tester) async {
     tester.view.physicalSize = const Size(420, 1800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -300,6 +320,10 @@ void main() {
         dmThreadsProvider.overrideWith((ref) => Stream.value([thread])),
         blockedProvider.overrideWith((ref) async => const {}),
         dmMediaUrlProvider.overrideWith((ref, path) => Completer<String>().future),
+        dmReactionsProvider.overrideWith((ref, id) => Stream.value(const [
+              DmReaction(messageId: 'm3', userId: 'u2', emoji: '👍'),
+              DmReaction(messageId: 'm3', userId: 'u1', emoji: '❤️'),
+            ])),
         dmMessagesProvider.overrideWith((ref, id) => Stream.value([
               DmMessage(id: 'm1', threadId: 't1', authorId: 'u1', body: 'Old one', createdAt: now.subtract(const Duration(hours: 2))),
               DmMessage(id: 'm2', threadId: 't1', authorId: 'u2', body: 'Are you coming?', createdAt: now.subtract(const Duration(minutes: 40))),
@@ -327,9 +351,14 @@ void main() {
     expect(ticks(MessageStatus.delivered), findsOneWidget);
     expect(ticks(MessageStatus.sent), findsOneWidget);
     // A reply shows what it answers; a voice note its length; a deleted message says so.
-    expect(find.text('Are you coming?'), findsNWidgets(2));
+    expect(find.textContaining('Are you coming?'), findsNWidgets(2));
     expect(find.text('1:05'), findsOneWidget);
-    expect(find.text('This message was deleted'), findsOneWidget);
+    expect(find.textContaining('This message was deleted'), findsOneWidget);
+    // A voice note shows its waveform; older ones without levels get a steady shape.
+    expect(find.byType(VoiceWave), findsOneWidget);
+    // Reactions under the message.
+    expect(find.byType(ReactionsPill), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
     expect(find.text('Today'), findsOneWidget);
 
     // They are typing.
@@ -345,28 +374,78 @@ void main() {
     await tester.pump();
     expect(repo.pings, ['t1']);
 
-    // Reply to their question.
-    await tester.longPress(find.text('Are you coming?').first);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Reply'));
+    // Swipe their question to reply to it.
+    await tester.drag(find.byKey(const ValueKey('m2')), const Offset(120, 0));
     await tester.pumpAndSettle();
     expect(find.text('Replying to musa'), findsOneWidget);
+    // An emoji from the panel goes in at the cursor.
+    await tester.tap(find.byTooltip('Emoji'));
+    await tester.pumpAndSettle();
+    expect(find.byType(EmojiPanel), findsOneWidget);
+    await tester.tap(find.descendant(of: find.byType(EmojiPanel), matching: find.text('😀')));
+    await tester.pump();
+    expect(find.byTooltip('Keyboard'), findsOneWidget);
     await tester.tap(find.byTooltip('Send'));
     await tester.pumpAndSettle();
-    expect(repo.sent.last, ('t1', 'Alhamdulillah'));
+    expect(repo.sent.last, ('t1', 'Alhamdulillah😀'));
     expect(repo.replies.last, 'm2');
     expect(find.text('Replying to musa'), findsNothing);
 
     // An empty box offers a voice note instead of Send.
     expect(find.byTooltip('Voice note'), findsOneWidget);
 
+    // Long press to react; the one I chose again takes it off; tapping the
+    // reactions shows who.
+    await tester.longPress(find.textContaining('Are you coming?').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Reply'), findsNothing, reason: 'replying is a swipe now');
+    await tester.tap(find.text('🙏'));
+    await tester.pumpAndSettle();
+    expect(repo.reacted.last, ('m2', '🙏'));
+    await tester.longPress(find.textContaining('Yes!'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('❤️').last);
+    await tester.pumpAndSettle();
+    expect(repo.reacted.last, ('m3', null));
+    await tester.tap(find.byType(ReactionsPill));
+    await tester.pumpAndSettle();
+    expect(find.text('Tap yours to remove it'), findsOneWidget);
+    expect(find.widgetWithText(ListTile, 'musa'), findsOneWidget);
+    Navigator.of(tester.element(find.text('Tap yours to remove it'))).pop();
+    await tester.pumpAndSettle();
+
     // Delete my own message for everyone.
-    await tester.longPress(find.text('On my way'));
+    await tester.longPress(find.textContaining('On my way'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Delete for everyone'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Yes'));
     await tester.pumpAndSettle();
     expect(repo.deleted, ['m6']);
+  });
+
+  testWidgets('a photo is drawn from its saved copy, and offers a retry if it can\'t load', (tester) async {
+    // A 1×1 PNG.
+    final png = Uint8List.fromList(const [
+      137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, //
+      196, 137, 0, 0, 0, 13, 73, 68, 65, 84, 120, 156, 99, 248, 15, 4, 0, 9, 251, 3, 253, 227, 85, 242, 156, 0, 0, //
+      0, 0, 73, 69, 78, 68, 174, 66, 96, 130,
+    ]);
+    Widget photo(Future<Uint8List> Function() load) => ProviderScope(
+          key: UniqueKey(),
+          overrides: [dmMediaProvider.overrideWith((ref, path) => load())],
+          child: MaterialApp(
+            localizationsDelegates: localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(body: DmPhoto(path: 't1/u2/p.jpg')),
+          ),
+        );
+    await tester.pumpWidget(photo(() async => png));
+    await tester.pumpAndSettle();
+    expect(find.byType(Image), findsOneWidget);
+
+    await tester.pumpWidget(photo(() async => throw Exception('offline')));
+    await tester.pumpAndSettle();
+    expect(find.text('Retry'), findsOneWidget);
   });
 }

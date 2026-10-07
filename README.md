@@ -52,8 +52,14 @@ share moments and photos, plan family events, and keep everyone's details
 - **Messages:** private one-to-one conversations between family members, from
   Messages on Home or the Message button on a profile, WhatsApp-style:
   "typing…", ticks (one grey: sent, two grey: delivered to their phone, two
-  blue: read), photos (camera or gallery, with a caption), voice notes,
-  replies that quote a message, and delete for everyone. Only the two people
+  blue: read; "delivered" is marked when the notification reaches their phone,
+  even with the app closed), photos (camera or gallery, with a caption; kept
+  on the phone once seen, tap for full screen), voice notes with their
+  waveform (tap or drag it to jump), emoji (a panel in place of the keyboard;
+  a message of just one to three emoji shows large), reactions (long-press a
+  message; the sender is told), swipe a message right to reply to it, and
+  delete for everyone. Bubbles fit their words with the time tucked in at the
+  end, and a conversation opens at the newest message. Only the two people
   can read them (photos and voice notes too): not admins, not backups. Admins can turn messages off for the
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.

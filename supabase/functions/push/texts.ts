@@ -41,7 +41,9 @@ const en: Texts = {
     s(d, "name") ? `${s(d, "name")} asked for your guidance: “${s(d, "body")}”` : `Someone asked for your guidance: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Your mentorship"}: “${s(d, "body")}”`,
   direct_message: (d) =>
-    s(d, "message_kind") === "photo"
+    s(d, "message_kind") === "reaction"
+      ? `${s(d, "name") || "Someone"} reacted ${s(d, "body")} to your message`
+      : s(d, "message_kind") === "photo"
       ? `${s(d, "name") || "New message"}: 📷 ${s(d, "body") || "Photo"}`
       : s(d, "message_kind") === "voice"
       ? `${s(d, "name") || "New message"}: 🎤 Voice note`
@@ -139,7 +141,9 @@ const ha: Texts = {
     s(d, "name") ? `${s(d, "name")} ya nemi jagorarka: “${s(d, "body")}”` : `Wani ya nemi jagorarka: “${s(d, "body")}”`,
   mentor_reply: (d) => `${s(d, "name") || "Jagoranci"}: “${s(d, "body")}”`,
   direct_message: (d) =>
-    s(d, "message_kind") === "photo"
+    s(d, "message_kind") === "reaction"
+      ? `${s(d, "name") || "Wani"} ya yi martanin ${s(d, "body")} ga saƙonka`
+      : s(d, "message_kind") === "photo"
       ? `${s(d, "name") || "Sabon saƙo"}: 📷 ${s(d, "body") || "Hoto"}`
       : s(d, "message_kind") === "voice"
       ? `${s(d, "name") || "Sabon saƙo"}: 🎤 Saƙon murya`

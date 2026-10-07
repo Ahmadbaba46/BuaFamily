@@ -1513,5 +1513,13 @@
   "pause": "Dakata",
   "yesterday": "Jiya",
   "takePhoto": "Ɗauki hoto",
-  "chooseFromGallery": "Zaɓa daga hotuna"
+  "chooseFromGallery": "Zaɓa daga hotuna",
+  "dmCantPlay": "An kasa kunna wannan saƙon murya. Duba intanet ɗinka ka sake gwadawa.",
+  "dmChooseReaction": "Zaɓi martani",
+  "dmReactionNotice": "{name} ya yi martanin {emoji} ga saƙonka",
+  "dmEmoji": "Emoji",
+  "dmKeyboard": "Allon rubutu",
+  "dmMoreReactions": "Ƙarin martani",
+  "dmReactions": "Martani",
+  "dmTapToRemove": "Taɓa naka don cire shi"
 }

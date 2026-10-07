@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -15,6 +16,7 @@ import '../models/messages.dart';
 import '../models/metrics.dart';
 import '../models/notification.dart';
 import '../models/report.dart';
+import '../services/media_store.dart';
 import '../models/person.dart';
 import '../models/social.dart';
 import '../models/story.dart';
@@ -1089,6 +1091,7 @@ class FamilyRepository {
     required String extension,
     String caption = '',
     int? durationMs,
+    List<int>? waveform,
     String? replyTo,
   }) async {
     final ext = extension.toLowerCase().replaceAll('jpeg', 'jpg');
@@ -1102,8 +1105,11 @@ class FamilyRepository {
         'media_path': path,
         'body': caption.trim().isNotEmpty ? caption.trim() : (kind == DmKind.photo ? DmMessage.photoMark : DmMessage.voiceMark),
         'duration_ms': ?durationMs,
+        if (waveform != null && waveform.isNotEmpty) 'waveform': waveform,
         'reply_to': ?replyTo,
       });
+      // Show it straight away from this phone, without downloading it back.
+      unawaited(MediaStore.instance.write(path, bytes));
     } catch (_) {
       await _db.storage.from(dmBucket).remove([path]);
       rethrow;
@@ -1112,6 +1118,32 @@ class FamilyRepository {
 
   /// A short-lived link to a photo or voice note in a conversation.
   Future<String> dmMediaUrl(String path) => _db.storage.from(dmBucket).createSignedUrl(path, 60 * 60);
+
+  /// A photo or voice note: the copy on this phone, else downloaded (and kept).
+  Future<Uint8List> dmMediaBytes(String path) async {
+    final saved = await MediaStore.instance.read(path);
+    if (saved != null) return saved;
+    final bytes = await _db.storage.from(dmBucket).download(path);
+    unawaited(MediaStore.instance.write(path, bytes));
+    return bytes;
+  }
+
+  Stream<List<DmReaction>> dmReactions(String threadId) => _db
+      .from('dm_reactions')
+      .stream(primaryKey: ['message_id', 'user_id'])
+      .eq('thread_id', threadId)
+      .map((rows) => rows.map(DmReaction.fromJson).toList());
+
+  /// My reaction to a message: [emoji], or none (null).
+  Future<void> reactDm(String messageId, String threadId, String? emoji) async {
+    if (emoji == null) {
+      await _db.from('dm_reactions').delete().eq('message_id', messageId).eq('user_id', userId!);
+    } else {
+      await _db
+          .from('dm_reactions')
+          .upsert({'message_id': messageId, 'thread_id': threadId, 'user_id': userId, 'emoji': emoji});
+    }
+  }
 
   /// Delete for everyone (my own messages only).
   Future<void> deleteDm(DmMessage m) async {

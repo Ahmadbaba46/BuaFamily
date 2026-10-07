@@ -3705,5 +3705,23 @@
   "pause": "Pause",
   "yesterday": "Yesterday",
   "takePhoto": "Take a photo",
-  "chooseFromGallery": "Choose from gallery"
+  "chooseFromGallery": "Choose from gallery",
+  "dmCantPlay": "Couldn't play this voice note. Check your connection and try again.",
+  "dmChooseReaction": "Choose a reaction",
+  "dmReactionNotice": "{name} reacted {emoji} to your message",
+  "@dmReactionNotice": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "emoji": {
+        "type": "String"
+      }
+    }
+  },
+  "dmEmoji": "Emoji",
+  "dmKeyboard": "Keyboard",
+  "dmMoreReactions": "More reactions",
+  "dmReactions": "Reactions",
+  "dmTapToRemove": "Tap yours to remove it"
 }

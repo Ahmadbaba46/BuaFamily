@@ -5532,4 +5532,31 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get chooseFromGallery => 'Zaɓa daga hotuna';
+
+  @override
+  String get dmCantPlay =>
+      'An kasa kunna wannan saƙon murya. Duba intanet ɗinka ka sake gwadawa.';
+
+  @override
+  String get dmChooseReaction => 'Zaɓi martani';
+
+  @override
+  String dmReactionNotice(String name, String emoji) {
+    return '$name ya yi martanin $emoji ga saƙonka';
+  }
+
+  @override
+  String get dmEmoji => 'Emoji';
+
+  @override
+  String get dmKeyboard => 'Allon rubutu';
+
+  @override
+  String get dmMoreReactions => 'Ƙarin martani';
+
+  @override
+  String get dmReactions => 'Martani';
+
+  @override
+  String get dmTapToRemove => 'Taɓa naka don cire shi';
 }

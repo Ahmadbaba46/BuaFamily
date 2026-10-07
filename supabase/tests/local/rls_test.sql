@@ -2228,6 +2228,57 @@ select test.assert((select last_message_kind = 'deleted' from public.dm_threads 
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 48. Reactions to messages, and voice note waveforms.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+select id as dmt from public.dm_threads
+ where :member_id in (user_a, user_b) and :member2_id in (user_a, user_b) \gset
+select id as liked from public.dm_messages where body = 'Yes, see the ticket' \gset
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.dm_messages (thread_id, body, kind, media_path, duration_ms, waveform)
+values (:'dmt', '🎤', 'voice', :'dmt' || '/' || :member_id || '/w.m4a', 3000, '{10,40,90,30}');
+-- The thread id sent is ignored: it comes from the message.
+insert into public.dm_reactions (message_id, thread_id, emoji) values (:'liked', gen_random_uuid(), '❤️');
+reset role;
+select test.assert((select thread_id = :'dmt' from public.dm_reactions where message_id = :'liked'), 'the reaction belongs to the conversation');
+select test.assert((select waveform = '{10,40,90,30}' from public.dm_messages where kind = 'voice' and author_id = :member_id
+  and deleted_at is null), 'the voice note keeps its waveform');
+select test.assert((select data ->> 'message_kind' = 'reaction' and data ->> 'body' = '❤️' from public.notifications
+  where user_id = :member2_id and kind = 'direct_message' order by created_at desc limit 1), 'the sender is told');
+
+-- Changing it replaces it; the other person sees it; others don't.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.dm_reactions set emoji = '😂' where message_id = :'liked';
+select test.expect_error(format($$insert into public.dm_reactions (message_id, emoji) values (%L, '👍')$$, :'liked'),
+  'one reaction per person per message');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.assert((select emoji = '😂' from public.dm_reactions where message_id = :'liked'), 'the other person sees it');
+update public.dm_reactions set emoji = '😡' where message_id = :'liked';
+reset role;
+select test.assert((select emoji = '😂' from public.dm_reactions where message_id = :'liked'), 'someone else''s reaction stays');
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select count(*) = 0 from public.dm_reactions), 'admins see no reactions');
+select test.expect_error(format($$insert into public.dm_reactions (message_id, emoji) values (%L, '👍')$$, :'liked'),
+  'or add them');
+reset role;
+-- Deleted messages take none.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$insert into public.dm_reactions (message_id, emoji) values (%L, '👍')$$,
+  (select id from public.dm_messages where kind = 'voice' and deleted_at is not null limit 1)), 'deleted messages take no reactions');
+delete from public.dm_reactions where message_id = :'liked';
+select test.assert((select count(*) = 0 from public.dm_reactions), 'a reaction can be taken back');
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

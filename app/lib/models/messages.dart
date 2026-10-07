@@ -95,6 +95,7 @@ class DmMessage {
     this.durationMs,
     this.replyTo,
     this.deletedAt,
+    this.waveform,
   });
 
   /// What a photo or voice note's body holds when it has no words.
@@ -116,6 +117,9 @@ class DmMessage {
   final String? replyTo;
   final DateTime? deletedAt;
 
+  /// A voice note's levels (0–100), measured while recording.
+  final List<int>? waveform;
+
   bool get deleted => deletedAt != null;
 
   /// The words: a text, or a photo's caption ('' when there is none).
@@ -132,5 +136,40 @@ class DmMessage {
         durationMs: (j['duration_ms'] as num?)?.toInt(),
         replyTo: j['reply_to'] as String?,
         deletedAt: _tsOrNull(j['deleted_at']),
+        waveform: (j['waveform'] as List?)?.map((v) => (v as num).toInt()).toList(),
       );
 }
+
+/// Someone's emoji on a message (one each).
+class DmReaction {
+  const DmReaction({required this.messageId, required this.userId, required this.emoji});
+
+  final String messageId;
+  final String userId;
+  final String emoji;
+
+  factory DmReaction.fromJson(Map<String, dynamic> j) => DmReaction(
+        messageId: j['message_id'] as String,
+        userId: j['user_id'] as String,
+        emoji: j['emoji'] as String,
+      );
+}
+
+/// Squeezes measured levels into [bars] bars of 0–100.
+List<int> compactWaveform(List<double> levels, {int bars = 48}) {
+  if (levels.isEmpty) return const [];
+  final out = <int>[];
+  for (var i = 0; i < bars; i++) {
+    final from = (i * levels.length / bars).floor();
+    final to = ((i + 1) * levels.length / bars).ceil().clamp(from + 1, levels.length);
+    var peak = 0.0;
+    for (var j = from; j < to; j++) {
+      if (levels[j] > peak) peak = levels[j];
+    }
+    out.add((peak.clamp(0.0, 1.0) * 100).round());
+  }
+  return out;
+}
+
+/// A level (0–1) from the recorder's decibels (-160 to 0).
+double levelFromDb(double db) => ((db + 50) / 50).clamp(0.0, 1.0);
