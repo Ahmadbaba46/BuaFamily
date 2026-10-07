@@ -13,6 +13,7 @@ import '../../models/person.dart';
 import '../../models/report.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
+import 'duplicates_screen.dart' show mergeTwo;
 import 'messages_screen.dart' show openDmWith;
 import '../widgets/claim_card.dart';
 import '../widgets/portrait_viewer.dart';
@@ -96,6 +97,7 @@ class _PersonView extends ConsumerWidget {
           if (profile?.personId == null && profile?.requestedPersonId != person.id)
             PopupMenuItem(value: 'me', child: Text(l.thisIsMe)),
           if (!isMe) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
+          if (isAdmin) PopupMenuItem(value: 'merge', child: Text(l.mergeWith)),
           if (isAdmin) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
         ],
       ),
@@ -292,6 +294,11 @@ class _PersonView extends ConsumerWidget {
     switch (action) {
       case 'report':
         await reportToAdmins(context, ref, ReportKind.profile, person.id);
+      case 'merge':
+        final graph = ref.read(graphProvider).value;
+        if (graph == null) return;
+        final other = await pickPerson(context, graph, exclude: {person.id});
+        if (other != null && context.mounted) await mergeTwo(context, ref, person, other);
       case 'tree':
         context.go('/tree?focus=${person.id}');
       case 'me':

@@ -55,6 +55,12 @@ share moments and photos, plan family events, and keep everyone's details
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
+- **Find duplicates (admins):** people entered twice in the tree (similar
+  names, including common spellings like Muhammadu/Mohammed, with compatible
+  dates, often the same parents or spouse) are listed side by side. Merge
+  them, choosing which record to keep, or mark them as different people.
+  Merging fills gaps from the other record and moves all its links.
+  Also from a profile: ⋮ → Merge with…
 - **Quran khatm:** share out the 30 juz of the Quran among the family, for a
   relative who has passed (from their memorial page) or for an occasion.
   Members take a juz (or the next free one), mark it read, or give it back;
@@ -245,6 +251,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `push_tokens` | The phones and browsers each member turned notifications on for |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
+| `not_duplicates` | Pairs of people an admin said are different, so they aren't suggested as duplicates again |
 | `khatms`, `khatm_parts` | Quran khatms and who took and read each of the 30 juz |
 | `reports`, `blocks` | What members reported to the admins (with a copy of it), and who blocked whom in messages |
 | `online_payments` | Payments made in the app through Korapay, each becoming a confirmed contribution once paid |
@@ -526,8 +533,6 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Play builds uploaded from GitHub** to the testing track automatically.
-- **Find and merge duplicate people** in the tree.
 - **Messages like WhatsApp:** typing indicator, delivered and read ticks,
   photos and voice notes.
 - **Family calendar feed:** a calendar link per member with events and birthdays.
@@ -536,3 +541,13 @@ Next, in rough order (no iPhone app is planned; iPhone users use the website):
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.
+
+Later, once GitHub Actions billing is sorted out (the workflows need Actions
+minutes; until then, build on Windows with `app\tool\build_android.ps1`, and
+run the tests locally as shown under Tests):
+
+- **Play builds uploaded from GitHub** to the testing track automatically:
+  the Android workflow would upload each bundle with a Play service account
+  key that you create in Play Console and save as a GitHub secret.
+- **Tests and Android builds on every push** (`ci.yml`, `android.yml`), which
+  are already written and start working again as soon as Actions can run.

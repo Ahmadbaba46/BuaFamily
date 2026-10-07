@@ -5408,4 +5408,61 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifKhatmReminder(String title, String juz) {
     return 'Tunatarwa: gobe za a kammala “$title” (juz\'inka: $juz).';
   }
+
+  @override
+  String get duplicatesTitle => 'Nemo masu maimaituwa';
+
+  @override
+  String get duplicatesIntro =>
+      'Mutanen da wataƙila an saka su sau biyu a bishiyar: sunaye masu kama da juna da ranaku masu dacewa, sau da yawa iyaye ko ma’aurata ɗaya. Haɗa su, ka zaɓi wanda za a riƙe; bayanan ɗayan za su cike gibi, kuma iyayensa, ’ya’yansa, ma’auratansa, hotuna da sauran abubuwa duka za su koma.';
+
+  @override
+  String get noDuplicates => 'Ba a sami masu maimaituwa ba.';
+
+  @override
+  String get dupSameName => 'Suna ɗaya';
+
+  @override
+  String get dupSimilarName => 'Suna mai kama';
+
+  @override
+  String get dupSameParents => 'Iyaye ɗaya';
+
+  @override
+  String get dupSameSpouse => 'Mata/miji ɗaya';
+
+  @override
+  String get dupSameBirthYear => 'Shekarar haihuwa ɗaya';
+
+  @override
+  String get dupSameLastName => 'Sunan iyali ɗaya';
+
+  @override
+  String get notTheSamePerson => 'Mutane daban ne';
+
+  @override
+  String get mergeAction => 'Haɗa';
+
+  @override
+  String get mergeWith => 'Haɗa da…';
+
+  @override
+  String get mergeWhichToKeep => 'Wanne za a riƙe?';
+
+  @override
+  String get mergeExplain =>
+      'Bayanan ɗayan za su cike abin da wannan ba shi da shi, kuma duk alaƙoƙinsa (iyaye, ’ya’ya, ma’aurata, hotuna, tunawa, asusu) za su koma nan. Sannan a goge shi. Ba za a iya dawowa ba.';
+
+  @override
+  String keepPerson(String name) {
+    return 'Riƙe $name';
+  }
+
+  @override
+  String mergedNote(String removed, String kept) {
+    return 'An haɗa $removed cikin $kept.';
+  }
+
+  @override
+  String get hasAccount => 'Yana da asusu';
 }

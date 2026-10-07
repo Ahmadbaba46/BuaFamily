@@ -8958,6 +8958,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reminder: “{title}” is to be finished tomorrow (your juz: {juz}).'**
   String notifKhatmReminder(String title, String juz);
+
+  /// No description provided for @duplicatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find duplicates'**
+  String get duplicatesTitle;
+
+  /// No description provided for @duplicatesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'People who may be in the tree twice: similar names with compatible dates, often the same parents or spouse. Merge them, choosing which record to keep; the other\'s details fill any gaps, and its parents, children, spouses, photos and everything else move across.'**
+  String get duplicatesIntro;
+
+  /// No description provided for @noDuplicates.
+  ///
+  /// In en, this message translates to:
+  /// **'No likely duplicates found.'**
+  String get noDuplicates;
+
+  /// No description provided for @dupSameName.
+  ///
+  /// In en, this message translates to:
+  /// **'Same name'**
+  String get dupSameName;
+
+  /// No description provided for @dupSimilarName.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar name'**
+  String get dupSimilarName;
+
+  /// No description provided for @dupSameParents.
+  ///
+  /// In en, this message translates to:
+  /// **'Same parent'**
+  String get dupSameParents;
+
+  /// No description provided for @dupSameSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Same spouse'**
+  String get dupSameSpouse;
+
+  /// No description provided for @dupSameBirthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Born the same year'**
+  String get dupSameBirthYear;
+
+  /// No description provided for @dupSameLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Same surname'**
+  String get dupSameLastName;
+
+  /// No description provided for @notTheSamePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Different people'**
+  String get notTheSamePerson;
+
+  /// No description provided for @mergeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge'**
+  String get mergeAction;
+
+  /// No description provided for @mergeWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge with…'**
+  String get mergeWith;
+
+  /// No description provided for @mergeWhichToKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Which record to keep?'**
+  String get mergeWhichToKeep;
+
+  /// No description provided for @mergeExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'The other record\'s details fill what this one is missing, and all its links (parents, children, spouses, photos, memories, account) move here. Then it is deleted. This can\'t be undone.'**
+  String get mergeExplain;
+
+  /// No description provided for @keepPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep {name}'**
+  String keepPerson(String name);
+
+  /// No description provided for @mergedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{removed} was merged into {kept}.'**
+  String mergedNote(String removed, String kept);
+
+  /// No description provided for @hasAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Has an account'**
+  String get hasAccount;
 }
 
 class _AppLocalizationsDelegate

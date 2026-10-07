@@ -255,6 +255,23 @@ class FamilyRepository {
     await _db.from('persons').delete().eq('id', id);
   }
 
+  /// Admin: merges [removeId] into [keepId] (details and every link), then
+  /// deletes the duplicate.
+  Future<void> mergePersons({required String keepId, required String removeId}) async {
+    await _db.rpc('admin_merge_persons', params: {'p_keep': keepId, 'p_remove': removeId});
+    await _db.from('persons').delete().eq('id', removeId);
+  }
+
+  /// Admin: pairs said to be different people.
+  Future<Set<(String, String)>> notDuplicates() async => {
+        for (final r in await _db.from('not_duplicates').select('person_a, person_b'))
+          (r['person_a'] as String, r['person_b'] as String),
+      };
+
+  Future<void> markNotDuplicate(String a, String b) => _db
+      .from('not_duplicates')
+      .insert({'person_a': a.compareTo(b) < 0 ? a : b, 'person_b': a.compareTo(b) < 0 ? b : a});
+
   Future<void> addParentChild(String parentId, String childId, ParentKind kind) async {
     await _db.from('parent_child').insert({'parent_id': parentId, 'child_id': childId, 'kind': kind.name});
   }

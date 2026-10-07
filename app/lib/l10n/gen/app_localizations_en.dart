@@ -5498,4 +5498,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifKhatmReminder(String title, String juz) {
     return 'Reminder: “$title” is to be finished tomorrow (your juz: $juz).';
   }
+
+  @override
+  String get duplicatesTitle => 'Find duplicates';
+
+  @override
+  String get duplicatesIntro =>
+      'People who may be in the tree twice: similar names with compatible dates, often the same parents or spouse. Merge them, choosing which record to keep; the other\'s details fill any gaps, and its parents, children, spouses, photos and everything else move across.';
+
+  @override
+  String get noDuplicates => 'No likely duplicates found.';
+
+  @override
+  String get dupSameName => 'Same name';
+
+  @override
+  String get dupSimilarName => 'Similar name';
+
+  @override
+  String get dupSameParents => 'Same parent';
+
+  @override
+  String get dupSameSpouse => 'Same spouse';
+
+  @override
+  String get dupSameBirthYear => 'Born the same year';
+
+  @override
+  String get dupSameLastName => 'Same surname';
+
+  @override
+  String get notTheSamePerson => 'Different people';
+
+  @override
+  String get mergeAction => 'Merge';
+
+  @override
+  String get mergeWith => 'Merge with…';
+
+  @override
+  String get mergeWhichToKeep => 'Which record to keep?';
+
+  @override
+  String get mergeExplain =>
+      'The other record\'s details fill what this one is missing, and all its links (parents, children, spouses, photos, memories, account) move here. Then it is deleted. This can\'t be undone.';
+
+  @override
+  String keepPerson(String name) {
+    return 'Keep $name';
+  }
+
+  @override
+  String mergedNote(String removed, String kept) {
+    return '$removed was merged into $kept.';
+  }
+
+  @override
+  String get hasAccount => 'Has an account';
 }
