@@ -10,6 +10,7 @@ import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
 import '../models/help.dart';
+import '../models/khatm.dart';
 import '../models/messages.dart';
 import '../models/metrics.dart';
 import '../models/notification.dart';
@@ -573,6 +574,47 @@ class FamilyRepository {
 
   Future<void> updatePhoto(String id, {String? caption, int? takenYear}) =>
       _db.from('photos').update({'caption': caption, 'taken_year': takenYear}).eq('id', id);
+
+  // ---------------------------------------------------------------- Quran khatm
+
+  Future<List<Khatm>> khatms() async {
+    final rows = await _db.from('khatms').select(Khatm.select).order('created_at', ascending: false).limit(100);
+    return rows.map(Khatm.fromJson).toList();
+  }
+
+  Future<String> startKhatm({
+    required String title,
+    KhatmPurpose purpose = KhatmPurpose.memorial,
+    String? personId,
+    String? note,
+    DateTime? dueOn,
+  }) async {
+    final row = await _db
+        .from('khatms')
+        .insert({
+          'title': title.trim(),
+          'purpose': purpose.name,
+          'person_id': personId,
+          'note': (note?.trim().isEmpty ?? true) ? null : note!.trim(),
+          'due_on': dueOn == null ? null : _day(dueOn),
+          'created_by': userId,
+        })
+        .select('id')
+        .single();
+    return row['id'] as String;
+  }
+
+  /// Takes juz [juz], or the first free one; returns its number.
+  Future<int> takeJuz(String khatmId, {int? juz}) async =>
+      (await _db.rpc('khatm_take', params: {'p_khatm': khatmId, 'p_juz': juz}) as num).toInt();
+
+  Future<void> markJuzRead(String khatmId, int juz, {bool read = true}) =>
+      _db.rpc('khatm_done', params: {'p_khatm': khatmId, 'p_juz': juz, 'p_done': read});
+
+  Future<void> releaseJuz(String khatmId, int juz) =>
+      _db.rpc('khatm_release', params: {'p_khatm': khatmId, 'p_juz': juz});
+
+  Future<void> cancelKhatm(String khatmId) => _db.from('khatms').update({'cancelled': true}).eq('id', khatmId);
 
   // ---------------------------------------------------------------- reports & blocking
 

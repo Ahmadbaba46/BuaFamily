@@ -2016,6 +2016,80 @@ reset role;
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 45. Quran khatm: 30 juz shared out, completion and reminders.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.khatms (title, due_on) values ('Khatm for Kaka', (now() at time zone 'Africa/Lagos')::date + 1);
+select test.expect_error($$insert into public.khatms (title, completed_at) values ('Already done', now())$$,
+  'a khatm can''t start complete');
+reset role;
+select id as kid from public.khatms where title = 'Khatm for Kaka' \gset
+select test.assert((select count(*) >= 2 from public.notifications where kind = 'khatm' and data ->> 'title' = 'Khatm for Kaka'),
+  'everyone else is told about it');
+
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.assert((select public.khatm_take(:'kid', 5) = 5), 'take juz 5');
+select test.assert((select public.khatm_take(:'kid') = 1), 'or the first free one');
+select test.expect_error(format($$insert into public.khatm_parts (khatm_id, juz, user_id) values (%L, 9, auth.uid())$$, :'kid'),
+  'parts only change through the functions');
+update public.khatms set completed_at = now() where id = :'kid';
+reset role;
+select test.assert((select completed_at is null from public.khatms where id = :'kid'), 'nobody marks it complete by hand');
+
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.khatm_take(%L, 5)$$, :'kid'), 'a taken juz can''t be taken again');
+select test.expect_error(format($$select public.khatm_done(%L, 5)$$, :'kid'), 'or marked read by someone else');
+select test.expect_error(format($$select public.khatm_release(%L, 5)$$, :'kid'), 'or given back by someone else');
+select test.assert((select public.khatm_take(:'kid') = 2), 'the next free one is 2');
+select test.expect_error(format($$select public.khatm_take(%L, 31)$$, :'kid'), 'there are 30');
+reset role;
+
+-- The day before it's due, those still holding a juz are reminded.
+select test.assert((select private.khatm_reminders() >= 2), 'reminders go out');
+select test.assert((select (data -> 'juz') = '[1, 5]'::jsonb from public.notifications
+  where kind = 'khatm_reminder' and user_id = :member_id), 'with which juz are theirs');
+select test.assert((select private.khatm_reminders() = 0), 'once');
+
+-- Give one back; the one who started it can free someone else's.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.khatm_done(:'kid', 5);
+select test.expect_error(format($$select public.khatm_release(%L, 5)$$, :'kid'), 'a read juz stays');
+select public.khatm_release(:'kid', 1);
+select public.khatm_release(:'kid', 2);
+reset role;
+select test.assert((select user_id is null from public.khatm_parts where khatm_id = :'kid' and juz = 2),
+  'whoever started it can free a juz someone is holding');
+
+-- Finishing all 30 completes it, and those who took part are told.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+do $$
+declare j int;
+begin
+  for j in 1..30 loop
+    continue when j = 5;
+    perform public.khatm_take((select id from public.khatms where title = 'Khatm for Kaka'), j);
+    perform public.khatm_done((select id from public.khatms where title = 'Khatm for Kaka'), j);
+  end loop;
+end $$;
+reset role;
+select test.assert((select completed_at is not null from public.khatms where id = :'kid'), 'all 30 read: complete');
+select test.assert((select count(*) = 2 from public.notifications where kind = 'khatm_completed'
+  and data ->> 'khatm_id' = :'kid'), 'both readers are told (the starter is one of them)');
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.khatm_done(%L, 3, false)$$, :'kid'), 'a complete khatm is closed');
+reset role;
+select test.assert((select private.backup_data() -> 'khatm_parts' @> jsonb_build_array(jsonb_build_object('juz', 5))),
+  'khatms are in backups');
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

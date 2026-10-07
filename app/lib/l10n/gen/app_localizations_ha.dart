@@ -5230,4 +5230,182 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get reportSheetTitle => 'Kai rahoto ga shugabanni';
+
+  @override
+  String get khatmTitle => 'Saukar Alƙur\'ani';
+
+  @override
+  String get khatmIntro =>
+      'Raba juz\'i 30 na Alƙur\'ani a cikin iyali, don ɗan uwa da ya rasu ko don wani biki. Ɗauki juz\'i, karanta, sannan ka yi alama an karanta; idan an karanta 30 duka, za a sanar da duk wanda ya shiga.';
+
+  @override
+  String get startKhatm => 'Fara sauka';
+
+  @override
+  String get noKhatmsYet =>
+      'Babu saukar da ake yi. Fara ɗaya don ɗan uwa da ya rasu, ko don wani biki.';
+
+  @override
+  String get khatmsCompleted => 'An kammala';
+
+  @override
+  String get khatmComplete => 'An kammala';
+
+  @override
+  String khatmProgress(int read, int taken) {
+    return 'An karanta $read cikin 30 · an ɗauki $taken';
+  }
+
+  @override
+  String khatmDue(String date) {
+    return 'A kammala kafin $date';
+  }
+
+  @override
+  String khatmYourJuz(String juz) {
+    return 'Naka: $juz';
+  }
+
+  @override
+  String khatmTakeConfirm(int juz) {
+    return 'Ka ɗauki juz\'i na $juz?';
+  }
+
+  @override
+  String khatmTaken(int juz) {
+    return 'Juz\'i na $juz naka ne. Allah ya sauƙaƙa.';
+  }
+
+  @override
+  String juzNumber(int juz) {
+    return 'Juz\'i na $juz';
+  }
+
+  @override
+  String juzOf(int juz, String name) {
+    return 'Juz\'i na $juz · $name';
+  }
+
+  @override
+  String get khatmMarkRead => 'Na karanta';
+
+  @override
+  String khatmMarkReadFor(String name) {
+    return 'Yi alamar an karanta don $name';
+  }
+
+  @override
+  String get khatmMarkUnread => 'Ashe ba a karanta ba';
+
+  @override
+  String get khatmGiveBack => 'Mayar da shi don wani';
+
+  @override
+  String get khatmFree => 'Saki wannan juz\'i don wani';
+
+  @override
+  String get khatmReadThanks => 'Ma sha Allah. Allah ya karɓa.';
+
+  @override
+  String get khatmCancel => 'Soke wannan sauka';
+
+  @override
+  String get khatmCancelConfirm =>
+      'A soke wannan sauka? Ba za a ƙara shiga ba.';
+
+  @override
+  String get khatmCancelled => 'An soke';
+
+  @override
+  String khatmCompleteOn(String date) {
+    return 'An kammala ranar $date. Allah ya karɓa.';
+  }
+
+  @override
+  String khatmStartedBy(String name, String date) {
+    return '$name ya fara, $date';
+  }
+
+  @override
+  String get khatmTakeNext => 'Ɗauki juz\'i na gaba da ke babu kowa';
+
+  @override
+  String khatmReaders(int count) {
+    return 'Masu karatu ($count)';
+  }
+
+  @override
+  String get juzFree => 'Babu kowa';
+
+  @override
+  String get juzTaken => 'An ɗauka';
+
+  @override
+  String get juzRead => 'An karanta';
+
+  @override
+  String get khatmForLate => 'Don ɗan uwa da ya rasu';
+
+  @override
+  String get khatmForOccasion => 'Don wani biki';
+
+  @override
+  String get khatmForOther => 'Wani daban';
+
+  @override
+  String get khatmChoosePerson => 'Don wa? (ba dole ba)';
+
+  @override
+  String get khatmPersonHint => 'Zaɓa daga bishiyar iyali';
+
+  @override
+  String get khatmName => 'Suna';
+
+  @override
+  String get khatmNameHint => 'misali: Sauka don Baba Musa';
+
+  @override
+  String khatmForName(String name) {
+    return 'Sauka don $name';
+  }
+
+  @override
+  String get khatmNeedsTitle => 'Ba saukar suna.';
+
+  @override
+  String get khatmNoDue => 'Babu ranar kammalawa';
+
+  @override
+  String get khatmDueHint => 'Ana tunatar da masu karatu kwana ɗaya kafin';
+
+  @override
+  String get khatmNote => 'Bayani (ba dole ba)';
+
+  @override
+  String get khatmNoteHint =>
+      'misali: za a yi addu\'a ranar Juma\'a bayan sallar Juma\'a';
+
+  @override
+  String get khatmEveryoneTold =>
+      'Za a sanar da kowa a iyali, don su ɗauki juz\'i.';
+
+  @override
+  String khatmStartFor(String name) {
+    return 'Fara saukar Alƙur\'ani don $name';
+  }
+
+  @override
+  String notifKhatm(String title) {
+    return 'Sabuwar saukar Alƙur\'ani: $title. Ɗauki juz\'i.';
+  }
+
+  @override
+  String notifKhatmCompleted(String title) {
+    return 'An kammala saukar Alƙur\'ani “$title”: an karanta juz\'i 30 duka. Allah ya karɓa.';
+  }
+
+  @override
+  String notifKhatmReminder(String title, String juz) {
+    return 'Tunatarwa: gobe za a kammala “$title” (juz\'inka: $juz).';
+  }
 }

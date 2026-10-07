@@ -55,6 +55,12 @@ share moments and photos, plan family events, and keep everyone's details
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
+- **Quran khatm:** share out the 30 juz of the Quran among the family, for a
+  relative who has passed (from their memorial page) or for an occasion.
+  Members take a juz (or the next free one), mark it read, or give it back;
+  whoever started it can free a juz someone is holding. Progress shows on a
+  30-tile board; when all 30 are read, everyone who took part is told, and
+  those still reading are reminded the day before it's due.
 - **Reporting:** every moment, photo, comment, profile and message can be
   reported to the admins (its menu, or hold a message), with a reason; a
   child safety report reaches admins as urgent. Admins review them under
@@ -239,6 +245,7 @@ Design mockups for the app (sample data). The app follows these designs.
 | `push_tokens` | The phones and browsers each member turned notifications on for |
 | `blood_requests`, `blood_offers` | Requests for blood and who offered to donate |
 | `fund_causes`, `fund_contributions`, `fund_payouts`, `fund_settings` | Welfare fund causes, recorded contributions, support paid and the account details |
+| `khatms`, `khatm_parts` | Quran khatms and who took and read each of the 30 juz |
 | `reports`, `blocks` | What members reported to the admins (with a copy of it), and who blocked whom in messages |
 | `online_payments` | Payments made in the app through Korapay, each becoming a confirmed contribution once paid |
 | `mentors`, `mentee_requests`, `mentor_asks`, `opportunities` | Who offers guidance, students looking for help, private asks, and shared scholarships or jobs |
@@ -519,11 +526,10 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Family Quran khatm:** share out the 30 juz among volunteers for a relative
-  who has passed or for an occasion, with progress and a notice when complete.
 - **Play builds uploaded from GitHub** to the testing track automatically.
 - **Find and merge duplicate people** in the tree.
-- **Photos and voice notes in messages.**
+- **Messages like WhatsApp:** typing indicator, delivered and read ticks,
+  photos and voice notes.
 - **Family calendar feed:** a calendar link per member with events and birthdays.
 - **Wedding and naming contributions** on an event.
 - **Group chats** per branch or committee (under the same admin switch as messages).

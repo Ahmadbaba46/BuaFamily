@@ -8676,6 +8676,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report to the admins'**
   String get reportSheetTitle;
+
+  /// No description provided for @khatmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran khatm'**
+  String get khatmTitle;
+
+  /// No description provided for @khatmIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Share out the 30 juz of the Quran among the family, for a relative who has passed or for an occasion. Take a juz, read it, and mark it read; when all 30 are read, everyone who took part is told.'**
+  String get khatmIntro;
+
+  /// No description provided for @startKhatm.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a khatm'**
+  String get startKhatm;
+
+  /// No description provided for @noKhatmsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No khatm going on. Start one for a relative who has passed, or for an occasion.'**
+  String get noKhatmsYet;
+
+  /// No description provided for @khatmsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get khatmsCompleted;
+
+  /// No description provided for @khatmComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get khatmComplete;
+
+  /// No description provided for @khatmProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{read} of 30 read · {taken} taken'**
+  String khatmProgress(int read, int taken);
+
+  /// No description provided for @khatmDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish by {date}'**
+  String khatmDue(String date);
+
+  /// No description provided for @khatmYourJuz.
+  ///
+  /// In en, this message translates to:
+  /// **'Yours: {juz}'**
+  String khatmYourJuz(String juz);
+
+  /// No description provided for @khatmTakeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Take juz {juz}?'**
+  String khatmTakeConfirm(int juz);
+
+  /// No description provided for @khatmTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Juz {juz} is yours. May Allah make it easy.'**
+  String khatmTaken(int juz);
+
+  /// No description provided for @juzNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Juz {juz}'**
+  String juzNumber(int juz);
+
+  /// No description provided for @juzOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Juz {juz} · {name}'**
+  String juzOf(int juz, String name);
+
+  /// No description provided for @khatmMarkRead.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve read it'**
+  String get khatmMarkRead;
+
+  /// No description provided for @khatmMarkReadFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark read for {name}'**
+  String khatmMarkReadFor(String name);
+
+  /// No description provided for @khatmMarkUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Not read after all'**
+  String get khatmMarkUnread;
+
+  /// No description provided for @khatmGiveBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Give it back for someone else'**
+  String get khatmGiveBack;
+
+  /// No description provided for @khatmFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free this juz for someone else'**
+  String get khatmFree;
+
+  /// No description provided for @khatmReadThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Ma sha Allah. May Allah accept it.'**
+  String get khatmReadThanks;
+
+  /// No description provided for @khatmCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this khatm'**
+  String get khatmCancel;
+
+  /// No description provided for @khatmCancelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this khatm? It will no longer be open to take part in.'**
+  String get khatmCancelConfirm;
+
+  /// No description provided for @khatmCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get khatmCancelled;
+
+  /// No description provided for @khatmCompleteOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed on {date}. May Allah accept it.'**
+  String khatmCompleteOn(String date);
+
+  /// No description provided for @khatmStartedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Started by {name}, {date}'**
+  String khatmStartedBy(String name, String date);
+
+  /// No description provided for @khatmTakeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the next free juz'**
+  String get khatmTakeNext;
+
+  /// No description provided for @khatmReaders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading ({count})'**
+  String khatmReaders(int count);
+
+  /// No description provided for @juzFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get juzFree;
+
+  /// No description provided for @juzTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken'**
+  String get juzTaken;
+
+  /// No description provided for @juzRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get juzRead;
+
+  /// No description provided for @khatmForLate.
+  ///
+  /// In en, this message translates to:
+  /// **'For a relative who has passed'**
+  String get khatmForLate;
+
+  /// No description provided for @khatmForOccasion.
+  ///
+  /// In en, this message translates to:
+  /// **'For an occasion'**
+  String get khatmForOccasion;
+
+  /// No description provided for @khatmForOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get khatmForOther;
+
+  /// No description provided for @khatmChoosePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is it for? (optional)'**
+  String get khatmChoosePerson;
+
+  /// No description provided for @khatmPersonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from the family tree'**
+  String get khatmPersonHint;
+
+  /// No description provided for @khatmName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get khatmName;
+
+  /// No description provided for @khatmNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Khatm for Baba Musa'**
+  String get khatmNameHint;
+
+  /// No description provided for @khatmForName.
+  ///
+  /// In en, this message translates to:
+  /// **'Khatm for {name}'**
+  String khatmForName(String name);
+
+  /// No description provided for @khatmNeedsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the khatm a name.'**
+  String get khatmNeedsTitle;
+
+  /// No description provided for @khatmNoDue.
+  ///
+  /// In en, this message translates to:
+  /// **'No date to finish by'**
+  String get khatmNoDue;
+
+  /// No description provided for @khatmDueHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Those still reading are reminded the day before'**
+  String get khatmDueHint;
+
+  /// No description provided for @khatmNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get khatmNote;
+
+  /// No description provided for @khatmNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. the du\'a will be on Friday after Jumu\'ah'**
+  String get khatmNoteHint;
+
+  /// No description provided for @khatmEveryoneTold.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone in the family is told, so they can take a juz.'**
+  String get khatmEveryoneTold;
+
+  /// No description provided for @khatmStartFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a Quran khatm for {name}'**
+  String khatmStartFor(String name);
+
+  /// No description provided for @notifKhatm.
+  ///
+  /// In en, this message translates to:
+  /// **'New Quran khatm: {title}. Take a juz.'**
+  String notifKhatm(String title);
+
+  /// No description provided for @notifKhatmCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'The khatm “{title}” is complete: all 30 juz read. May Allah accept it.'**
+  String notifKhatmCompleted(String title);
+
+  /// No description provided for @notifKhatmReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder: “{title}” is to be finished tomorrow (your juz: {juz}).'**
+  String notifKhatmReminder(String title, String juz);
 }
 
 class _AppLocalizationsDelegate

@@ -115,6 +115,13 @@ class MemorialScreen extends ConsumerWidget {
                 ),
               ),
             ]),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(46), backgroundColor: Bua.surface),
+              onPressed: () => context.push('/khatm/new?person=$personId'),
+              icon: const Icon(Icons.menu_book_outlined, size: 18),
+              label: Text(l.khatmStartFor(p.firstName)),
+            ),
             if (photos.isNotEmpty) ...[
               const SizedBox(height: 12),
               SectionCard(

@@ -12,6 +12,7 @@ import '../models/details.dart';
 import '../models/family_graph.dart';
 import '../models/fund.dart';
 import '../models/help.dart';
+import '../models/khatm.dart';
 import '../models/messages.dart';
 import '../models/notification.dart';
 import '../models/report.dart';
@@ -332,6 +333,12 @@ final mentorMessagesProvider = StreamProvider.autoDispose
     .family<List<MentorMessage>, String>((ref, id) => ref.watch(repositoryProvider).mentorMessages(id));
 
 // ---------------------------------------------------------------- direct messages
+
+/// Quran khatms, newest first.
+final khatmsProvider = FutureProvider<List<Khatm>>((ref) {
+  ref.watch(profileProvider.select((p) => p?.id));
+  return ref.watch(repositoryProvider).khatms();
+});
 
 /// Admins: all reports, newest first.
 final reportsProvider = FutureProvider<List<Report>>((ref) {

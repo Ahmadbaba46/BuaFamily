@@ -197,6 +197,12 @@ class MoreScreen extends ConsumerWidget {
               ),
               const InsetDivider(),
               NavRow(
+                icon: Icons.menu_book_outlined,
+                title: l.khatmTitle,
+                onTap: () => context.push('/khatm'),
+              ),
+              const InsetDivider(),
+              NavRow(
                 icon: Icons.bloodtype_outlined,
                 iconColor: Bua.danger,
                 title: l.bloodDonors,
