@@ -9534,6 +9534,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playback speed: {speed}'**
   String playbackSpeed(String speed);
+
+  /// No description provided for @calendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar on your phone'**
+  String get calendarTitle;
+
+  /// No description provided for @calendarIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the family\'s events, birthdays and remembrance days to Google Calendar, your iPhone or Outlook. They stay up to date by themselves.'**
+  String get calendarIntro;
+
+  /// No description provided for @calendarGetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Get my calendar link'**
+  String get calendarGetLink;
+
+  /// No description provided for @calendarAddGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Google Calendar'**
+  String get calendarAddGoogle;
+
+  /// No description provided for @calendarAddApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to iPhone or Outlook'**
+  String get calendarAddApple;
+
+  /// No description provided for @calendarCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the link'**
+  String get calendarCopy;
+
+  /// No description provided for @calendarCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied. In your calendar app, choose “Subscribe” or “From URL” and paste it.'**
+  String get calendarCopied;
+
+  /// No description provided for @calendarPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is yours: anyone who has it can see the family\'s events and birthdays. Don\'t share it.'**
+  String get calendarPrivate;
+
+  /// No description provided for @calendarBirthdays.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays'**
+  String get calendarBirthdays;
+
+  /// No description provided for @calendarBirthdaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Living relatives whose birthday is known, every year'**
+  String get calendarBirthdaysHint;
+
+  /// No description provided for @calendarRemembrance.
+  ///
+  /// In en, this message translates to:
+  /// **'Remembrance days'**
+  String get calendarRemembrance;
+
+  /// No description provided for @calendarRemembranceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For the relatives you chose to be reminded of'**
+  String get calendarRemembranceHint;
+
+  /// No description provided for @calendarEventsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Family events are always included, with a reminder the day before.'**
+  String get calendarEventsNote;
+
+  /// No description provided for @calendarLastFetched.
+  ///
+  /// In en, this message translates to:
+  /// **'Your calendar last updated {when}'**
+  String calendarLastFetched(String when);
+
+  /// No description provided for @calendarNeverFetched.
+  ///
+  /// In en, this message translates to:
+  /// **'Not added to a calendar yet'**
+  String get calendarNeverFetched;
+
+  /// No description provided for @calendarNewLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a new link'**
+  String get calendarNewLink;
+
+  /// No description provided for @calendarConfirmNewLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a new link? The old one will stop working, and you\'ll need to add the new one to your calendar again.'**
+  String get calendarConfirmNewLink;
+
+  /// No description provided for @calendarTurnOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off my calendar link'**
+  String get calendarTurnOff;
+
+  /// No description provided for @calendarTurnedOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Your calendar link is off. Calendars that had it will stop updating.'**
+  String get calendarTurnedOff;
+
+  /// No description provided for @calendarRefreshNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar apps check for changes every few hours; Google Calendar can take up to a day.'**
+  String get calendarRefreshNote;
 }
 
 class _AppLocalizationsDelegate

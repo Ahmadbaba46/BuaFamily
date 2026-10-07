@@ -3919,5 +3919,32 @@
         "type": "String"
       }
     }
-  }
+  },
+  "calendarTitle": "Calendar on your phone",
+  "calendarIntro": "Add the family's events, birthdays and remembrance days to Google Calendar, your iPhone or Outlook. They stay up to date by themselves.",
+  "calendarGetLink": "Get my calendar link",
+  "calendarAddGoogle": "Add to Google Calendar",
+  "calendarAddApple": "Add to iPhone or Outlook",
+  "calendarCopy": "Copy the link",
+  "calendarCopied": "Link copied. In your calendar app, choose “Subscribe” or “From URL” and paste it.",
+  "calendarPrivate": "This link is yours: anyone who has it can see the family's events and birthdays. Don't share it.",
+  "calendarBirthdays": "Birthdays",
+  "calendarBirthdaysHint": "Living relatives whose birthday is known, every year",
+  "calendarRemembrance": "Remembrance days",
+  "calendarRemembranceHint": "For the relatives you chose to be reminded of",
+  "calendarEventsNote": "Family events are always included, with a reminder the day before.",
+  "calendarLastFetched": "Your calendar last updated {when}",
+  "@calendarLastFetched": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarNeverFetched": "Not added to a calendar yet",
+  "calendarNewLink": "Get a new link",
+  "calendarConfirmNewLink": "Get a new link? The old one will stop working, and you'll need to add the new one to your calendar again.",
+  "calendarTurnOff": "Turn off my calendar link",
+  "calendarTurnedOff": "Your calendar link is off. Calendars that had it will stop updating.",
+  "calendarRefreshNote": "Calendar apps check for changes every few hours; Google Calendar can take up to a day."
 }

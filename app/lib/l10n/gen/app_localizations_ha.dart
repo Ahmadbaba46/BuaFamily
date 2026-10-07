@@ -5746,4 +5746,75 @@ class AppLocalizationsHa extends AppLocalizations {
   String playbackSpeed(String speed) {
     return 'Saurin kunnawa: $speed';
   }
+
+  @override
+  String get calendarTitle => 'Kalanda a wayarka';
+
+  @override
+  String get calendarIntro =>
+      'Saka taruka, ranakun haihuwa da na tunawa na iyali a Google Calendar, iPhone ko Outlook. Za su riƙa sabunta kansu.';
+
+  @override
+  String get calendarGetLink => 'Samo mahaɗin kalandata';
+
+  @override
+  String get calendarAddGoogle => 'Saka a Google Calendar';
+
+  @override
+  String get calendarAddApple => 'Saka a iPhone ko Outlook';
+
+  @override
+  String get calendarCopy => 'Kwafi mahaɗin';
+
+  @override
+  String get calendarCopied =>
+      'An kwafi mahaɗin. A manhajar kalandarka, zaɓi “Subscribe” ko “From URL” ka liƙa shi.';
+
+  @override
+  String get calendarPrivate =>
+      'Wannan mahaɗi naka ne: duk wanda ke da shi zai ga taruka da ranakun haihuwa na iyali. Kada ka raba shi.';
+
+  @override
+  String get calendarBirthdays => 'Ranakun haihuwa';
+
+  @override
+  String get calendarBirthdaysHint =>
+      '\'Yan uwa masu rai da aka san ranar haihuwarsu, kowace shekara';
+
+  @override
+  String get calendarRemembrance => 'Ranakun tunawa';
+
+  @override
+  String get calendarRemembranceHint =>
+      'Na \'yan uwan da ka zaɓa a tunatar da kai';
+
+  @override
+  String get calendarEventsNote =>
+      'Ana saka taruka na iyali kullum, tare da tunatarwa kwana ɗaya kafin.';
+
+  @override
+  String calendarLastFetched(String when) {
+    return 'Kalandarka ta sabunta ƙarshe $when';
+  }
+
+  @override
+  String get calendarNeverFetched => 'Ba a saka shi a kalanda ba tukuna';
+
+  @override
+  String get calendarNewLink => 'Samo sabon mahaɗi';
+
+  @override
+  String get calendarConfirmNewLink =>
+      'A samo sabon mahaɗi? Tsohon zai daina aiki, kuma za ka sake saka sabon a kalandarka.';
+
+  @override
+  String get calendarTurnOff => 'Kashe mahaɗin kalandata';
+
+  @override
+  String get calendarTurnedOff =>
+      'An kashe mahaɗin kalandarka. Kalandun da ke da shi za su daina sabuntawa.';
+
+  @override
+  String get calendarRefreshNote =>
+      'Manhajojin kalanda na duba sauye-sauye bayan \'yan awoyi; Google Calendar na iya ɗaukar kwana ɗaya.';
 }

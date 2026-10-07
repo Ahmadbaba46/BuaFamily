@@ -33,6 +33,7 @@ import 'ui/screens/memorial_screen.dart';
 import 'ui/screens/mentor_conversation_screen.dart';
 import 'ui/screens/duplicates_screen.dart';
 import 'ui/screens/khatm_screen.dart';
+import 'ui/screens/calendar_feed_screen.dart';
 import 'ui/screens/group_screens.dart';
 import 'ui/screens/messages_screen.dart';
 import 'ui/screens/online_payment_screen.dart';
@@ -131,6 +132,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/events/new',
         builder: (_, s) => NewEventScreen(announcement: s.uri.queryParameters['type'] == 'announcement'),
       ),
+      GoRoute(path: '/calendar', builder: (_, _) => const CalendarFeedScreen()),
       GoRoute(path: '/events/:id', builder: (_, s) => EventScreen(eventId: s.pathParameters['id']!)),
       GoRoute(path: '/posts/:id', builder: (_, s) => PostScreen(postId: s.pathParameters['id']!)),
       GoRoute(path: '/reminders', builder: (_, _) => const RemindersScreen()),

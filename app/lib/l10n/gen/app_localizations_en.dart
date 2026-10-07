@@ -5836,4 +5836,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String playbackSpeed(String speed) {
     return 'Playback speed: $speed';
   }
+
+  @override
+  String get calendarTitle => 'Calendar on your phone';
+
+  @override
+  String get calendarIntro =>
+      'Add the family\'s events, birthdays and remembrance days to Google Calendar, your iPhone or Outlook. They stay up to date by themselves.';
+
+  @override
+  String get calendarGetLink => 'Get my calendar link';
+
+  @override
+  String get calendarAddGoogle => 'Add to Google Calendar';
+
+  @override
+  String get calendarAddApple => 'Add to iPhone or Outlook';
+
+  @override
+  String get calendarCopy => 'Copy the link';
+
+  @override
+  String get calendarCopied =>
+      'Link copied. In your calendar app, choose “Subscribe” or “From URL” and paste it.';
+
+  @override
+  String get calendarPrivate =>
+      'This link is yours: anyone who has it can see the family\'s events and birthdays. Don\'t share it.';
+
+  @override
+  String get calendarBirthdays => 'Birthdays';
+
+  @override
+  String get calendarBirthdaysHint =>
+      'Living relatives whose birthday is known, every year';
+
+  @override
+  String get calendarRemembrance => 'Remembrance days';
+
+  @override
+  String get calendarRemembranceHint =>
+      'For the relatives you chose to be reminded of';
+
+  @override
+  String get calendarEventsNote =>
+      'Family events are always included, with a reminder the day before.';
+
+  @override
+  String calendarLastFetched(String when) {
+    return 'Your calendar last updated $when';
+  }
+
+  @override
+  String get calendarNeverFetched => 'Not added to a calendar yet';
+
+  @override
+  String get calendarNewLink => 'Get a new link';
+
+  @override
+  String get calendarConfirmNewLink =>
+      'Get a new link? The old one will stop working, and you\'ll need to add the new one to your calendar again.';
+
+  @override
+  String get calendarTurnOff => 'Turn off my calendar link';
+
+  @override
+  String get calendarTurnedOff =>
+      'Your calendar link is off. Calendars that had it will stop updating.';
+
+  @override
+  String get calendarRefreshNote =>
+      'Calendar apps check for changes every few hours; Google Calendar can take up to a day.';
 }

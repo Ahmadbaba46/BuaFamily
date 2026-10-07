@@ -64,6 +64,17 @@ share moments and photos, plan family events, and keep everyone's details
   whole family (Admin → Settings → Private messages): then nobody can send or
   read them, and the conversations come back when they're turned on again.
   A member can block someone so neither can message the other.
+- **Calendar on your phone:** More → Calendar on your phone (or the calendar
+  icon on Events) gives each member a private link to add to Google Calendar,
+  an iPhone or Outlook. It holds the family's events (with a reminder the day
+  before and your RSVP), the birthdays of living relatives whose date is
+  known, and the remembrance days of the relatives you follow, every year, in
+  your language, and the calendar app keeps it up to date by itself (every
+  few hours; Google can take up to a day). Birthdays and remembrance days can
+  be left out; a new link stops the old one working; it can be turned off.
+  The link is served by the `calendar` Edge Function
+  (`supabase functions deploy calendar --no-verify-jwt`: calendar apps can't
+  sign in, so the long random token in the link is the key).
 - **Group chats:** start one from Messages (the group icon at the top): a
   name, an optional description, and who's in it. Groups have everything
   private messages have (photos, voice notes with waveforms, emoji,
@@ -539,6 +550,7 @@ cd app && flutter analyze && flutter test   # tree layout, relationships, screen
 supabase/tests/local/run.sh                 # migrations + permission tests on a throwaway Postgres (run as non-root)
 deno test supabase/functions/push           # push texts, Firebase sign-in and sending
 deno test supabase/functions/korapay        # Korapay payments: start, webhook, check
+deno test supabase/functions/calendar       # the calendar feed (.ics) and its link
 ```
 
 Both suites run on every push via GitHub Actions ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
@@ -555,9 +567,7 @@ Noto Sans font so Hausa letters (Ɗ ɗ Ƙ ƙ Ƴ ƴ) display correctly on every p
 
 Next, in rough order (no iPhone app is planned; iPhone users use the website):
 
-- **Family calendar feed:** a calendar link per member with events and birthdays.
 - **Wedding and naming contributions** on an event.
-- **Group chats** per branch or committee (under the same admin switch as messages).
 - **Restoring files:** backups hold the family's data but not photos, voice
   recordings or receipts, which are files in storage. A full copy of those
   would need a separate storage export.
