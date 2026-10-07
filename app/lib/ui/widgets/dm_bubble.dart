@@ -549,6 +549,7 @@ class _VoiceNoteState extends ConsumerState<VoiceNote> {
         }
         file == null ? await p.setUrl(await repo.dmMediaUrl(widget.path)) : await p.setFilePath(file.path);
       }
+      await p.setSpeed(voiceSpeed.value);
       _pos = p.positionStream.listen((d) => mounted ? setState(() => _at = d) : null);
       _state = p.playerStateStream.listen((s) {
         if (!mounted) return;
@@ -601,14 +602,70 @@ class _VoiceNoteState extends ConsumerState<VoiceNote> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 VoiceWave(levels: _levels, progress: progress, onSeek: _seek),
-                Text(
-                  _clock(_playing || _at > Duration.zero ? _at : total),
-                  style: TextStyle(fontSize: 11, color: Bua.inkSubtle),
-                ),
+                Row(children: [
+                  Text(
+                    _clock(_playing || _at > Duration.zero ? _at : total),
+                    style: TextStyle(fontSize: 11, color: Bua.inkSubtle),
+                  ),
+                  const Spacer(),
+                  // Once it has been played: how fast.
+                  if (_player != null)
+                    ValueListenableBuilder<double>(
+                      valueListenable: voiceSpeed,
+                      builder: (context, speed, _) => SpeedButton(
+                        speed: speed,
+                        onChanged: (s) {
+                          voiceSpeed.value = s;
+                          _player?.setSpeed(s);
+                        },
+                      ),
+                    ),
+                ]),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The speed voice notes play at; the last one chosen is kept (as on WhatsApp).
+final voiceSpeed = ValueNotifier<double>(1);
+
+/// 1× → 1.5× → 2× → 1×: tap to play faster.
+class SpeedButton extends StatelessWidget {
+  const SpeedButton({super.key, required this.speed, required this.onChanged, this.color, this.background});
+
+  final double speed;
+  final ValueChanged<double> onChanged;
+  final Color? color;
+  final Color? background;
+
+  static const speeds = [1.0, 1.5, 2.0];
+
+  static double next(double speed) => speeds[(speeds.indexOf(speed) + 1) % speeds.length];
+
+  static String label(double speed) => '${speed == speed.roundToDouble() ? speed.toInt() : speed}×';
+
+  @override
+  Widget build(BuildContext context) {
+    final text = label(speed);
+    return Semantics(
+      button: true,
+      label: context.l10n.playbackSpeed(text),
+      excludeSemantics: true,
+      child: Material(
+        color: background ?? Bua.track,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => onChanged(next(speed)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            child: Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: color ?? Bua.inkMuted)),
+          ),
+        ),
       ),
     );
   }
