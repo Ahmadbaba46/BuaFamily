@@ -154,7 +154,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/fund/reports', builder: (_, _) => const FundReportScreen()),
       GoRoute(path: '/fund/dues', builder: (_, _) => const DuesScreen()),
-      GoRoute(path: '/fund/paid/:ref', builder: (_, s) => OnlinePaymentScreen(reference: s.pathParameters['ref']!)),
+      GoRoute(
+          path: '/fund/paid/:ref',
+          builder: (_, s) =>
+              OnlinePaymentScreen(reference: s.pathParameters['ref']!, eventId: s.uri.queryParameters['event'])),
       GoRoute(path: '/fund/new', builder: (_, s) => NewCauseScreen(ask: s.uri.queryParameters['ask'] == '1')),
       GoRoute(path: '/fund/cause/:id', builder: (_, s) => FundCauseScreen(causeId: s.pathParameters['id'])),
       GoRoute(path: '/help', builder: (_, _) => const WhoCanHelpScreen()),

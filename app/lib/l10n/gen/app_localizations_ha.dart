@@ -5989,4 +5989,62 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifEventGiftReceived(String name, String title) {
     return '$name ya karɓi gudummawarka don $title. Na gode!';
   }
+
+  @override
+  String get giftsPayInApp => 'Biya a manhaja (kati ko tura kuɗi)';
+
+  @override
+  String giftsPayInAppHint(String name) {
+    return 'Ana ƙara ɗan kuɗin Korapay. Ma\'ajin iyali zai miƙa kuɗin ga $name.';
+  }
+
+  @override
+  String get giftsPaidInApp => 'An biya a manhaja';
+
+  @override
+  String get giftsPaidInAppWaiting =>
+      'An biya a manhaja · ma\'aji zai miƙa shi';
+
+  @override
+  String get giftPaymentReceivedBody =>
+      'An rubuta gudummawarka. Ma\'aji zai miƙa ta ga mai biki.';
+
+  @override
+  String get backToEvent => 'Koma ga taron';
+
+  @override
+  String get eventPayoutsTitle => 'Abin da za a miƙa wa masu biki';
+
+  @override
+  String get eventPayoutsHint =>
+      'Gudummawar da aka biya a manhaja na cikin asusun Korapay na iyali. Aika wa kowane mai biki kuɗinsa daga dashboard na Korapay, sannan ka taɓa “An aika”.';
+
+  @override
+  String eventPayoutLine(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ga $name · biya $count',
+      one: 'Ga $name · biya 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventPayoutSent => 'An aika';
+
+  @override
+  String eventPayoutConfirm(String amount, String name) {
+    return 'Ka aika $amount ga $name? Gudummawarsu za ta nuna an karɓa.';
+  }
+
+  @override
+  String eventPayoutDone(String name) {
+    return 'An rubuta. An sanar da $name.';
+  }
+
+  @override
+  String notifEventGiftPassedOn(String amount, String title) {
+    return 'An aika maka $amount daga gudummawar da aka biya a manhaja don $title';
+  }
 }

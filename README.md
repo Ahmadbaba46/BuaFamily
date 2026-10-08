@@ -75,6 +75,13 @@ share moments and photos, plan family events, and keep everyone's details
   gave what, totals against the target, marks each gift received (the giver
   is thanked), can copy the list to share, and closes contributions when
   done. The money goes straight to the host; it is not the welfare fund's.
+  When the committee has switched on paying in the app, members can also
+  **pay in the app** (card or transfer, through Korapay): the gift shows as
+  paid in the app and the host is told; the money waits in the family's
+  Korapay account, and the treasurer sees it under **To pass on to hosts** on
+  the Welfare fund page, sends it from the Korapay dashboard and taps "Sent to
+  host" (the gifts become received, the givers are thanked and the host is
+  told). Gifts paid in the app can't be changed or taken back.
 - **Calendar on your phone:** More → Calendar on your phone (or the calendar
   icon on Events) gives each member a private link to add to Google Calendar,
   an iPhone or Outlook. It holds the family's events (with a reminder the day

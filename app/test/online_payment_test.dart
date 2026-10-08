@@ -23,8 +23,13 @@ class _FakeRepo extends FamilyRepository {
 
   @override
   Future<({String reference, String checkoutUrl})> startOnlinePayment(
-      {required double amount, String? causeId, String? duesPlanId, bool showName = true}) async {
-    started.add((amount, causeId, showName));
+      {required double amount,
+      String? causeId,
+      String? duesPlanId,
+      bool showName = true,
+      String? eventId,
+      String? note}) async {
+    started.add((amount, causeId ?? eventId, showName));
     return (reference: 'bua-1', checkoutUrl: 'https://checkout.korapay.com/x');
   }
 
@@ -60,7 +65,11 @@ void main() {
           routerConfig: GoRouter(routes: [
             GoRoute(path: '/', builder: (_, _) => home),
             GoRoute(path: '/fund', builder: (_, _) => const Scaffold(body: Text('the fund'))),
-            GoRoute(path: '/fund/paid/:ref', builder: (_, s) => OnlinePaymentScreen(reference: s.pathParameters['ref']!)),
+            GoRoute(path: '/events/:id', builder: (_, s) => Scaffold(body: Text('event ${s.pathParameters['id']}'))),
+            GoRoute(
+                path: '/fund/paid/:ref',
+                builder: (_, s) =>
+                    OnlinePaymentScreen(reference: s.pathParameters['ref']!, eventId: s.uri.queryParameters['event'])),
           ]),
         ),
       );
@@ -97,6 +106,17 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Pay now (card or transfer)'), findsNothing);
     expect(find.text('Record contribution'), findsWidgets);
+  });
+
+  testWidgets('a wedding or naming gift paid in the app goes back to its event', (tester) async {
+    final repo = _FakeRepo();
+    await tester.pumpWidget(app(const OnlinePaymentScreen(reference: 'bua-2', eventId: 'e1'), repo));
+    await tester.pumpAndSettle();
+    expect(find.text('Payment received. Thank you!'), findsOneWidget);
+    expect(find.text('Your gift is recorded. The treasurer will pass it on to the host.'), findsOneWidget);
+    await tester.tap(find.text('Back to the event'));
+    await tester.pumpAndSettle();
+    expect(find.text('event e1'), findsOneWidget);
   });
 
   testWidgets('not finished yet: checks again', (tester) async {

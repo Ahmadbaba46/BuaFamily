@@ -1640,5 +1640,18 @@
   "notifEventCollection": "An buɗe gudummawa don {title}",
   "notifEventGiftPledged": "{name} ya yi alƙawarin {what} don {title}",
   "notifEventGiftSent": "{name} ya aika {what} don {title}",
-  "notifEventGiftReceived": "{name} ya karɓi gudummawarka don {title}. Na gode!"
+  "notifEventGiftReceived": "{name} ya karɓi gudummawarka don {title}. Na gode!",
+  "giftsPayInApp": "Biya a manhaja (kati ko tura kuɗi)",
+  "giftsPayInAppHint": "Ana ƙara ɗan kuɗin Korapay. Ma'ajin iyali zai miƙa kuɗin ga {name}.",
+  "giftsPaidInApp": "An biya a manhaja",
+  "giftsPaidInAppWaiting": "An biya a manhaja · ma'aji zai miƙa shi",
+  "giftPaymentReceivedBody": "An rubuta gudummawarka. Ma'aji zai miƙa ta ga mai biki.",
+  "backToEvent": "Koma ga taron",
+  "eventPayoutsTitle": "Abin da za a miƙa wa masu biki",
+  "eventPayoutsHint": "Gudummawar da aka biya a manhaja na cikin asusun Korapay na iyali. Aika wa kowane mai biki kuɗinsa daga dashboard na Korapay, sannan ka taɓa “An aika”.",
+  "eventPayoutLine": "{count, plural, =1{Ga {name} · biya 1} other{Ga {name} · biya {count}}}",
+  "eventPayoutSent": "An aika",
+  "eventPayoutConfirm": "Ka aika {amount} ga {name}? Gudummawarsu za ta nuna an karɓa.",
+  "eventPayoutDone": "An rubuta. An sanar da {name}.",
+  "notifEventGiftPassedOn": "An aika maka {amount} daga gudummawar da aka biya a manhaja don {title}"
 }

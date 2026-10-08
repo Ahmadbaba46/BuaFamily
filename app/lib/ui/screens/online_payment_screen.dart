@@ -18,12 +18,13 @@ Future<void> payOnline(
   String? causeId,
   String? duesPlanId,
   bool showName = true,
+  String? eventId,
+  String? note,
 }) async {
   ({String reference, String checkoutUrl})? started;
   final ok = await guarded(context, () async {
-    started = await ref
-        .read(repositoryProvider)
-        .startOnlinePayment(amount: amount, causeId: causeId, duesPlanId: duesPlanId, showName: showName);
+    started = await ref.read(repositoryProvider).startOnlinePayment(
+        amount: amount, causeId: causeId, duesPlanId: duesPlanId, showName: showName, eventId: eventId, note: note);
   });
   if (!ok || started == null || !context.mounted) return;
   final s = started!;
@@ -31,7 +32,7 @@ Future<void> payOnline(
   // /fund/paid/<reference>; in the app it opens in the browser.
   final messenger = ScaffoldMessenger.maybeOf(context);
   final l = context.l10n;
-  if (!kIsWeb) context.push('/fund/paid/${s.reference}');
+  if (!kIsWeb) context.push('/fund/paid/${s.reference}${eventId == null ? '' : '?event=$eventId'}');
   try {
     await launchUrl(
       Uri.parse(s.checkoutUrl),
@@ -45,9 +46,12 @@ Future<void> payOnline(
 
 /// After paying: checks with Korapay (again when you come back to the app).
 class OnlinePaymentScreen extends ConsumerStatefulWidget {
-  const OnlinePaymentScreen({super.key, required this.reference});
+  const OnlinePaymentScreen({super.key, required this.reference, this.eventId});
 
   final String reference;
+
+  /// A wedding or naming gift: back to this event, not the welfare fund.
+  final String? eventId;
 
   @override
   ConsumerState<OnlinePaymentScreen> createState() => _OnlinePaymentScreenState();
@@ -83,17 +87,27 @@ class _OnlinePaymentScreenState extends ConsumerState<OnlinePaymentScreen> {
       final s = await ref.read(repositoryProvider).checkOnlinePayment(widget.reference);
       if (!mounted) return;
       setState(() => _status = s);
-      if (s == 'paid') refreshFund(ref);
+      if (s == 'paid') {
+        refreshFund(ref);
+        if (widget.eventId != null) ref.invalidate(eventGiftsProvider(widget.eventId!));
+      }
     } catch (e) {
       if (mounted) setState(() => _error = errorText(e));
     }
   }
 
+  String get _home => widget.eventId == null ? '/fund' : '/events/${widget.eventId}';
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final (icon, color, title, body) = switch (_status) {
-      'paid' => (Icons.check_circle, Bua.green, l.paymentReceived, l.paymentReceivedBody),
+      'paid' => (
+          Icons.check_circle,
+          Bua.green,
+          l.paymentReceived,
+          widget.eventId == null ? l.paymentReceivedBody : l.giftPaymentReceivedBody
+        ),
       'failed' => (Icons.cancel_outlined, Bua.danger, l.paymentFailed, l.paymentFailedBody),
       'waiting' => (Icons.hourglass_top_rounded, Bua.gold, l.paymentWaiting, l.paymentWaitingBody),
       _ => (Icons.sync, Bua.inkSubtle, l.paymentChecking, _error ?? ''),
@@ -101,7 +115,7 @@ class _OnlinePaymentScreenState extends ConsumerState<OnlinePaymentScreen> {
     final done = _status == 'paid' || _status == 'failed';
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go('/fund')),
+        leading: BackButton(onPressed: () => context.canPop() ? context.pop() : context.go(_home)),
         title: Text(l.payNowTitle),
       ),
       body: Center(
@@ -122,7 +136,10 @@ class _OnlinePaymentScreenState extends ConsumerState<OnlinePaymentScreen> {
             if (!done && (_status != null || _error != null))
               FilledButton.icon(onPressed: _check, icon: const Icon(Icons.refresh), label: Text(l.checkAgain)),
             if (done)
-              FilledButton(onPressed: () => context.go('/fund'), child: Text(l.backToFund)),
+              FilledButton(
+                onPressed: () => context.go(_home),
+                child: Text(widget.eventId == null ? l.backToFund : l.backToEvent),
+              ),
           ]),
         ),
       ),

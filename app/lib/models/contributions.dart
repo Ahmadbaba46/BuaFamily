@@ -64,6 +64,7 @@ class EventGift {
     this.anonymous = false,
     this.status = GiftStatus.pledged,
     this.receivedAt,
+    this.paidInApp = false,
   });
 
   final String id;
@@ -77,6 +78,9 @@ class EventGift {
   final DateTime createdAt;
   final DateTime? receivedAt;
 
+  /// Paid through Korapay: held by the treasurer until it is passed on.
+  final bool paidInApp;
+
   factory EventGift.fromJson(Map<String, dynamic> j) => EventGift(
         id: j['id'] as String,
         giverId: j['giver_id'] as String?,
@@ -88,6 +92,32 @@ class EventGift {
         status: GiftStatus.values.asNameMap()[j['status']] ?? GiftStatus.pledged,
         createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
         receivedAt: j['received_at'] == null ? null : DateTime.parse(j['received_at'] as String).toLocal(),
+        paidInApp: j['paid_in_app'] as bool? ?? false,
+      );
+}
+
+/// Money paid in the app for an event, still to be passed on to its host.
+class EventPayoutDue {
+  const EventPayoutDue({
+    required this.eventId,
+    required this.title,
+    required this.receiverId,
+    required this.amount,
+    required this.payments,
+  });
+
+  final String eventId;
+  final String title;
+  final String receiverId;
+  final num amount;
+  final int payments;
+
+  factory EventPayoutDue.fromJson(Map<String, dynamic> j) => EventPayoutDue(
+        eventId: j['event_id'] as String,
+        title: j['title'] as String,
+        receiverId: j['receiver_id'] as String,
+        amount: j['amount'] as num,
+        payments: (j['payments'] as num).toInt(),
       );
 }
 

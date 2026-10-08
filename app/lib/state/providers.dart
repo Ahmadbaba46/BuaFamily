@@ -370,6 +370,12 @@ final dmThreadsProvider = StreamProvider<List<DmThread>>((ref) {
 final eventCollectionProvider = FutureProvider.autoDispose
     .family<EventCollection?, String>((ref, id) => ref.watch(repositoryProvider).eventCollection(id));
 
+/// Committee: money paid in the app for events, to pass on to their hosts.
+final eventPayoutsDueProvider = FutureProvider.autoDispose<List<EventPayoutDue>>((ref) {
+  if (!(ref.watch(profileProvider)?.isCommittee ?? false)) return const [];
+  return ref.watch(repositoryProvider).eventPayoutsDue();
+});
+
 /// The gifts on an event, as I may see them.
 final eventGiftsProvider =
     FutureProvider.autoDispose.family<List<EventGift>, String>((ref, id) => ref.watch(repositoryProvider).eventGifts(id));

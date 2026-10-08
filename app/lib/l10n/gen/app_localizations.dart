@@ -9948,6 +9948,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} received your gift for {title}. Thank you!'**
   String notifEventGiftReceived(String name, String title);
+
+  /// No description provided for @giftsPayInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay in the app (card or transfer)'**
+  String get giftsPayInApp;
+
+  /// No description provided for @giftsPayInAppHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Korapay\'s small fee is added. The family\'s treasurer passes the money on to {name}.'**
+  String giftsPayInAppHint(String name);
+
+  /// No description provided for @giftsPaidInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in the app'**
+  String get giftsPaidInApp;
+
+  /// No description provided for @giftsPaidInAppWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid in the app · the treasurer will pass it on'**
+  String get giftsPaidInAppWaiting;
+
+  /// No description provided for @giftPaymentReceivedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gift is recorded. The treasurer will pass it on to the host.'**
+  String get giftPaymentReceivedBody;
+
+  /// No description provided for @backToEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the event'**
+  String get backToEvent;
+
+  /// No description provided for @eventPayoutsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'To pass on to hosts'**
+  String get eventPayoutsTitle;
+
+  /// No description provided for @eventPayoutsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts paid in the app are in the family\'s Korapay account. Send each host their money from the Korapay dashboard, then tap “Sent to host”.'**
+  String get eventPayoutsHint;
+
+  /// No description provided for @eventPayoutLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{To {name} · 1 payment} other{To {name} · {count} payments}}'**
+  String eventPayoutLine(String name, int count);
+
+  /// No description provided for @eventPayoutSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to host'**
+  String get eventPayoutSent;
+
+  /// No description provided for @eventPayoutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Have you sent {amount} to {name}? Their gifts will show as received.'**
+  String eventPayoutConfirm(String amount, String name);
+
+  /// No description provided for @eventPayoutDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded. {name} has been told.'**
+  String eventPayoutDone(String name);
+
+  /// No description provided for @notifEventGiftPassedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} from gifts paid in the app for {title} has been sent to you'**
+  String notifEventGiftPassedOn(String amount, String title);
 }
 
 class _AppLocalizationsDelegate

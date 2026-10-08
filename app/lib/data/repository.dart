@@ -932,6 +932,8 @@ class FamilyRepository {
     String? causeId,
     String? duesPlanId,
     bool showName = true,
+    String? eventId,
+    String? note,
   }) async {
     final r = await _db.functions.invoke('korapay', body: {
       'action': 'start',
@@ -939,6 +941,10 @@ class FamilyRepository {
       'cause_id': ?causeId,
       'dues_plan_id': ?duesPlanId,
       'show_name': showName,
+      // A wedding or naming gift, held for the host.
+      'event_id': ?eventId,
+      if (eventId != null) 'anonymous': !showName,
+      'note': ?note,
     });
     final data = (r.data as Map).cast<String, dynamic>();
     return (reference: data['reference'] as String, checkoutUrl: data['checkout_url'] as String);
@@ -1258,7 +1264,7 @@ class FamilyRepository {
 
   /// Every gift, as I may see it (anonymous names and private amounts hidden).
   Future<List<EventGift>> eventGifts(String eventId) async => [
-        for (final r in (await _db.rpc('event_gift_list', params: {'p_event': eventId})) as List)
+        for (final r in (await _db.rpc('event_gift_rows', params: {'p_event': eventId})) as List)
           EventGift.fromJson(Map<String, dynamic>.from(r as Map)),
       ];
 
@@ -1287,6 +1293,16 @@ class FamilyRepository {
       }).eq('id', id);
 
   Future<void> deleteGift(String id) => _db.from('event_gifts').delete().eq('id', id);
+
+  /// Committee: money paid in the app for events, still to pass on to hosts.
+  Future<List<EventPayoutDue>> eventPayoutsDue() async => [
+        for (final r in (await _db.rpc('event_payouts_due')) as List)
+          EventPayoutDue.fromJson(Map<String, dynamic>.from(r as Map)),
+      ];
+
+  /// Committee: the host has been sent what was paid in the app for [eventId].
+  Future<num> eventPayoutDone(String eventId) async =>
+      (await _db.rpc('event_payout_done', params: {'p_event': eventId})) as num;
 
   // ---------------------------------------------------------------- calendar feed
 
