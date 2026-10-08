@@ -61,6 +61,7 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.eventGift => (n.str('status') == 'sent' ? l.notifEventGiftSent : l.notifEventGiftPledged)(
           n.str('name') ?? '', _giftWhat(n), n.str('title') ?? ''),
       NotificationKind.eventGiftReceived => l.notifEventGiftReceived(n.str('name') ?? '', n.str('title') ?? ''),
+      NotificationKind.eventGiftPassedOn => l.notifEventGiftPassedOn(_giftWhat(n), n.str('title') ?? ''),
       NotificationKind.groupAdded => l.notifGroupAdded(n.str('name') ?? '', n.str('group') ?? ''),
       NotificationKind.groupMessage when n.str('message_kind') == 'reaction' =>
         l.notifGroupReaction(n.str('name') ?? '', n.str('body') ?? '', n.str('group') ?? ''),
@@ -152,7 +153,10 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.weeklySummary => Icons.insights_outlined,
       NotificationKind.directMessage => Icons.forum_outlined,
       NotificationKind.groupMessage || NotificationKind.groupAdded => Icons.groups_outlined,
-      NotificationKind.eventCollection || NotificationKind.eventGift || NotificationKind.eventGiftReceived =>
+      NotificationKind.eventCollection ||
+      NotificationKind.eventGift ||
+      NotificationKind.eventGiftReceived ||
+      NotificationKind.eventGiftPassedOn =>
         Icons.redeem_outlined,
       NotificationKind.contentReport => Icons.flag_outlined,
       NotificationKind.khatm || NotificationKind.khatmCompleted || NotificationKind.khatmReminder =>

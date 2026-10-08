@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/fund_pdf.dart';
 import '../../l10n/l10n.dart';
+import '../../models/contributions.dart' show EventPayoutDue;
 import '../../models/fund.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
@@ -142,6 +143,7 @@ class WelfareFundScreen extends ConsumerWidget {
                 ]),
               ),
             ],
+            if (committee) const _EventPayouts(),
             if (committee && proposals.isNotEmpty) ...[
               const SizedBox(height: 16),
               GroupHeading(l.supportRequests),
@@ -370,6 +372,63 @@ class _MyDues extends ConsumerWidget {
           ),
           const SizedBox(height: 10),
         ],
+      ]),
+    );
+  }
+}
+
+/// Committee: wedding and naming gifts paid in the app, to pass on to hosts.
+class _EventPayouts extends ConsumerWidget {
+  const _EventPayouts();
+
+  Future<void> _done(BuildContext context, WidgetRef ref, EventPayoutDue p) async {
+    final l = context.l10n;
+    final name = authorOf(ref, p.receiverId).name;
+    if (!await confirm(context, l.eventPayoutConfirm(naira(p.amount), name)) || !context.mounted) return;
+    if (await guarded(context, () => ref.read(repositoryProvider).eventPayoutDone(p.eventId))) {
+      ref.invalidate(eventPayoutsDueProvider);
+      ref.invalidate(eventGiftsProvider(p.eventId));
+      if (context.mounted) showSnack(context, l.eventPayoutDone(name));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final due = ref.watch(eventPayoutsDueProvider).value ?? const <EventPayoutDue>[];
+    if (due.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        GroupHeading(l.eventPayoutsTitle),
+        const SizedBox(height: 4),
+        Text(l.eventPayoutsHint, style: TextStyle(fontSize: 12, height: 1.4, color: Bua.inkMuted)),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(color: Bua.surface, borderRadius: BorderRadius.circular(20)),
+          child: Column(children: [
+            for (final (i, p) in due.indexed) ...[
+              if (i > 0) const InsetDivider(indent: 16),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+                child: Row(children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => context.push('/events/${p.eventId}'),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text(p.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+                        Text(l.eventPayoutLine(authorOf(ref, p.receiverId).name, p.payments),
+                            style: TextStyle(fontSize: 13, color: Bua.inkMuted)),
+                        Text(naira(p.amount), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                      ]),
+                    ),
+                  ),
+                  FilledButton(onPressed: () => _done(context, ref, p), child: Text(l.eventPayoutSent)),
+                ]),
+              ),
+            ],
+          ]),
+        ),
       ]),
     );
   }

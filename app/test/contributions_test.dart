@@ -2,6 +2,7 @@ import 'package:bua_family/data/repository.dart';
 import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
 import 'package:bua_family/models/contributions.dart';
+import 'package:bua_family/models/fund.dart' show FundOverview;
 import 'package:bua_family/models/social.dart';
 import 'package:bua_family/state/providers.dart';
 import 'package:bua_family/ui/widgets/event_contributions.dart';
@@ -58,9 +59,11 @@ void main() {
   );
   final t0 = DateTime.now().subtract(const Duration(days: 1));
 
-  Widget app(_FakeRepo repo, {String me = 'u1'}) => ProviderScope(
+  Widget app(_FakeRepo repo, {String me = 'u1', bool online = false}) => ProviderScope(
         key: UniqueKey(),
         overrides: [
+          fundOverviewProvider.overrideWith(
+              (ref) async => FundOverview(balance: 0, treasurers: const [], onlinePayments: online)),
           repositoryProvider.overrideWithValue(repo),
           profileProvider.overrideWithValue(Profile(
               id: me, displayName: 'x', role: AppRole.member, status: AccountStatus.active, personId: 'aisha')),
@@ -170,5 +173,35 @@ void main() {
     await tester.tap(find.text('Mark received'));
     await tester.pumpAndSettle();
     expect(repo.calls.single, 'update g2 received');
+  });
+
+  testWidgets('paying in the app: offered when the committee switched it on; such gifts are settled by the treasurer',
+      (tester) async {
+    tester.view.physicalSize = const Size(420, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final repo = _FakeRepo(
+      collection: const EventCollection(eventId: 'e1', receiverId: 'u1'),
+      gifts: [
+        EventGift(id: 'g1', createdAt: t0, giverId: 'u2', amount: 15000, status: GiftStatus.sent, paidInApp: true),
+      ],
+    );
+    await tester.pumpWidget(app(repo, me: 'u2'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pay in the app (card or transfer)'), findsNothing, reason: 'not switched on');
+
+    await tester.pumpWidget(app(repo, me: 'u2', online: true));
+    await tester.pumpAndSettle();
+    expect(find.text('Pay in the app (card or transfer)'), findsOneWidget);
+    expect(find.textContaining('Paid in the app · the treasurer will pass it on'), findsOneWidget);
+    // Nothing to change on a gift paid in the app.
+    await tester.tap(find.text('Yours'));
+    await tester.pumpAndSettle();
+    expect(find.text('Take back'), findsNothing);
+
+    await tester.tap(find.text('Pay in the app (card or transfer)'));
+    await tester.pumpAndSettle();
+    expect(find.text("Korapay's small fee is added. The family's treasurer passes the money on to aisha."),
+        findsOneWidget);
   });
 }

@@ -6081,4 +6081,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifEventGiftReceived(String name, String title) {
     return '$name received your gift for $title. Thank you!';
   }
+
+  @override
+  String get giftsPayInApp => 'Pay in the app (card or transfer)';
+
+  @override
+  String giftsPayInAppHint(String name) {
+    return 'Korapay\'s small fee is added. The family\'s treasurer passes the money on to $name.';
+  }
+
+  @override
+  String get giftsPaidInApp => 'Paid in the app';
+
+  @override
+  String get giftsPaidInAppWaiting =>
+      'Paid in the app · the treasurer will pass it on';
+
+  @override
+  String get giftPaymentReceivedBody =>
+      'Your gift is recorded. The treasurer will pass it on to the host.';
+
+  @override
+  String get backToEvent => 'Back to the event';
+
+  @override
+  String get eventPayoutsTitle => 'To pass on to hosts';
+
+  @override
+  String get eventPayoutsHint =>
+      'Gifts paid in the app are in the family\'s Korapay account. Send each host their money from the Korapay dashboard, then tap “Sent to host”.';
+
+  @override
+  String eventPayoutLine(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'To $name · $count payments',
+      one: 'To $name · 1 payment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventPayoutSent => 'Sent to host';
+
+  @override
+  String eventPayoutConfirm(String amount, String name) {
+    return 'Have you sent $amount to $name? Their gifts will show as received.';
+  }
+
+  @override
+  String eventPayoutDone(String name) {
+    return 'Recorded. $name has been told.';
+  }
+
+  @override
+  String notifEventGiftPassedOn(String amount, String title) {
+    return '$amount from gifts paid in the app for $title has been sent to you';
+  }
 }

@@ -8,6 +8,7 @@ import '../../models/fund.dart' show naira;
 import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../screens/messages_screen.dart' show pickMember;
+import '../screens/online_payment_screen.dart' show payOnline;
 import '../theme.dart';
 import 'bua.dart';
 import 'common.dart';
@@ -150,6 +151,35 @@ class EventContributions extends ConsumerWidget {
     if (ok) _refresh(ref);
   }
 
+  /// Pay through Korapay; the treasurer passes the money on to the host.
+  Future<void> _payInApp(BuildContext context, WidgetRef ref, String receiverName) async {
+    final l = context.l10n;
+    final v = await showFormDialog(
+      context,
+      title: l.giftsPayInApp,
+      note: l.giftsPayInAppHint(receiverName),
+      fields: [
+        TextSpec('amount', l.giftsAmount, number: true, required: true),
+        TextSpec('note', l.giftsNote, multiline: true),
+        SwitchSpec('anonymous', l.giftsAnonymous),
+      ],
+    );
+    if (v == null || !context.mounted) return;
+    final amount = v['amount'] as int?;
+    if (amount == null || amount <= 0) {
+      showSnack(context, l.giftsNeedAmount);
+      return;
+    }
+    await payOnline(
+      context,
+      ref,
+      amount: amount.toDouble(),
+      eventId: event.id,
+      showName: !(v['anonymous'] as bool? ?? false),
+      note: (v['note'] as String?)?.trim(),
+    );
+  }
+
   Future<void> _setStatus(BuildContext context, WidgetRef ref, EventGift g, GiftStatus s) async {
     if (await guarded(context, () => ref.read(repositoryProvider).updateGift(g.id, status: s))) _refresh(ref);
   }
@@ -208,6 +238,7 @@ class EventContributions extends ConsumerWidget {
     final mine = gifts.where((g) => g.giverId == me?.id).toList();
     final amountsShown = c.showAmounts || runs;
     final totals = giftTotals(gifts);
+    final payInApp = ref.watch(fundOverviewProvider).value?.onlinePayments ?? false;
 
     return Padding(
       padding: const EdgeInsets.only(top: 14),
@@ -301,13 +332,21 @@ class EventContributions extends ConsumerWidget {
                 const SizedBox(height: 6),
                 Text(l.giftsNotWelfare(receiver.name), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
                 const SizedBox(height: 10),
-                if (c.open)
+                if (c.open) ...[
                   FilledButton.icon(
                     onPressed: () => _give(context, ref),
                     icon: const Icon(Icons.redeem_outlined),
                     label: Text(l.giftsGive),
-                  )
-                else
+                  ),
+                  if (payInApp) ...[
+                    const SizedBox(height: 8),
+                    OutlinedButton.icon(
+                      onPressed: () => _payInApp(context, ref, receiver.name),
+                      icon: const Icon(Icons.credit_card),
+                      label: Text(l.giftsPayInApp),
+                    ),
+                  ],
+                ] else
                   Text(
                     l.giftsClosed,
                     textAlign: TextAlign.center,
@@ -339,7 +378,12 @@ class EventContributions extends ConsumerWidget {
                 subtitle: Text(
                   [
                     if (giftWhat(g).isNotEmpty) giftWhat(g),
-                    giftMethodLabel(l, g.method),
+                    if (!g.paidInApp)
+                      giftMethodLabel(l, g.method)
+                    else if (g.status == GiftStatus.received)
+                      l.giftsPaidInApp
+                    else
+                      l.giftsPaidInAppWaiting,
                     if (g.note?.isNotEmpty ?? false) '“${g.note}”',
                   ].join(' · '),
                   maxLines: 2,
@@ -350,7 +394,10 @@ class EventContributions extends ConsumerWidget {
                   background: g.status == GiftStatus.received ? Bua.greenTint : Bua.track,
                   color: g.status == GiftStatus.received ? Bua.green : Bua.inkMuted,
                 ),
-                onTap: g.giverId != me?.id && !runs ? null : () => _giftMenu(context, ref, g, runs, mine.contains(g)),
+                // Paid in the app: settled by the treasurer, not changed here.
+                onTap: g.paidInApp || (g.giverId != me?.id && !runs)
+                    ? null
+                    : () => _giftMenu(context, ref, g, runs, mine.contains(g)),
               ),
             ),
         ],

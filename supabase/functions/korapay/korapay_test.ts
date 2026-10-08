@@ -26,6 +26,14 @@ function world(opts: { key?: string | null; korapayStatus?: string; amountPaid?:
           error: null,
         });
       }
+      if (fn === "online_payment_start_event") {
+        payments["bua-2"] = { user_id: args!.p_user as string, status: "started" };
+        return Promise.resolve({
+          data: { reference: "bua-2", amount: args!.p_amount, name: "Musa Bua", email: "musa@example.com",
+                  purpose: "Naming of Fatima", event_id: args!.p_event },
+          error: null,
+        });
+      }
       if (fn === "online_payment_paid") payments[args!.p_reference as string].status = "paid";
       if (fn === "online_payment_failed" && payments[args!.p_reference as string]) {
         payments[args!.p_reference as string].status = "failed";
@@ -75,6 +83,22 @@ Deno.test("start: a signed-in member gets Korapay's checkout page", async () => 
   assertEquals(sent.redirect_url, "https://buafamily.vercel.app/#/fund/paid/bua-1");
   assertEquals(sent.notification_url, "https://x.supabase.co/functions/v1/korapay?webhook=1");
   assertEquals(sent.customer.email, "member-user-1@buafamily.vercel.app", "phone-only members get a stand-in email");
+});
+
+Deno.test("start: a wedding or naming gift, held for the host", async () => {
+  const w = world();
+  const res = await handle(
+    post({ action: "start", amount: 15000, event_id: "e1", anonymous: true, note: "Barka" }, { token: "good-token" }),
+    w.db,
+    w.env,
+  );
+  assertEquals(res.status, 200);
+  const start = w.calls.find((c) => c.fn === "online_payment_start_event")!;
+  assertEquals(start.args, { p_user: "user-1", p_amount: 15000, p_event: "e1", p_anonymous: true, p_note: "Barka" });
+  assertEquals(w.calls.some((c) => c.fn === "online_payment_start"), false, "not a welfare fund payment");
+  const sent = JSON.parse(w.requests[0].init!.body as string);
+  assertEquals(sent.narration, "Bua Family: Naming of Fatima");
+  assertEquals(sent.redirect_url, "https://buafamily.vercel.app/#/fund/paid/bua-2?event=e1", "back to the event");
 });
 
 Deno.test("start: not signed in, not set up, or refused", async () => {

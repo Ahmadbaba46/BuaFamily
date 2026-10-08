@@ -2,6 +2,8 @@
 //
 //   POST {action: "start", amount, cause_id?, dues_plan_id?, show_name?}  (signed in)
 //     → {reference, checkout_url}
+//   POST {action: "start", amount, event_id, anonymous?, note?}              (signed in)
+//     → the same, for a wedding or naming gift (held for the host)
 //   POST {action: "check", reference}                                      (signed in)
 //     → {status: "paid" | "failed" | "waiting"}
 //   POST ?webhook=1  {event, data: {reference, ...}}                       (from Korapay)
@@ -84,13 +86,22 @@ export async function handle(req: Request, db: Db, env: Env): Promise<Response> 
   if (!key) return json(503, { error: "Paying in the app is not set up yet." });
 
   if (body?.action === "start") {
-    const { data: p, error } = await db.rpc("online_payment_start", {
-      p_user: userId,
-      p_amount: Number(body.amount),
-      p_cause: body.cause_id ?? null,
-      p_plan: body.dues_plan_id ?? null,
-      p_show_name: body.show_name ?? true,
-    });
+    const forEvent = typeof body.event_id === "string" && body.event_id.length > 0;
+    const { data: p, error } = forEvent
+      ? await db.rpc("online_payment_start_event", {
+        p_user: userId,
+        p_amount: Number(body.amount),
+        p_event: body.event_id,
+        p_anonymous: body.anonymous === true,
+        p_note: typeof body.note === "string" ? body.note : null,
+      })
+      : await db.rpc("online_payment_start", {
+        p_user: userId,
+        p_amount: Number(body.amount),
+        p_cause: body.cause_id ?? null,
+        p_plan: body.dues_plan_id ?? null,
+        p_show_name: body.show_name ?? true,
+      });
     if (error) return json(400, { error: error.message });
     const family = cfg?.family_name ?? "Bua";
     try {
@@ -101,7 +112,7 @@ export async function handle(req: Request, db: Db, env: Env): Promise<Response> 
         // Korapay needs an email; members who sign in by phone have none.
         email: p.email || `member-${userId.slice(0, 8)}@buafamily.vercel.app`,
         narration: [`${family} Family`, p.purpose].filter(Boolean).join(": "),
-        redirectUrl: `${env.siteUrl}/#/fund/paid/${p.reference}`,
+        redirectUrl: `${env.siteUrl}/#/fund/paid/${p.reference}${forEvent ? `?event=${p.event_id}` : ""}`,
         notificationUrl: `${env.supabaseUrl}/functions/v1/korapay?webhook=1`,
       });
       return json(200, { reference: p.reference, checkout_url: checkoutUrl });

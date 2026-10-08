@@ -4076,5 +4076,62 @@
         "type": "String"
       }
     }
+  },
+  "giftsPayInApp": "Pay in the app (card or transfer)",
+  "giftsPayInAppHint": "Korapay's small fee is added. The family's treasurer passes the money on to {name}.",
+  "@giftsPayInAppHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "giftsPaidInApp": "Paid in the app",
+  "giftsPaidInAppWaiting": "Paid in the app · the treasurer will pass it on",
+  "giftPaymentReceivedBody": "Your gift is recorded. The treasurer will pass it on to the host.",
+  "backToEvent": "Back to the event",
+  "eventPayoutsTitle": "To pass on to hosts",
+  "eventPayoutsHint": "Gifts paid in the app are in the family's Korapay account. Send each host their money from the Korapay dashboard, then tap “Sent to host”.",
+  "eventPayoutLine": "{count, plural, =1{To {name} · 1 payment} other{To {name} · {count} payments}}",
+  "@eventPayoutLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eventPayoutSent": "Sent to host",
+  "eventPayoutConfirm": "Have you sent {amount} to {name}? Their gifts will show as received.",
+  "@eventPayoutConfirm": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPayoutDone": "Recorded. {name} has been told.",
+  "@eventPayoutDone": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventGiftPassedOn": "{amount} from gifts paid in the app for {title} has been sent to you",
+  "@notifEventGiftPassedOn": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }

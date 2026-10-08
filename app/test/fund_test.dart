@@ -1,5 +1,7 @@
+import 'package:bua_family/data/repository.dart';
 import 'package:bua_family/l10n/l10n.dart';
 import 'package:bua_family/models/account.dart';
+import 'package:bua_family/models/contributions.dart';
 import 'package:bua_family/models/fund.dart';
 import 'package:bua_family/models/social.dart' show Member;
 import 'package:bua_family/state/providers.dart';
@@ -8,8 +10,22 @@ import 'package:bua_family/ui/screens/welfare_fund_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthClientOptions, SupabaseClient;
 
 import 'domain_test.dart' show buildFamily;
+
+class _PayoutRepo extends FamilyRepository {
+  _PayoutRepo()
+      : super(SupabaseClient('http://localhost', 'test', authOptions: const AuthClientOptions(autoRefreshToken: false)));
+
+  final done = <String>[];
+
+  @override
+  Future<num> eventPayoutDone(String eventId) async {
+    done.add(eventId);
+    return 45000;
+  }
+}
 
 void main() {
   final now = DateTime.now();
@@ -24,8 +40,11 @@ void main() {
     Contribution(id: 'k2', userId: 'u2', amount: 5000, method: PayMethod.cash, createdAt: now, causeId: 'c2', receiptPath: 'u2/r.jpg'),
   ];
 
-  Widget app(Widget home, {bool treasurer = false}) => ProviderScope(
+  Widget app(Widget home, {bool treasurer = false, List<EventPayoutDue>? payouts, FamilyRepository? repo}) =>
+      ProviderScope(
         overrides: [
+          if (repo != null) repositoryProvider.overrideWithValue(repo),
+          if (payouts != null) eventPayoutsDueProvider.overrideWith((ref) async => payouts),
           profileProvider.overrideWithValue(Profile(
             id: 'u1',
             displayName: 'Aisha',
@@ -118,5 +137,26 @@ void main() {
     expect(find.text('Copy account number'), findsOneWidget);
     expect(find.text('Record contribution'), findsOneWidget);
     expect(find.text('Cash to treasurer'), findsOneWidget);
+  });
+
+  testWidgets('treasurers see gifts paid in the app to pass on to hosts', (tester) async {
+    tester.view.physicalSize = const Size(390, 2200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final repo = _PayoutRepo();
+    await tester.pumpWidget(app(const WelfareFundScreen(), treasurer: true, repo: repo, payouts: const [
+      EventPayoutDue(eventId: 'e1', title: 'Naming of Fatima', receiverId: 'u2', amount: 45000, payments: 3),
+    ]));
+    await tester.pumpAndSettle();
+    expect(find.text('To pass on to hosts'), findsOneWidget);
+    expect(find.text('Naming of Fatima'), findsOneWidget);
+    expect(find.text('To usman · 3 payments'), findsOneWidget);
+    expect(find.text('₦45,000'), findsOneWidget);
+    await tester.tap(find.text('Sent to host'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Have you sent ₦45,000 to usman?'), findsOneWidget);
+    await tester.tap(find.text('Yes'));
+    await tester.pumpAndSettle();
+    expect(repo.done, ['e1']);
   });
 }

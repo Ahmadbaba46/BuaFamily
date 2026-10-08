@@ -67,6 +67,7 @@ const en: Texts = {
   event_gift: (d) =>
     `${s(d, "name") || "Someone"} ${s(d, "status") === "sent" ? "sent" : "pledged"} ${giftWhat(d)} for ${s(d, "title")}`,
   event_gift_received: (d) => `${s(d, "name") || "The host"} received your gift for ${s(d, "title")}. Thank you!`,
+  event_gift_passed_on: (d) => `${giftWhat(d)} from gifts paid in the app for ${s(d, "title")} has been sent to you`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "URGENT: a child safety concern was reported. Please review it now."
@@ -182,6 +183,7 @@ const ha: Texts = {
   event_gift: (d) =>
     `${s(d, "name") || "Wani"} ${s(d, "status") === "sent" ? "ya aika" : "ya yi alƙawarin"} ${giftWhat(d)} don ${s(d, "title")}`,
   event_gift_received: (d) => `${s(d, "name") || "Mai biki"} ya karɓi gudummawarka don ${s(d, "title")}. Na gode!`,
+  event_gift_passed_on: (d) => `An aika maka ${giftWhat(d)} daga gudummawar da aka biya a manhaja don ${s(d, "title")}`,
   content_report: (d) =>
     s(d, "reason") === "child_safety"
       ? "GAGGAWA: an kai rahoton damuwa kan lafiyar yara. Don Allah a duba yanzu."

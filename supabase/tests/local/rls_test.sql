@@ -2600,6 +2600,90 @@ select test.assert((select jsonb_array_length(private.backup_data() -> 'event_gi
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 52. Wedding and naming gifts paid in the app.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+select id as naming from public.events where title = 'Naming of Fatima' \gset
+-- Section 51 closed it; Aisha reopens it.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.event_collections set open = true where event_id = :'naming';
+select test.expect_error(format($$insert into public.event_gifts (event_id, amount, paid_in_app) values (%L, 500, true)$$,
+  :'naming'), 'nobody claims to have paid in the app');
+reset role;
+
+-- Paying in the app needs the committee's switch.
+update public.fund_settings set online_payments = false;
+select test.expect_error(format($$select public.online_payment_start_event(%L, 15000, %L)$$, :member2_id, :'naming'),
+  'switched off: no payments');
+update public.fund_settings set online_payments = true;
+select (public.online_payment_start_event(:member2_id, 15000, :'naming', true, 'Barka da suna')) ->> 'reference' as giftref \gset
+select test.assert((select event_id = :'naming' and not show_name and note = 'Barka da suna' from public.online_payments
+  where reference = :'giftref'), 'the payment knows which event, and stays anonymous');
+
+-- Korapay confirms: a gift, sent and paid in the app (once); the host and the committee are told.
+select public.online_payment_paid(:'giftref', 15000, 200);
+select public.online_payment_paid(:'giftref', 15000, 200);
+select test.assert((select count(*) = 1 from public.event_gifts where paid_in_app), 'one gift, however often Korapay calls');
+select test.assert((select status = 'sent' and anonymous and amount = 15000 and giver_id = :member2_id
+  from public.event_gifts where paid_in_app), 'sent, anonymous, by Musa');
+select test.assert((select count(*) = 0 from public.fund_contributions where gateway_reference = :'giftref'),
+  'not counted in the welfare fund');
+select test.assert((select data ->> 'status' = 'sent' from public.notifications
+  where user_id = :member_id and kind = 'event_gift' order by created_at desc limit 1), 'the host hears of it');
+select test.assert((select (data ->> 'event')::boolean from public.notifications
+  where user_id = :admin_id and kind = 'fund_contribution' order by created_at desc limit 1), 'the committee too');
+
+-- Nobody changes or takes back a gift paid in the app.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.event_gifts set amount = 1, status = 'pledged', note = 'Allah ya raya' where paid_in_app;
+delete from public.event_gifts where paid_in_app;
+reset role;
+select test.assert((select amount = 15000 and status = 'sent' and note = 'Allah ya raya' from public.event_gifts
+  where paid_in_app), 'only the note changed');
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.event_gifts set status = 'received' where paid_in_app;
+select test.assert((select paid_in_app from public.event_gift_rows(:'naming') where amount = 15000),
+  'the list says it was paid in the app');
+reset role;
+select test.assert((select status = 'sent' from public.event_gifts where paid_in_app),
+  'the host can''t mark it received: the money is with the treasurer');
+
+-- The committee sees what to pass on, and passes it on.
+select is_treasurer as m2_treasurer from public.profiles where id = :member2_id \gset
+update public.profiles set is_treasurer = false where id = :member2_id;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error($$select * from public.event_payouts_due()$$, 'only the committee sees payouts due');
+reset role;
+update public.profiles set is_treasurer = :'m2_treasurer' where id = :member2_id;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select amount = 15000 and payments = 1 and receiver_id = :member_id
+  from public.event_payouts_due() where event_id = :'naming'), 'what Aisha is owed');
+select test.assert((select public.event_payout_done(:'naming') = 15000), 'passed on');
+select test.assert((select public.event_payout_done(:'naming') = 0), 'only once');
+select test.assert((select count(*) = 0 from public.event_payouts_due()), 'nothing left to pass on');
+reset role;
+select test.assert((select status = 'received' and received_by = :admin_id from public.event_gifts where paid_in_app),
+  'the gift is received');
+select test.assert((select passed_on_by = :admin_id from public.online_payments where reference = :'giftref'), 'by whom');
+select test.assert((select data ->> 'amount' = '15000.00' from public.notifications
+  where user_id = :member_id and kind = 'event_gift_passed_on'), 'the host is told');
+select test.assert((select count(*) = 1 from public.notifications
+  where user_id = :member2_id and kind = 'event_gift_received'
+    and created_at > now() - interval '1 minute' and data ->> 'amount' = '15000.00'), 'and the giver thanked');
+
+-- An event with gifts paid in the app keeps them on record.
+select test.expect_error(format($$delete from public.events where id = %L$$, :'naming'),
+  'a paid event can''t be deleted');
+update public.fund_settings set online_payments = false;
+select set_config('request.jwt.claims', '{}', false);
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
