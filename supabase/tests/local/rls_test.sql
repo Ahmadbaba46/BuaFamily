@@ -2806,6 +2806,111 @@ select test.assert((select count(*) = 0 from public.chat_groups where id = :'mgr
 select test.assert((select count(*) = 0 from public.group_messages where group_id = :'mgrp'), 'with what was said in it');
 
 -- ---------------------------------------------------------------------------
+-- 54. Recently deleted: kept 30 days, admins put it back.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+-- A small family: Binta (with an account) and her son Tanko, with a detail.
+insert into public.persons (id, first_name, last_name, sex) values
+  ('00000000-0000-0000-0000-0000000000b1', 'Binta', 'Bin', 'female'),
+  ('00000000-0000-0000-0000-0000000000b2', 'Tanko', 'Bin', 'male');
+insert into public.parent_child (parent_id, child_id, kind)
+  values ('00000000-0000-0000-0000-0000000000b1', '00000000-0000-0000-0000-0000000000b2', 'biological');
+insert into public.person_skills (person_id, skill) values ('00000000-0000-0000-0000-0000000000b1', 'Weaving');
+select coalesce(person_id::text, '') as m2_person from public.profiles where id = :member2_id \gset
+update public.profiles set person_id = '00000000-0000-0000-0000-0000000000b1' where id = :member2_id;
+
+-- Members can't see the bin.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error($$select public.admin_deleted_items()$$, 'members cannot see what was deleted');
+select test.expect_error($$select count(*) from public.deleted_items$$, 'nor read the copies directly');
+reset role;
+
+-- An admin removes Binta from the tree: her link, detail and account link go with her.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+delete from public.persons where id = '00000000-0000-0000-0000-0000000000b1';
+reset role;
+select test.assert((select count(*) = 0 from public.parent_child where child_id = '00000000-0000-0000-0000-0000000000b2'),
+  'her link to Tanko went');
+select test.assert((select person_id is null from public.profiles where id = :member2_id), 'her account was unlinked');
+select test.assert((select count(*) = 1 from public.deleted_items where root and entity = 'persons' and label = 'Binta Bin'),
+  'a copy of Binta is kept');
+select txid as bin_tx from public.deleted_items where root and label = 'Binta Bin' \gset
+select test.assert((select count(*) = 3 from public.deleted_items where txid = :bin_tx), 'with her link and her skill');
+
+-- Unliking is not "deleting something".
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Like me') returning id as likepost \gset
+insert into public.likes (post_id) values (:'likepost');
+delete from public.likes where post_id = :'likepost' and user_id = auth.uid();
+reset role;
+select test.assert((select count(*) = 0 from public.deleted_items where entity = 'likes' and root), 'unlikes are not kept');
+
+-- The admin sees it, and puts it all back.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select (public.admin_deleted_items() -> 0 -> 'items' -> 0 ->> 'label') = 'Binta Bin'),
+  'the newest deletion comes first');
+select test.assert((select (public.admin_deleted_items() -> 0 ->> 'total')::int = 3), 'three rows went together');
+select public.admin_restore_deleted(:bin_tx) as restored \gset
+select test.expect_error(format($$select public.admin_restore_deleted(%s)$$, :bin_tx), 'only once');
+reset role;
+select test.assert((:'restored'::jsonb ->> 'restored')::int = 3, 'three rows came back');
+select test.assert((select count(*) = 1 from public.persons where id = '00000000-0000-0000-0000-0000000000b1'), 'Binta is back');
+select test.assert((select count(*) = 1 from public.parent_child where child_id = '00000000-0000-0000-0000-0000000000b2'),
+  'as Tanko''s mother');
+select test.assert((select count(*) = 1 from public.person_skills where skill = 'Weaving'), 'with her skill');
+select test.assert((select person_id = '00000000-0000-0000-0000-0000000000b1' from public.profiles where id = :member2_id),
+  'and her account is linked again');
+select test.assert((select count(*) = 1 from public.activity_log where action = 'restore' and entity = 'persons'),
+  'the restore is in the log');
+select test.assert((select count(*) = 0 from public.activity_log where action = 'insert' and entity = 'persons'
+  and target = '00000000-0000-0000-0000-0000000000b1' and at > now() - interval '1 minute'),
+  'putting rows back is not logged as new');
+
+-- Changes to someone's details are in the log now (health: only whose).
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.person_health (person_id, blood_group, notes)
+  values ('00000000-0000-0000-0000-0000000000b2', 'O+', 'Private note');
+reset role;
+select test.assert((select detail = jsonb_build_object('person_id', '00000000-0000-0000-0000-0000000000b2')
+  from public.activity_log where entity = 'person_health' order by id desc limit 1), 'health: only whose');
+
+-- A cause with money stays (the copy goes with the failed delete); one by mistake can be restored.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.fund_causes (title) values ('Mistake cause') returning id as mistake \gset
+delete from public.fund_causes where id = :'mistake';
+reset role;
+select txid as cause_tx from public.deleted_items where row_id = :'mistake' \gset
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_restore_deleted(:cause_tx);
+reset role;
+select test.assert((select count(*) = 1 from public.fund_causes where id = :'mistake'), 'the cause is back');
+
+-- Removing a copy for good; and copies older than 30 days go by themselves.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_forget_deleted(%s)$$, :cause_tx), 'members cannot forget copies');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select public.admin_forget_deleted(:cause_tx);
+reset role;
+select test.assert((select count(*) = 0 from public.deleted_items where txid = :cause_tx), 'forgotten');
+update public.deleted_items set deleted_at = now() - interval '31 days' where txid = :bin_tx;
+select private.purge_deleted();
+select test.assert((select count(*) = 0 from public.deleted_items where txid = :bin_tx), 'old copies go');
+
+-- Tidy up.
+update public.profiles set person_id = nullif(:'m2_person', '')::uuid where id = :member2_id;
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);
