@@ -99,7 +99,10 @@ class _ReportCard extends ConsumerWidget {
     final repo = ref.read(repositoryProvider);
     final urgent = r.reason == ReportReason.childSafety;
     final reporter = r.reporterId == null ? null : authorOf(ref, r.reporterId!);
-    final removable = r.kind == ReportKind.post || r.kind == ReportKind.photo || r.kind == ReportKind.comment;
+    final removable = r.kind == ReportKind.post ||
+        r.kind == ReportKind.photo ||
+        r.kind == ReportKind.comment ||
+        r.kind == ReportKind.message;
     final target = r.targetUser == null ? null : ref.watch(profilesProvider).value?.where((p) => p.id == r.targetUser).firstOrNull;
 
     return Container(

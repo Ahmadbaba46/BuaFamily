@@ -4133,5 +4133,183 @@
         "type": "String"
       }
     }
+  },
+  "editEvent": "Edit event",
+  "saveChanges": "Save changes",
+  "eventChangesNote": "Those going are told if the date or place changes.",
+  "edited": "edited",
+  "editComment": "Edit comment",
+  "editPost": "Edit post",
+  "confirmDeleteComment": "Delete this comment?",
+  "renameAlbum": "Rename album",
+  "deleteAlbum": "Delete album",
+  "confirmDeleteAlbum": "{count, plural, =0{Delete this album?} =1{Delete this album and its photo? It goes from any moment it was posted in too.} other{Delete this album and its {count} photos? They go from any moment they were posted in too.}}",
+  "@confirmDeleteAlbum": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "payoutsRecorded": "Payouts recorded",
+  "editPayout": "Correct payout",
+  "noPayoutsYet": "No payouts recorded yet.",
+  "confirmDeletePayout": "Delete this payout of {amount}? The balance goes back up by that much.",
+  "@confirmDeletePayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recordedBy": "recorded by {name}",
+  "@recordedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteCause": "Delete cause",
+  "confirmDeleteCause": "Delete this cause? Only a cause with no money given or paid out can be deleted; otherwise close it.",
+  "deleteDuesPlan": "Delete plan",
+  "confirmDeleteDuesPlan": "Delete the plan “{title}”? Only a plan with no dues paid can be deleted; otherwise switch it off.",
+  "@confirmDeleteDuesPlan": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "editRequest": "Edit request",
+  "confirmDeleteBloodRequest": "Delete this blood request? The offers to donate go with it.",
+  "editOpportunity": "Edit opportunity",
+  "confirmDeleteOpportunity": "Delete this opportunity?",
+  "editPoll": "Edit poll",
+  "editPollNote": "You can change the wording. The choices stay as people voted on them.",
+  "confirmDeletePoll": "Delete this poll and its votes?",
+  "editMemory": "Edit memory",
+  "confirmDeleteMemory": "Delete this memory?",
+  "clearNotifications": "Clear all",
+  "confirmClearNotifications": "Delete all your notifications? (Swipe one to the left to delete just that one.)",
+  "notifEventMoved": "{title} has moved to {date}",
+  "@notifEventMoved": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "notifEventPlaceChanged": "{title} has a new place: {place}",
+  "@notifEventPlaceChanged": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "groupDelete": "Delete group",
+  "groupConfirmDelete": "Delete this group for everyone? Everything said in it goes too.",
+  "groupConfirmDeleteNamed": "Delete “{name}” for everyone? Everything said in it goes too.",
+  "@groupConfirmDeleteNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupRemoveSomeone": "Remove someone",
+  "groupRemoveWho": "Remove who from {name}?",
+  "@groupRemoveWho": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "allGroups": "All groups",
+  "allGroupsNote": "Every group chat in the family. You see who is in each, never what was said. You can remove someone or delete a group.",
+  "noGroupsYet": "No groups yet.",
+  "startedBy": "started by {name}",
+  "@startedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "invitesTitle": "Invites",
+  "noInvitesYet": "No invites made yet.",
+  "inviteAnyone": "Anyone with the link",
+  "inviteWaiting": "Not used yet",
+  "inviteExpired": "Expired",
+  "inviteUsedBy": "Used by {name} {when}",
+  "@inviteUsedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteMadeBy": "made by {name} {when}",
+  "@inviteMadeBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelInvite": "Cancel invite",
+  "removeFromList": "Remove from list",
+  "confirmCancelInvite": "Cancel this invite? Its link will stop working.",
+  "moreAdmin": "More",
+  "personOptions": "Options",
+  "selectSeveral": "Select several",
+  "selectedCount": "{count} selected",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmDeletePeople": "{count, plural, =1{Delete {names} from the family tree?} other{Delete these {count} people from the family tree: {names}?}} Their links and details go too.",
+  "@confirmDeletePeople": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "andMore": "and {count} more",
+  "@andMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "peopleDeleted": "{count, plural, =1{1 person deleted} other{{count} people deleted}}",
+  "@peopleDeleted": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

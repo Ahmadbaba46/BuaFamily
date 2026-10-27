@@ -9,6 +9,7 @@ import '../../models/social.dart';
 import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/event_contributions.dart';
+import 'new_event_screen.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 import '../widgets/hijri.dart';
@@ -78,7 +79,9 @@ class EventScreen extends ConsumerWidget {
           iconColor: Colors.white,
           onSelected: (v) async {
             final repo = ref.read(repositoryProvider);
-            if (v == 'pin') {
+            if (v == 'edit') {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => NewEventScreen(editing: event)));
+            } else if (v == 'pin') {
               if (await guarded(context, () => repo.setPinned(eventId: event.id, pinned: !event.pinned))) {
                 ref.invalidate(eventsProvider);
               }
@@ -91,6 +94,7 @@ class EventScreen extends ConsumerWidget {
             }
           },
           itemBuilder: (_) => [
+            if (canDelete) PopupMenuItem(value: 'edit', child: Text(l.editEvent)),
             if (isAdmin) PopupMenuItem(value: 'pin', child: Text(event.pinned ? l.unpin : l.pinToHome)),
             if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deleteEvent)),
           ],

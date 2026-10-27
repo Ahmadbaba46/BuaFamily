@@ -53,14 +53,24 @@ class FundCauseScreen extends ConsumerWidget {
         title: Text(plan != null ? l.payDuesTitle(plan.title) : (cause?.title ?? l.contributeToFund),
             style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis),
         actions: [
-          if (committee && cause != null && cause.status == CauseStatus.open)
+          if (committee && cause != null)
             PopupMenuButton<String>(
-              onSelected: (_) async {
-                if (await guarded(context, () => ref.read(repositoryProvider).updateCause(cause.id, {'status': 'closed'}))) {
+              onSelected: (v) async {
+                final repo = ref.read(repositoryProvider);
+                if (v == 'close') {
+                  if (await guarded(context, () => repo.updateCause(cause.id, {'status': 'closed'}))) refreshFund(ref);
+                  return;
+                }
+                if (!await confirm(context, l.confirmDeleteCause) || !context.mounted) return;
+                if (await guarded(context, () => repo.deleteCause(cause.id))) {
                   refreshFund(ref);
+                  if (context.mounted) context.canPop() ? context.pop() : context.go('/fund');
                 }
               },
-              itemBuilder: (_) => [PopupMenuItem(value: 'close', child: Text(l.closeCause))],
+              itemBuilder: (_) => [
+                if (cause.status == CauseStatus.open) PopupMenuItem(value: 'close', child: Text(l.closeCause)),
+                PopupMenuItem(value: 'delete', child: Text(l.deleteCause)),
+              ],
             ),
         ],
       ),

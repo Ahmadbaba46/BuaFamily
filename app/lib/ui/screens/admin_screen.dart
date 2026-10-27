@@ -86,6 +86,14 @@ class AdminScreen extends ConsumerWidget {
               icon: const Icon(Icons.insights_outlined),
               onPressed: () => context.push('/admin/metrics'),
             ),
+            PopupMenuButton<String>(
+              tooltip: l.moreAdmin,
+              onSelected: (v) => context.push(v),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: '/admin/invites', child: Text(l.invitesTitle)),
+                PopupMenuItem(value: '/admin/groups', child: Text(l.allGroups)),
+              ],
+            ),
           ],
           bottom: TabBar(tabs: [
             tab(l.requestsTitle, requests, true),

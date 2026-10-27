@@ -259,3 +259,32 @@ class ChangeRequest {
         resultPersonId: j['result_person_id'] as String?,
       );
 }
+
+/// A one-time link an admin made for someone to join.
+class Invite {
+  const Invite({required this.code, required this.createdAt, this.personId, this.createdBy, this.expiresAt, this.usedBy, this.usedAt});
+
+  final String code;
+  final DateTime createdAt;
+  final String? personId;
+  final String? createdBy;
+  final DateTime? expiresAt;
+  final String? usedBy;
+  final DateTime? usedAt;
+
+  bool get used => usedAt != null;
+  bool expired(DateTime now) => !used && expiresAt != null && expiresAt!.isBefore(now);
+
+  factory Invite.fromJson(Map<String, dynamic> j) {
+    DateTime? ts(Object? v) => v == null ? null : DateTime.parse(v as String).toLocal();
+    return Invite(
+      code: j['code'] as String,
+      createdAt: ts(j['created_at'])!,
+      personId: j['person_id'] as String?,
+      createdBy: j['created_by'] as String?,
+      expiresAt: ts(j['expires_at']),
+      usedBy: j['used_by'] as String?,
+      usedAt: ts(j['used_at']),
+    );
+  }
+}

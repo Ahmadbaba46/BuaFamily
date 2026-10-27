@@ -9,11 +9,12 @@ import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
 
-/// New event or announcement.
+/// New event or announcement, or changes to an event ([editing]).
 class NewEventScreen extends ConsumerStatefulWidget {
-  const NewEventScreen({super.key, this.announcement = false});
+  const NewEventScreen({super.key, this.announcement = false, this.editing});
 
   final bool announcement;
+  final FamilyEvent? editing;
 
   @override
   ConsumerState<NewEventScreen> createState() => _NewEventScreenState();
@@ -34,6 +35,24 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
   bool _notify = true;
   bool _sms = false;
   bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final e = widget.editing;
+    if (e != null) {
+      _announcement = false;
+      _title.text = e.title;
+      _place.text = e.place ?? '';
+      _address.text = e.address ?? '';
+      _details.text = e.details ?? '';
+      _category = e.category;
+      _date = DateTime(e.startsAt.year, e.startsAt.month, e.startsAt.day);
+      _time = TimeOfDay.fromDateTime(e.startsAt);
+      _askReply = e.rsvpEnabled;
+      _pin = e.pinned;
+    }
+  }
 
   @override
   void dispose() {
@@ -83,6 +102,22 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
         final d = _date!;
         final starts = DateTime(d.year, d.month, d.day, _time.hour, _time.minute);
         String? opt(TextEditingController c) => c.text.trim().isEmpty ? null : c.text.trim();
+        final editing = widget.editing;
+        if (editing != null) {
+          final moved = starts.difference(editing.startsAt);
+          return repo.updateEvent(editing.id, {
+            'title': _title.text.trim(),
+            'category': _category.name,
+            'starts_at': starts.toUtc().toIso8601String(),
+            // An end time moves with the start.
+            if (editing.endsAt != null) 'ends_at': editing.endsAt!.add(moved).toUtc().toIso8601String(),
+            'place': opt(_place),
+            'address': opt(_address),
+            'details': opt(_details),
+            'rsvp_enabled': _askReply,
+            if (_pin != editing.pinned) 'pinned': _pin,
+          });
+        }
         eventId = await repo.createEvent({
           'title': _title.text.trim(),
           'category': _category.name,
@@ -102,7 +137,10 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
     if (!ok) return;
     ref.invalidate(feedProvider);
     ref.invalidate(eventsProvider);
-    if (eventId != null) {
+    if (widget.editing != null) {
+      showSnack(context, l.saved);
+      Navigator.of(context).pop();
+    } else if (eventId != null) {
       context.pushReplacement('/events/$eventId');
     } else {
       context.canPop() ? context.pop() : context.go('/events');
@@ -114,18 +152,23 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
     final l = context.l10n;
     final isAdmin = ref.watch(isAdminProvider);
     final smsOn = ref.watch(settingsProvider).value?.smsEnabled ?? false;
+    final editing = widget.editing != null;
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           tooltip: l.close,
           icon: const Icon(Icons.close),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/events'),
+          onPressed: () => widget.editing != null
+              ? Navigator.of(context).pop()
+              : context.canPop()
+                  ? context.pop()
+                  : context.go('/events'),
         ),
-        title: Text(l.newPost, style: Theme.of(context).textTheme.titleMedium),
+        title: Text(editing ? l.editEvent : l.newPost, style: Theme.of(context).textTheme.titleMedium),
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
-        Center(
+        if (!editing) Center(
           child: PillSegmented<bool>(
             values: const [false, true],
             labelOf: (a) => a ? l.announcement : l.event,
@@ -133,7 +176,7 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
             onChanged: (a) => setState(() => _announcement = a),
           ),
         ),
-        const SizedBox(height: 16),
+        if (!editing) const SizedBox(height: 16),
         if (_announcement)
           SectionCard(padding: const EdgeInsets.all(16), children: [
             TextField(
@@ -214,13 +257,19 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
             ),
             const Divider(height: 1),
           ],
-          ToggleRow(
-            title: l.notifyFamily,
-            subtitle: l.notifyFamilySub,
-            value: _notify,
-            onChanged: (v) => setState(() => _notify = v),
-          ),
-          if (isAdmin && smsOn) ...[
+          if (editing)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(l.eventChangesNote, style: Theme.of(context).textTheme.bodySmall),
+            )
+          else
+            ToggleRow(
+              title: l.notifyFamily,
+              subtitle: l.notifyFamilySub,
+              value: _notify,
+              onChanged: (v) => setState(() => _notify = v),
+            ),
+          if (isAdmin && smsOn && !editing) ...[
             const Divider(height: 1),
             ToggleRow(
               title: l.alsoSms,
@@ -243,7 +292,7 @@ class _NewEventScreenState extends ConsumerState<NewEventScreen> {
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
           child: _saving
               ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-              : Text(_announcement ? l.postAnnouncement : l.postEvent),
+              : Text(editing ? l.saveChanges : _announcement ? l.postAnnouncement : l.postEvent),
         ),
       ]),
     );

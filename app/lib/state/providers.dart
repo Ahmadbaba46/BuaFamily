@@ -315,8 +315,12 @@ final fundReportProvider = FutureProvider.autoDispose.family<FundReport, (DateTi
   (ref, p) => ref.watch(repositoryProvider).fundReport(p.$1, p.$2),
 );
 
+/// Committee only.
+final payoutsProvider = FutureProvider<List<FundPayout>>((ref) => ref.watch(repositoryProvider).payouts());
+
 void refreshFund(WidgetRef ref) {
   ref.invalidate(fundOverviewProvider);
+  ref.invalidate(payoutsProvider);
   ref.invalidate(fundCausesProvider);
   ref.invalidate(contributionsProvider);
   ref.invalidate(duesPlansProvider);
@@ -387,6 +391,12 @@ final calendarFeedProvider = FutureProvider<CalendarFeed?>((ref) {
 });
 
 /// The groups I'm in, latest first.
+/// Admins: the invites made.
+final invitesProvider = FutureProvider.autoDispose<List<Invite>>((ref) => ref.watch(repositoryProvider).invites());
+
+/// Family admins: every group.
+final adminGroupsProvider = FutureProvider.autoDispose<List<AdminGroup>>((ref) => ref.watch(repositoryProvider).adminGroups());
+
 final groupsProvider = StreamProvider<List<ChatGroup>>((ref) {
   ref.watch(profileProvider.select((p) => (p?.id, p?.status)));
   return ref.watch(repositoryProvider).groups();

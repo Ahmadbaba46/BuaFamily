@@ -204,6 +204,24 @@ class _RequestCard extends ConsumerWidget {
               ],
             ]),
           ),
+          if (mine || (me?.isAdmin ?? false))
+            PopupMenuButton<String>(
+              padding: EdgeInsets.zero,
+              icon: Icon(Icons.more_vert, color: Bua.dangerInk),
+              onSelected: (v) async {
+                if (v == 'edit') {
+                  await Navigator.of(context)
+                      .push(MaterialPageRoute<void>(builder: (_) => NewBloodRequestScreen(editing: r)));
+                  return;
+                }
+                if (!await confirm(context, l.confirmDeleteBloodRequest) || !context.mounted) return;
+                await act(() => ref.read(repositoryProvider).deleteBloodRequest(r.id));
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem(value: 'edit', child: Text(l.edit)),
+                PopupMenuItem(value: 'delete', child: Text(l.delete)),
+              ],
+            ),
         ]),
         const SizedBox(height: 12),
         Row(children: [
@@ -332,7 +350,10 @@ class _MyDonorStatus extends StatelessWidget {
 
 /// Form to ask the family for blood.
 class NewBloodRequestScreen extends ConsumerStatefulWidget {
-  const NewBloodRequestScreen({super.key});
+  const NewBloodRequestScreen({super.key, this.editing});
+
+  /// Changes to a request (by whoever asked, or an admin).
+  final BloodRequest? editing;
 
   @override
   ConsumerState<NewBloodRequestScreen> createState() => _NewBloodRequestScreenState();
@@ -348,6 +369,22 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
   final _note = TextEditingController();
   bool _urgent = true;
   bool _saving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final r = widget.editing;
+    if (r != null) {
+      _group = r.bloodGroup;
+      _units = r.units;
+      _patientId = r.patientPersonId;
+      _patientName.text = r.patientName ?? '';
+      _hospital.text = r.hospital;
+      _phone.text = r.contactPhone ?? '';
+      _note.text = r.note ?? '';
+      _urgent = r.urgent;
+    }
+  }
 
   @override
   void dispose() {
@@ -367,9 +404,11 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
     final phoneText = _phone.text.trim();
     final phone = phoneText.isEmpty ? null : phoneText.replaceAll(RegExp(r'[^0-9]'), '');
     setState(() => _saving = true);
+    final repo = ref.read(repositoryProvider);
+    final editing = widget.editing;
     final ok = await guarded(
       context,
-      () => ref.read(repositoryProvider).createBloodRequest({
+      () => (editing == null ? repo.createBloodRequest : (Map<String, dynamic> r) => repo.updateBloodRequest(editing.id, r))({
         'blood_group': _group,
         'units': _units,
         'patient_person_id': _patientId,
@@ -384,7 +423,7 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
     setState(() => _saving = false);
     if (ok) {
       ref.invalidate(bloodRequestsProvider);
-      showSnack(context, l.bloodRequestSent);
+      showSnack(context, editing == null ? l.bloodRequestSent : l.saved);
       context.canPop() ? context.pop() : context.go('/blood');
     }
   }
@@ -402,7 +441,8 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
           icon: const Icon(Icons.close),
           onPressed: () => context.canPop() ? context.pop() : context.go('/blood'),
         ),
-        title: Text(l.requestBlood, style: Theme.of(context).textTheme.titleMedium),
+        title: Text(widget.editing == null ? l.requestBlood : l.editRequest,
+            style: Theme.of(context).textTheme.titleMedium),
       ),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
         SectionCard(padding: const EdgeInsets.all(16), children: [
@@ -485,7 +525,7 @@ class _NewBloodRequestScreenState extends ConsumerState<NewBloodRequestScreen> {
           style: FilledButton.styleFrom(backgroundColor: Bua.danger, minimumSize: const Size.fromHeight(52)),
           child: _saving
               ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-              : Text(l.requestBlood),
+              : Text(widget.editing == null ? l.requestBlood : l.saveChanges),
         ),
       ]),
     );

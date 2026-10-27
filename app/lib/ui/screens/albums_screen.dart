@@ -183,6 +183,24 @@ class AlbumScreen extends ConsumerStatefulWidget {
 class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   String? _filter;
 
+  Future<void> _rename(Album album) async {
+    final title = await editText(context, title: context.l10n.renameAlbum, initial: album.title);
+    if (title == null || title == album.title || !mounted) return;
+    final ok = await guarded(context,
+        () => ref.read(repositoryProvider).updateAlbum(album.id, title: title, description: album.description));
+    if (ok) ref.invalidate(albumsProvider);
+  }
+
+  Future<void> _delete(Album album, List<Photo> photos) async {
+    final l = context.l10n;
+    if (!await confirm(context, l.confirmDeleteAlbum(photos.length)) || !mounted) return;
+    final ok = await guarded(context, () => ref.read(repositoryProvider).deleteAlbum(album.id, photos));
+    if (!ok || !mounted) return;
+    ref.invalidate(albumsProvider);
+    ref.invalidate(feedProvider);
+    context.canPop() ? context.pop() : context.go('/albums');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -197,6 +215,8 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
     final isMe = widget.personId != null && widget.personId == ref.watch(profileProvider)?.personId;
     final title = album?.title ?? (isMe ? l.photosOfYou : person?.displayName ?? l.photos);
     final source = widget.albumId != null ? 'album=${widget.albumId}' : 'of=${widget.personId}';
+    final profile = ref.watch(profileProvider);
+    final canManage = album != null && (album.createdBy == profile?.id || (profile?.isAdmin ?? false));
 
     return Scaffold(
       appBar: AppBar(
@@ -211,6 +231,14 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 link: shareLink('album', widget.albumId!, lang: Localizations.localeOf(context).languageCode),
                 text: album?.title,
               ),
+            ),
+          if (canManage)
+            PopupMenuButton<String>(
+              onSelected: (v) => v == 'rename' ? _rename(album) : _delete(album, photos.value ?? const []),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: 'rename', child: Text(l.renameAlbum)),
+                PopupMenuItem(value: 'delete', child: Text(l.deleteAlbum)),
+              ],
             ),
         ],
         titleSpacing: 0,

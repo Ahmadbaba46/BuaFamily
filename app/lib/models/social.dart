@@ -101,11 +101,13 @@ class Post {
     this.people = const [],
     this.likeCount = 0,
     this.commentCount = 0,
+    this.editedAt,
   });
 
   final String id;
   final String authorId;
   final DateTime createdAt;
+  final DateTime? editedAt;
   final PostKind kind;
   final String body;
   final String? albumId;
@@ -133,6 +135,7 @@ class Post {
         people: _personIds(j['post_people']),
         likeCount: _count(j['like_count']),
         commentCount: _count(j['comment_count']),
+        editedAt: j['edited_at'] == null ? null : _ts(j['edited_at']),
       );
 }
 
@@ -282,18 +285,20 @@ class Target {
 }
 
 class Comment {
-  const Comment({required this.id, required this.authorId, required this.body, required this.createdAt});
+  const Comment({required this.id, required this.authorId, required this.body, required this.createdAt, this.editedAt});
 
   final String id;
   final String authorId;
   final String body;
   final DateTime createdAt;
+  final DateTime? editedAt;
 
   factory Comment.fromJson(Map<String, dynamic> j) => Comment(
         id: j['id'] as String,
         authorId: j['author_id'] as String,
         body: j['body'] as String,
         createdAt: _ts(j['created_at']),
+        editedAt: j['edited_at'] == null ? null : _ts(j['edited_at']),
       );
 }
 

@@ -6139,4 +6139,236 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifEventGiftPassedOn(String amount, String title) {
     return '$amount from gifts paid in the app for $title has been sent to you';
   }
+
+  @override
+  String get editEvent => 'Edit event';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get eventChangesNote =>
+      'Those going are told if the date or place changes.';
+
+  @override
+  String get edited => 'edited';
+
+  @override
+  String get editComment => 'Edit comment';
+
+  @override
+  String get editPost => 'Edit post';
+
+  @override
+  String get confirmDeleteComment => 'Delete this comment?';
+
+  @override
+  String get renameAlbum => 'Rename album';
+
+  @override
+  String get deleteAlbum => 'Delete album';
+
+  @override
+  String confirmDeleteAlbum(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Delete this album and its $count photos? They go from any moment they were posted in too.',
+      one: 'Delete this album and its photo? It goes from any moment it was posted in too.',
+      zero: 'Delete this album?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get payoutsRecorded => 'Payouts recorded';
+
+  @override
+  String get editPayout => 'Correct payout';
+
+  @override
+  String get noPayoutsYet => 'No payouts recorded yet.';
+
+  @override
+  String confirmDeletePayout(String amount) {
+    return 'Delete this payout of $amount? The balance goes back up by that much.';
+  }
+
+  @override
+  String recordedBy(String name) {
+    return 'recorded by $name';
+  }
+
+  @override
+  String get deleteCause => 'Delete cause';
+
+  @override
+  String get confirmDeleteCause =>
+      'Delete this cause? Only a cause with no money given or paid out can be deleted; otherwise close it.';
+
+  @override
+  String get deleteDuesPlan => 'Delete plan';
+
+  @override
+  String confirmDeleteDuesPlan(String title) {
+    return 'Delete the plan “$title”? Only a plan with no dues paid can be deleted; otherwise switch it off.';
+  }
+
+  @override
+  String get editRequest => 'Edit request';
+
+  @override
+  String get confirmDeleteBloodRequest =>
+      'Delete this blood request? The offers to donate go with it.';
+
+  @override
+  String get editOpportunity => 'Edit opportunity';
+
+  @override
+  String get confirmDeleteOpportunity => 'Delete this opportunity?';
+
+  @override
+  String get editPoll => 'Edit poll';
+
+  @override
+  String get editPollNote =>
+      'You can change the wording. The choices stay as people voted on them.';
+
+  @override
+  String get confirmDeletePoll => 'Delete this poll and its votes?';
+
+  @override
+  String get editMemory => 'Edit memory';
+
+  @override
+  String get confirmDeleteMemory => 'Delete this memory?';
+
+  @override
+  String get clearNotifications => 'Clear all';
+
+  @override
+  String get confirmClearNotifications =>
+      'Delete all your notifications? (Swipe one to the left to delete just that one.)';
+
+  @override
+  String notifEventMoved(String title, String date) {
+    return '$title has moved to $date';
+  }
+
+  @override
+  String notifEventPlaceChanged(String title, String place) {
+    return '$title has a new place: $place';
+  }
+
+  @override
+  String get groupDelete => 'Delete group';
+
+  @override
+  String get groupConfirmDelete =>
+      'Delete this group for everyone? Everything said in it goes too.';
+
+  @override
+  String groupConfirmDeleteNamed(String name) {
+    return 'Delete “$name” for everyone? Everything said in it goes too.';
+  }
+
+  @override
+  String get groupRemoveSomeone => 'Remove someone';
+
+  @override
+  String groupRemoveWho(String name) {
+    return 'Remove who from $name?';
+  }
+
+  @override
+  String get allGroups => 'All groups';
+
+  @override
+  String get allGroupsNote =>
+      'Every group chat in the family. You see who is in each, never what was said. You can remove someone or delete a group.';
+
+  @override
+  String get noGroupsYet => 'No groups yet.';
+
+  @override
+  String startedBy(String name) {
+    return 'started by $name';
+  }
+
+  @override
+  String get invitesTitle => 'Invites';
+
+  @override
+  String get noInvitesYet => 'No invites made yet.';
+
+  @override
+  String get inviteAnyone => 'Anyone with the link';
+
+  @override
+  String get inviteWaiting => 'Not used yet';
+
+  @override
+  String get inviteExpired => 'Expired';
+
+  @override
+  String inviteUsedBy(String name, String when) {
+    return 'Used by $name $when';
+  }
+
+  @override
+  String inviteMadeBy(String name, String when) {
+    return 'made by $name $when';
+  }
+
+  @override
+  String get cancelInvite => 'Cancel invite';
+
+  @override
+  String get removeFromList => 'Remove from list';
+
+  @override
+  String get confirmCancelInvite =>
+      'Cancel this invite? Its link will stop working.';
+
+  @override
+  String get moreAdmin => 'More';
+
+  @override
+  String get personOptions => 'Options';
+
+  @override
+  String get selectSeveral => 'Select several';
+
+  @override
+  String selectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String confirmDeletePeople(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Delete these $count people from the family tree: $names?',
+      one: 'Delete $names from the family tree?',
+    );
+    return '$_temp0 Their links and details go too.';
+  }
+
+  @override
+  String andMore(int count) {
+    return 'and $count more';
+  }
+
+  @override
+  String peopleDeleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people deleted',
+      one: '1 person deleted',
+    );
+    return '$_temp0';
+  }
 }

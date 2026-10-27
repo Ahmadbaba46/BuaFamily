@@ -153,12 +153,18 @@ void main() {
     expect(repo.updates, [('u2', AccountStatus.suspended)]);
     expect(repo.resolved, [('r2', ReportStatus.actioned)]);
 
-    // Remove the comment.
-    await tester.tap(find.text('Remove'));
+    // Remove the comment, and the message (private messages can be removed too).
+    expect(find.text('Remove'), findsNWidgets(2));
+    await tester.tap(find.text('Remove').last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Yes'));
     await tester.pumpAndSettle();
     expect(repo.removed, ['r1']);
+    await tester.tap(find.text('Remove').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Yes'));
+    await tester.pumpAndSettle();
+    expect(repo.removed, ['r1', 'r2']);
 
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();

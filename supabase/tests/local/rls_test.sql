@@ -2684,6 +2684,128 @@ update public.fund_settings set online_payments = false;
 select set_config('request.jwt.claims', '{}', false);
 
 -- ---------------------------------------------------------------------------
+-- 53. Editing and removing: owners stay owners, admins look after groups.
+-- ---------------------------------------------------------------------------
+reset role;
+select set_config('request.jwt.claims', '{}', false);
+update public.app_settings set messages_enabled = true;
+
+-- Aisha edits her post: the text changes and says so; it stays hers.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+insert into public.posts (body) values ('Edit me please') returning id as epost \gset
+update public.posts set body = 'Edited text', author_id = :admin_id where id = :'epost';
+select test.assert((select body = 'Edited text' and author_id = :member_id and edited_at is not null
+  from public.posts where id = :'epost'), 'the post is edited and stays Aisha''s');
+insert into public.comments (post_id, body) values (:'epost', 'First thought') returning id as ecomment \gset
+select test.assert((select edited_at is null from public.comments where id = :'ecomment'), 'a new comment is not edited');
+update public.comments set body = 'Second thought', post_id = null where id = :'ecomment';
+select test.assert((select body = 'Second thought' and post_id = :'epost' and edited_at is not null
+  from public.comments where id = :'ecomment'), 'Aisha edits her comment; it stays on the post');
+select test.expect_error(format($$update public.comments set body = '  ' where id = %L$$, :'ecomment'),
+  'a comment can''t be emptied');
+insert into public.opportunities (title) values ('Internship') returning id as eopp \gset
+insert into public.events (title, category, starts_at, place) values ('Family meeting', 'other', now() + interval '10 days', 'Kano')
+  returning id as eevent \gset
+reset role;
+
+-- Musa can't edit Aisha's comment or opportunity.
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+update public.comments set body = 'Hacked' where id = :'ecomment';
+update public.opportunities set title = 'Hacked' where id = :'eopp';
+insert into public.event_rsvps (event_id, response) values (:'eevent', 'going');
+reset role;
+select test.assert((select body = 'Second thought' from public.comments where id = :'ecomment'), 'not someone else''s comment');
+select test.assert((select title = 'Internship' from public.opportunities where id = :'eopp'), 'not someone else''s opportunity');
+
+-- An admin edits the opportunity; it stays Aisha's.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+update public.opportunities set title = 'Paid internship', posted_by = :admin_id where id = :'eopp';
+reset role;
+select test.assert((select title = 'Paid internship' and posted_by = :member_id from public.opportunities where id = :'eopp'),
+  'an admin edits it; still Aisha''s');
+
+-- Aisha moves her event: Musa (going) hears; changing the details alone says nothing.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.events set details = 'Bring food' where id = :'eevent';
+reset role;
+select test.assert((select count(*) = 0 from public.notifications where kind = 'event_changed' and data ->> 'event_id' = :'eevent'),
+  'new details alone: nobody is told');
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+update public.events set starts_at = now() + interval '12 days', created_by = :admin_id where id = :'eevent';
+reset role;
+select test.assert((select count(*) = 1 and bool_and(user_id = :member2_id) and bool_and((data ->> 'moved')::boolean)
+  from public.notifications where kind = 'event_changed' and data ->> 'event_id' = :'eevent'),
+  'Musa, who is going, hears it moved (Aisha who moved it does not)');
+select test.assert((select created_by = :member_id from public.events where id = :'eevent'), 'the event stays Aisha''s');
+
+-- The committee corrects a payout; who recorded it stays.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+insert into public.fund_causes (title, target_amount) values ('Cause with money', 1000) returning id as mcause \gset
+insert into public.fund_causes (title, target_amount) values ('Cause by mistake', 1000) returning id as ecause \gset
+insert into public.fund_payouts (cause_id, amount, note) values (:'mcause', 500, 'Wrong') returning id as epayout \gset
+update public.fund_payouts set amount = 450, note = 'Right', recorded_by = :member_id where id = :'epayout';
+select test.assert((select amount = 450 and note = 'Right' and recorded_by = :admin_id from public.fund_payouts
+  where id = :'epayout'), 'the payout is corrected; who recorded it stays');
+-- A cause with money on record stays; one made by mistake goes.
+select test.expect_error(format($$delete from public.fund_causes where id = %L$$, :'mcause'), 'money on record: close it instead');
+delete from public.fund_causes where id = :'ecause';
+select test.assert((select count(*) = 0 from public.fund_causes where id = :'ecause'), 'the mistaken cause is gone');
+delete from public.fund_payouts where id = :'epayout';
+delete from public.fund_causes where id = :'mcause';
+select test.assert((select count(*) = 0 from public.fund_causes where id = :'mcause'), 'once the payout is deleted, so can the cause');
+reset role;
+
+-- Groups: Aisha starts one with Musa; Musa says something reported.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_create('Moderated', array[:member2_id]::uuid[]) as mgrp \gset
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+insert into public.group_messages (group_id, body) values (:'mgrp', 'Something rude') returning id as rudemsg \gset
+select test.expect_error($$select * from public.admin_groups()$$, 'only admins see every group');
+select test.expect_error(format($$select public.group_delete(%L)$$, :'mgrp'), 'a member can''t delete the group');
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.report_content('message', :'rudemsg', 'abuse') as rudereport \gset
+reset role;
+select set_config('request.jwt.claims', json_build_object('sub', :member2_id)::text, false);
+set role authenticated;
+select test.expect_error(format($$select public.admin_remove_reported_message(%L)$$, :'rudereport'),
+  'only admins remove reported messages');
+reset role;
+
+-- The family admin (not in the group) sees it, removes the message and Musa.
+select set_config('request.jwt.claims', json_build_object('sub', :admin_id)::text, false);
+set role authenticated;
+select test.assert((select jsonb_array_length(members) = 2 from public.admin_groups() where id = :'mgrp'),
+  'the admin sees the group and its two members');
+select test.assert((select count(*) = 0 from public.group_messages where group_id = :'mgrp'), 'but not what was said');
+select public.admin_remove_reported_message(:'rudereport');
+select public.group_remove(:'mgrp', :member2_id);
+reset role;
+select test.assert((select deleted_at is not null and body = '🚫' and deleted_by = :admin_id from public.group_messages
+  where id = :'rudemsg'), 'the reported message is removed');
+select test.assert((select status = 'removed' from public.reports where id = :'rudereport'), 'and the report says so');
+select test.assert((select left_at is not null from public.chat_group_members where group_id = :'mgrp' and user_id = :member2_id),
+  'an admin outside the group removes Musa');
+
+-- Aisha (its admin) deletes the group.
+select set_config('request.jwt.claims', json_build_object('sub', :member_id)::text, false);
+set role authenticated;
+select public.group_delete(:'mgrp');
+reset role;
+select test.assert((select count(*) = 0 from public.chat_groups where id = :'mgrp'), 'the group is gone');
+select test.assert((select count(*) = 0 from public.group_messages where group_id = :'mgrp'), 'with what was said in it');
+
+-- ---------------------------------------------------------------------------
 -- 17. Anonymous users see nothing.
 -- ---------------------------------------------------------------------------
 select set_config('request.jwt.claims', '{}', false);

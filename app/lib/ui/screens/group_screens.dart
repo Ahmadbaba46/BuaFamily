@@ -670,6 +670,23 @@ class GroupInfoScreen extends ConsumerWidget {
                           },
                         ),
                       ),
+                      if (iAdmin) ...[
+                        const Divider(height: 1),
+                        Material(
+                          type: MaterialType.transparency,
+                          child: ListTile(
+                            leading: Icon(Icons.delete_outline, color: Bua.danger),
+                            title: Text(l.groupDelete, style: TextStyle(color: Bua.danger)),
+                            onTap: () async {
+                              if (!await confirm(context, l.groupConfirmDelete) || !context.mounted) return;
+                              if (await guarded(context, () => repo.deleteGroup(groupId)) && context.mounted) {
+                                ref.invalidate(groupsProvider);
+                                context.go('/messages');
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ]),
                 ]);
               },

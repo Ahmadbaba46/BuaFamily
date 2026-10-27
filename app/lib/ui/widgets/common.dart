@@ -166,6 +166,7 @@ class PersonTile extends StatelessWidget {
     required this.person,
     this.trailing,
     this.onTap,
+    this.onLongPress,
     this.subtitle,
     this.subtitleColor,
     this.highlight,
@@ -175,6 +176,7 @@ class PersonTile extends StatelessWidget {
   final Person person;
   final Widget? trailing;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final String? subtitle;
   final Color? subtitleColor;
   final Color? highlight;
@@ -187,6 +189,7 @@ class PersonTile extends StatelessWidget {
     final sub = subtitle ?? personSubtitle(context, person);
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 56),
         child: Padding(
@@ -321,4 +324,67 @@ Future<bool> confirm(BuildContext context, String message) async {
     ),
   );
   return ok ?? false;
+}
+
+/// Asks for a line (or, with [lines] > 1, a few lines) of text, starting from
+/// [initial]. Null when cancelled; never empty unless [allowEmpty].
+Future<String?> editText(BuildContext context,
+        {required String title, String initial = '', int lines = 1, String? hint, bool allowEmpty = false}) =>
+    showDialog<String>(
+      context: context,
+      builder: (_) => _EditTextDialog(title: title, initial: initial, lines: lines, hint: hint, allowEmpty: allowEmpty),
+    );
+
+class _EditTextDialog extends StatefulWidget {
+  const _EditTextDialog(
+      {required this.title, required this.initial, required this.lines, this.hint, required this.allowEmpty});
+
+  final String title;
+  final String initial;
+  final int lines;
+  final String? hint;
+  final bool allowEmpty;
+
+  @override
+  State<_EditTextDialog> createState() => _EditTextDialogState();
+}
+
+class _EditTextDialogState extends State<_EditTextDialog> {
+  late final _text = TextEditingController(text: widget.initial);
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final v = _text.text.trim();
+    if (v.isEmpty && !widget.allowEmpty) return;
+    Navigator.pop(context, v);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SizedBox(
+        width: 420,
+        child: TextField(
+          controller: _text,
+          autofocus: true,
+          minLines: widget.lines,
+          maxLines: widget.lines == 1 ? 1 : widget.lines + 6,
+          textCapitalization: TextCapitalization.sentences,
+          decoration: InputDecoration(hintText: widget.hint),
+          onSubmitted: widget.lines == 1 ? (_) => _save() : null,
+        ),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l.cancel)),
+        FilledButton(onPressed: _save, child: Text(l.save)),
+      ],
+    );
+  }
 }

@@ -422,3 +422,24 @@ class FundReport {
     );
   }
 }
+
+/// Money paid out of the fund (the committee sees and corrects these).
+class FundPayout {
+  const FundPayout({required this.id, required this.amount, required this.paidOn, this.causeId, this.note, this.recordedBy});
+
+  final String id;
+  final double amount;
+  final DateTime paidOn;
+  final String? causeId;
+  final String? note;
+  final String? recordedBy;
+
+  factory FundPayout.fromJson(Map<String, dynamic> j) => FundPayout(
+        id: j['id'] as String,
+        amount: _num(j['amount']),
+        paidOn: DateTime.parse((j['paid_on'] ?? j['created_at']) as String).toLocal(),
+        causeId: j['cause_id'] as String?,
+        note: j['note'] as String?,
+        recordedBy: j['recorded_by'] as String?,
+      );
+}

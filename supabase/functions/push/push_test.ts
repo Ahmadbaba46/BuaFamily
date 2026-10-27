@@ -71,6 +71,10 @@ Deno.test("texts follow the reader's language", () => {
   assertEquals(render("event_gift_received", { name: "Aisha", title: "Naming of Fatima" }, "en", "Bua").body,
     "Aisha received your gift for Naming of Fatima. Thank you!");
   assertEquals(render("event_collection", { title: "Auren Musa" }, "ha", "Bua").body, "An buɗe gudummawa don Auren Musa");
+  assertEquals(render("event_changed", { title: "Family meeting", moved: true }, "en", "Bua").body,
+    "Family meeting has moved: check the new date");
+  assertEquals(render("event_changed", { title: "Family meeting", moved: false }, "ha", "Bua").body,
+    "An canza wurin Family meeting");
   assertEquals(render("event_gift_passed_on", { amount: 45000, title: "Naming of Fatima" }, "en", "Bua").body,
     "₦45,000 from gifts paid in the app for Naming of Fatima has been sent to you");
   assertEquals(render("khatm", { title: "Sauka don Kaka" }, "ha", "Bua").body, "Sabuwar saukar Alƙur'ani: Sauka don Kaka. Ɗauki juz'i.");

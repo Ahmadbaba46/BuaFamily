@@ -42,6 +42,14 @@ class _DuesScreenState extends ConsumerState<DuesScreen> {
     return [for (var i = -12; i <= 3; i++) DateTime(now.year, now.month + i)];
   }
 
+  Future<void> _deletePlan(DuesPlan plan) async {
+    if (!await confirm(context, context.l10n.confirmDeleteDuesPlan(plan.title)) || !mounted) return;
+    if (await guarded(context, () => ref.read(repositoryProvider).deleteDuesPlan(plan.id))) {
+      setState(() => _planId = null);
+      refreshFund(ref);
+    }
+  }
+
   Future<void> _editPlan(DuesPlan? plan) async {
     final l = context.l10n;
     final months = _months();
@@ -176,6 +184,7 @@ class _DuesScreenState extends ConsumerState<DuesScreen> {
                       ]),
                     ),
                     IconButton(tooltip: l.editDuesPlan, icon: const Icon(Icons.edit_outlined), onPressed: () => _editPlan(plan)),
+                    IconButton(tooltip: l.deleteDuesPlan, icon: const Icon(Icons.delete_outline), onPressed: () => _deletePlan(plan)),
                   ]),
                   const SizedBox(height: 8),
                   Text(l.duesSummaryLine(owing.length, counted, naira(totalOwed)),

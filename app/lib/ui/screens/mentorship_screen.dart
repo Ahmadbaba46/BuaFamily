@@ -355,16 +355,17 @@ class _OpportunitiesTab extends ConsumerWidget {
     final l = context.l10n;
     final me = ref.watch(profileProvider);
 
-    Future<void> share() async {
-      final title = TextEditingController();
-      final details = TextEditingController();
-      final url = TextEditingController();
-      DateTime? deadline;
+    /// A new opportunity, or changes to [o].
+    Future<void> share([Opportunity? o]) async {
+      final title = TextEditingController(text: o?.title);
+      final details = TextEditingController(text: o?.details);
+      final url = TextEditingController(text: o?.url);
+      DateTime? deadline = o?.deadline;
       final ok = await showDialog<bool>(
         context: context,
         builder: (c) => StatefulBuilder(
           builder: (c, setState) => AlertDialog(
-            title: Text(l.shareOpportunity),
+            title: Text(o == null ? l.shareOpportunity : l.editOpportunity),
             content: SizedBox(
               width: 420,
               child: SingleChildScrollView(
@@ -398,7 +399,7 @@ class _OpportunitiesTab extends ConsumerWidget {
             ),
             actions: [
               TextButton(onPressed: () => Navigator.pop(c, false), child: Text(l.cancel)),
-              FilledButton(onPressed: () => Navigator.pop(c, true), child: Text(l.post)),
+              FilledButton(onPressed: () => Navigator.pop(c, true), child: Text(o == null ? l.post : l.save)),
             ],
           ),
         ),
@@ -406,14 +407,14 @@ class _OpportunitiesTab extends ConsumerWidget {
       if (ok != true || title.text.trim().isEmpty || !context.mounted) return;
       var link = url.text.trim();
       if (link.isNotEmpty && !link.startsWith('http')) link = 'https://$link';
+      final repo = ref.read(repositoryProvider);
+      final text = details.text.trim().isEmpty ? null : details.text.trim();
       if (await guarded(
         context,
-        () => ref.read(repositoryProvider).shareOpportunity(
-              title: title.text,
-              details: details.text.trim().isEmpty ? null : details.text.trim(),
-              url: link.isEmpty ? null : link,
-              deadline: deadline,
-            ),
+        () => o == null
+            ? repo.shareOpportunity(title: title.text, details: text, url: link.isEmpty ? null : link, deadline: deadline)
+            : repo.updateOpportunity(o.id,
+                title: title.text, details: text, url: link.isEmpty ? null : link, deadline: deadline),
       )) {
         ref.invalidate(mentorshipProvider);
       }
@@ -450,23 +451,30 @@ class _OpportunitiesTab extends ConsumerWidget {
                   label: Text(l.open),
                 ),
               const Spacer(),
-              if (o.postedBy == me?.id || (me?.isAdmin ?? false))
+              if (o.postedBy == me?.id || (me?.isAdmin ?? false)) ...[
+                IconButton(
+                  tooltip: l.edit,
+                  icon: Icon(Icons.edit_outlined, color: Bua.inkSubtle),
+                  onPressed: () => share(o),
+                ),
                 IconButton(
                   tooltip: l.delete,
                   icon: Icon(Icons.delete_outline, color: Bua.inkSubtle),
                   onPressed: () async {
+                    if (!await confirm(context, l.confirmDeleteOpportunity) || !context.mounted) return;
                     if (await guarded(context, () => ref.read(repositoryProvider).deleteOpportunity(o.id))) {
                       ref.invalidate(mentorshipProvider);
                     }
                   },
                 ),
+              ],
             ]),
           ]),
         ),
         const SizedBox(height: 10),
       ],
       const SizedBox(height: 6),
-      OutlinedButton.icon(onPressed: share, icon: const Icon(Icons.add), label: Text(l.shareOpportunity)),
+      OutlinedButton.icon(onPressed: () => share(), icon: const Icon(Icons.add), label: Text(l.shareOpportunity)),
     ]);
   }
 }

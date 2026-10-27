@@ -27,6 +27,75 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
   _Filter _filter = _Filter.all;
   _Sort _sort = _Sort.name;
 
+  /// Admins: people picked to delete together (selecting when non-null).
+  Set<String>? _selected;
+
+  void _toggle(String id) => setState(() {
+        final s = _selected ??= {};
+        if (!s.remove(id)) s.add(id);
+        if (s.isEmpty) _selected = null;
+      });
+
+  Future<void> _deleteOne(Person p) async {
+    final l = context.l10n;
+    if (!await confirm(context, l.confirmDeletePerson(p.displayName)) || !mounted) return;
+    if (await guarded(context, () => ref.read(repositoryProvider).deletePerson(p.id))) ref.invalidate(graphProvider);
+  }
+
+  Future<void> _deleteSelected(FamilyGraph graph) async {
+    final l = context.l10n;
+    final ids = _selected?.toList() ?? const <String>[];
+    if (ids.isEmpty) return;
+    final names = [for (final id in ids.take(5)) graph[id]?.displayName ?? '?'];
+    final more = ids.length - names.length;
+    if (!await confirm(context, l.confirmDeletePeople(ids.length, [...names, if (more > 0) l.andMore(more)].join(', '))) ||
+        !mounted) {
+      return;
+    }
+    final repo = ref.read(repositoryProvider);
+    var done = 0;
+    Object? error;
+    for (final id in ids) {
+      try {
+        await repo.deletePerson(id);
+        done++;
+      } catch (e) {
+        error ??= e;
+      }
+    }
+    if (!mounted) return;
+    ref.invalidate(graphProvider);
+    setState(() => _selected = null);
+    if (error != null) {
+      showError(context, error);
+    } else {
+      showSnack(context, l.peopleDeleted(done));
+    }
+  }
+
+  Widget? _adminTrailing(Person p, {required bool isMe}) {
+    final l = context.l10n;
+    if (_selected != null) {
+      return isMe
+          ? null
+          : Checkbox(value: _selected!.contains(p.id), onChanged: (_) => _toggle(p.id));
+    }
+    return PopupMenuButton<String>(
+      tooltip: l.personOptions,
+      icon: Icon(Icons.more_vert, color: Bua.inkSubtle),
+      onSelected: (v) => switch (v) {
+        'edit' => context.push('/person/${p.id}/edit'),
+        'select' => _toggle(p.id),
+        _ => _deleteOne(p),
+      },
+      itemBuilder: (_) => [
+        PopupMenuItem(value: 'edit', child: Text(l.editPerson)),
+        if (!isMe) PopupMenuItem(value: 'select', child: Text(l.selectSeveral)),
+        if (!isMe) PopupMenuItem(value: 'delete', child: Text(l.deletePerson)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -35,7 +104,7 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
     final myId = ref.watch(profileProvider)?.personId;
 
     return Scaffold(
-      floatingActionButton: isAdmin
+      floatingActionButton: isAdmin && _selected == null
           ? FloatingActionButton(
               tooltip: l.newPerson,
               onPressed: () => context.push('/new-person'),
@@ -74,11 +143,39 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
             final header = Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                    Row(children: [
-                      // Lines the ☰ icon up with the search box below.
-                      Transform.translate(offset: const Offset(-12, 0), child: const SidebarButton()),
-                      Expanded(child: Text(l.navMembers, style: Theme.of(context).textTheme.titleLarge)),
-                    ]),
+                    if (_selected != null)
+                      Row(children: [
+                        Transform.translate(
+                          offset: const Offset(-12, 0),
+                          child: IconButton(
+                            tooltip: l.cancel,
+                            icon: const Icon(Icons.close),
+                            onPressed: () => setState(() => _selected = null),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(l.selectedCount(_selected!.length),
+                              style: Theme.of(context).textTheme.titleLarge),
+                        ),
+                        TextButton(
+                          onPressed: () => setState(() => _selected = {
+                                for (final p in others) p.id,
+                              }),
+                          child: Text(l.groupSelectAll),
+                        ),
+                        IconButton.filled(
+                          tooltip: l.delete,
+                          style: IconButton.styleFrom(backgroundColor: Bua.danger),
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () => _deleteSelected(graph),
+                        ),
+                      ])
+                    else
+                      Row(children: [
+                        // Lines the ☰ icon up with the search box below.
+                        Transform.translate(offset: const Offset(-12, 0), child: const SidebarButton()),
+                        Expanded(child: Text(l.navMembers, style: Theme.of(context).textTheme.titleLarge)),
+                      ]),
                     const SizedBox(height: 12),
                     TextField(
                       decoration: InputDecoration(
@@ -165,7 +262,9 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                           viewPhoto: true,
                           subtitle: [l.relSelf, if (me.branch?.isNotEmpty ?? false) me.branch!].join(' · '),
                           subtitleColor: Bua.green,
-                          trailing: Icon(Icons.chevron_right, color: Bua.inkSubtle),
+                          trailing: isAdmin
+                              ? _adminTrailing(me, isMe: true)
+                              : Icon(Icons.chevron_right, color: Bua.inkSubtle),
                           onTap: () => context.push('/person/${me.id}'),
                         ),
                       ),
@@ -192,7 +291,9 @@ class _MembersScreenState extends ConsumerState<MembersScreen> {
                               person: p,
                               viewPhoto: true,
                               subtitle: _subtitle(context, graph, myId, p),
-                              onTap: () => context.push('/person/${p.id}'),
+                              trailing: isAdmin ? _adminTrailing(p, isMe: false) : null,
+                              onTap: _selected != null ? () => _toggle(p.id) : () => context.push('/person/${p.id}'),
+                              onLongPress: isAdmin ? () => _toggle(p.id) : null,
                             ),
                           ],
                         ]),
