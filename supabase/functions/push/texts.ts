@@ -23,6 +23,8 @@ const en: Texts = {
   announcement: (d) => s(d, "body") || "Announcement",
   birthday: (d) => `${s(d, "name")}'s birthday today (${n(d, "age")})`,
   event_reminder: (d) => `Tomorrow: ${s(d, "title")}`,
+  event_changed: (d) =>
+    d.moved === true ? `${s(d, "title")} has moved: check the new date` : `${s(d, "title")}: the place has changed`,
   tagged: (d) => ("photo_id" in d ? "You were tagged in a photo" : "You were tagged in a moment"),
   comment: (d) =>
     !s(d, "name")
@@ -140,6 +142,8 @@ const ha: Texts = {
   announcement: (d) => s(d, "body") || "Sanarwa",
   birthday: (d) => `Ranar haihuwar ${s(d, "name")} yau (${n(d, "age")})`,
   event_reminder: (d) => `Gobe: ${s(d, "title")}`,
+  event_changed: (d) =>
+    d.moved === true ? `An canza ranar ${s(d, "title")}: duba sabuwar rana` : `An canza wurin ${s(d, "title")}`,
   tagged: (d) => ("photo_id" in d ? "An saka ka a hoto" : "An saka ka a wani rubutu"),
   comment: (d) =>
     !s(d, "name")

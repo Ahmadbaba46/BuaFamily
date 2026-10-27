@@ -358,7 +358,8 @@ class _CommentRow extends ConsumerWidget {
                 Expanded(
                   child: Text(author.name, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                 ),
-                Text(l.ago(comment.createdAt), style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
+                Text([l.ago(comment.createdAt), if (comment.editedAt != null) l.edited].join(' · '),
+                    style: TextStyle(fontSize: 12, color: Bua.inkSubtle)),
               ]),
               const SizedBox(height: 2),
               Text(comment.body, style: const TextStyle(fontSize: 14, height: 1.4)),
@@ -371,7 +372,15 @@ class _CommentRow extends ConsumerWidget {
           icon: Icon(Icons.more_vert, size: 18, color: Bua.inkSubtle),
           onSelected: (v) async {
             if (v == 'report') return reportToAdmins(context, ref, ReportKind.comment, comment.id);
-            final ok = await guarded(context, () => ref.read(repositoryProvider).deleteComment(comment.id));
+            final repo = ref.read(repositoryProvider);
+            if (v == 'edit') {
+              final body = await editText(context, title: l.editComment, initial: comment.body, lines: 3);
+              if (body == null || body == comment.body || !context.mounted) return;
+              if (await guarded(context, () => repo.updateComment(comment.id, body))) ref.invalidate(commentsProvider);
+              return;
+            }
+            if (!await confirm(context, l.confirmDeleteComment) || !context.mounted) return;
+            final ok = await guarded(context, () => repo.deleteComment(comment.id));
             if (ok) {
               ref.invalidate(commentsProvider);
               ref.invalidate(feedProvider);
@@ -379,6 +388,7 @@ class _CommentRow extends ConsumerWidget {
           },
           itemBuilder: (_) => [
             if (!mine) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
+            if (mine) PopupMenuItem(value: 'edit', child: Text(l.edit)),
             if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.delete)),
           ],
         ),
@@ -419,6 +429,7 @@ class PostCard extends ConsumerWidget {
         TextSpan(text: ' · ${l.ago(post.createdAt)}'),
       ] else
         TextSpan(text: [?relation, l.ago(post.createdAt)].join(' · ')),
+      if (post.editedAt != null) TextSpan(text: ' · ${l.edited}'),
     ];
 
     return Container(
@@ -453,6 +464,14 @@ class PostCard extends ConsumerWidget {
                     }
                   } else if (v == 'report') {
                     await reportToAdmins(context, ref, ReportKind.post, post.id);
+                  } else if (v == 'edit') {
+                    final body = await editText(context,
+                        title: l.editPost, initial: post.body, lines: 4, allowEmpty: post.photos.isNotEmpty);
+                    if (body == null || body == post.body || !context.mounted) return;
+                    if (await guarded(context, () => repo.updatePost(post.id, body))) {
+                      ref.invalidate(feedProvider);
+                      ref.invalidate(postProvider(post.id));
+                    }
                   } else if (v == 'delete') {
                     if (!await confirm(context, l.confirmDeletePost) || !context.mounted) return;
                     if (await guarded(context, () => repo.deletePost(post))) {
@@ -465,6 +484,7 @@ class PostCard extends ConsumerWidget {
                   PopupMenuItem(value: 'share', child: Text(l.shareLabel)),
                   if (isAdmin) PopupMenuItem(value: 'pin', child: Text(post.pinned ? l.unpin : l.pinToHome)),
                   if (post.authorId != profile?.id) PopupMenuItem(value: 'report', child: Text(l.reportAction)),
+                  if (canDelete && !addedToAlbum) PopupMenuItem(value: 'edit', child: Text(l.editPost)),
                   if (canDelete) PopupMenuItem(value: 'delete', child: Text(l.deletePost)),
                 ],
               ),

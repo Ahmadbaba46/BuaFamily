@@ -69,6 +69,13 @@ class FamilyRepository {
     return row['code'] as String;
   }
 
+  /// Admin: the invites made, newest first.
+  Future<List<Invite>> invites() async =>
+      (await _db.from('invites').select().order('created_at', ascending: false)).map(Invite.fromJson).toList();
+
+  /// Admin: an invite that should no longer work (or an old one off the list).
+  Future<void> deleteInvite(String code) => _db.from('invites').delete().eq('code', code);
+
   /// Who an invite is for (works before signing in); null if the code is unknown.
   Future<Map<String, dynamic>?> inviteInfo(String code) async {
     final r = await _db.rpc('invite_info', params: {'p_code': code});
@@ -438,6 +445,12 @@ class FamilyRepository {
 
   Future<void> deleteComment(String id) => _db.from('comments').delete().eq('id', id);
 
+  /// My own comments only.
+  Future<void> updateComment(String id, String body) => _db.from('comments').update({'body': body.trim()}).eq('id', id);
+
+  /// The words of a moment or announcement (its writer, or an admin).
+  Future<void> updatePost(String id, String body) => _db.from('posts').update({'body': body.trim()}).eq('id', id);
+
   /// Creates a moment or announcement, uploads its photos (also into [albumId]
   /// when given) and tags [people] on the post and on every photo.
   Future<String> createPost({
@@ -550,6 +563,24 @@ class FamilyRepository {
         .select('id')
         .single();
     return row['id'] as String;
+  }
+
+  /// Whoever made it, or an admin.
+  Future<void> updateAlbum(String id, {required String title, String? description}) =>
+      _db.from('albums').update({'title': title.trim(), 'description': description}).eq('id', id);
+
+  /// The album and its photos (the files I uploaded go too; the rest can't be
+  /// reached once their photos are gone).
+  Future<void> deleteAlbum(String id, List<Photo> photos) async {
+    await _db.from('albums').delete().eq('id', id);
+    final mine = [for (final p in photos) if (p.uploadedBy == userId) p.storagePath];
+    if (mine.isNotEmpty) {
+      try {
+        await _db.storage.from(photosBucket).remove(mine);
+      } catch (_) {
+        // The photos are gone already.
+      }
+    }
   }
 
   /// The event's album (made the first time someone adds photos to it).
@@ -674,8 +705,11 @@ class FamilyRepository {
             // The row is gone; the file can't be reached without it.
           }
         }
+      case ReportKind.message:
+        // Private or in a group; the report is marked removed too.
+        return _db.rpc('admin_remove_reported_message', params: {'p_report': r.id});
       default:
-        throw ArgumentError('Only moments, photos and comments can be removed');
+        throw ArgumentError('Only moments, photos, comments and messages can be removed');
     }
     await resolveReport(r.id, ReportStatus.removed);
   }
@@ -715,6 +749,9 @@ class FamilyRepository {
 
   Future<void> deleteEvent(String id) => _db.from('events').delete().eq('id', id);
 
+  /// Whoever made it, or an admin. Those going hear if the date or place changes.
+  Future<void> updateEvent(String id, Map<String, dynamic> changes) => _db.from('events').update(changes).eq('id', id);
+
   Future<void> setRsvp(String eventId, RsvpResponse response, {int guests = 0}) =>
       _db.from('event_rsvps').upsert({
         'event_id': eventId,
@@ -742,6 +779,11 @@ class FamilyRepository {
 
   Future<void> markRead(String id) =>
       _db.from('notifications').update({'read_at': DateTime.now().toUtc().toIso8601String()}).eq('id', id);
+
+  Future<void> deleteNotification(String id) => _db.from('notifications').delete().eq('id', id);
+
+  /// Empties my inbox.
+  Future<void> clearNotifications() => _db.from('notifications').delete().eq('user_id', userId!);
 
   Future<void> markAllRead() => _db
       .from('notifications')
@@ -832,6 +874,12 @@ class FamilyRepository {
 
   Future<void> closeBloodRequest(String id) => _db.from('blood_requests').update({'status': 'closed'}).eq('id', id);
 
+  /// Whoever asked, or an admin.
+  Future<void> updateBloodRequest(String id, Map<String, dynamic> changes) =>
+      _db.from('blood_requests').update(changes).eq('id', id);
+
+  Future<void> deleteBloodRequest(String id) => _db.from('blood_requests').delete().eq('id', id);
+
   // ---------------------------------------------------------------- memorial pages
 
   Future<List<Memory>> memories(String personId) async {
@@ -843,6 +891,9 @@ class FamilyRepository {
       _db.from('memories').insert({'person_id': personId, 'body': body.trim()});
 
   Future<void> deleteMemory(String id) => _db.from('memories').delete().eq('id', id);
+
+  /// Whoever wrote it, or an admin.
+  Future<void> updateMemory(String id, String body) => _db.from('memories').update({'body': body.trim()}).eq('id', id);
 
   /// Whether the current user asked to be reminded of this person's anniversary.
   Future<bool> remembranceReminder(String personId) async =>
@@ -925,6 +976,20 @@ class FamilyRepository {
   Future<void> recordPayout({String? causeId, required double amount, String? note}) =>
       _db.from('fund_payouts').insert({'cause_id': causeId, 'amount': amount, 'note': note, 'recorded_by': userId});
 
+  /// Committee: what has been paid out, newest first.
+  Future<List<FundPayout>> payouts() async =>
+      (await _db.from('fund_payouts').select().order('paid_on', ascending: false).order('created_at', ascending: false))
+          .map(FundPayout.fromJson)
+          .toList();
+
+  Future<void> updatePayout(String id, {String? causeId, required double amount, String? note}) =>
+      _db.from('fund_payouts').update({'cause_id': causeId, 'amount': amount, 'note': note}).eq('id', id);
+
+  Future<void> deletePayout(String id) => _db.from('fund_payouts').delete().eq('id', id);
+
+  /// Committee: a cause made by mistake (one with money on record can only be closed).
+  Future<void> deleteCause(String id) => _db.from('fund_causes').delete().eq('id', id);
+
   /// Starts paying through Korapay: returns the payment's reference and the
   /// checkout page to open.
   Future<({String reference, String checkoutUrl})> startOnlinePayment({
@@ -968,6 +1033,9 @@ class FamilyRepository {
 
   Future<List<DuesPlan>> duesPlans() async =>
       (await _db.from('fund_dues_plans').select().order('created_at')).map(DuesPlan.fromJson).toList();
+
+  /// Committee: a plan made by mistake (one with dues paid can only be stopped).
+  Future<void> deleteDuesPlan(String id) => _db.from('fund_dues_plans').delete().eq('id', id);
 
   /// Committee: a new plan, or changes to one.
   Future<void> saveDuesPlan(Map<String, dynamic> plan, {String? id}) =>
@@ -1403,6 +1471,13 @@ class FamilyRepository {
 
   Future<void> leaveGroup(String groupId) => _db.rpc('group_leave', params: {'p_group': groupId});
 
+  /// Group admins, or family admins: the group and everything said in it.
+  Future<void> deleteGroup(String groupId) => _db.rpc('group_delete', params: {'p_group': groupId});
+
+  /// Family admins: every group and who is in it (never what was said).
+  Future<List<AdminGroup>> adminGroups() async =>
+      [for (final r in (await _db.rpc('admin_groups')) as List) AdminGroup.fromJson(r as Map<String, dynamic>)];
+
   Future<void> setGroupAdmin(String groupId, String user, bool admin) =>
       _db.rpc('group_set_admin', params: {'p_group': groupId, 'p_user': user, 'p_admin': admin});
 
@@ -1434,14 +1509,20 @@ class FamilyRepository {
       _db.rpc('group_mute', params: {'p_group': groupId, 'p_muted': muted});
 
   Future<void> shareOpportunity({required String title, String? details, String? url, DateTime? deadline}) =>
-      _db.from('opportunities').insert({
+      _db.from('opportunities').insert(_opportunity(title, details, url, deadline));
+
+  /// Whoever shared it, or an admin.
+  Future<void> updateOpportunity(String id, {required String title, String? details, String? url, DateTime? deadline}) =>
+      _db.from('opportunities').update(_opportunity(title, details, url, deadline)).eq('id', id);
+
+  Map<String, dynamic> _opportunity(String title, String? details, String? url, DateTime? deadline) => {
         'title': title.trim(),
         'details': details,
         'url': url,
         'deadline': deadline == null
             ? null
             : '${deadline.year}-${deadline.month.toString().padLeft(2, '0')}-${deadline.day.toString().padLeft(2, '0')}',
-      });
+      };
 
   Future<void> deleteOpportunity(String id) => _db.from('opportunities').delete().eq('id', id);
 
@@ -1499,6 +1580,10 @@ class FamilyRepository {
       _db.from('poll_votes').upsert({'poll_id': pollId, 'user_id': userId, 'option_id': optionId});
 
   Future<void> closePoll(String id) => _db.from('polls').update({'closed': true}).eq('id', id);
+
+  /// The wording only; the choices stay as people voted on them.
+  Future<void> updatePoll(String id, {required String question, String? context}) =>
+      _db.from('polls').update({'question': question.trim(), 'context': context?.trim()}).eq('id', id);
 
   Future<void> deletePoll(String id) => _db.from('polls').delete().eq('id', id);
 

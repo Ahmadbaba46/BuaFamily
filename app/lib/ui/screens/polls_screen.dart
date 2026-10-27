@@ -8,6 +8,7 @@ import '../../state/providers.dart';
 import '../theme.dart';
 import '../widgets/bua.dart';
 import '../widgets/common.dart';
+import '../widgets/form_dialog.dart';
 
 /// Family polls: open ones to vote on, then the decisions.
 class PollsScreen extends ConsumerWidget {
@@ -92,10 +93,23 @@ class _PollMenu extends ConsumerWidget {
       icon: Icon(Icons.more_horiz, color: Bua.inkSubtle),
       onSelected: (v) async {
         final repo = ref.read(repositoryProvider);
+        if (v == 'edit') {
+          final f = await showFormDialog(context, title: l.editPoll, note: l.editPollNote, fields: [
+            TextSpec('question', l.question, initial: poll.question, required: true),
+            TextSpec('context', l.pollContext, initial: poll.context, multiline: true),
+          ]);
+          if (f == null || !context.mounted) return;
+          final ok = await guarded(context,
+              () => repo.updatePoll(poll.id, question: f['question'] as String, context: f['context'] as String?));
+          if (ok) ref.invalidate(pollsProvider);
+          return;
+        }
+        if (v == 'delete' && (!await confirm(context, l.confirmDeletePoll) || !context.mounted)) return;
         final ok = await guarded(context, () => v == 'close' ? repo.closePoll(poll.id) : repo.deletePoll(poll.id));
         if (ok) ref.invalidate(pollsProvider);
       },
       itemBuilder: (_) => [
+        PopupMenuItem(value: 'edit', child: Text(l.editPoll)),
         if (poll.isOpen(DateTime.now())) PopupMenuItem(value: 'close', child: Text(l.closePoll)),
         PopupMenuItem(value: 'delete', child: Text(l.deletePoll)),
       ],

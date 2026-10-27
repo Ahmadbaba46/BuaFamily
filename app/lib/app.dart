@@ -14,6 +14,7 @@ import 'state/prefs.dart';
 import 'state/providers.dart';
 import 'ui/screens/about_screen.dart';
 import 'ui/screens/activity_screen.dart';
+import 'ui/screens/admin_groups_screen.dart';
 import 'ui/screens/admin_screen.dart';
 import 'ui/screens/albums_screen.dart';
 import 'ui/screens/app_settings_screen.dart';
@@ -26,6 +27,7 @@ import 'ui/screens/fund_cause_screen.dart';
 import 'ui/screens/fund_report_screen.dart';
 import 'ui/screens/get_app_screen.dart';
 import 'ui/screens/home_screen.dart';
+import 'ui/screens/invites_screen.dart';
 import 'ui/screens/join_screen.dart';
 import 'ui/screens/how_related_screen.dart';
 import 'ui/screens/import_export_screen.dart';
@@ -48,6 +50,7 @@ import 'ui/screens/new_moment_screen.dart';
 import 'ui/screens/new_story_screen.dart';
 import 'ui/screens/notification_settings_screen.dart';
 import 'ui/screens/notifications_screen.dart';
+import 'ui/screens/payouts_screen.dart';
 import 'ui/screens/pending_screen.dart';
 import 'ui/screens/person_form_screen.dart';
 import 'ui/screens/person_screen.dart';
@@ -154,6 +157,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/fund/reports', builder: (_, _) => const FundReportScreen()),
       GoRoute(path: '/fund/dues', builder: (_, _) => const DuesScreen()),
+      GoRoute(path: '/fund/payouts', builder: (_, _) => const PayoutsScreen()),
       GoRoute(
           path: '/fund/paid/:ref',
           builder: (_, s) =>
@@ -208,6 +212,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/admin/metrics', builder: (_, _) => const MetricsScreen()),
       GoRoute(path: '/admin/activity', builder: (_, _) => const ActivityScreen()),
       GoRoute(path: '/admin/reports', builder: (_, _) => const ReportsScreen()),
+      GoRoute(path: '/admin/invites', builder: (_, _) => const InvitesScreen()),
+      GoRoute(path: '/admin/groups', builder: (_, _) => const AdminGroupsScreen()),
       GoRoute(path: '/admin/duplicates', builder: (_, _) => const DuplicatesScreen()),
       GoRoute(
         path: '/admin/import',

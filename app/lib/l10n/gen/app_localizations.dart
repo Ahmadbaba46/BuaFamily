@@ -10026,6 +10026,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} from gifts paid in the app for {title} has been sent to you'**
   String notifEventGiftPassedOn(String amount, String title);
+
+  /// No description provided for @editEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit event'**
+  String get editEvent;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @eventChangesNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Those going are told if the date or place changes.'**
+  String get eventChangesNote;
+
+  /// No description provided for @edited.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get edited;
+
+  /// No description provided for @editComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit comment'**
+  String get editComment;
+
+  /// No description provided for @editPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit post'**
+  String get editPost;
+
+  /// No description provided for @confirmDeleteComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this comment?'**
+  String get confirmDeleteComment;
+
+  /// No description provided for @renameAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename album'**
+  String get renameAlbum;
+
+  /// No description provided for @deleteAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete album'**
+  String get deleteAlbum;
+
+  /// No description provided for @confirmDeleteAlbum.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Delete this album?} =1{Delete this album and its photo? It goes from any moment it was posted in too.} other{Delete this album and its {count} photos? They go from any moment they were posted in too.}}'**
+  String confirmDeleteAlbum(int count);
+
+  /// No description provided for @payoutsRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts recorded'**
+  String get payoutsRecorded;
+
+  /// No description provided for @editPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct payout'**
+  String get editPayout;
+
+  /// No description provided for @noPayoutsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No payouts recorded yet.'**
+  String get noPayoutsYet;
+
+  /// No description provided for @confirmDeletePayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this payout of {amount}? The balance goes back up by that much.'**
+  String confirmDeletePayout(String amount);
+
+  /// No description provided for @recordedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'recorded by {name}'**
+  String recordedBy(String name);
+
+  /// No description provided for @deleteCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete cause'**
+  String get deleteCause;
+
+  /// No description provided for @confirmDeleteCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this cause? Only a cause with no money given or paid out can be deleted; otherwise close it.'**
+  String get confirmDeleteCause;
+
+  /// No description provided for @deleteDuesPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete plan'**
+  String get deleteDuesPlan;
+
+  /// No description provided for @confirmDeleteDuesPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the plan “{title}”? Only a plan with no dues paid can be deleted; otherwise switch it off.'**
+  String confirmDeleteDuesPlan(String title);
+
+  /// No description provided for @editRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit request'**
+  String get editRequest;
+
+  /// No description provided for @confirmDeleteBloodRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this blood request? The offers to donate go with it.'**
+  String get confirmDeleteBloodRequest;
+
+  /// No description provided for @editOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit opportunity'**
+  String get editOpportunity;
+
+  /// No description provided for @confirmDeleteOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this opportunity?'**
+  String get confirmDeleteOpportunity;
+
+  /// No description provided for @editPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit poll'**
+  String get editPoll;
+
+  /// No description provided for @editPollNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change the wording. The choices stay as people voted on them.'**
+  String get editPollNote;
+
+  /// No description provided for @confirmDeletePoll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this poll and its votes?'**
+  String get confirmDeletePoll;
+
+  /// No description provided for @editMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit memory'**
+  String get editMemory;
+
+  /// No description provided for @confirmDeleteMemory.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this memory?'**
+  String get confirmDeleteMemory;
+
+  /// No description provided for @clearNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearNotifications;
+
+  /// No description provided for @confirmClearNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all your notifications? (Swipe one to the left to delete just that one.)'**
+  String get confirmClearNotifications;
+
+  /// No description provided for @notifEventMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} has moved to {date}'**
+  String notifEventMoved(String title, String date);
+
+  /// No description provided for @notifEventPlaceChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} has a new place: {place}'**
+  String notifEventPlaceChanged(String title, String place);
+
+  /// No description provided for @groupDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete group'**
+  String get groupDelete;
+
+  /// No description provided for @groupConfirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this group for everyone? Everything said in it goes too.'**
+  String get groupConfirmDelete;
+
+  /// No description provided for @groupConfirmDeleteNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}” for everyone? Everything said in it goes too.'**
+  String groupConfirmDeleteNamed(String name);
+
+  /// No description provided for @groupRemoveSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove someone'**
+  String get groupRemoveSomeone;
+
+  /// No description provided for @groupRemoveWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove who from {name}?'**
+  String groupRemoveWho(String name);
+
+  /// No description provided for @allGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'All groups'**
+  String get allGroups;
+
+  /// No description provided for @allGroupsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Every group chat in the family. You see who is in each, never what was said. You can remove someone or delete a group.'**
+  String get allGroupsNote;
+
+  /// No description provided for @noGroupsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups yet.'**
+  String get noGroupsYet;
+
+  /// No description provided for @startedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'started by {name}'**
+  String startedBy(String name);
+
+  /// No description provided for @invitesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invites'**
+  String get invitesTitle;
+
+  /// No description provided for @noInvitesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No invites made yet.'**
+  String get noInvitesYet;
+
+  /// No description provided for @inviteAnyone.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone with the link'**
+  String get inviteAnyone;
+
+  /// No description provided for @inviteWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Not used yet'**
+  String get inviteWaiting;
+
+  /// No description provided for @inviteExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get inviteExpired;
+
+  /// No description provided for @inviteUsedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by {name} {when}'**
+  String inviteUsedBy(String name, String when);
+
+  /// No description provided for @inviteMadeBy.
+  ///
+  /// In en, this message translates to:
+  /// **'made by {name} {when}'**
+  String inviteMadeBy(String name, String when);
+
+  /// No description provided for @cancelInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel invite'**
+  String get cancelInvite;
+
+  /// No description provided for @removeFromList.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from list'**
+  String get removeFromList;
+
+  /// No description provided for @confirmCancelInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this invite? Its link will stop working.'**
+  String get confirmCancelInvite;
+
+  /// No description provided for @moreAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get moreAdmin;
+
+  /// No description provided for @personOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Options'**
+  String get personOptions;
+
+  /// No description provided for @selectSeveral.
+  ///
+  /// In en, this message translates to:
+  /// **'Select several'**
+  String get selectSeveral;
+
+  /// No description provided for @selectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selectedCount(int count);
+
+  /// No description provided for @confirmDeletePeople.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Delete {names} from the family tree?} other{Delete these {count} people from the family tree: {names}?}} Their links and details go too.'**
+  String confirmDeletePeople(int count, String names);
+
+  /// No description provided for @andMore.
+  ///
+  /// In en, this message translates to:
+  /// **'and {count} more'**
+  String andMore(int count);
+
+  /// No description provided for @peopleDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person deleted} other{{count} people deleted}}'**
+  String peopleDeleted(int count);
 }
 
 class _AppLocalizationsDelegate

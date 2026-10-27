@@ -309,3 +309,39 @@ List<int> compactWaveform(List<double> levels, {int bars = 48}) {
 
 /// A level (0–1) from the recorder's decibels (-160 to 0).
 double levelFromDb(double db) => ((db + 50) / 50).clamp(0.0, 1.0);
+
+/// A group as family admins see it: who is in it, never what was said.
+class AdminGroup {
+  const AdminGroup({
+    required this.id,
+    required this.name,
+    required this.createdAt,
+    this.about,
+    this.createdBy,
+    this.lastMessageAt,
+    this.members = const [],
+  });
+
+  final String id;
+  final String name;
+  final String? about;
+  final String? createdBy;
+  final DateTime createdAt;
+  final DateTime? lastMessageAt;
+
+  /// User ids and whether each runs the group.
+  final List<({String userId, bool admin})> members;
+
+  factory AdminGroup.fromJson(Map<String, dynamic> j) => AdminGroup(
+        id: j['id'] as String,
+        name: j['name'] as String? ?? '',
+        about: j['about'] as String?,
+        createdBy: j['created_by'] as String?,
+        createdAt: DateTime.parse(j['created_at'] as String).toLocal(),
+        lastMessageAt: j['last_message_at'] == null ? null : DateTime.parse(j['last_message_at'] as String).toLocal(),
+        members: [
+          for (final m in (j['members'] as List? ?? const []))
+            (userId: (m as Map)['user_id'] as String, admin: m['role'] == 'admin'),
+        ],
+      );
+}

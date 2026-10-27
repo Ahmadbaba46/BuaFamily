@@ -27,6 +27,9 @@ String notificationText(AppLocalizations l, AppNotification n) => switch (n.kind
       NotificationKind.announcement => n.str('body') ?? l.announcement,
       NotificationKind.birthday => l.notifBirthday(n.str('name') ?? '', (n.data['age'] as num?)?.toInt() ?? 0),
       NotificationKind.eventReminder => l.notifEventReminder(n.str('title') ?? ''),
+      NotificationKind.eventChanged => n.data['moved'] == true
+          ? l.notifEventMoved(n.str('title') ?? '', l.weekdayDate(n.date('starts_at') ?? n.createdAt))
+          : l.notifEventPlaceChanged(n.str('title') ?? '', n.str('place') ?? ''),
       NotificationKind.tagged => n.data.containsKey('photo_id') ? l.notifTaggedPhoto : l.notifTaggedPost,
       NotificationKind.comment => (n.str('name') ?? '').isEmpty
           ? l.notifComment(n.str('body') ?? '')
@@ -139,6 +142,7 @@ IconData _icon(NotificationKind k) => switch (k) {
       NotificationKind.announcement => Icons.campaign_outlined,
       NotificationKind.birthday => Icons.card_giftcard,
       NotificationKind.eventReminder => Icons.alarm,
+      NotificationKind.eventChanged => Icons.edit_calendar_outlined,
       NotificationKind.tagged => Icons.person_pin_outlined,
       NotificationKind.comment => Icons.chat_bubble_outline,
       NotificationKind.bloodRequest || NotificationKind.bloodOffer => Icons.bloodtype_outlined,
@@ -201,6 +205,16 @@ class NotificationsScreen extends ConsumerWidget {
             icon: const Icon(Icons.settings_outlined),
             onPressed: () => context.push('/settings/notifications'),
           ),
+          if (items.value?.isNotEmpty ?? false)
+            PopupMenuButton<String>(
+              onSelected: (_) async {
+                if (!await confirm(context, l.confirmClearNotifications) || !context.mounted) return;
+                if (await guarded(context, () => ref.read(repositoryProvider).clearNotifications())) {
+                  ref.invalidate(notificationsProvider);
+                }
+              },
+              itemBuilder: (_) => [PopupMenuItem(value: 'clear', child: Text(l.clearNotifications))],
+            ),
         ],
       ),
       body: AsyncBody(
@@ -229,7 +243,22 @@ class NotificationsScreen extends ConsumerWidget {
                     child: Column(children: [
                       for (final (i, n) in rows.indexed) ...[
                         if (i > 0) const InsetDivider(indent: 70),
-                        _NotificationRow(notification: n),
+                        Dismissible(
+                          key: ValueKey(n.id),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Bua.danger,
+                            alignment: AlignmentDirectional.centerEnd,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Icon(Icons.delete_outline, color: Colors.white, semanticLabel: l.delete),
+                          ),
+                          onDismissed: (_) async {
+                            if (await guarded(context, () => ref.read(repositoryProvider).deleteNotification(n.id))) {
+                              ref.invalidate(notificationsProvider);
+                            }
+                          },
+                          child: _NotificationRow(notification: n),
+                        ),
                       ],
                     ]),
                   ),

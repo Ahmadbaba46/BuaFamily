@@ -6047,4 +6047,236 @@ class AppLocalizationsHa extends AppLocalizations {
   String notifEventGiftPassedOn(String amount, String title) {
     return 'An aika maka $amount daga gudummawar da aka biya a manhaja don $title';
   }
+
+  @override
+  String get editEvent => 'Gyara taro';
+
+  @override
+  String get saveChanges => 'Ajiye canje-canje';
+
+  @override
+  String get eventChangesNote =>
+      'Za a sanar da masu zuwa idan an canza rana ko wuri.';
+
+  @override
+  String get edited => 'an gyara';
+
+  @override
+  String get editComment => 'Gyara sharhi';
+
+  @override
+  String get editPost => 'Gyara rubutu';
+
+  @override
+  String get confirmDeleteComment => 'A goge wannan sharhin?';
+
+  @override
+  String get renameAlbum => 'Canza sunan kundi';
+
+  @override
+  String get deleteAlbum => 'Goge kundi';
+
+  @override
+  String confirmDeleteAlbum(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'A goge wannan kundin da hotunansa $count? Za su bace daga duk inda aka saka su.',
+      one: 'A goge wannan kundin da hotonsa? Zai bace daga duk inda aka saka shi.',
+      zero: 'A goge wannan kundin?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get payoutsRecorded => 'Kuɗin da aka fitar';
+
+  @override
+  String get editPayout => 'Gyara kuɗin da aka fitar';
+
+  @override
+  String get noPayoutsYet => 'Ba a fitar da kuɗi ba tukuna.';
+
+  @override
+  String confirmDeletePayout(String amount) {
+    return 'A goge wannan fitar da kuɗi na $amount? Asusun zai ƙaru da wannan adadin.';
+  }
+
+  @override
+  String recordedBy(String name) {
+    return '$name ne ya rubuta';
+  }
+
+  @override
+  String get deleteCause => 'Goge buƙata';
+
+  @override
+  String get confirmDeleteCause =>
+      'A goge wannan buƙatar? Sai buƙatar da ba a bayar ko fitar da kuɗi ba ake iya gogewa; in ba haka ba a rufe ta.';
+
+  @override
+  String get deleteDuesPlan => 'Goge tsari';
+
+  @override
+  String confirmDeleteDuesPlan(String title) {
+    return 'A goge tsarin “$title”? Sai tsarin da ba a biya kuɗi ba ake iya gogewa; in ba haka ba a kashe shi.';
+  }
+
+  @override
+  String get editRequest => 'Gyara roƙo';
+
+  @override
+  String get confirmDeleteBloodRequest =>
+      'A goge wannan roƙon jini? Za a goge alƙawuran bayarwa ma.';
+
+  @override
+  String get editOpportunity => 'Gyara dama';
+
+  @override
+  String get confirmDeleteOpportunity => 'A goge wannan damar?';
+
+  @override
+  String get editPoll => 'Gyara ƙuri\'a';
+
+  @override
+  String get editPollNote =>
+      'Kana iya canza kalmomin. Zaɓuɓɓukan za su zauna yadda aka zaɓa.';
+
+  @override
+  String get confirmDeletePoll => 'A goge wannan ƙuri\'ar da zaɓen da aka yi?';
+
+  @override
+  String get editMemory => 'Gyara tunawa';
+
+  @override
+  String get confirmDeleteMemory => 'A goge wannan tunawar?';
+
+  @override
+  String get clearNotifications => 'Share duka';
+
+  @override
+  String get confirmClearNotifications =>
+      'A goge duk sanarwarka? (Ja ɗaya zuwa hagu don goge ita kaɗai.)';
+
+  @override
+  String notifEventMoved(String title, String date) {
+    return 'An mayar da $title zuwa $date';
+  }
+
+  @override
+  String notifEventPlaceChanged(String title, String place) {
+    return '$title ya koma sabon wuri: $place';
+  }
+
+  @override
+  String get groupDelete => 'Goge rukuni';
+
+  @override
+  String get groupConfirmDelete =>
+      'A goge wannan rukunin ga kowa? Duk abin da aka faɗa a ciki zai tafi.';
+
+  @override
+  String groupConfirmDeleteNamed(String name) {
+    return 'A goge “$name” ga kowa? Duk abin da aka faɗa a ciki zai tafi.';
+  }
+
+  @override
+  String get groupRemoveSomeone => 'Cire wani';
+
+  @override
+  String groupRemoveWho(String name) {
+    return 'Wa za a cire daga $name?';
+  }
+
+  @override
+  String get allGroups => 'Duk rukunoni';
+
+  @override
+  String get allGroupsNote =>
+      'Duk rukunonin hira na iyali. Kana ganin waɗanda ke ciki, ba abin da aka faɗa ba. Kana iya cire wani ko goge rukuni.';
+
+  @override
+  String get noGroupsYet => 'Babu rukuni tukuna.';
+
+  @override
+  String startedBy(String name) {
+    return '$name ne ya fara';
+  }
+
+  @override
+  String get invitesTitle => 'Gayyata';
+
+  @override
+  String get noInvitesYet => 'Ba a yi gayyata ba tukuna.';
+
+  @override
+  String get inviteAnyone => 'Duk wanda ke da mahaɗin';
+
+  @override
+  String get inviteWaiting => 'Ba a yi amfani da ita ba tukuna';
+
+  @override
+  String get inviteExpired => 'Ta ƙare';
+
+  @override
+  String inviteUsedBy(String name, String when) {
+    return '$name ya yi amfani da ita $when';
+  }
+
+  @override
+  String inviteMadeBy(String name, String when) {
+    return '$name ne ya yi ta $when';
+  }
+
+  @override
+  String get cancelInvite => 'Soke gayyata';
+
+  @override
+  String get removeFromList => 'Cire daga jeri';
+
+  @override
+  String get confirmCancelInvite =>
+      'A soke wannan gayyatar? Mahaɗinta ba zai ƙara aiki ba.';
+
+  @override
+  String get moreAdmin => 'Ƙari';
+
+  @override
+  String get personOptions => 'Zaɓuɓɓuka';
+
+  @override
+  String get selectSeveral => 'Zaɓi da yawa';
+
+  @override
+  String selectedCount(int count) {
+    return 'An zaɓi $count';
+  }
+
+  @override
+  String confirmDeletePeople(int count, String names) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'A goge waɗannan mutane $count daga bishiyar iyali: $names?',
+      one: 'A goge $names daga bishiyar iyali?',
+    );
+    return '$_temp0 Za a goge alaƙoƙinsu da bayanansu ma.';
+  }
+
+  @override
+  String andMore(int count) {
+    return 'da wasu $count';
+  }
+
+  @override
+  String peopleDeleted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'An goge mutane $count',
+      one: 'An goge mutum 1',
+    );
+    return '$_temp0';
+  }
 }

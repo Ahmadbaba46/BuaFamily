@@ -279,15 +279,28 @@ class _MemoryRow extends ConsumerWidget {
           ]),
         ),
         if (canDelete)
-          IconButton(
-            tooltip: l.delete,
-            visualDensity: VisualDensity.compact,
-            icon: Icon(Icons.close, size: 18, color: Bua.inkSubtle),
-            onPressed: () async {
-              if (await guarded(context, () => ref.read(repositoryProvider).deleteMemory(memory.id))) {
+          PopupMenuButton<String>(
+            padding: EdgeInsets.zero,
+            icon: Icon(Icons.more_vert, size: 18, color: Bua.inkSubtle),
+            onSelected: (v) async {
+              final repo = ref.read(repositoryProvider);
+              if (v == 'edit') {
+                final body = await editText(context, title: l.editMemory, initial: memory.body, lines: 3);
+                if (body == null || body == memory.body || !context.mounted) return;
+                if (await guarded(context, () => repo.updateMemory(memory.id, body))) {
+                  ref.invalidate(memoriesProvider(memory.personId));
+                }
+                return;
+              }
+              if (!await confirm(context, l.confirmDeleteMemory) || !context.mounted) return;
+              if (await guarded(context, () => repo.deleteMemory(memory.id))) {
                 ref.invalidate(memoriesProvider(memory.personId));
               }
             },
+            itemBuilder: (_) => [
+              PopupMenuItem(value: 'edit', child: Text(l.edit)),
+              PopupMenuItem(value: 'delete', child: Text(l.delete)),
+            ],
           ),
       ]),
     );

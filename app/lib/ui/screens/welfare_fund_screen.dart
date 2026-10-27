@@ -73,6 +73,7 @@ class WelfareFundScreen extends ConsumerWidget {
               onSelected: (v) => switch (v) {
                 'cause' => context.push('/fund/new'),
                 'payout' => _recordPayout(context, ref, open),
+                'payouts' => context.push('/fund/payouts'),
                 'dues' => context.push('/fund/dues'),
                 'record' => _recordFor(context, ref, open),
                 _ => _editAccount(context, ref, overview.value),
@@ -82,6 +83,7 @@ class WelfareFundScreen extends ConsumerWidget {
                 PopupMenuItem(value: 'record', child: Text(l.recordForMember)),
                 PopupMenuItem(value: 'cause', child: Text(l.newCause)),
                 PopupMenuItem(value: 'payout', child: Text(l.recordPayout)),
+                PopupMenuItem(value: 'payouts', child: Text(l.payoutsRecorded)),
                 PopupMenuItem(value: 'account', child: Text(l.editAccount)),
               ],
             ),
